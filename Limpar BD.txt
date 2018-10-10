@@ -1,0 +1,8 @@
+DELETE FROM bets;
+DELETE FROM user;
+UPDATE fixture SET home_score = null, away_score = null WHERE home_score IS NOT null AND away_score IS NOT null;
+
+
+LIMPA
+UPDATE bets SET points = 0 WHERE points != 0;
+UPDATE fixture SET home_score = null, away_score = null WHERE home_score IS NOT null AND away_score IS NOT null;
