@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import '../css/common/mainContent.css'
 
-import SiteHeader from './common/SiteHeader';
-import MainContent from './home/MainContent';
-import SiteFooter from './common/SiteFooter';
-// import RankContainer from './RankContainer';
-
+import WelcomeSection from './home/WelcomeSection'
+import NextAndTimer from './home/NextAndTimer'
+import FaqSection from './home/FaqSection';
+import Canvas from './home/Canvas';
 
 class PageHome extends Component {
     constructor(){
@@ -15,19 +15,15 @@ class PageHome extends Component {
     
     render() {
         return (
-            <div className="home">
-
-                <SiteHeader />
-
-                <MainContent dataFinal={this.state.dataFinal}/>
-
-                {/*<Regulamento />*/}
-
-                {/*<RankContainer placedIn="home" />*/}
-
-                <SiteFooter />
-
-          </div>
+            <div className="MainContent-container">
+                <div className="MainContent-foreground">
+                    <WelcomeSection />
+                    <NextAndTimer dataFinal={this.state.dataFinal}/>
+                    {/*<ButtonSection />*/}
+                    <FaqSection />
+                </div>
+                <Canvas />
+            </div>
         );
     }
 }

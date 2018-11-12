@@ -8,8 +8,10 @@
     justify-content: center;
     align-items: center;
 
-    padding: 0 30px;
-    background-color: #c7c7c7;
+    padding: 30px;
+    position: relative;
+    /* background-color: #c7c7c7; */
+    overflow: hidden;
     color: #424242;
     font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
 }
@@ -76,3 +78,4 @@
 .welcome-container > .welcome-button:hover {
     background-color: #388E3C;
 }
+

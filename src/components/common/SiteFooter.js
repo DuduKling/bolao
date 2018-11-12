@@ -8,7 +8,7 @@ class SiteFooter extends Component {
         return (
             <footer className="footer">
                 <p>Feito com &hearts; por <a href="https://dudukling.github.io/" rel="noopener noreferrer" target="_blank">Dudu</a>.</p>
-                <p><i>Versão beta</i> 2.0</p>
+                <p>Versão <i>beta 2.0</i></p>
                 {/*<p>Admin: <Link to="/admin">/admin</Link></p>*/}
             </footer>
         );

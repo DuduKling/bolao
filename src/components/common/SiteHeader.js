@@ -4,7 +4,7 @@ import '../../css/common/header.css';
 import logo from '../../imgs/logo.png';
 import avatar from '../../imgs/avatar.png';
 
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 class SiteHeader extends Component {
     render() {
@@ -17,15 +17,15 @@ class SiteHeader extends Component {
 
                 <div className="header-right">
                     <nav className="menu">
-                        <Link className="menuItem" to="/">
+                        <NavLink className="menuItem" to="/">
                             Histórico
-                        </Link>
-                        <Link className="menuItem" to="/">
+                        </NavLink>
+                        <NavLink className="menuItem" to="/regulamento">
                             Regulamento
-                        </Link>
-                        <Link className="menuItem" to="/">
+                        </NavLink>
+                        <NavLink className="menuItem" to="/">
                             Fale Conosco
-                        </Link>
+                        </NavLink>
                     </nav>
 
                     <div className="user-container">

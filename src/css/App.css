@@ -232,56 +232,7 @@ body {
 
 */
 
-.regulamento {
-	background-color: #f5f5f5;
-	border-top: 1px solid #c7c7c7;
-	padding: 0px 25px 25px 25px;
-	font-family: "Open Sans",sans-serif;
-}
 
-.regulamento > h3 {
-	font-size: 22px;
-	color: #388e3c;
-	border-bottom: 1px solid #388e3c;
-	padding-bottom: 5px;
-	margin-bottom: 0px;
-	position: relative;
-}
-
-.regulamento > .textao {
-	font-size: 16px;
-	color: #1D263B;
-	
-}
-
-/* .regulamento > .textao > p {
-	display: flex;
-} */
-
-.regulamento > .textao > p > a {
-	display: inline-block;
-	/* text-decoration: none; */
-	color: #1D263B;
-	transition: all 0.3s ease;
-	word-break: break-word;
-}
-
-.regulamento > .textao > p a:hover {
-	color: #388e3c;
-}
-
-.regulamento > .textao > .tab {
-	padding-left: 50px;
-}
-
-.regulamento > .textao > p > ul {
-	margin: 0;
-	padding-left: 20px;
-}
-
-.regulamento > .textao > p > ul > li:not(:last-child) {
-	margin-bottom: 5px;
-}
 
 .games {
 	width: 100%;

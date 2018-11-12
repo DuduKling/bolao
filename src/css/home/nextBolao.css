@@ -4,6 +4,7 @@
     padding: 25px 0 0 0;
 
     background-color: whitesmoke;
+    overflow: auto;
 }
 
 .nextBolao-container > h2 {

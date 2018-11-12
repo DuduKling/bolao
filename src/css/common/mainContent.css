@@ -1,0 +1,11 @@
+.MainContent-container {
+    width: 100%;
+
+    margin-top: 50px;    
+    background-color: #c7c7c7;
+}
+
+.MainContent-foreground {
+    position: relative;
+    z-index: 1;
+}
