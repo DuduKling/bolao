@@ -1,0 +1,55 @@
+.page404-container {
+    width: 100%;
+    height: 80vh;
+
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: whitesmoke;
+    font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
+    color: #424242;
+}
+
+.page404-container > h2 {
+    margin: 0 0 30px 0;
+    font-size: 40px;
+    position: relative;
+}
+
+.page404-container > p{
+    margin: 0 0 10px 0;
+}
+
+.page404-container > a {
+    width: 100px;
+    height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 20px;
+    border-radius: 2px;
+    color: white;
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 500;
+
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+
+    text-align: center;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    
+    transition: background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1),-webkit-box-shadow .2s cubic-bezier(.4,0,1,1);
+    outline: none;
+    background-color: #4CAF50;
+}
+
+.page404-container > a:hover {
+    background-color: #388E3C;
+}

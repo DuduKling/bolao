@@ -8,6 +8,7 @@ import SiteFooter from './components/common/SiteFooter';
 
 import PageHome from './components/PageHome';
 import PageRegulamento from './components/Regulamento';
+import Page404 from './components/pages/Page404'
 import PageApostar from './components/PageApostar';
 import PageApostado from './components/PageApostado';
 import PageApostadoJogo from './components/PageApostadoJogo';
@@ -25,6 +26,9 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={PageHome} />
             <Route exact path='/regulamento' component={PageRegulamento} />
+
+
+            <Route component={Page404} />
             
             {/*
 
