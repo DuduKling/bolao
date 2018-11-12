@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import '../../css/home/timer.css';
 
+
+// TODO não deixar aparecer NaN qnd a data tiver passado.
 class Count extends Component {
 	constructor() {
 		super();

@@ -1,0 +1,52 @@
+.FaqSection-container {
+    width: 100%;
+    
+    padding: 30px 30px 50px 30px;
+
+    background-color: #c7c7c7;
+}
+
+.FaqSection-container > h2 {
+    margin: 0 0 20px 0;
+    text-align: center;
+    font-size: 36px;
+    font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
+    color: #424242;
+}
+
+
+
+.FaqSection-regulamento {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0 30px;
+    color: #424242;
+    font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
+}
+
+.FaqSection-regulamento > p {
+    width: 75%;
+    text-align: center;
+    padding: 0 50px;
+    line-height: 25px;
+}
+
+.FaqSection-regulamento > p > a {
+    color: #4CAF50;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.FaqSection-regulamento > p > a:hover {
+    color: #388E3C;
+}
+
+.FaqSection-regulamento > h3 {
+    margin: 30px 0 0 0;
+}
+

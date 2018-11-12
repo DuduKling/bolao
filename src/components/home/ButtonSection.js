@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import '../../css/home/buttonSection.css'
 
 import { Link } from 'react-router-dom';
 
 class ButtonSection extends Component {
+    // TODO revisar esta parte de data aqui:
     checkDate(){
         let hoje = Date.now();
         let final  = new Date(this.props.dataFinal);

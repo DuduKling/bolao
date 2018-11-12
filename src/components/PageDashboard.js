@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import SiteHeader from './SiteHeader';
-import SiteFooter from './SiteFooter';
+import SiteHeader from './common/SiteHeader';
+import SiteFooter from './common/SiteFooter';
 import RankContainer from './RankContainer';
 import GamesContainer from './GamesContainer';
 import Tips from './Tips';

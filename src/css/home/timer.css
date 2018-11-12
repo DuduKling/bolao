@@ -1,0 +1,36 @@
+#timer-wrapper {
+	width: 100%; display: flex; 
+	justify-content: center;
+    
+    background-color: #424242;
+    padding: 25px 0;
+    font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
+}
+
+#timer-wrapper > .fundo-num {
+    padding: 0px 10px 0;
+    
+	display: flex; 
+	flex-direction: column; 
+	justify-content: center; 
+	align-items: center;
+}
+
+#timer-wrapper > .fundo-num > .num-title {
+	color: #f5f5f5; 
+	letter-spacing: 1px;
+	margin: 0 0 5px 0;
+}
+
+#timer-wrapper > .fundo-num > .num {
+	width: 100px; 
+	padding: 30px 0px; 
+	font-size: 36px; 
+	border-radius: 10%; 
+	color: #f5f5f5; 
+	display: flex; 
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12); 
+	justify-content: center; 
+	align-items: center; 
+	background-color: #388E3C;
+}

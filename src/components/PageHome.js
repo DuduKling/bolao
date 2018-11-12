@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 
-import SiteHeader from './SiteHeader';
-import ButtonSection from './ButtonSection';
-import SiteFooter from './SiteFooter';
+import SiteHeader from './common/SiteHeader';
+import MainContent from './home/MainContent';
+import SiteFooter from './common/SiteFooter';
 // import RankContainer from './RankContainer';
-// import Regulamento from './Regulamento';
+
 
 class PageHome extends Component {
     constructor(){
         super();
         // this.state = {DataFinal: 'Jun 14, 2018 12:00:00', DataFinal2: 'May 26, 2018 12:05:00'}
-        this.state = {DataFinal: 'Jul 14, 2018 11:00:00'}
+        this.state = {dataFinal: 'Jun 14, 2019 11:00:00'}
     }
     
     render() {
         return (
             <div className="home">
 
-                <SiteHeader dataFinal={this.state.DataFinal}/>
+                <SiteHeader />
 
-                <ButtonSection dataFinal={this.state.DataFinal}/>
+                <MainContent dataFinal={this.state.dataFinal}/>
 
                 {/*<Regulamento />*/}
 

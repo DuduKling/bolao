@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 
-import SiteHeader from './SiteHeader';
-import SiteFooter from './SiteFooter';
+import SiteHeader from './common/SiteHeader';
+import SiteFooter from './common/SiteFooter';
 import Loading from './Loading';
 // import GamesList from './GamesList';
 
