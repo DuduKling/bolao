@@ -8,8 +8,10 @@ import SiteFooter from './components/common/SiteFooter';
 
 import PageHome from './components/pages/PageHome';
 import PageRegulamento from './components/pages/Regulamento';
-import Page404 from './components/pages/Page404'
-import PageLogin from './components/pages/PageLogin'
+import Page404 from './components/pages/Page404';
+import PageLogin from './components/pages/PageLogin';
+
+import PrivateRoute from './components/Auth';
 
 // import PageApostar from './components/PageApostar';
 // import PageApostado from './components/PageApostado';
@@ -24,13 +26,14 @@ class App extends Component {
     return (
         <div className="wrapper">
           <SiteHeader />
-          
+
           <Switch>
             <Route exact path='/' component={PageHome} />
             <Route exact path='/regulamento' component={PageRegulamento} />
 
             <Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
-            
+
+            <PrivateRoute path="/protected" component={PrivateRoute} />
 
             <Route component={Page404} />
             
