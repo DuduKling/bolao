@@ -13,7 +13,7 @@ import PageLogin from './components/pages/PageLogin';
 
 import PrivateRoute from './components/Auth';
 
-// import PageApostar from './components/PageApostar';
+import PageApostar from './components/PageApostar';
 // import PageApostado from './components/PageApostado';
 // import PageApostadoJogo from './components/PageApostadoJogo';
 // import PageFixtures from './components/PageFixtures';
@@ -35,11 +35,10 @@ class App extends Component {
 
             <PrivateRoute path="/protected" component={PrivateRoute} />
 
-            <Route component={Page404} />
-            
-            {/*
 
-            <Route exact path="/:fase/apostar" component={PageApostar} />
+
+            <Route exact path="/:fase/apostar" component={PageApostar} />  
+            {/*          
             <Route exact path="/" component={PageApostado} />
             <Route exact path="/:fase/apostado/:nome" component={PageApostado} />
             <Route exact path="/:fase/jogo/:num_jogo" component={PageApostadoJogo} />
@@ -48,6 +47,8 @@ class App extends Component {
             <Route exact path="/:fase/dashboard" component={PageDashboard} />
 
             */}
+
+            <Route component={Page404} />
           </Switch>
       
           <SiteFooter />

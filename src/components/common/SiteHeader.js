@@ -17,7 +17,7 @@ class SiteHeader extends Component {
 
                 <div className="header-right">
                     <nav className="menu">
-                        <NavLink className="menuItem" to="/">
+                        <NavLink className="menuItem" to="/0/apostar">
                             Histórico
                         </NavLink>
                         <NavLink className="menuItem" to="/regulamento">
