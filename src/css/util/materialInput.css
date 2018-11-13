@@ -1,0 +1,91 @@
+.material-input {
+	position: relative;
+    font-size: 16px;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 300px;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px 0;
+}
+
+.material-input > input {
+	border: none;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+    display: block;
+    font-size: 16px;
+    font-family: "Helvetica","Arial",sans-serif;
+    margin: 0;
+    padding: 4px 0;
+    width: 100%;
+    background: 0 0;
+    text-align: left;
+    color: inherit;
+}
+
+.material-input > input:focus {
+	outline: none;
+}
+
+.material-input > input:focus + label {
+	color: #388E3C;
+	font-size: 12px;
+	top: 4px;
+	visibility: visible;
+	transition: all ease 0.3s;
+}
+
+.material-input > input:focus + label:after {
+	left: 0;
+	visibility: visible;
+	width: 100%;
+}
+
+.material-input > input.error + label {
+	color: red;
+}
+
+.material-input > label {
+	bottom: 0;
+    color: rgba(0,0,0,.4);
+    font-size: 16px;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    position: absolute;
+    display: block;
+    top: 24px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+	text-align: left;
+	
+	transition-duration: .2s;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+}
+
+.material-input > label:after {
+    background-color: #388E3C;
+    bottom: 20px;
+    content: '';
+    height: 2px;
+    left: 45%;
+    position: absolute;
+    transition-duration: .2s;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    visibility: hidden;
+	width: 10px;
+	transition: all ease 0.3s;
+}
+
+.material-input .error + label:after {
+	background-color: red;
+}
+
+.material-input > input + .NotEmpty {
+	color: #388E3C;
+	font-size: 12px;
+	top: 4px;
+	visibility: visible;
+}
+

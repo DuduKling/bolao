@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../../css/common/page404.css';
+import '../../css/pages/page404.css';
 import { Link } from 'react-router-dom';
 
 class Page404 extends Component {

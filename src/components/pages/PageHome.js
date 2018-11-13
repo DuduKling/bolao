@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import '../css/common/mainContent.css'
+import '../../css/pages/mainContent.css'
 
-import WelcomeSection from './home/WelcomeSection'
-import NextAndTimer from './home/NextAndTimer'
-import FaqSection from './home/FaqSection';
-import Canvas from './home/Canvas';
+import WelcomeSection from '../home/WelcomeSection'
+import NextAndTimer from '../home/NextAndTimer'
+import FaqSection from '../home/FaqSection';
+import Canvas from '../home/Canvas';
 
 class PageHome extends Component {
     constructor(){

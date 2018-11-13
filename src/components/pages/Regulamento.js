@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../css/regulamento.css'
+import '../../css/regulamento.css'
 
 class Regulamento extends Component {
     render() {
