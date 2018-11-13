@@ -10,6 +10,7 @@ import PageHome from './components/pages/PageHome';
 import PageRegulamento from './components/pages/Regulamento';
 import Page404 from './components/pages/Page404'
 import PageLogin from './components/pages/PageLogin'
+
 // import PageApostar from './components/PageApostar';
 // import PageApostado from './components/PageApostado';
 // import PageApostadoJogo from './components/PageApostadoJogo';
@@ -23,12 +24,13 @@ class App extends Component {
     return (
         <div className="wrapper">
           <SiteHeader />
-
+          
           <Switch>
             <Route exact path='/' component={PageHome} />
             <Route exact path='/regulamento' component={PageRegulamento} />
 
-            <Route exact path='/:typeOfLogin' component={PageLogin} />
+            <Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
+            
 
             <Route component={Page404} />
             

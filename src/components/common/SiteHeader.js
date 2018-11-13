@@ -39,10 +39,10 @@ class SiteHeader extends Component {
 
                     <div className="user-login">
                         {/*// TODO login com Facebook? */}
-                        <Link className="menuItem" to="/cadastrar">
+                        <Link className="menuItem" to="/user/cadastrar">
                             Cadastrar
                         </Link>
-                        <Link className="menuItem" to="/login">
+                        <Link className="menuItem" to="/user/login">
                             Login
                         </Link>
                     </div>
