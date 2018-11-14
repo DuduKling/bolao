@@ -18,7 +18,22 @@ class SiteHeader extends Component {
                 <div className="header-right">
                     <nav className="menu">
                         <NavLink className="menuItem" to="/0/apostar">
-                            Histórico
+                            Apostar
+                        </NavLink>
+                        <NavLink className="menuItem" to="/0/apostado/pessoa">
+                            Apostado
+                        </NavLink>
+                        <NavLink className="menuItem" to="/0/admin">
+                            Admin
+                        </NavLink>
+                        <NavLink className="menuItem" to="/0/jogos">
+                            Fixtures
+                        </NavLink>
+                        <NavLink className="menuItem" to="/0/jogo/1">
+                            Apostado Jogo
+                        </NavLink>
+                        <NavLink className="menuItem" to="/0/dashboard">
+                            Dashboard
                         </NavLink>
                         <NavLink className="menuItem" to="/regulamento">
                             Regulamento

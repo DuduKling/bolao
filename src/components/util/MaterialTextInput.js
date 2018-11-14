@@ -14,8 +14,8 @@ class MaterialTextInput extends Component {
     }
 
     handleInputChange(event) {
-        // const inputName = event.target.name;
-        const inputType = event.target.type;
+        const inputName = event.target.name;
+        // const inputType = event.target.type;
         const inputValue = event.target.value;
         
         this.setState({
@@ -24,18 +24,18 @@ class MaterialTextInput extends Component {
 
         if(this.state.value !== ''){
             this.setState({status: 'NotEmpty'});
-            this.checkRegex(event, inputType, inputValue);
+            this.checkRegex(inputValue, inputName);
         } else {
             this.setState({status: ''});
         }
 
     }
 
-    checkRegex(event, inputType, inputValue){
+    checkRegex(inputValue, inputName){
         var regx = '';
         var resultado = '';
         
-        switch(inputType) {
+        switch(inputName) {
             case "nome":
                 regx  = new RegExp('^[A-Za-z]+([ |\x20]{1}[A-Za-z]+)?$', 'gi');
                 resultado = regx.test(inputValue);
@@ -66,18 +66,8 @@ class MaterialTextInput extends Component {
                 }
             break;
 
-            case "number":
-                regx  = new RegExp('^[0-9]{1,2}$', 'gi');
-                resultado = regx.test(inputValue);
-
-                if(!resultado){
-                    event.target.classList.add("error");
-                }else{
-                    event.target.classList.remove("error");
-                }
-            break;
-
-            case "password":
+            case "senha":
+            case "senhaCheck":
                 regx  = new RegExp('^[\\w]{8,}$', 'gi');
                 resultado = regx.test(inputValue);
 

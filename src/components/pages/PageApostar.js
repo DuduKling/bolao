@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import '../../css/pages/pageInside.css';
 
-import SiteHeader from './common/SiteHeader';
-import SiteFooter from './common/SiteFooter';
-import Loading from './Loading';
-// import GamesList from './GamesList';
+import Loading from '../util/Loading';
+import PartidaListItem from '../util/PartidaListItem';
 
-// import FlagImporter from './common/FlagImporter'
-import {TestarImagem} from './util/FlagImporter';
 
 class PageApostar extends Component {
 	constructor() {
@@ -24,6 +21,39 @@ class PageApostar extends Component {
                 "away_team_name": "Time 2",
                 "away_path": "default_flag"
             },
+            {
+                "idfixture": "2",
+                "datetime": "Date Time",
+                "local": "Russia",
+                "home_score": "",
+                "away_score": "",
+                "home_team_name": "Time 1",
+                "home_path": "default_flag",
+                "away_team_name": "Time 2",
+                "away_path": "default_flag"
+			},
+            {
+                "idfixture": "2",
+                "datetime": "Date Time",
+                "local": "Russia",
+                "home_score": "",
+                "away_score": "",
+                "home_team_name": "Time 1",
+                "home_path": "default_flag",
+                "away_team_name": "Time 2",
+                "away_path": "default_flag"
+			},
+            {
+                "idfixture": "2",
+                "datetime": "Date Time",
+                "local": "Russia",
+                "home_score": "",
+                "away_score": "",
+                "home_team_name": "Time 1",
+                "home_path": "default_flag",
+                "away_team_name": "Time 2",
+                "away_path": "default_flag"
+			},
             {
                 "idfixture": "2",
                 "datetime": "Date Time",
@@ -182,81 +212,46 @@ class PageApostar extends Component {
             return (<div className="Error"><p>Oops! Desculpe, ocorreu um erro. <span>ERROR: {this.state.error}</span></p></div>);
         }
     }
-
+    
     render() {
         return (
-			<div className="home">
+            <section className="main-container">
+                <div className="main-content">
+                
+                    <form 
+                        className="main-partidaForm" 
+                        onSubmit={function(event){this.enviaAposta(event, this.state)}.bind(this)} 
+                        method="post"
+                    >
 
-				<SiteHeader />
+                        <ul className="partidaLista">
+                            <h3 className="pageTitle">Faça seu palpite</h3>
+                            <Loading loading={this.state.loading}/>
+                            {
+                            this.state.Fixtures.map(function(team, index){
+                                return(
 
-				<section className="complete-content">
-					<div className="complete-games-container">
-						<form onSubmit={function(event){this.enviaAposta(event, this.state)}.bind(this)} method="post">
-							<ul className="games">
-								<h3>Aposte</h3>
-                                <Loading loading={this.state.loading}/>
-									{
-									this.state.Fixtures.map(function(team, index){
-										return(
-                                            <li key={index}>
-                                                <p className="info">
-                                                    {team.datetime} | {team.local}
-                                                </p>
+                                    <PartidaListItem 
+                                        key={index}
+                                        team={team} 
+                                        />
+                                    
+                                );
+                            }, this)
+                            }
 
-                                                <div className="jogo">
-                                                    <div className="time -Home">
-                                                        <p>{team.home_team_name}</p>
-                                                        <div>
-                                                            <img src={TestarImagem(team.home_path)} alt={team.home_team_name} />
-                                                        </div>
-                                                    </div>
+                        </ul>
+                        
+                        <div className="EnviarAposta">
+                            <input type="submit" className="SendButton" value="Enviar" />
+                            <Loading loading={this.state.loading2}/>
+                        </div>
 
-                                                    <span className="placar">
-                                                    
-                                                        <div>
-                                                            <input  type="text" placeholder="X" name={team.idfixture+"_home"} onChange={this.handleInputChange} required="required" maxLength="2" pattern="^[0-9]{1,2}$" />
-                                                            <label></label>
-                                                        </div>
-                                                    
-                                                        <p className="x">X</p>
+                    </form>
 
-                                                        <div>
-                                                            <input type="text" placeholder="X" name={team.idfixture+"_away"} onChange={this.handleInputChange} required="required" maxLength="2" pattern="^[0-9]{1,2}$"/>
-                                                            <label></label>
-                                                        </div>
-
-                                                    </span>
-                                                    
-                                                    <div className="time -Away">
-                                                        <p>{team.away_team_name}</p>
-                                                        <div>
-                                                            <img src={TestarImagem(team.away_path)} alt={team.away_team_name}  />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-										);
-									}, this)
-									}
-							</ul>
-							
-                            <div className="EnviarAposta">
-                                <div className="material-input">
-                                    <input type="text" id={this.state.error_nome} placeholder="" name="nome" maxLength="30" pattern="^[A-Za-z]+([ |\x20]{1}[A-Za-z]+)?$" onChange={this.handleInputChange} required="required"/>
-                                    <label htmlFor="Name" className={this.inputNotEmpty()}>Nome</label>
-                                </div>
-                                <p className="aposta_obs">* Favor, mantenha o mesmo nome utilizado na aposta anterior, para que sua pontuação seja corretamente atribuída nas fases seguintes.</p>
-                                <input type="submit" className="SendButton" value="Enviar" />
-                                <Loading loading={this.state.loading2}/>
-							</div>
-                        </form>
-                        {this.AJAXresp()}
-					</div>
-				</section>
-
-				<SiteFooter />
-
-			</div>        
+                    {this.AJAXresp()}
+                </div>
+            </section>      
         );
     }
 }

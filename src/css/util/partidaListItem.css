@@ -1,0 +1,176 @@
+.partidaLista > li {
+	height: auto;
+	padding: 10px 25px 0px 25px;
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+
+	border-bottom: 1px solid #4caf50;
+	border-left: 1px solid #c7c7c7;
+	border-right: 1px solid #c7c7c7;
+	
+	background-color: #fff;
+	position: relative;
+
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+
+	transition: all 0.3s ease;
+}
+
+.partidaLista > li:hover {
+	background-color: #e2e2e2;
+}
+
+.partidaLista > li:last-of-type {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom: none;
+}
+
+.partidaLista > li p {
+	margin: 0;
+	/* text-align: right; */
+}
+
+.partidaLista > li > a {
+	width: 100%;
+	height: 100%;
+
+	display: block;
+	text-decoration: none;
+	color: #424242;
+}
+
+.partidaLista > li div {
+	width: 100%;
+	height: 100%;
+
+	/* display: flex;
+    flex-direction: column;
+    justify-content: center; */
+}
+
+
+.partidaLista > li .info {
+    color: #878787;
+    
+	margin-bottom: 10px;
+	font-size: 12px;
+	text-align: center;
+}
+
+.partidaLista > li .match-container {
+	width: 100%;
+	/* max-width: 620px; */
+	margin-bottom: 10px;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.partidaLista > li .match-container > div {
+    width: 100%;
+}
+
+.partidaLista > li .match-container > .placar {
+	min-width: 90px;
+
+	display: flex;
+	align-items: center;
+    justify-content: center;
+}
+
+.partidaLista > li .match-container > .placar > p[class^=plac] {
+	width: 40px;
+	display: block;
+	text-align: center;
+}
+
+
+
+
+/* .partidaLista > li .link-container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	
+	font-size: 12px;
+}
+
+.partidaLista > li .link-container > a {
+	padding: 5px 10px;
+	display: block;
+
+	background-color: #4caf50;
+	color: whitesmoke;
+	text-decoration: none;
+	transition: all 0.3s ease;
+
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.partidaLista > li .link-container > a:hover {
+	background-color: #388E3C;
+}  */
+
+
+
+.partidaLista .-apostadoJogo {
+	padding: 10px 0 0 0;
+}
+
+.partidaLista > li .users-container {	
+	width: 100%;
+	margin-top: 15px;
+}
+
+.partidaLista > li .users-container > div > a {
+	width: 100%;
+	display: block;
+
+	padding: 10px 0;
+	border-top: 1px solid #c7c7c7;
+
+	text-decoration: none;
+	color: black;
+	text-align: center;
+	transition: all 0.3s ease;
+}
+
+.partidaLista > li .users-container > div > a:hover {
+	background-color: #c7c7c7;
+}
+
+
+
+
+
+.partidaLista > li .users-porcent {
+	width: 90px;
+    height: 30px;
+
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	overflow: hidden;
+}
+
+.partidaLista > li .users-porcent > .porcent-triangle {
+	border-top: 30px solid #4caf50;
+	border-left: 30px solid transparent;
+}
+
+.partidaLista > li .users-porcent > p {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	
+	color: whitesmoke;
+	font-weight: bold;
+}

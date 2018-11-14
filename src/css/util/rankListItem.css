@@ -1,0 +1,127 @@
+.rankTable {
+	width: 100%;
+	list-style-type: none;
+	padding: 0;
+    margin: 0;
+
+    border-collapse: collapse;
+
+	border-left: 1px solid #c7c7c7;
+	border-right: 1px solid #c7c7c7;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden;
+
+    box-shadow: 
+		0 2px 2px 0 rgba(0,0,0,.3), 
+		0 3px 1px -2px rgba(0,0,0,.2), 
+        0 1px 5px 0 rgba(0,0,0,.12);    
+}
+
+.rankTable .pageTitle {
+	background-color: #4caf50;
+	padding: 10px 15px;
+
+	font-size: 22px;
+	color: whitesmoke;
+	margin: 0;
+
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	
+	border-left: 1px solid #c7c7c7;
+	border-right: 1px solid #c7c7c7;
+
+    text-align: left;
+    font-weight: bold;
+
+	border-left: 1px solid #c7c7c7;
+	border-right: 1px solid #c7c7c7;
+
+    box-shadow: 
+		0 2px 2px 0 rgba(0,0,0,.3), 
+		0 3px 1px -2px rgba(0,0,0,.2), 
+		0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+
+
+
+.rankTable > thead > tr {
+    width: 100%;
+    height: 30px;
+    background-color: white;
+}
+
+.rankTable > thead > tr > td {
+    padding: 5px;
+    border-bottom: 1px solid #4caf50;
+}
+
+.rankTable > thead > tr > .positionColumn {
+    width: 35px;
+    text-align: center;
+}
+
+
+.rankTable > thead > tr > .pointsColumn {
+    width: 80px;
+    text-align: center;
+}
+
+.rankTable > thead > tr > .nameColumn {
+    padding-left: 20px;
+}
+
+
+
+
+.rankTable > tbody > tr {
+    height: auto;
+    
+    background-color: white;
+	border-bottom: 1px solid #c7c7c7;
+	border-left: 1px solid #c7c7c7;
+    border-right: 1px solid #c7c7c7;
+    
+	transition: all 0.3s ease;
+}
+
+.rankTable > tbody > tr > td {
+    padding: 0;
+    margin: 0;
+}
+
+.rankTable > tbody > tr > .positionColumn {
+    text-align: center;
+}
+
+.rankTable > tbody > tr > .pointsColumn {
+    padding-right: 10px;
+    text-align: center;
+}
+
+.rankTable > tbody > tr > .nameColumn {
+    padding-left: 20px;
+}
+
+.rankTable > tbody > tr > td > a {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    padding: 10px 0;
+    text-decoration: none;
+    color: black;
+}
+
+.rankTable > tbody > tr:hover {
+	background-color: #e2e2e2;
+}
+
+.rankTable > tbody > tr:last-child {
+	border-bottom: none;
+}
+
+

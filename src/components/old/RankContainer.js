@@ -137,7 +137,7 @@ class RankContainer extends Component {
             );
         }
     }
-
+    
     render() {
         return (
             <div className="rank-container">

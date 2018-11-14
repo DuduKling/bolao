@@ -12,7 +12,7 @@ class PageLogin extends Component {
             <h2>{pathName}</h2>
         );
     }
-
+    
     CheckIfFormCadastrar1(){
         if(this.props.match.params.typeOfLogin === "cadastrar"){
             return (

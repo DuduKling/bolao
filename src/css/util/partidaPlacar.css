@@ -1,0 +1,70 @@
+.match-container > .placar .x {
+	color: #388e3c;
+	font-size: 12px;
+	margin: 0 5px;
+}
+
+.match-container > .placar .plac-num1,
+.match-container > .placar .plac-num2 {
+	font-size: 28px;
+}
+
+.match-container > .placar input {
+	/* 
+	background-color: transparent;
+	border: 1px solid #c7c7c7; */
+
+	width: 40px;
+	height: 30px;
+	font-size: 28px;
+	text-align: center;
+	font-family: "Open Sans", sans-serif;
+
+	border: none;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+    display: block;
+    margin: 0;
+    background: 0 0;
+	color: inherit;
+	
+	text-size-adjust: 100%;
+}
+
+.match-container > .placar > div {
+	position: relative;
+    font-size: 16px;
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.match-container > .placar input:focus {
+	outline: none;
+}
+.match-container > .placar input:focus + label:after {
+    left: 0;
+    visibility: visible;
+	width: 100%;
+}
+
+.match-container > .placar label:after {
+	background-color: #388E3C;
+	bottom: 0px;
+	content: '';
+	height: 2px;
+	left: 45%;
+	position: absolute;
+	transition-duration: .2s;
+	transition-timing-function: cubic-bezier(.4,0,.2,1);
+	visibility: hidden;
+	width: 10px;
+}
+
+
+.match-container > .placar input::placeholder {
+	color: #d4d4d4;
+}
+
+.match-container > .placar .error + label:after  {
+	background-color: red;
+}

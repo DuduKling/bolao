@@ -1,0 +1,35 @@
+.match-container .time {
+    /* width: 250px; */
+    
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.match-container .-Home {
+	flex-direction: row;
+}
+
+.match-container .-Away {
+	flex-direction: row-reverse;
+}
+
+.match-container .time > div {
+	width: 35px;
+	height: 35px;
+	margin: 0 15px;
+	
+	display: flex;
+    align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.match-container .time > div > img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}

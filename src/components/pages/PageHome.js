@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../../css/pages/mainContent.css'
+import '../../css/pages/mainContent.css';
 
 import WelcomeSection from '../home/WelcomeSection'
 import NextAndTimer from '../home/NextAndTimer'
