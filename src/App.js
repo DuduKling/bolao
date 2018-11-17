@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 import './css/App.css';
 // import './css/antigoApp.css';
 
@@ -28,6 +29,11 @@ import PageDashboard from './components/pages/PageDashboard';
 
 
 class App extends Component {
+  componentDidMount(){
+    // Retirar propaganda do 000webhost.
+    $("body>div:nth-child(4)").remove();
+  }
+
   render() {
     return (
         <div className="wrapper">
