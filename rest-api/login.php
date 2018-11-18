@@ -53,8 +53,7 @@ if($email_exists && password_verify($data->password, $user->password)){
        "nbf" => $nbf,
        "data" => array(
            "id" => $user->id,
-           "firstname" => $user->firstname,
-           "lastname" => $user->lastname,
+           "completename" => $user->completename,
            "email" => $user->email
        )
     );
@@ -67,7 +66,8 @@ if($email_exists && password_verify($data->password, $user->password)){
     echo json_encode(
             array(
                 "message" => "Login efetuado com sucesso!",
-                "jwt" => $jwt
+                "jwt" => $jwt,
+                "name" => $user->completename
             )
         );
  
@@ -81,8 +81,9 @@ else{
     http_response_code(401);
  
     // tell the user login failed
-    echo json_encode(array("a" => $email_exists));
-    echo json_encode(array("message" => "Não foi possível realizar o login. Email ou senha podem estar errados."));
+    echo json_encode(array(
+        "message" => "Não foi possível realizar o login. Email ou senha podem estar errados."
+    ));
 }
 ?>
 

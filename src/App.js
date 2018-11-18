@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
+// import $ from 'jquery';
 import './css/App.css';
 // import './css/antigoApp.css';
 
@@ -29,11 +29,6 @@ import PageDashboard from './components/pages/PageDashboard';
 
 
 class App extends Component {
-  componentDidMount(){
-    // Retirar propaganda do 000webhost.
-    $("body>div:nth-child(4)").remove();
-  }
-
   render() {
     return (
         <div className="wrapper">
@@ -45,8 +40,8 @@ class App extends Component {
 
             <Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
 
-            <PrivateRoute path="/protected" component={PrivateRoute} />
 
+            <PrivateRoute path="/protected" component={PrivateRoute} />
 
 
             <Route exact path="/:fase/apostar" component={PageApostar} />  
@@ -55,9 +50,6 @@ class App extends Component {
             <Route exact path="/:fase/jogos" component={PageFixtures} />
             <Route exact path="/:fase/jogo/:num_jogo" component={PageApostadoJogo} />
             <Route exact path="/:fase/dashboard" component={PageDashboard} />
-            {/*          
-            <Route exact path="/" component={PageApostado} />
-            */}
 
             <Route component={Page404} />
           </Switch>

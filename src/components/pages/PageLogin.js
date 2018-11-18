@@ -3,6 +3,10 @@ import '../../css/pages/login.css';
 import $ from 'jquery';
 import { Redirect } from 'react-router-dom';
 
+import { bindActionCreators } from 'redux';
+import { updateJWT } from '../../actions';
+import { connect } from 'react-redux';
+
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
 
@@ -93,6 +97,8 @@ class PageLogin extends Component {
     }
 
     sendFormAjax(evento) {
+        const { updateJWT } = this.props;
+
         evento.preventDefault();
         this.setState({ajaxErrorResp: ""});
         this.setState({ajaxSuccessResp: ""});
@@ -111,6 +117,9 @@ class PageLogin extends Component {
             if(emailValue==="" || senhaValue===""){
                 this.setState({ajaxErrorResp: "Favor preencha todos os campos!"});
             }else{
+                //Liberar interno local:
+                // updateJWT("User Teste");
+                
                 textJSON = `{
                     "email":"${emailValue}", 
                     "password":"${senhaValue}"
@@ -119,12 +128,14 @@ class PageLogin extends Component {
                 dataString = JSON.stringify(textJSON2);
                 
                 $.ajax({
-                    url:"../rest-api-auth/api/login.php",
+                    url:"../rest-api/login.php",
                     type: 'post',
                     contentType : 'application/json',
                     data: dataString,
                     success: function(resposta){
                         console.log(resposta);
+                        console.log(resposta.name);
+                        updateJWT(resposta.name);
                         this.setState({redirectToDashboard: true});
                     }.bind(this),
                     error: function(xhr, status, err){
@@ -160,7 +171,7 @@ class PageLogin extends Component {
                 dataString = JSON.stringify(textJSON2);
                 
                 $.ajax({
-                    url:"../rest-api-auth/api/create_user.php",
+                    url:"../rest-api/create_user.php",
                     type: 'post',
                     contentType : 'application/json',
                     data: dataString,
@@ -212,10 +223,6 @@ class PageLogin extends Component {
         if(this.state.redirectToDashboard) return <Redirect to={"/0/dashboard"} />;
         
     }
-
-    // testeRedirect(){
-    //     this.setState({redirectToLogin: true});
-    // }
 
     render() {
         return (
@@ -270,4 +277,9 @@ class PageLogin extends Component {
     }
 }
 
-export default PageLogin;
+const mapStateToProps = store => ({});
+
+const mapDispatchToProps = dispatch => 
+bindActionCreators({ updateJWT }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageLogin);

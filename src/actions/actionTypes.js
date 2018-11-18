@@ -1,0 +1,1 @@
+export const UPDATE_AUTH_VALUE = 'UPDATE_AUTH_VALUE'
