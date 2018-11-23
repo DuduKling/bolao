@@ -19,7 +19,6 @@ class PageHome extends Component {
                 <div className="MainContent-foreground">
                     <WelcomeSection />
                     <NextAndTimer dataFinal={this.state.dataFinal}/>
-                    {/*<ButtonSection />*/}
                     <FaqSection />
                 </div>
                 <Canvas />

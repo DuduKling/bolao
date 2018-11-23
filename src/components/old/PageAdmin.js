@@ -51,9 +51,9 @@ class PageAdmin extends Component {
             //     "home_score": null,
             //     "away_score": "3",
             //     "home_team_name": "Time 1",
-            //     "home_path": "default_flag",
+            //     "home_path": "",
             //     "away_team_name": "Time 2",
-            //     "away_path": "default_flag"
+            //     "away_path": ""
             // },
             // {
             //     "idfixture": "22222",
@@ -62,9 +62,9 @@ class PageAdmin extends Component {
             //     "home_score": "2",
             //     "away_score": null,
             //     "home_team_name": "Time 1",
-            //     "home_path": "default_flag",
+            //     "home_path": "",
             //     "away_team_name": "Time 2",
-            //     "away_path": "default_flag"
+            //     "away_path": ""
             // }
         ], 
         nome: '', error: '', resp: ''};

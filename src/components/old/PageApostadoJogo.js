@@ -52,9 +52,9 @@ class PageApostado extends Component {
             //     "bet_score_home": "0",
             //     "bet_score_away": "0",
             //     "home_team": "Time 1",
-            //     "home_path": "default_flag",
+            //     "home_path": "",
             //     "away_team": "Time 2",
-            //     "away_path": "default_flag",
+            //     "away_path": "",
             //     "porcentagem": "3"
             // },
             // {
@@ -65,9 +65,9 @@ class PageApostado extends Component {
             //     "bet_score_home": "0",
             //     "bet_score_away": "0",
             //     "home_team": "Time 1",
-            //     "home_path": "default_flag",
+            //     "home_path": "",
             //     "away_team": "Time 2",
-            //     "away_path": "default_flag",
+            //     "away_path": "",
             //     "porcentagem": "3,11"
 			// }
         ]};

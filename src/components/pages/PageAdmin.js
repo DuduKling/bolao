@@ -16,9 +16,9 @@ class PageApostar extends Component {
                 "home_score": "0",
                 "away_score": "",
                 "home_team_name": "Time 1",
-                "home_path": "default_flag",
+                "home_path": "",
                 "away_team_name": "Time 2",
-                "away_path": "default_flag"
+                "away_path": ""
             },
             {
                 "idfixture": "2",
@@ -27,9 +27,9 @@ class PageApostar extends Component {
                 "home_score": "",
                 "away_score": "1",
                 "home_team_name": "Time 1",
-                "home_path": "default_flag",
+                "home_path": "",
                 "away_team_name": "Time 2",
-                "away_path": "default_flag"
+                "away_path": ""
 			},
             {
                 "idfixture": "2",
@@ -38,9 +38,9 @@ class PageApostar extends Component {
                 "home_score": "2",
                 "away_score": "3",
                 "home_team_name": "Time 1",
-                "home_path": "default_flag",
+                "home_path": "",
                 "away_team_name": "Time 2",
-                "away_path": "default_flag"
+                "away_path": ""
 			},
             {
                 "idfixture": "2",
@@ -49,9 +49,9 @@ class PageApostar extends Component {
                 "home_score": "",
                 "away_score": "",
                 "home_team_name": "Time 1",
-                "home_path": "default_flag",
+                "home_path": "",
                 "away_team_name": "Time 2",
-                "away_path": "default_flag"
+                "away_path": ""
 			},
             {
                 "idfixture": "2",
@@ -60,9 +60,9 @@ class PageApostar extends Component {
                 "home_score": "",
                 "away_score": "",
                 "home_team_name": "Time 1",
-                "home_path": "default_flag",
+                "home_path": "",
                 "away_team_name": "Time 2",
-                "away_path": "default_flag"
+                "away_path": ""
 			}
         ], nome: '', error: '', resp: ''};
     }

@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import '../../css/home/nextBolao.css';
 
-import bolaoLogo1 from '../../imgs/campeonatos/russia_2018.png';
-import bolaoLogo2 from '../../imgs/campeonatos/copa_america_2019.png';
-import bolaoLogo3 from '../../imgs/campeonatos/qatar_2022.png';
-
 import Count from './Count';
 
 class NextAndTimer extends Component {   
@@ -27,17 +23,17 @@ class NextAndTimer extends Component {
                 <div className="nextBolao-logos">
                     <div className="nextBolao-logosEqual">
                         <div className="nextBolao-logoContainer">
-                            <img className="nextBolao-logo" alt="" src={bolaoLogo1}/>
+                            <img className="nextBolao-logo" alt="" src={"/imagens/campeonatos/russia_2018.png"}/>
                         </div>
                     </div>
                     <div className="nextBolao-logosEqual">
                         <div className="nextBolao-logoContainer">
-                            <img className="nextBolao-logo" alt="" src={bolaoLogo2}/>    
+                            <img className="nextBolao-logo" alt="" src={"/imagens/campeonatos/copa_america_2019.png"}/>    
                         </div>           
                     </div>
                     <div className="nextBolao-logosEqual">
                         <div className="nextBolao-logoContainer">
-                            <img className="nextBolao-logo" alt="" src={bolaoLogo3}/>
+                            <img className="nextBolao-logo" alt="" src={"/imagens/campeonatos/qatar_2022.png"}/>
                         </div>
                     </div>
                 </div>

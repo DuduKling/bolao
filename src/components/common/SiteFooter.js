@@ -48,8 +48,11 @@ class SiteFooter extends Component {
                         <Link className="menuItem" to="/0/admin">
                             Admin
                         </Link>
-                        <Link className="menuItem" to="/user">
-                            User
+                        <Link className="menuItem" to="/user/campeonatos">
+                            Campeonatos
+                        </Link>
+                        <Link className="menuItem" to="/user/config">
+                            Configurações
                         </Link>
                     </div>
                 </div>

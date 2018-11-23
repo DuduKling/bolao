@@ -4,7 +4,9 @@ import '../../css/util/formMessage.css';
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
 
-import {getCampeonatoImagem} from '../util/CampeonatoImporter'
+// import {getCampeonatoImagem} from '../util/CampeonatoImporter'
+
+// TODO Adicionar o tipo Yet To Start que não é link. Se pá, colocar a data de início para aparecer em algum lugar.
 
 class PageCampeonatos extends Component {
     constructor() {
@@ -13,24 +15,32 @@ class PageCampeonatos extends Component {
             Apostas: [
                 {
                     "nomeCampeonato": "Copa do Mundo Rússia 2018",
-                    "logoCampeonato": "Campeonato_Copa_Mundo_2018",
+                    "logoCampeonato": "russia_2018.png",
                     "statusCampeonato": "blocked",
                     "idCampeonato": "1"
                 },
                 {
                     "nomeCampeonato": "Copa América Brasil 2019",
-                    "logoCampeonato": "Camepeonato_Copa_America_2019",
+                    "logoCampeonato": "copa_america_2019.png",
                     "statusCampeonato": "open",
                     "idCampeonato": "2"
                 },
                 {
                     "nomeCampeonato": "Copa do Mundo Catar 2022",
-                    "logoCampeonato": "Campeonato_Copa_Mundo_2022",
+                    "logoCampeonato": "qatar_2022.png",
                     "statusCampeonato": "blocked",
                     "idCampeonato": "3"
                 }
             ]
         };
+    }
+
+    setImage(aposta){
+        if(aposta.logoCampeonato===""){
+            return "/imagens/campeonatos/default.png"
+        }else{
+            return "/imagens/campeonatos/"+aposta.logoCampeonato
+        }
     }
     
     render() {
@@ -43,9 +53,13 @@ class PageCampeonatos extends Component {
                         {
                         this.state.Apostas.map(function(aposta, index){
                             return(
-                                <Link to={"/"+aposta.idCampeonato+"/dashboard"} key={index} className={aposta.statusCampeonato}>
+                                <Link to={"/"+aposta.idCampeonato+"/dashboard"} 
+                                    key={index} 
+                                    className={aposta.statusCampeonato}
+                                >
                                     <div>
-                                        <img src={getCampeonatoImagem(aposta.logoCampeonato)} alt="a" />
+                                        <img src={this.setImage(aposta)}
+                                        alt={"Logo do campeonato "+aposta.nomeCampeonato} />
                                     </div>
                                     <h4>{aposta.nomeCampeonato}</h4>
                                 </Link>
