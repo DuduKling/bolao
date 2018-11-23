@@ -119,31 +119,42 @@ class User{
     //---- update() method will be here
     // update a user record
     public function update(){
-    
-        // if password needs to be updated
-        $password_set=!empty($this->password) ? ", password = :password" : "";
-    
-        // if no posted password, do not update the password
-        $query = "UPDATE " . $this->table_name . "
+
+        if(!empty($this->password)){
+            $query = "UPDATE " . $this->table_name . "
                 SET
-                    firstname = :firstname,
-                    lastname = :lastname,
-                    email = :email
-                    {$password_set}
+                    passwd = :password
+                WHERE id = :id";  
+        }elseif(empty($this->email)){
+            $query = "UPDATE " . $this->table_name . "
+                SET
+                    name = :completename
                 WHERE id = :id";
-    
+        }elseif(empty($this->completename)){
+            $query = "UPDATE " . $this->table_name . "
+                SET
+                    email = :email
+                WHERE id = :id";
+        }else{
+            $query = "UPDATE " . $this->table_name . "
+                SET
+                    name = :completename,
+                    email = :email
+                WHERE id = :id";
+        }
+        
         // prepare the query
-        $stmt = $this->conn->prepare($query);
-    
-        // sanitize
-        $this->firstname=htmlspecialchars(strip_tags($this->firstname));
-        $this->lastname=htmlspecialchars(strip_tags($this->lastname));
-        $this->email=htmlspecialchars(strip_tags($this->email));
+        $stmt = $this->conn->prepare($query);        
     
         // bind the values from the form
-        $stmt->bindParam(':firstname', $this->firstname);
-        $stmt->bindParam(':lastname', $this->lastname);
-        $stmt->bindParam(':email', $this->email);
+        if(!empty($this->completename)){
+            $this->completename=htmlspecialchars(strip_tags($this->completename));
+            $stmt->bindParam(':completename', $this->completename);
+        }
+        if(!empty($this->email)){
+            $this->email=htmlspecialchars(strip_tags($this->email));
+            $stmt->bindParam(':email', $this->email);
+        }
     
         // hash the password before saving to database
         if(!empty($this->password)){
@@ -151,10 +162,10 @@ class User{
             $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
             $stmt->bindParam(':password', $password_hash);
         }
-    
+        
         // unique ID of record to be edited
         $stmt->bindParam(':id', $this->id);
-    
+
         // execute the query
         if($stmt->execute()){
             return true;
@@ -163,5 +174,18 @@ class User{
         return false;
     }
 
+    public function updateInternalInfo(){
+        $query = "SELECT name, email FROM users WHERE id = :id";
+        $stmt = $this->conn->prepare( $query );
+        $stmt->bindParam(':id', $this->id);
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+        if($num>0){
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->completename = $row['name'];
+            $this->email = $row['email'];
+        }
+    }
 
 }

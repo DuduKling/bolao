@@ -1,0 +1,17 @@
+.FormMessage {
+    margin: 10px 0;
+    padding: 10px 20px;
+    
+    text-align: center;
+    border-radius: 15px;
+}
+
+.FormMessage.-error{
+    color: #b71c1c;
+    background-color: #ffcdd2;
+}
+
+.FormMessage.-success{
+    color: #008b00;
+    background-color: #c6f68d;
+}

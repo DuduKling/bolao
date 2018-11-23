@@ -51,6 +51,7 @@ if($email_exists && password_verify($data->password, $user->password)){
        "aud" => $aud,
        "iat" => $iat,
        "nbf" => $nbf,
+       "exp" => $exp,
        "data" => array(
            "id" => $user->id,
            "completename" => $user->completename,
@@ -67,7 +68,9 @@ if($email_exists && password_verify($data->password, $user->password)){
             array(
                 "message" => "Login efetuado com sucesso!",
                 "jwt" => $jwt,
-                "name" => $user->completename
+                "name" => $user->completename,
+                "email" => $user->email,
+                "id" => $user->id
             )
         );
  

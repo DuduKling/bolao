@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import '../../css/pages/login.css';
+import '../../css/util/formMessage.css';
 import $ from 'jquery';
 import { Redirect } from 'react-router-dom';
+
+import SetCookie from '../util/setCookie';
 
 import { bindActionCreators } from 'redux';
 import { updateJWT } from '../../actions';
@@ -10,6 +13,9 @@ import { connect } from 'react-redux';
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
 
+// TODO Fazer um esqueci minha senha?
+// TODO Fazer os cookies
+
 class PageLogin extends Component {
     constructor() {
         super();
@@ -17,7 +23,7 @@ class PageLogin extends Component {
             ajaxErrorResp: '',
             ajaxSuccessResp: '',
             redirectToLogin: false,
-            redirectToDashboard: false
+            redirectToUser: false
         };
     }
 
@@ -107,6 +113,7 @@ class PageLogin extends Component {
         var emailValue = $("input[name='email']").val();
         var senhaValue = $("input[name='senha']").val();
         var senhaConfirmarValue = $("input[name='senhaCheck']").val();
+        var keeplogin = $("input#keepLogin");
 
         var textJSON = "";
         var textJSON2 = "";
@@ -117,9 +124,25 @@ class PageLogin extends Component {
             if(emailValue==="" || senhaValue===""){
                 this.setState({ajaxErrorResp: "Favor preencha todos os campos!"});
             }else{
-                //Liberar interno local:
-                // updateJWT("User Teste");
-                
+                // // Liberar interno local:
+                // var pessoa = {userName:"John", userEmail:"email@exemplo.com"};
+                // updateJWT(pessoa);
+                // this.setState({redirectToUser: true});
+                // var userInfo = {
+                //     userName: "Teste local", 
+                //     userEmail: "teste@local.com",
+                //     userID: "666",
+                //     userJWT: "numeros.numeros.numeros"
+                // };
+                // updateJWT(userInfo);
+                // if(keeplogin.is(':checked')){
+                //     console.log("quer ficar logado!");
+                //     SetCookie("userLogin", JSON.stringify(userInfo), 7);
+                // }
+
+
+
+
                 textJSON = `{
                     "email":"${emailValue}", 
                     "password":"${senhaValue}"
@@ -133,19 +156,31 @@ class PageLogin extends Component {
                     contentType : 'application/json',
                     data: dataString,
                     success: function(resposta){
-                        console.log(resposta);
-                        console.log(resposta.name);
-                        updateJWT(resposta.name);
-                        this.setState({redirectToDashboard: true});
+                        // console.log(resposta);
+
+                        var userInfo = {
+                            userName: resposta.name, 
+                            userEmail:resposta.email,
+                            userID: resposta.id,
+                            userJWT: resposta.jwt
+                        };
+                        updateJWT(userInfo);
+
+                        if(keeplogin.is(':checked')){
+                            // console.log("quer ficar logado!");
+                            SetCookie("userLogin", JSON.stringify(userInfo), 7);
+                        }
+
+                        this.setState({redirectToUser: true});
                     }.bind(this),
                     error: function(xhr, status, err){
 
                         console.error(status, err.toString());
 
-                        console.log(xhr.responseText);
+                        // console.log(xhr.responseText);
                         console.log(JSON.parse(xhr.responseText));
                         
-                        console.log(JSON.parse(xhr.responseText).message);
+                        // console.log(JSON.parse(xhr.responseText).message);
                         this.setState({
                             ajaxErrorResp: JSON.parse(xhr.responseText).message.toString(),
                             ajaxSuccessResp: '0'
@@ -178,7 +213,7 @@ class PageLogin extends Component {
                     success: function(resposta){
 
                         this.setState({ajaxSuccessResp: resposta.message.toString()});
-                        console.log(resposta);
+                        // console.log(resposta);
 
                         this.setState({redirectToLogin: true});
 
@@ -187,10 +222,10 @@ class PageLogin extends Component {
 
                         console.error(status, err.toString());
 
-                        console.log(xhr.responseText);
+                        // console.log(xhr.responseText);
                         console.log(JSON.parse(xhr.responseText));
                         
-                        console.log(JSON.parse(xhr.responseText).message);
+                        // console.log(JSON.parse(xhr.responseText).message);
                         this.setState({
                             ajaxErrorResp: JSON.parse(xhr.responseText).message.toString(),
                             ajaxSuccessResp: '0'
@@ -204,10 +239,10 @@ class PageLogin extends Component {
     }
 
     componentDidUpdate(){
-        if(this.state.redirectToLogin || this.state.redirectToDashboard){
+        if(this.state.redirectToLogin || this.state.redirectToUser){
             this.setState({
                 redirectToLogin: false,
-                redirectToDashboard: false
+                redirectToUser: false
             });
         }
     }
@@ -220,7 +255,7 @@ class PageLogin extends Component {
 
         }
 
-        if(this.state.redirectToDashboard) return <Redirect to={"/0/dashboard"} />;
+        if(this.state.redirectToUser) return <Redirect to={"/user/campeonatos"} />;
         
     }
 

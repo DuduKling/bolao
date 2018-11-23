@@ -1,0 +1,49 @@
+.userNavBar-container {
+    width: 100%;
+    
+    border-top: 1px solid #4caf50;
+    box-shadow: 0px 0px 5px 0px grey;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden;
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    transform: translateY(100%);
+    /* transform: translateX(-100%); */
+
+    transition: all 0.3s ease;
+}
+
+.userNavBar-container > a {
+    display: block;
+    padding: 10px;
+
+    background-color: whitesmoke;
+    color: #424242;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer
+}
+
+.userNavBar-container > a:not(:last-child){
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.userNavBar-container > a:hover {
+    background-color: #e2e2e2;
+}
+
+
+
+.userNavBar-container.-hide {
+    transform: translateY(0%);
+    box-shadow: none;
+}
+
+.userNavBar-container.-show {
+    transform: translateY(100%);
+    box-shadow: 0px 0px 5px 0px grey;
+}

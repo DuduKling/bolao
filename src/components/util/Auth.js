@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 
 class Auth extends Component {
     checkAuth(){
-        var autorizacao = false;
-        // var autorizacao = true;
-
-        if (!autorizacao){
+        if (this.props.userName===''){
             return (
-                <Route render={() => <Redirect to={{ pathname: "/user/login", state: { from: this.props.location } }} />}/>
+                <Route render={() => 
+                    <Redirect to={{
+                        pathname: "/user/login", 
+                        state: {from: this.props.location}
+                    }}/>
+                }/>
             );
         }else{
             return (
-                <Route to={this.props.location}/>
+                <Route 
+                    exact
+                    path={this.props.path} 
+                    component={this.props.component} 
+                />
             );
         }
     }
@@ -27,4 +34,8 @@ class Auth extends Component {
     }
 }
 
-export default Auth;
+const mapStateToProps = store => ({
+    userName: store.AuthJWTState.userName
+});
+
+export default connect(mapStateToProps)(Auth);

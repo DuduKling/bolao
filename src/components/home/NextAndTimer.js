@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import '../../css/home/nextBolao.css';
 
-import bolaoLogo1 from '../../imgs/russia_2018.png';
-import bolaoLogo2 from '../../imgs/copa_america_2019.png';
-import bolaoLogo3 from '../../imgs/qatar_2022.png';
+import bolaoLogo1 from '../../imgs/campeonatos/russia_2018.png';
+import bolaoLogo2 from '../../imgs/campeonatos/copa_america_2019.png';
+import bolaoLogo3 from '../../imgs/campeonatos/qatar_2022.png';
 
 import Count from './Count';
 

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-// import $ from 'jquery';
 import './css/App.css';
-// import './css/antigoApp.css';
 
 import { Switch, Route } from 'react-router-dom';
+
+import { bindActionCreators } from 'redux';
+import { updateJWT } from './actions';
+import { connect } from 'react-redux';
 
 import SiteHeader from './components/common/SiteHeader';
 import SiteFooter from './components/common/SiteFooter';
@@ -21,14 +23,40 @@ import PageAdmin from './components/pages/PageAdmin';
 import PageFixtures from './components/pages/PageFixtures';
 import PageApostadoJogo from './components/pages/PageApostadoJogo';
 import PageDashboard from './components/pages/PageDashboard';
-
-
-
-// TODO Criar uma página de usuário chamada minhas apostas.
-
+import PageUser from './components/pages/PageUser';
+import PageCampeonatos from './components/pages/PageCampeonatos';
 
 
 class App extends Component {
+  getCookie(cname){
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) === ' '){
+        c = c.substring(1);
+      }
+
+      if (c.indexOf(name) === 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+  
+  componentWillMount(){
+    var userInfo = this.getCookie('userLogin');
+    
+    if(userInfo !== ""){
+      userInfo = JSON.parse(userInfo);
+
+      const { updateJWT } = this.props;
+      updateJWT(userInfo);
+    }
+  }
+
   render() {
     return (
         <div className="wrapper">
@@ -38,18 +66,20 @@ class App extends Component {
             <Route exact path='/' component={PageHome} />
             <Route exact path='/regulamento' component={PageRegulamento} />
 
+
+            <PrivateRoute exact path='/user/campeonatos' component={PageCampeonatos} />
             <Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
+            <PrivateRoute exact path='/user/config' component={PageUser} />
+
+            <PrivateRoute exact path="/:fase/apostar" component={PageApostar} />  
+            <PrivateRoute exact path="/:fase/apostado/:nome" component={PageApostado} />
+            <PrivateRoute exact path="/:fase/jogos" component={PageFixtures} />
+            <PrivateRoute exact path="/:fase/jogo/:num_jogo" component={PageApostadoJogo} />
+            <PrivateRoute exact path="/:fase/dashboard" component={PageDashboard} />
 
 
-            <PrivateRoute path="/protected" component={PrivateRoute} />
+            <PrivateRoute exact path="/:fase/admin" component={PageAdmin} />
 
-
-            <Route exact path="/:fase/apostar" component={PageApostar} />  
-            <Route exact path="/:fase/apostado/:nome" component={PageApostado} />
-            <Route exact path="/:fase/admin" component={PageAdmin} />
-            <Route exact path="/:fase/jogos" component={PageFixtures} />
-            <Route exact path="/:fase/jogo/:num_jogo" component={PageApostadoJogo} />
-            <Route exact path="/:fase/dashboard" component={PageDashboard} />
 
             <Route component={Page404} />
           </Switch>
@@ -60,4 +90,9 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = store => ({});
+
+const mapDispatchToProps = dispatch => 
+bindActionCreators({ updateJWT }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

@@ -7,12 +7,13 @@ class MaterialTextInput extends Component {
         this.state = {
             value: '',
             status: '',
-            error: ''
+            error: '',
+            nomeValue: ''
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.checkRegex = this.checkRegex.bind(this);
     }
-
+    
     handleInputChange(event) {
         const inputName = event.target.name;
         // const inputType = event.target.type;
@@ -37,7 +38,7 @@ class MaterialTextInput extends Component {
         
         switch(inputName) {
             case "nome":
-                regx  = new RegExp('^[A-Za-z]+([ |\x20]{1}[A-Za-z]+)?$', 'gi');
+                regx  = new RegExp('^[A-Za-zÀ-ú ]+([^ \\t\\r\\n])$', 'gi');
                 resultado = regx.test(inputValue);
 
                 if(!resultado){
@@ -95,6 +96,14 @@ class MaterialTextInput extends Component {
         }
     }
 
+    checkFieldValue(){
+        if(this.props.fieldPlaceholder !== undefined){
+            return(
+                this.props.fieldPlaceholder
+            );
+        }
+    }
+
     render() {
         return (
             <div className="material-input">
@@ -102,10 +111,10 @@ class MaterialTextInput extends Component {
                     type={this.props.fieldType} 
                     name={this.props.fieldName} 
                     onChange={this.handleInputChange} 
-                    className={this.state.error} 
-                    required="required" 
-                    placeholder="" 
+                    className={this.state.error}
+                    required={this.props.fieldRequired?false:true}
                     maxLength="30" 
+                    placeholder={this.checkFieldValue()}
                 />
 
                 <label 

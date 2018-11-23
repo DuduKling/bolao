@@ -51,13 +51,13 @@ if($jwt){
  
         // decode jwt
         $decoded = JWT::decode($jwt, $key, array('HS256'));
- 
+        
         //---- set user property values 
         // set user property values
-        $user->firstname = $data->firstname;
-        $user->lastname = $data->lastname;
+        $user->completename = $data->name;
         $user->email = $data->email;
         $user->password = $data->password;
+
         $user->id = $decoded->data->id;
         
 
@@ -66,6 +66,7 @@ if($jwt){
         // create the product
         if($user->update()){
 
+            $user->updateInternalInfo();
 
             //---- regenerate jwt will be here
             // we need to re-generate jwt because user details might be different
@@ -74,10 +75,10 @@ if($jwt){
                 "aud" => $aud,
                 "iat" => $iat,
                 "nbf" => $nbf,
+                "exp" => $exp,
                 "data" => array(
                     "id" => $user->id,
-                    "firstname" => $user->firstname,
-                    "lastname" => $user->lastname,
+                    "completename" => $user->completename,
                     "email" => $user->email
                 )
             );
@@ -88,12 +89,14 @@ if($jwt){
             
             // response in json format
             echo json_encode(
-                    array(
-                        "message" => "User was updated.",
-                        "jwt" => $jwt
-                    )
-                );
-
+                array(
+                    "message" => "Informações atualizadas!",
+                    "jwt" => $jwt,
+                    "name" => $user->completename,
+                    "email" => $user->email,
+                    "id" => $user->id
+                )
+            );
         }
         
         // message if unable to update user
@@ -102,12 +105,14 @@ if($jwt){
             http_response_code(401);
         
             // show error message
-            echo json_encode(array("message" => "Unable to update user."));
+            echo json_encode(array(
+                "message" => "Não foi possível atualizar as informações, favor entrar em contato com o Administrador.",
+                "name" => $user->completename,
+                "email" => $user->email,
+                "id" => $user->id
+            ));
         }
     }
-
- 
-
 
     //---- catch failed decoding will be here
     // if decode fails, it means jwt is invalid
@@ -118,7 +123,7 @@ if($jwt){
     
         // show error message
         echo json_encode(array(
-            "message" => "Access denied.",
+            "message" => "Acesso Negado. Error: Não foi possível decodificar o JWT.",
             "error" => $e->getMessage()
         ));
     }
@@ -134,6 +139,6 @@ else{
     http_response_code(401);
  
     // tell the user access denied
-    echo json_encode(array("message" => "Access denied."));
+    echo json_encode(array("message" => "Acesso Negado. Favor fazer login novamente."));
 }
 ?>

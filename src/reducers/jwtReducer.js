@@ -1,7 +1,10 @@
 import { UPDATE_AUTH_VALUE } from '../actions/actionTypes';
 
 const initialState = {
-  userName: ''
+  userName: "",
+  userEmail: "",
+  userID: "",
+  userJWT: ""
 };
 
 export const jwtReducer = (state = initialState, action) => {
@@ -9,7 +12,10 @@ export const jwtReducer = (state = initialState, action) => {
     case UPDATE_AUTH_VALUE:
       return {
         ...state,
-        userName: action.userName
+        userName: action.userName,
+        userEmail: action.userEmail,
+        userID: action.userID,
+        userJWT: action.userJWT
       };
     default:
       return state;

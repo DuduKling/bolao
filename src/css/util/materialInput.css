@@ -41,6 +41,25 @@
 	width: 100%;
 }
 
+/* Valid is for the autocomplete of the browser. */
+.material-input > input:valid {
+	outline: none;
+}
+
+.material-input > input:valid + label {
+	color: #388E3C;
+	font-size: 12px;
+	top: 4px;
+	visibility: visible;
+	transition: all ease 0.3s;
+}
+
+.material-input > input:valid + label:after {
+	left: 0;
+	visibility: visible;
+	width: 100%;
+}
+
 .material-input > input.error + label {
 	color: red;
 }

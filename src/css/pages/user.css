@@ -1,0 +1,228 @@
+.userPage-container {
+    width: 100%;
+    min-height: 80vh;
+
+    margin-top: 50px;
+    padding: 40px 10px 100px 10px;
+
+    background-color: whitesmoke;
+    font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
+    color: #424242;
+
+    display: flex;
+}
+
+.userPage-container  > div {
+    width: 100%;
+    padding: 0 10px;
+}
+
+
+
+.page-title {
+    width: 100%;
+
+    background-color: #4caf50;
+    padding: 10px 15px;
+    margin: 0;
+    
+    
+    font-size: 22px;
+    color: whitesmoke;
+    text-align: center;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-left: 1px solid #c7c7c7;
+    border-right: 1px solid #c7c7c7;
+
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.3), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+
+
+/* CONFIGURAÇÕES */
+
+.userPage-userInfo > .userInfo {
+    width: 100%;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.userPage-userInfo > .userInfo > .userInfo-imgContainer {
+    width: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1;
+}
+
+.userPage-userInfo > .userInfo > .userInfo-imgContainer > .userInfo-img {
+    width: 100px;
+    height: 100px;
+
+    background-color: #4caf50;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.userPage-userInfo > .userInfo > .userInfo-imgContainer > .userInfo-img > img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+
+
+
+.userPage-userInfo > .userInfo > .userInfo-title {
+    margin: -45px 0 0 0;
+    padding: 45px 15px 0px 15px;
+}
+
+.userPage-userInfo > .userInfo > .userInfo-title > .material-input > label {
+    color: whitesmoke;
+    font-size: 12px;
+    top: 4px;
+    visibility: visible;
+    transition: all ease 0.3s;
+}
+.userPage-userInfo > .userInfo > .userInfo-title > .material-input > label:after {
+    background-color: white;
+}
+.userPage-userInfo > .userInfo > .userInfo-title > .material-input > input {
+    border-bottom: 1px solid #cccccc;
+}
+.userPage-userInfo > .userInfo > .userInfo-title > .material-input > input::placeholder {
+    color: #cccccc;
+}
+.userPage-userInfo > .userInfo > .userInfo-otherInfo > .material-input > label {
+    font-size: 12px;
+    top: 4px;
+    visibility: visible;
+    transition: all ease 0.3s;
+}
+
+
+
+.userPage-userInfo > .userInfo > .userInfo-otherInfo {
+    width: 100%;
+    padding: 10px 25px 15px 25px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    border-left: 1px solid #c7c7c7;
+    border-right: 1px solid #c7c7c7;
+    
+    background-color: #fff;
+    position: relative;
+
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    transition: all 0.3s ease;
+
+}
+
+.userPage-userInfo > .userInfo > .passwordChange {
+    width: 100%;
+    padding: 20px 25px 15px 25px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    border: 1px solid #c7c7c7;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #fff;
+    position: relative;
+
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    transition: all 0.3s ease;
+
+}
+
+
+
+/* CAMPEONATOS */
+
+.userPage-userCampeonatos > .userCampeonatos-container {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    flex-wrap: wrap;
+
+    padding: 10px 10px 30px 10px;
+
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.userPage-userCampeonatos > .userCampeonatos-container > a {
+    max-width: 200px;
+
+    margin: 10px;
+    padding: 10px;
+    /* border: 1px solid #4caf50; */
+    border-radius: 15px;
+
+    color: #424242;
+    text-decoration: none;
+    background-color: whitesmoke;
+    transition: all 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.userPage-userCampeonatos > .userCampeonatos-container > a:hover {
+    background-color: #4caf50;
+}
+
+.userPage-userCampeonatos > .userCampeonatos-container > a.blocked {
+    background-color: #c7c7c7;
+}
+
+.userPage-userCampeonatos > .userCampeonatos-container > a.blocked > div > img {
+    filter: grayscale(100%);
+}
+
+
+.userPage-userCampeonatos > .userCampeonatos-container > a > div {
+    width: 150px;
+    height: 150px;
+}
+
+.userPage-userCampeonatos > .userCampeonatos-container > a > div > img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.userPage-userCampeonatos > .userCampeonatos-container > a > h4 {
+    margin: 20px 0 0 0;
+    text-align: center;
+}
+
