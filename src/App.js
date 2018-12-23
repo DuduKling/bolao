@@ -71,14 +71,15 @@ class App extends Component {
             <Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
             <PrivateRoute exact path='/user/config' component={PageUser} />
 
-            <PrivateRoute exact path="/:fase/apostar" component={PageApostar} />  
-            <PrivateRoute exact path="/:fase/apostado/:nome" component={PageApostado} />
-            <PrivateRoute exact path="/:fase/jogos" component={PageFixtures} />
-            <PrivateRoute exact path="/:fase/jogo/:num_jogo" component={PageApostadoJogo} />
-            <PrivateRoute exact path="/:fase/dashboard" component={PageDashboard} />
+            <PrivateRoute exact path="/:campeonato/:fase/apostar" component={PageApostar} />  
+            <PrivateRoute exact path="/:campeonato/:fase/apostado/:nome" component={PageApostado} />
+            <PrivateRoute exact path="/:campeonato/:fase/jogos" component={PageFixtures} />
+            <PrivateRoute exact path="/:campeonato/:fase/jogo/:num_jogo" component={PageApostadoJogo} />
+
+            <PrivateRoute exact path="/:campeonato/:fase/dashboard" component={PageDashboard} />
 
 
-            <PrivateRoute exact path="/:fase/admin" component={PageAdmin} />
+            <PrivateRoute exact path="/:campeonato/:fase/admin" component={PageAdmin} />
 
 
             <Route component={Page404} />

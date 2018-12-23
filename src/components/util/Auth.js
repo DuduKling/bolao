@@ -14,6 +14,7 @@ class Auth extends Component {
                     }}/>
                 }/>
             );
+            // Se a pagina dor cadastrar ou login, e o usuário tiver cadastrado, levar para o campeonatos...
         }else{
             return (
                 <Route 

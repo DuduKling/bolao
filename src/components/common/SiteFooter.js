@@ -30,22 +30,22 @@ class SiteFooter extends Component {
                     </div>
                     <div className="links -internal">
                         <h4>Links internos</h4>
-                        <Link className="menuItem" to="/0/dashboard">
+                        <Link className="menuItem" to="/0/0/dashboard">
                             Dashboard
                         </Link>
-                        <Link className="menuItem" to="/0/apostar">
+                        <Link className="menuItem" to="/0/0/apostar">
                             Apostar
                         </Link>
-                        <Link className="menuItem" to="/0/jogo/1">
+                        <Link className="menuItem" to="/0/0/jogo/1">
                             Apostado Jogo
                         </Link>
-                        <Link className="menuItem" to="/0/apostado/pessoa">
+                        <Link className="menuItem" to="/0/0/apostado/pessoa">
                             Apostado
                         </Link>
-                        <Link className="menuItem" to="/0/jogos">
+                        <Link className="menuItem" to="/0/0/jogos">
                             Fixtures
                         </Link>
-                        <Link className="menuItem" to="/0/admin">
+                        <Link className="menuItem" to="/0/0/admin">
                             Admin
                         </Link>
                         <Link className="menuItem" to="/user/campeonatos">

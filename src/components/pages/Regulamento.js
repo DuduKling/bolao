@@ -12,7 +12,7 @@ class Regulamento extends Component {
                         <li>
                             <h4>COMO PARTICIPAR</h4>
                             <ol className="textao-container">
-                                <li>Qualquer pessoa física poderá participar do <span>Bolão do Gui</span>.</li>
+                                <li>Qualquer pessoa física poderá participar do <span>Bolão Imperial</span>.</li>
                                 
                                 <li>Para tal, a pessoa deve se cadastrar na plataforma, escolher a competição que irá participar e depois preencher os resultados de cada partida.</li>
 
@@ -81,7 +81,7 @@ class Regulamento extends Component {
                                 </table>
 
 
-                                <li>Obs: As regras acima se aplicam aos empates. (Ex, se em determinado jogo um participante aposta no placar de 1x1 e o resultado final é 1x1 ele receberá 3 pontos)</li>
+                                <li>Obs: As regras acima se aplicam aos empates. (Ex, se em determinado jogo um participante aposta no placar de 1x1 e o resultado final é 1x1 ele receberá 3 pontos).</li>
 
                                 <li>Para competições ou fases, que tenham prorrogação, o placar que vier a ocorrer durante os 30 minutos da prorrogação será considerado no placar final (Desconsiderando os pênaltis). Ou seja, se for para os pênaltis o placar final foi um empate.</li>
                             </ol>
@@ -91,7 +91,7 @@ class Regulamento extends Component {
                         <li>
                             <h4>DO VENCEDOR E DA PREMIAÇÃO</h4>
                             <ol className="textao-container">
-                                <li>O <span>Bolão do Gui</span> terá por vencedor, o participante que obtiver o maior número de pontos ao fim de todas as rodadas da fase ou competição.</li>
+                                <li>O <span>Bolão Imperial</span> terá por vencedor, o participante que obtiver o maior número de pontos ao fim de todas as rodadas da fase ou competição.</li>
 
                                 <li>Em caso de empate o prêmio será dividido igualmente entre os vencedores.</li>
 
@@ -102,7 +102,7 @@ class Regulamento extends Component {
                         <li>
                             <h4>DA EXCLUSÃO</h4>
                             <ol className="textao-container">
-                                <li>O participante que, após o registro de suas apostas no site, não efetuar o pagamento até 1 (um) dia antes do início da competição será excluído do <span>Bolão do Gui</span>.</li>
+                                <li>O participante que, após o registro de suas apostas no site, não efetuar o pagamento até 1 (um) dia antes do início da competição será excluído do <span>Bolão Imperial</span>.</li>
                             </ol>
                         </li>
 

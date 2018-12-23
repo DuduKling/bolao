@@ -13,9 +13,6 @@ import { connect } from 'react-redux';
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
 
-// TODO Fazer um esqueci minha senha?
-// TODO Fazer os cookies
-
 class PageLogin extends Component {
     constructor() {
         super();

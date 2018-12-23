@@ -9,7 +9,7 @@ class FaqSection extends Component {
             <div className="FaqSection-container">
                 <h2>FAQ</h2>
                 <div className="FaqSection-regulamento">
-                    <h3>O que é o Bolão do Gui?</h3>
+                    <h3>O que é o Bolão Imperial?</h3>
                     <p>É uma plataforma online para brincar do popular "bolão da copa" com amigos e familiares. Foi criado com o intuito de aprendizado no desenvolvimento da plataforma e, também, para facilitar e melhorar a forma como era feito os bolões do Gui. Resumindo, nada mais de fazer as apostas no papel ou em planilhas no Excel!</p>
 
                     <h3>Como participar?</h3>

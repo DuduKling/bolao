@@ -1,48 +1,122 @@
 import React, { Component } from 'react';
-import '../../css/pages/user.css';
-import '../../css/util/formMessage.css';
+import '../../css/pages/campeonato.css';
 import $ from 'jquery';
-import { Link } from 'react-router-dom';
+import CampeonatoCard from '../util/CampeonatoCard';
 
 // import {getCampeonatoImagem} from '../util/CampeonatoImporter'
 
-// TODO Adicionar o tipo Yet To Start que não é link. Se pá, colocar a data de início para aparecer em algum lugar.
+/* Status:
+    finalizado - Vai para dashboard (sem aposta lá).
+    aberto - Vai para dashboard (com aposta lá).
+    aposta - Vai para tela de Apostas.
+    tba - Sem link (Mostra data de início).
+*/
 
 class PageCampeonatos extends Component {
     constructor() {
         super();
         this.state = {
-            Apostas: [
-                {
-                    "nomeCampeonato": "Copa do Mundo Rússia 2018",
-                    "logoCampeonato": "russia_2018.png",
-                    "statusCampeonato": "blocked",
-                    "idCampeonato": "1"
-                },
-                {
-                    "nomeCampeonato": "Copa América Brasil 2019",
-                    "logoCampeonato": "copa_america_2019.png",
-                    "statusCampeonato": "open",
-                    "idCampeonato": "2"
-                },
-                {
-                    "nomeCampeonato": "Copa do Mundo Catar 2022",
-                    "logoCampeonato": "qatar_2022.png",
-                    "statusCampeonato": "blocked",
-                    "idCampeonato": "3"
-                }
-            ]
+            Campeonatos:[{}]
+            // Campeonatos: [
+            //     {
+            //         "nomeCampeonato": "Copa do Mundo Rússia 2018",
+            //         "logoCampeonato": "russia_2018.png",
+            //         "dataInicioCampeonato": "88/88/888",
+            //         "statusCampeonato": "finalizado",
+            //         "idCampeonato": "1",
+            //         "participacaoCampeonato": "yes",
+            //         "fases": [
+            //             {
+            //                 "id": "1",
+            //                 "nomeFase": "Grupos",
+            //                 "apostaFase": true
+            //             },
+            //             {
+            //                 "id": "2",
+            //                 "nomeFase": "Eliminatórias",
+            //                 "apostaFase": true
+            //             }
+            //         ]
+            //     },
+            //     {
+            //         "nomeCampeonato": "Copa América Brasil 2019",
+            //         "logoCampeonato": "copa_america_2019.png",
+            //         "dataInicioCampeonato": "88/88/888",
+            //         "statusCampeonato": "aberto",
+            //         "idCampeonato": "2",
+            //         "participacaoCampeonato": "no",
+            //         "fases": [
+            //             {
+            //                 "id": "1",
+            //                 "nomeFase": "Grupos",
+            //                 "apostaFase": true
+            //             }
+            //         ]
+            //     },
+            //     {
+            //         "nomeCampeonato": "Copa do Mundo Catar 2022",
+            //         "logoCampeonato": "qatar_2022.png",
+            //         "dataInicioCampeonato": "88/88/888",
+            //         "statusCampeonato": "aposta",
+            //         "idCampeonato": "3",
+            //         "participacaoCampeonato": "no",
+            //         "fases": [
+            //             {
+            //                 "id": "1",
+            //                 "nomeFase": "Grupos",
+            //                 "apostaFase": false
+            //             },
+            //             {
+            //                 "id": "2",
+            //                 "nomeFase": "Eliminatórias",
+            //                 "apostaFase": true
+            //             }
+            //         ]
+            //     },
+            //     {
+            //         "nomeCampeonato": "Outro Campeonato",
+            //         "logoCampeonato": "qatar_2022.png",
+            //         "dataInicioCampeonato": "88/88/888",
+            //         "statusCampeonato": "tba",
+            //         "idCampeonato": "4",
+            //         "participacaoCampeonato": "no",
+            //         "fases": [
+            //             {
+            //                 "id": "1",
+            //                 "nomeFase": "Grupos",
+            //                 "apostaFase": true
+            //             },
+            //             {
+            //                 "id": "2",
+            //                 "nomeFase": "Eliminatórias",
+            //                 "apostaFase": true
+            //             }
+            //         ]
+            //     }
+            // ]
         };
     }
 
-    setImage(aposta){
-        if(aposta.logoCampeonato===""){
-            return "/imagens/campeonatos/default.png"
-        }else{
-            return "/imagens/campeonatos/"+aposta.logoCampeonato
-        }
+    componentDidMount(){
+        $.ajax({
+            url:"../rest-api/getCampeonatos.php",
+            type: 'post',
+            contentType : 'application/json',
+            success: function(resposta){
+                // console.log(resposta);
+                this.setState({Campeonatos: resposta});
+            }.bind(this),
+            error: function(xhr, status, err){
+                // console.log("erro:");
+                // console.log(xhr);   //erro completo
+                // console.log(status); // statusText do erro completo
+                // console.log(err);
+                // console.log(JSON.parse(xhr.responseText)); // É a resposta que eu coloco.
+                console.error(status, err.toString());
+            }
+        });
     }
-    
+
     render() {
         return (
             <div className="userPage-container">
@@ -51,18 +125,12 @@ class PageCampeonatos extends Component {
                     <h3 className="page-title">Campeonatos</h3>
                     <div className="userCampeonatos-container">
                         {
-                        this.state.Apostas.map(function(aposta, index){
+                        this.state.Campeonatos.map(function(campeonato, index){
                             return(
-                                <Link to={"/"+aposta.idCampeonato+"/dashboard"} 
+                                <CampeonatoCard 
                                     key={index} 
-                                    className={aposta.statusCampeonato}
-                                >
-                                    <div>
-                                        <img src={this.setImage(aposta)}
-                                        alt={"Logo do campeonato "+aposta.nomeCampeonato} />
-                                    </div>
-                                    <h4>{aposta.nomeCampeonato}</h4>
-                                </Link>
+                                    campeonato={campeonato}
+                                />
                             );
                         }, this)
                         }

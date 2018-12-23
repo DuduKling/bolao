@@ -1,0 +1,181 @@
+.userPage-userCampeonatos > .userCampeonatos-container {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    flex-wrap: wrap;
+
+    padding: 10px 10px 30px 10px;
+
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+
+.campeonatoCard {
+    width: 200px;
+
+    border-radius: 15px;
+    margin: 10px;
+
+    position: relative;
+    overflow: hidden;
+
+    color: #424242;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.campeonatoCard > .campeonatoDiv {
+    width: 100%;
+    height: 100%;
+
+    padding: 10px;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+.campeonatoCard > .campeonatoDiv.tba {
+    background-color: #c7c7c7;
+}
+
+.campeonatoCard > .campeonatoDiv.aberto {
+    background-color: whitesmoke;
+}
+
+.campeonatoCard > .campeonatoDiv.finalizado {
+    background-color: #c7c7c7;
+}
+
+.campeonatoCard > .campeonatoDiv.finalizado > div > img {
+    filter: grayscale(100%);
+}
+
+
+
+.campeonatoCard > .campeonatoDiv > .imagemContainer {
+    width: 150px;
+    height: 150px;
+}
+
+.campeonatoCard > .campeonatoDiv > .imagemContainer > img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.campeonatoCard > .campeonatoDiv >  h4 {
+    margin: 20px 0 0 0;
+    text-align: center;
+}
+
+.campeonatoCard > .campeonatoDiv > .date-container {
+    width: 150px;
+    height: 30px;
+    transform: rotate(45deg);
+
+    position: absolute;
+    top: 25px;
+    right: -35px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #424242;
+    color: whitesmoke;
+}
+
+.campeonatoCard > .campeonatoDiv > .apostar-container {
+    width: 120px;
+    height: 30px;
+    transform: rotate(45deg);
+
+    position: absolute;
+    top: 15px;
+    right: -30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #388E3C;
+    color: whitesmoke;
+}
+
+.campeonatoCard > .campeonatoDiv > .apostar-container.aposte{
+    background-color: #e60000;
+}
+
+.campeonatoCard:hover > .campeonatoFases-container{
+    transform: translateX(0);
+}
+
+.campeonatoCard > .campeonatoFases-container {
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+
+    /* opacity: 0; */
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+}
+
+.campeonatoCard > .campeonatoFases-container.finalizado {
+    background-color: #4242427d;
+}
+
+.campeonatoCard > .campeonatoFases-container.aberto {
+    background-color: #4caf505c;
+}
+
+.campeonatoCard > .campeonatoFases-container > .campeonatoFases {
+    padding: 5px 15px;
+    margin: 10px;
+
+    text-decoration: none;
+    background-color: #424242;
+    border-radius: 15px;
+    color: whitesmoke;
+
+    transition: all 0.3s ease;
+}
+
+.campeonatoCard > .campeonatoFases-container > .campeonatoFases:hover {
+    background-color: black;
+}
+
+.campeonatoCard > .campeonatoFases-container > .campeonatoFases.aberto {
+    background-color: #e60000;
+}
+
+.campeonatoCard > .campeonatoFases-container > .campeonatoFases.aberto:hover {
+    background-color: #b90000;
+}
+

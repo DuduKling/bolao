@@ -9,63 +9,70 @@ import PartidaListItem from '../util/PartidaListItem';
 class PageApostar extends Component {
 	constructor() {
         super();
-        this.state = {Fixtures: [
-            {
-                "idfixture": "1",
-                "datetime": "Date Time",
-                "local": "Russia",
-                "home_score": "",
-                "away_score": "",
-                "home_team_name": "Time 1",
-                "home_path": "",
-                "away_team_name": "Time 2",
-                "away_path": ""
-            },
-            {
-                "idfixture": "2",
-                "datetime": "Date Time",
-                "local": "Russia",
-                "home_score": "",
-                "away_score": "",
-                "home_team_name": "Time 1",
-                "home_path": "",
-                "away_team_name": "Time 2",
-                "away_path": ""
-			},
-            {
-                "idfixture": "2",
-                "datetime": "Date Time",
-                "local": "Russia",
-                "home_score": "",
-                "away_score": "",
-                "home_team_name": "Time 1",
-                "home_path": "",
-                "away_team_name": "Time 2",
-                "away_path": ""
-			},
-            {
-                "idfixture": "2",
-                "datetime": "Date Time",
-                "local": "Russia",
-                "home_score": "",
-                "away_score": "",
-                "home_team_name": "Time 1",
-                "home_path": "",
-                "away_team_name": "Time 2",
-                "away_path": ""
-			},
-            {
-                "idfixture": "2",
-                "datetime": "Date Time",
-                "local": "Russia",
-                "home_score": "",
-                "away_score": "",
-                "home_team_name": "Time 1",
-                "home_path": "",
-                "away_team_name": "Time 2",
-                "away_path": ""
-			}
-        ], nome: '', error: '', resp: ''};
+        this.state = {
+            Fixtures: [
+                {
+                    "idfixture": "1",
+                    "datetime": "Date Time",
+                    "local": "Russia",
+                    "home_score": "",
+                    "away_score": "",
+                    "home_team_name": "Time 1",
+                    "home_path": "",
+                    "away_team_name": "Time 2",
+                    "away_path": ""
+                },
+                {
+                    "idfixture": "2",
+                    "datetime": "Date Time",
+                    "local": "Russia",
+                    "home_score": "",
+                    "away_score": "",
+                    "home_team_name": "Time 1",
+                    "home_path": "",
+                    "away_team_name": "Time 2",
+                    "away_path": ""
+                },
+                {
+                    "idfixture": "2",
+                    "datetime": "Date Time",
+                    "local": "Russia",
+                    "home_score": "",
+                    "away_score": "",
+                    "home_team_name": "Time 1",
+                    "home_path": "",
+                    "away_team_name": "Time 2",
+                    "away_path": ""
+                },
+                {
+                    "idfixture": "2",
+                    "datetime": "Date Time",
+                    "local": "Russia",
+                    "home_score": "",
+                    "away_score": "",
+                    "home_team_name": "Time 1",
+                    "home_path": "",
+                    "away_team_name": "Time 2",
+                    "away_path": ""
+                },
+                {
+                    "idfixture": "2",
+                    "datetime": "Date Time",
+                    "local": "Russia",
+                    "home_score": "",
+                    "away_score": "",
+                    "home_team_name": "Time 1",
+                    "home_path": "",
+                    "away_team_name": "Time 2",
+                    "away_path": ""
+                }
+            ], 
+            nome: '', 
+            error: '', 
+            resp: '',
+            campeonato: 'Copa do Mundo 2018',
+            fase: 'Eliminatórias',
+        };
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
@@ -225,7 +232,7 @@ class PageApostar extends Component {
                     >
 
                         <ul className="partidaLista">
-                            <h3 className="pageTitle">Faça seu palpite</h3>
+                            <h3 className="pageTitle">Aposte: {this.state.campeonato} - {this.state.fase} </h3>
                             <Loading loading={this.state.loading}/>
                             {
                             this.state.Fixtures.map(function(team, index){
