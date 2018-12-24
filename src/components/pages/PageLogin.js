@@ -121,70 +121,70 @@ class PageLogin extends Component {
             if(emailValue==="" || senhaValue===""){
                 this.setState({ajaxErrorResp: "Favor preencha todos os campos!"});
             }else{
-                // // Liberar interno local:
-                // var pessoa = {userName:"John", userEmail:"email@exemplo.com"};
-                // updateJWT(pessoa);
-                // this.setState({redirectToUser: true});
-                // var userInfo = {
-                //     userName: "Teste local", 
-                //     userEmail: "teste@local.com",
-                //     userID: "666",
-                //     userJWT: "numeros.numeros.numeros"
-                // };
-                // updateJWT(userInfo);
-                // if(keeplogin.is(':checked')){
-                //     console.log("quer ficar logado!");
-                //     SetCookie("userLogin", JSON.stringify(userInfo), 7);
-                // }
+                // Liberar interno local:
+                var pessoa = {userName:"John", userEmail:"email@exemplo.com"};
+                updateJWT(pessoa);
+                this.setState({redirectToUser: true});
+                var userInfo = {
+                    userName: "Teste local", 
+                    userEmail: "teste@local.com",
+                    userID: "666",
+                    userJWT: "numeros.numeros.numeros"
+                };
+                updateJWT(userInfo);
+                if(keeplogin.is(':checked')){
+                    // console.log("quer ficar logado!");
+                    SetCookie("userLogin", JSON.stringify(userInfo), 7);
+                }
 
 
 
 
-                textJSON = `{
-                    "email":"${emailValue}", 
-                    "password":"${senhaValue}"
-                }`;
-                textJSON2 = JSON.parse(textJSON);
-                dataString = JSON.stringify(textJSON2);
+                // textJSON = `{
+                //     "email":"${emailValue}", 
+                //     "password":"${senhaValue}"
+                // }`;
+                // textJSON2 = JSON.parse(textJSON);
+                // dataString = JSON.stringify(textJSON2);
                 
-                $.ajax({
-                    url:"../rest-api/login.php",
-                    type: 'post',
-                    contentType : 'application/json',
-                    data: dataString,
-                    success: function(resposta){
-                        // console.log(resposta);
+                // $.ajax({
+                //     url:"../rest-api/login.php",
+                //     type: 'post',
+                //     contentType : 'application/json',
+                //     data: dataString,
+                //     success: function(resposta){
+                //         // console.log(resposta);
 
-                        var userInfo = {
-                            userName: resposta.name, 
-                            userEmail:resposta.email,
-                            userID: resposta.id,
-                            userJWT: resposta.jwt
-                        };
-                        updateJWT(userInfo);
+                //         var userInfo = {
+                //             userName: resposta.name, 
+                //             userEmail:resposta.email,
+                //             userID: resposta.id,
+                //             userJWT: resposta.jwt
+                //         };
+                //         updateJWT(userInfo);
 
-                        if(keeplogin.is(':checked')){
-                            // console.log("quer ficar logado!");
-                            SetCookie("userLogin", JSON.stringify(userInfo), 7);
-                        }
+                //         if(keeplogin.is(':checked')){
+                //             // console.log("quer ficar logado!");
+                //             SetCookie("userLogin", JSON.stringify(userInfo), 7);
+                //         }
 
-                        this.setState({redirectToUser: true});
-                    }.bind(this),
-                    error: function(xhr, status, err){
+                //         this.setState({redirectToUser: true});
+                //     }.bind(this),
+                //     error: function(xhr, status, err){
 
-                        console.error(status, err.toString());
+                //         console.error(status, err.toString());
 
-                        // console.log(xhr.responseText);
-                        console.log(JSON.parse(xhr.responseText));
+                //         // console.log(xhr.responseText);
+                //         console.log(JSON.parse(xhr.responseText));
                         
-                        // console.log(JSON.parse(xhr.responseText).message);
-                        this.setState({
-                            ajaxErrorResp: JSON.parse(xhr.responseText).message.toString(),
-                            ajaxSuccessResp: '0'
-                        });
+                //         // console.log(JSON.parse(xhr.responseText).message);
+                //         this.setState({
+                //             ajaxErrorResp: JSON.parse(xhr.responseText).message.toString(),
+                //             ajaxSuccessResp: '0'
+                //         });
 
-                    }.bind(this)
-                });
+                //     }.bind(this)
+                // });
             }
 
         }else if(this.props.match.params.typeOfLogin === "cadastrar"){

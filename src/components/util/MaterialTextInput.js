@@ -96,17 +96,16 @@ class MaterialTextInput extends Component {
         }
     }
 
-    checkFieldValue(){
+    componentDidMount(){
         if(this.props.fieldPlaceholder !== undefined){
-            return(
-                this.props.fieldPlaceholder
-            );
+            this.setState({value: this.props.fieldPlaceholder});
         }
     }
 
     render() {
         return (
             <div className="material-input">
+                
                 <input 
                     type={this.props.fieldType} 
                     name={this.props.fieldName} 
@@ -114,7 +113,7 @@ class MaterialTextInput extends Component {
                     className={this.state.error}
                     required={this.props.fieldRequired?false:true}
                     maxLength="30" 
-                    placeholder={this.checkFieldValue()}
+                    value={this.state.value}
                 />
 
                 <label 
