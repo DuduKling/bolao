@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/pages/pageInside.css';
 import { Link } from 'react-router-dom';
+import $ from 'jquery';
 
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
@@ -116,6 +117,31 @@ class PageDashboard extends Component {
         };
     }
 
+    componentWillMount(){
+        var campoonatoID = this.props.match.params.campeonato;
+        
+        
+        var textJSON = `{
+            "id":"${campoonatoID}"
+        }`;
+        var textJSON2 = JSON.parse(textJSON);
+        var dataString = JSON.stringify(textJSON2);
+
+        $.ajax({
+            url:"../rest-api/getCampeonatos.php",
+            type: 'post',
+            contentType : 'application/json',
+            data: dataString,
+            success: function(resposta){
+                console.log("oi");
+            }.bind(this),
+            error: function(xhr, status, err){
+                console.error(status, err.toString());
+                console.log(JSON.parse(xhr.responseText));
+            }.bind(this)
+        });
+    }
+
     render() {
         return (
             <section className="main-container">
@@ -165,56 +191,54 @@ class PageDashboard extends Component {
 
                         <div className="dashboard-aside">
 
-                        <div className="main-partidaForm">
-                            <ul className="partidaLista">
-                                <h3 className="pageTitle">Próximos Jogos</h3>
-                                <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos ></Link>
-                                <Loading loading={this.state.loading}/>
-                                {
-                                this.state.nextFixtures.map(function(team, index){
-                                    return(
+                            <div className="main-partidaForm">
+                                <ul className="partidaLista">
+                                    <h3 className="pageTitle">Próximos Jogos</h3>
+                                    <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos ></Link>
+                                    <Loading loading={this.state.loading}/>
+                                    {
+                                    this.state.nextFixtures.map(function(team, index){
+                                        return(
 
-                                        <PartidaListItem
-                                            key={index}
-                                            team={team} 
-                                            typeAll={"ReadOnly"}
-                                            link={this.props.match.params}
-                                            />
-                                        
-                                    );
-                                }, this)
-                                }
+                                            <PartidaListItem
+                                                key={index}
+                                                team={team} 
+                                                typeAll={"ReadOnly"}
+                                                link={this.props.match.params}
+                                                />
+                                            
+                                        );
+                                    }, this)
+                                    }
 
-                            </ul>
-                            
+                                </ul>
+                                
+                            </div>
+
+                            <div className="main-partidaForm">
+
+                                <ul className="partidaLista">
+                                    <h3 className="pageTitle">Últimos Jogos</h3>
+                                    <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos ></Link>
+                                    <Loading loading={this.state.loading}/>
+                                    {
+                                    this.state.lastFixtures.map(function(team, index){
+                                        return(
+
+                                            <PartidaListItem
+                                                key={index}
+                                                team={team} 
+                                                typeAll={"ReadOnly"}
+                                                link={true}
+                                                />
+                                            
+                                        );
+                                    }, this)
+                                    }
+
+                                </ul>
+                            </div>
                         </div>
-
-                        <div className="main-partidaForm">
-
-                            <ul className="partidaLista">
-                                <h3 className="pageTitle">Últimos Jogos</h3>
-                                <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos ></Link>
-                                <Loading loading={this.state.loading}/>
-                                {
-                                this.state.lastFixtures.map(function(team, index){
-                                    return(
-
-                                        <PartidaListItem
-                                            key={index}
-                                            team={team} 
-                                            typeAll={"ReadOnly"}
-                                            link={true}
-                                            />
-                                        
-                                    );
-                                }, this)
-                                }
-
-                            </ul>
-                            
-                        </div>
-                    
-                    </div>
                     </div>
                 </div>
             </section>

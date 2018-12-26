@@ -14,8 +14,7 @@ class PageCampeonatos extends Component {
     constructor() {
         super();
         this.state = {
-            // Campeonatos:[{}]
-            Campeonatos: [
+            campeonatos: [
                 {
                     "nomeCampeonato": "Copa do Mundo Rússia 2018",
                     "logoCampeonato": "russia_2018.png",
@@ -27,12 +26,36 @@ class PageCampeonatos extends Component {
                         {
                             "id": "1",
                             "nomeFase": "Grupos",
-                            "apostaFase": true
+                            "apostaFase": true,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nome": "Oitavas",
+                                    "statusParte": true
+                                },
+                                {
+                                    "id": 2,
+                                    "nome": "Quartas",
+                                    "statusParte": false
+                                }
+                            ]
                         },
                         {
                             "id": "2",
                             "nomeFase": "Eliminatórias",
-                            "apostaFase": true
+                            "apostaFase": true,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nome": "Oitavas",
+                                    "statusParte": true
+                                },
+                                {
+                                    "id": 2,
+                                    "nome": "Quartas",
+                                    "statusParte": false
+                                }
+                            ]
                         }
                     ]
                 },
@@ -47,7 +70,19 @@ class PageCampeonatos extends Component {
                         {
                             "id": "1",
                             "nomeFase": "Grupos",
-                            "apostaFase": true
+                            "apostaFase": true,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nome": "Oitavas",
+                                    "statusParte": true
+                                },
+                                {
+                                    "id": 2,
+                                    "nome": "Quartas",
+                                    "statusParte": false
+                                }
+                            ]
                         }
                     ]
                 },
@@ -62,12 +97,36 @@ class PageCampeonatos extends Component {
                         {
                             "id": "1",
                             "nomeFase": "Grupos",
-                            "apostaFase": false
+                            "apostaFase": false,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nome": "Oitavas",
+                                    "statusParte": true
+                                },
+                                {
+                                    "id": 2,
+                                    "nome": "Quartas",
+                                    "statusParte": false
+                                }
+                            ]
                         },
                         {
                             "id": "2",
                             "nomeFase": "Eliminatórias",
-                            "apostaFase": true
+                            "apostaFase": true,
+                            "partes": [
+                                {
+                                    "id": 123,
+                                    "nome": "Oitavas",
+                                    "statusParte": true
+                                },
+                                {
+                                    "id": 2,
+                                    "nome": "Quartas",
+                                    "statusParte": false
+                                }
+                            ]
                         }
                     ]
                 },
@@ -82,12 +141,36 @@ class PageCampeonatos extends Component {
                         {
                             "id": "1",
                             "nomeFase": "Grupos",
-                            "apostaFase": true
+                            "apostaFase": true,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nome": "Oitavas",
+                                    "statusParte": true
+                                },
+                                {
+                                    "id": 2,
+                                    "nome": "Quartas",
+                                    "statusParte": false
+                                }
+                            ]
                         },
                         {
                             "id": "2",
                             "nomeFase": "Eliminatórias",
-                            "apostaFase": true
+                            "apostaFase": true,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nome": "Oitavas",
+                                    "statusParte": true
+                                },
+                                {
+                                    "id": 2,
+                                    "nome": "Quartas",
+                                    "statusParte": false
+                                }
+                            ]
                         }
                     ]
                 }
@@ -102,7 +185,7 @@ class PageCampeonatos extends Component {
             contentType : 'application/json',
             success: function(resposta){
                 // console.log(resposta);
-                this.setState({Campeonatos: resposta});
+                this.setState({campeonatos: resposta});
             }.bind(this),
             error: function(xhr, status, err){
                 // console.log("erro:");
@@ -123,7 +206,7 @@ class PageCampeonatos extends Component {
                     <h3 className="page-title">Campeonatos</h3>
                     <div className="userCampeonatos-container">
                         {
-                        this.state.Campeonatos.map(function(campeonato, index){
+                        this.state.campeonatos.map(function(campeonato, index){
                             return(
                                 <CampeonatoCard 
                                     key={index} 

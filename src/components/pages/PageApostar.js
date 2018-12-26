@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import '../../css/pages/pageInside.css';
+import '../../css/util/formMessage.css';
+import { connect } from 'react-redux';
 
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
@@ -10,134 +12,106 @@ class PageApostar extends Component {
 	constructor() {
         super();
         this.state = {
-            Fixtures: [
-                {
-                    "idfixture": "1",
-                    "datetime": "Date Time",
-                    "local": "Russia",
-                    "home_score": "",
-                    "away_score": "",
-                    "home_team_name": "Time 1",
-                    "home_path": "",
-                    "away_team_name": "Time 2",
-                    "away_path": ""
-                },
-                {
-                    "idfixture": "2",
-                    "datetime": "Date Time",
-                    "local": "Russia",
-                    "home_score": "",
-                    "away_score": "",
-                    "home_team_name": "Time 1",
-                    "home_path": "",
-                    "away_team_name": "Time 2",
-                    "away_path": ""
-                },
-                {
-                    "idfixture": "2",
-                    "datetime": "Date Time",
-                    "local": "Russia",
-                    "home_score": "",
-                    "away_score": "",
-                    "home_team_name": "Time 1",
-                    "home_path": "",
-                    "away_team_name": "Time 2",
-                    "away_path": ""
-                },
-                {
-                    "idfixture": "2",
-                    "datetime": "Date Time",
-                    "local": "Russia",
-                    "home_score": "",
-                    "away_score": "",
-                    "home_team_name": "Time 1",
-                    "home_path": "",
-                    "away_team_name": "Time 2",
-                    "away_path": ""
-                },
-                {
-                    "idfixture": "2",
-                    "datetime": "Date Time",
-                    "local": "Russia",
-                    "home_score": "",
-                    "away_score": "",
-                    "home_team_name": "Time 1",
-                    "home_path": "",
-                    "away_team_name": "Time 2",
-                    "away_path": ""
-                }
+            fixtures: [
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "",
+                //     "away_score": "",
+                //     "home_team_name": "Time 1",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "2",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "",
+                //     "away_score": "",
+                //     "home_team_name": "Time 1",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "3",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "",
+                //     "away_score": "",
+                //     "home_team_name": "Time 1",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "4",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "",
+                //     "away_score": "",
+                //     "home_team_name": "Time 1",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "5",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "",
+                //     "away_score": "",
+                //     "home_team_name": "Time 1",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // }
             ], 
-            nome: '', 
             error: '', 
             resp: '',
-            campeonato: 'Copa do Mundo 2018',
-            fase: 'Eliminatórias',
+            campeonato: '',
+            fase: '',
+            parte: '',
+            redirectToCampeonatos: false
         };
-        this.handleInputChange = this.handleInputChange.bind(this);
-    }
-
-    handleInputChange(event) {
-        const name = event.target.name;
-        const inputValue = event.target.value
-        this.setState({
-            [name]: inputValue
-        });
-        //console.log(name);
-        // console.log(name.substring(0, 1));
-
-        if (name==="nome"){
-            let regx  = new RegExp('^[A-Za-z]+([ |\x20]{1}[A-Za-z]+)?$', 'gi');
-            let resultado = regx.test(inputValue);
-
-            if(!resultado){
-                this.setState({
-                    error_nome: "error"
-                    // ["error_"+name]: "error"
-                });
-            }else{
-                this.setState({
-                    error_nome: ""
-                });
-            }
-        } else {
-            let regx  = new RegExp('^[0-9]{1,2}$', 'gi');
-            let resultado = regx.test(inputValue);
-
-            if(!resultado){
-                event.target.classList.add("error");
-                // this.setState({
-                //     // [name]: [inputValue, "error"]
-                // });
-                // console.log(name+"_error");
-            }else{
-                event.target.classList.remove("error");
-                // this.setState({
-                //     // [name]: [inputValue, ""]
-                // });
-            }
-        }
-        
-        // console.log(this.state);
-        // console.log(this.state.Fixtures);
     }
 
     componentDidMount() {
-        var dataString = "fase="+this.props.match.params.fase+"&apostar=1";
-
         this.setState({loading: true});
 
+        var parteId = this.props.match.params.parte;
+        var userId = this.props.userId;
+
+        var textJSON = `{
+            "parteId":"${parteId}",
+            "userId": "${userId}"
+        }`;
+        var textJSON2 = JSON.parse(textJSON);
+        var dataString = JSON.stringify(textJSON2);
+
         $.ajax({
-            url:"../php/getFixtures.php",
+            url:"../rest-api/getFixtures.php",
             type: 'post',
             data: dataString,
             dataType: 'json',
             success: function(resposta){
-                this.setState({Fixtures: resposta});
+                this.setState({
+                    fixtures: resposta.fixtures,
+                    campeonato: resposta.campeonato,
+                    fase: resposta.fase,
+                    parte: resposta.parte
+                });
                 this.setState({loading: false});
             }.bind(this),
             error: function(xhr, status, err){
                 console.error(status, err.toString());
-                this.setState({loading: false});
+                // console.log(JSON.parse(xhr.responseText));
+                this.setState({
+                    loading: false,
+                    error: JSON.parse(xhr.responseText).message,
+                });
             }.bind(this)
         });
     }
@@ -148,43 +122,33 @@ class PageApostar extends Component {
         this.setState({error: ''});
         this.setState({resp: ''});
 
-        var dataString = "";
-        var i = 0;
-        for (var key in state) {
-            switch (key){
-                case 'Fixtures':
-                case 'error':
-                case 'resp':
-                case 'loading':
-                case 'loading2':
-                case 'error_nome':
-                    break;
-                default:
-                    if(state[key] !== '') {
-                        if(i===0) {
-                            dataString += key + "=" + state[key]
-                        } else {
-                            dataString += "&" + key + "=" + state[key]
-                        }
-                        i++;
-                    }
-            }
-        }
+        var data = {};
 
+        data["userId"] = this.props.userId;
+        
+        $("input[type='text']").each(function(index, item){
+            var val = $(item).val();
+            var name = $(item).attr('name');
+
+            data[name] = val;
+        });
+
+        console.log(data);
+        var dataString = JSON.stringify(data);
         // console.log("dataString:");
-        // console.log(dataString);
+        console.log(dataString);
 
         this.setState({loading2: true});
 
         $.ajax({
-            url:"../php/postBets.php",
+            url:"../rest-api/makeBets.php",
 			type: 'post',
             data: dataString,
-            dataType: "html",
+            dataType: "json",
             success: function(resposta){
                 // console.log("Resposta PHP:");
-                // console.log(resposta);
-                this.setState({resp: resposta});
+                console.log(resposta);
+                this.setState({resp: resposta.message});
                 this.setState({loading2: false});
             }.bind(this),
             error: function(xhr, status, err){
@@ -193,33 +157,52 @@ class PageApostar extends Component {
                 this.setState({error: err.toString()});
             }.bind(this)
         });
-
-        // if (this.state.resp.substring(0, 8)==='Success:'){
-        //     evento.target.reset();
-        // }
     }
     
-    inputNotEmpty(){
-        if (this.state.nome === '') {
-            return '';
-        }else {
-            return 'NotEmpty';
-        }
-    }
+    // inputNotEmpty(){
+    //     if (this.state.nome === '') {
+    //         return '';
+    //     }else {
+    //         return 'NotEmpty';
+    //     }
+    // }
 
     AJAXresp(){
-        if (this.state.error === '' && this.state.resp === '') {
+        if(this.state.error === '' && this.state.resp === ''){
             return '';
-        } else if (this.state.resp.substring(0, 8)==='Success:'){
-            let resposta = this.state.resp.slice(9, this.state.resp.length);
-            return (<div className="Success"><p>{resposta}</p></div>);
-        } else if(this.state.resp !== '') {
-            return (<div className="Error"><p>{this.state.resp}</p></div>);
-        } else {
-            return (<div className="Error"><p>Oops! Desculpe, ocorreu um erro. <span>ERROR: {this.state.error}</span></p></div>);
+
+        }else if (this.state.resp !== ''){
+            return (
+                <div className="message">
+                    <p className="FormMessage -success">
+                        {this.state.resp}
+                    </p>
+                </div>
+            );
+
+        }else if (this.state.error !== ''){
+            return (
+                <div className="message">
+                    <p className="FormMessage -error">
+                        {this.state.error}
+                    </p>
+                </div>
+            );
         }
     }
-    
+
+    showButton(){
+        if(Object.keys(this.state.fixtures).length !== 0){
+            return(
+                <div className="EnviarAposta">
+                    <input type="submit" className="SendButton" value="Enviar" />
+                    <Loading loading={this.state.loading2}/>
+                </div>
+            );
+        }
+    }
+
+
     render() {
         return (
             <section className="main-container">
@@ -232,10 +215,10 @@ class PageApostar extends Component {
                     >
 
                         <ul className="partidaLista">
-                            <h3 className="pageTitle">Aposte: {this.state.campeonato} - {this.state.fase} </h3>
+                            <h3 className="pageTitle">Aposte: {this.state.campeonato} - {this.state.fase}/{this.state.parte}</h3>
                             <Loading loading={this.state.loading}/>
                             {
-                            this.state.Fixtures.map(function(team, index){
+                            this.state.fixtures.map(function(team, index){
                                 return(
 
                                     <PartidaListItem 
@@ -248,11 +231,8 @@ class PageApostar extends Component {
                             }
 
                         </ul>
-                        
-                        <div className="EnviarAposta">
-                            <input type="submit" className="SendButton" value="Enviar" />
-                            <Loading loading={this.state.loading2}/>
-                        </div>
+
+                        {this.showButton()}
 
                     </form>
 
@@ -263,4 +243,8 @@ class PageApostar extends Component {
     }
 }
 
-export default PageApostar;
+const mapStateToProps = store => ({
+    userId: store.AuthJWTState.userID
+});
+
+export default connect(mapStateToProps)(PageApostar);

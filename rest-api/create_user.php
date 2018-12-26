@@ -18,7 +18,7 @@ $db = $database->getConnection();
  
 // instantiate product object
 $user = new User($db);
- 
+
 
 //---- submitted data will be here
 // get posted data

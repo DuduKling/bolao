@@ -59,6 +59,31 @@ if($num>0){
                 $fase->nomeFase = $rowFase['nome'];
                 $fase->apostaFase = $rowFase['status'];
 
+
+                // Parte
+                $queryParte = "SELECT * FROM parte WHERE fase_Id=:faseID";
+                $stmtParte = $db->prepare($queryParte);
+
+                $stmtParte->bindParam(':faseID', $rowFase['Id']);
+
+                $stmtParte->execute();
+                $numParte = $stmtParte->rowCount();
+                $partes = array();
+
+                if($numParte>0){
+                    $dbPartes = $stmtParte->fetchAll(PDO::FETCH_ASSOC);
+                    foreach($dbPartes as $rowParte){
+                        $parte = new stdClass;
+
+                        $parte->id = $rowParte['Id'];
+                        $parte->nomeParte = $rowParte['nome'];
+                        $parte->statusParte = $rowParte['status'];
+
+                        array_push($partes, $parte);
+                    }
+                }
+                
+                $fase->partes = $partes;
                 array_push($fases, $fase);
             }
         }

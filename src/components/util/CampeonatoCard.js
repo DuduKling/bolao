@@ -103,20 +103,34 @@ class CampeonatoCard extends Component {
                 <div className="campeonatoFases-container aberto">
                     {
                     campeonato.fases.map(function(fase, index){
-                        return(
-                            <Link 
-                                key={index} 
-                                className={fase.apostaFase?"campeonatoFases aberto" :"campeonatoFases"}
-                                to={
-                                    fase.apostaFase ? 
-                                    "/"+campeonato.idCampeonato+"/"+fase.id+"/apostar"
-                                    :
-                                    "/"+campeonato.idCampeonato+"/"+fase.id+"/dashboard"
-                                }
-                            >
-                                {fase.nomeFase}
-                            </Link>
-                        );
+                        if(fase.apostaFase){
+                            return(
+                                fase.partes.map(function(parte, index){
+                                    if(parte.statusParte){
+                                        return(
+                                            <Link 
+                                                key={index} 
+                                                className="campeonatoFases aberto"
+                                                to={"/"+parte.id+"/apostar"}
+                                            >
+                                                {fase.nomeFase}
+                                            </Link>
+                                        );
+                                    }
+                                }, this)
+                            );
+                        }else{
+                            return(
+                                <Link 
+                                    key={index} 
+                                    className="campeonatoFases"
+                                    to={"/"+campeonato.idCampeonato+"/"+fase.id+"/dashboard"}
+                                >
+                                    {fase.nomeFase}
+                                </Link>
+                            );
+                        }
+
                     }, this)
                     }
                 </div>

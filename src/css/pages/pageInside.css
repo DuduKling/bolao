@@ -29,6 +29,10 @@
 }
 
 
+.main-container > .main-content > .message {
+	display: flex;
+	justify-content: center;
+}
 
 
 

@@ -183,7 +183,7 @@ class PageUser extends Component {
                         } 
                         method="post"
                     >
-
+                        {/* //TODO: Adicionar imagem no user...*/}
                         <div className="userInfo-imgContainer">
                             <div className="userInfo-img">
                                 <img src={Avatar} alt="avatar"/>
