@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import '../../css/pages/campeonato.css';
 import { Link } from 'react-router-dom';
 
+/* Status:
+    finalizado - Vai para dashboard (sem aposta lá).
+    aberto - Vai para dashboard (com aposta lá).
+    aposta - Vai para tela de Apostas.
+    tba - Sem link (Mostra data de início).
+*/
+
 class CampeonatoCard extends Component {
     setImage(campeonato){
         if(campeonato.logoCampeonato===""){
@@ -12,7 +19,45 @@ class CampeonatoCard extends Component {
     }
 
     checkStatus(campeonato){
-        if(campeonato.statusCampeonato === "tba"){
+        var qtdAposta = campeonato.fases
+        .reduce(function(acc, currValue){
+            return acc.concat(currValue.partes);
+        }, [])
+        .filter(function(parte){
+            return parte.statusParte === "aposta";
+        })
+        .length;
+
+        var qtdAberto = campeonato.fases
+        .reduce(function(acc, currValue){
+            return acc.concat(currValue.partes);
+        }, [])
+        .filter(function(parte){
+            return parte.statusParte === "aberto";
+        })
+        .length;
+
+        var qtdTba = campeonato.fases
+        .reduce(function(acc, currValue){
+            return acc.concat(currValue.partes);
+        }, [])
+        .filter(function(parte){
+            return parte.statusParte === "tba";
+        })
+        .length;
+
+        var qtdFinalizado = campeonato.fases
+        .reduce(function(acc, currValue){
+            return acc.concat(currValue.partes);
+        }, [])
+        .filter(function(parte){
+            return parte.statusParte === "finalizado";
+        })
+        .length;
+
+        var totalPartes = qtdAposta+ qtdAberto + qtdFinalizado + qtdTba;
+        
+        if(qtdTba === totalPartes){
             return(
                 <div className="campeonatoDiv tba">
                     <div className="imagemContainer">
@@ -23,18 +68,7 @@ class CampeonatoCard extends Component {
                     <div className="date-container">{campeonato.dataInicioCampeonato}</div>
                 </div>
             );
-        }else if(campeonato.statusCampeonato === "aberto"){
-            return(
-                <div className="campeonatoDiv aberto">
-                    <div className="imagemContainer">
-                        <img  src={this.setImage(campeonato)}
-                        alt={"Logo do campeonato "+campeonato.nomeCampeonato} />
-                    </div>
-                    <h4>{campeonato.nomeCampeonato}</h4>
-                    <div className="apostar-container">Veja!</div>
-                </div>
-            );
-        }else if(campeonato.statusCampeonato === "finalizado" ){ 
+        }else if(qtdFinalizado === totalPartes){ 
             return(
                 <div className="campeonatoDiv finalizado">
                     <div className="imagemContainer">
@@ -44,7 +78,8 @@ class CampeonatoCard extends Component {
                     <h4>{this.props.campeonato.nomeCampeonato}</h4>
                 </div>
             );
-        }else if(campeonato.statusCampeonato === "aposta"){
+
+        }else if(qtdAposta > 0){
             return(
                 <div className="campeonatoDiv aberto">
                     <div className="imagemContainer">
@@ -55,89 +90,106 @@ class CampeonatoCard extends Component {
                     <div className="apostar-container aposte">Aposte!</div>
                 </div>
             );
-        }
-    }
-
-    //TODO Verificar que porque para o dahsboard, do jeito que está feito, só precisa do numero da fase. 
-    //TODO E para a apostar, so precisaria do numero da parte.
-
-    checkFases(campeonato){
-        if(campeonato.statusCampeonato === "finalizado"){
+        }else{
             return(
-                <div className="campeonatoFases-container finalizado">
-                    {
-                    campeonato.fases.map(function(fase, index){
-                        return(
-                            <Link 
-                                key={index} 
-                                className="campeonatoFases"
-                                to={"/"+campeonato.idCampeonato+"/"+fase.id+"/dashboard"}
-                            >
-                                {fase.nomeFase}
-                            </Link>
-                        );
-                    }, this)
-                    }
-                </div>
-            );
-        }else if(campeonato.statusCampeonato === "aberto"){
-            return(
-                <div className="campeonatoFases-container aberto">
-                    {
-                    campeonato.fases.map(function(fase, index){
-                        return(
-                            <Link 
-                                key={index} 
-                                className="campeonatoFases"
-                                to={"/"+campeonato.idCampeonato+"/"+fase.id+"/dashboard"}
-                            >
-                                {fase.nomeFase}
-                            </Link>
-                        );
-                    }, this)
-                    }
-                </div>
-            );
-        }else if(campeonato.statusCampeonato === "aposta"){
-            return(
-                <div className="campeonatoFases-container aberto">
-                    {
-                    campeonato.fases.map(function(fase, index){
-                        if(fase.apostaFase){
-                            return(
-                                fase.partes.map(function(parte, index){
-                                    if(parte.statusParte){
-                                        return(
-                                            <Link 
-                                                key={index} 
-                                                className="campeonatoFases aberto"
-                                                to={"/"+parte.id+"/apostar"}
-                                            >
-                                                {fase.nomeFase}
-                                            </Link>
-                                        );
-                                    }
-                                }, this)
-                            );
-                        }else{
-                            return(
-                                <Link 
-                                    key={index} 
-                                    className="campeonatoFases"
-                                    to={"/"+campeonato.idCampeonato+"/"+fase.id+"/dashboard"}
-                                >
-                                    {fase.nomeFase}
-                                </Link>
-                            );
-                        }
-
-                    }, this)
-                    }
+                <div className="campeonatoDiv aberto">
+                    <div className="imagemContainer">
+                        <img  src={this.setImage(campeonato)}
+                        alt={"Logo do campeonato "+campeonato.nomeCampeonato} />
+                    </div>
+                    <h4>{campeonato.nomeCampeonato}</h4>
+                    <div className="apostar-container">Veja!</div>
                 </div>
             );
         }
     }
+    
+    checkFases(campeonato, fase, index){
+        var qtdFinalizado = fase.partes
+            .reduce(function(acc, currValue){
+                return acc.concat(currValue);
+            }, [])
+            .filter(function(parte){
+                return parte.statusParte === "finalizado";
+            })
+            .length;
 
+        var qtdApostar = fase.partes
+            .reduce(function(acc, currValue){
+                return acc.concat(currValue);
+            }, [])
+            .filter(function(parte){
+                return parte.statusParte === "aposta";
+            })
+            .length;
+
+        var qtdAberto = fase.partes
+            .reduce(function(acc, currValue){
+                return acc.concat(currValue);
+            }, [])
+            .filter(function(parte){
+                return parte.statusParte === "aberto";
+            })
+            .length;
+        
+        var total = qtdFinalizado + qtdAberto + qtdApostar;
+
+        // console.log("FASE:")
+        // console.log(qtdFinalizado);
+        // console.log(qtdAberto);
+        // console.log(qtdApostar);
+        // console.log("TOTAL(fin, ab, ap): " + total +"\n\n");
+
+        var parteAberta = fase.partes
+            .reduce(function(acc, currValue){
+                return acc.concat(currValue);
+            }, [])
+            .filter(function(parte){
+                return parte.statusParte === "aposta";
+            });
+
+        if(
+            (qtdFinalizado > 0 && qtdFinalizado === total) || 
+            (qtdAberto > 0 && qtdApostar === 0)
+        ){
+            return(
+                <Link 
+                    key={index} 
+                    className="campeonatoFases"
+                    to={"/"+campeonato.idCampeonato+"/"+fase.id+"/dashboard"}
+                >
+                    {fase.nomeFase}
+                </Link>
+            );
+        }else if(qtdAberto === 0 && qtdApostar > 0){
+            return(
+                <Link
+                    className="campeonatoFases apostar"
+                    to={"/"+parteAberta[0].id+"/apostar"}
+                >
+                    {fase.nomeFase+" / "+parteAberta[0].nomeParte}
+                </Link>
+            );
+        }else if(qtdAberto > 0 && qtdApostar > 0){
+            return(
+                <div key={index}>
+                    <Link
+                        className="campeonatoFases"
+                        to={"/"+campeonato.idCampeonato+"/"+fase.id+"/dashboard"}
+                    >
+                        {fase.nomeFase}
+                    </Link>
+
+                    <Link
+                        className="campeonatoFases apostar"
+                        to={"/"+parteAberta[0].id+"/apostar"}
+                    >
+                        {fase.nomeFase+" / "+parteAberta[0].nomeParte}
+                    </Link>
+                </div>
+            );
+        }
+    }
 
     render() {
         return (
@@ -145,8 +197,13 @@ class CampeonatoCard extends Component {
 
                 {this.checkStatus(this.props.campeonato)}
 
-                {this.checkFases(this.props.campeonato)}
-
+                <div className="campeonatoFases-container">
+                    {
+                    this.props.campeonato.fases.map(function(fase, index){
+                        return this.checkFases(this.props.campeonato, fase , index);
+                    }, this)
+                    }
+                </div>
             </div>
         );
     }

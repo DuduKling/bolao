@@ -108,10 +108,8 @@ class PageApostar extends Component {
             error: function(xhr, status, err){
                 console.error(status, err.toString());
                 // console.log(JSON.parse(xhr.responseText));
-                this.setState({
-                    loading: false,
-                    error: JSON.parse(xhr.responseText).message,
-                });
+                this.setState({loading: false});
+                this.setState({error: JSON.parse(xhr.responseText).message});
             }.bind(this)
         });
     }
@@ -158,14 +156,6 @@ class PageApostar extends Component {
             }.bind(this)
         });
     }
-    
-    // inputNotEmpty(){
-    //     if (this.state.nome === '') {
-    //         return '';
-    //     }else {
-    //         return 'NotEmpty';
-    //     }
-    // }
 
     AJAXresp(){
         if(this.state.error === '' && this.state.resp === ''){
@@ -201,7 +191,6 @@ class PageApostar extends Component {
             );
         }
     }
-
 
     render() {
         return (

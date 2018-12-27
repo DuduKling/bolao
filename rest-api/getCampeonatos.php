@@ -33,15 +33,12 @@ if($num>0){
         $campeonato->logoCampeonato = $row['logo'];
         $campeonato->dataInicioCampeonato = date_format($date = date_create($row['dataInicio']), 'd/m/Y');
         $campeonato->dataFimCampeonato = date_format(date_create($row['dataFim']), 'd/m/Y');
-        $campeonato->statusCampeonato = $row['status'];
-
-
-        // TODO ver esse negocio da participação..
-        $campeonato->participacaoCampeonato = "yes";
-
+        // $campeonato->statusCampeonato = $row['status'];
 
         // Fase
-        $queryFase = "SELECT * FROM fase WHERE campeonato_Id=:campeonatoID";
+        $queryFase = "SELECT * FROM fase WHERE 
+            campeonato_Id=:campeonatoID
+        ";
         $stmtFase = $db->prepare($queryFase);
 
         $stmtFase->bindParam(':campeonatoID', $row['Id']);
@@ -57,11 +54,13 @@ if($num>0){
 
                 $fase->id = $rowFase['Id'];
                 $fase->nomeFase = $rowFase['nome'];
-                $fase->apostaFase = $rowFase['status'];
+                // $fase->apostaFase = $rowFase['status'];
 
 
                 // Parte
-                $queryParte = "SELECT * FROM parte WHERE fase_Id=:faseID";
+                $queryParte = "SELECT * FROM parte WHERE 
+                    fase_Id=:faseID
+                ";
                 $stmtParte = $db->prepare($queryParte);
 
                 $stmtParte->bindParam(':faseID', $rowFase['Id']);
