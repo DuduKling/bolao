@@ -79,7 +79,7 @@ class App extends Component {
             <PrivateRoute exact path="/:campeonato/:fase/dashboard" component={PageDashboard} />
 
 
-            <PrivateRoute exact path="/:campeonato/:fase/admin" component={PageAdmin} />
+            <PrivateRoute exact path="/:parte/admin" component={PageAdmin} />
 
 
             <Route component={Page404} />

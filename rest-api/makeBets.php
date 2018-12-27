@@ -15,9 +15,6 @@ $data = json_decode(file_get_contents("php://input"));
 $userID = $data->userId;
 
 
-
-$keys = "";
-$values = "";
 $allFieldOk = true;
 foreach ($data as $key => $value) {
     if ($key!="userId" && !preg_match("/^[0-9]{1,2}$/", $value)){

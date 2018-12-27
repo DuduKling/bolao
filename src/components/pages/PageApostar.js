@@ -116,7 +116,7 @@ class PageApostar extends Component {
         });
     }
 
-	enviaAposta(evento, state) {
+	enviaAposta(evento) {
         evento.preventDefault();
         // console.log("enviando..")
         this.setState({error: ''});
@@ -133,10 +133,10 @@ class PageApostar extends Component {
             data[name] = val;
         });
 
-        console.log(data);
+        // console.log(data);
         var dataString = JSON.stringify(data);
         // console.log("dataString:");
-        console.log(dataString);
+        // console.log(dataString);
 
         this.setState({loading2: true});
 
@@ -152,9 +152,9 @@ class PageApostar extends Component {
                 this.setState({loading2: false});
             }.bind(this),
             error: function(xhr, status, err){
-                // console.error(status, err.toString());
+                console.error(status, err.toString());
                 this.setState({loading2: false});
-                this.setState({error: err.toString()});
+                this.setState({error: JSON.parse(xhr.responseText).message});
             }.bind(this)
         });
     }
@@ -210,12 +210,14 @@ class PageApostar extends Component {
                 
                     <form 
                         className="main-partidaForm" 
-                        onSubmit={function(event){this.enviaAposta(event, this.state)}.bind(this)} 
+                        onSubmit={function(event){this.enviaAposta(event)}.bind(this)} 
                         method="post"
                     >
 
                         <ul className="partidaLista">
-                            <h3 className="pageTitle">Aposte: {this.state.campeonato} - {this.state.fase}/{this.state.parte}</h3>
+                            <h3 className="pageTitle">
+                                Aposte: {this.state.campeonato} - {this.state.fase}/{this.state.parte}
+                            </h3>
                             <Loading loading={this.state.loading}/>
                             {
                             this.state.fixtures.map(function(team, index){

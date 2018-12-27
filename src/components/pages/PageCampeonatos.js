@@ -58,7 +58,7 @@ class PageCampeonatos extends Component {
                             ]
                         }
                     ]
-                },
+                },  
                 {
                     "nomeCampeonato": "Copa América Brasil 2019",
                     "logoCampeonato": "copa_america_2019.png",

@@ -67,20 +67,36 @@ class PartidaPlacar extends Component {
                 );
 
             }else{
-                return (
-                    <div>
-                        <input 
-                            type="text" 
-                            placeholder="X" 
-                            name={this.props.team.idfixture+"_home"} 
-                            onChange={this.handleInputChange} 
-                            required="required" 
-                            maxLength="2" 
-                            pattern="^[0-9]{1,2}$" 
-                        />
-                        <label></label>
-                    </div>
-                );
+                if(this.props.isAdmin==="admin"){
+                    return (
+                        <div>
+                            <input 
+                                type="text" 
+                                placeholder="X" 
+                                name={this.props.team.idfixture+"_home"} 
+                                onChange={this.handleInputChange} 
+                                maxLength="2" 
+                                pattern="^[0-9]{1,2}$" 
+                            />
+                            <label></label>
+                        </div>
+                    );
+                }else{
+                    return (
+                        <div>
+                            <input 
+                                type="text" 
+                                placeholder="X" 
+                                name={this.props.team.idfixture+"_home"} 
+                                onChange={this.handleInputChange} 
+                                required="required" 
+                                maxLength="2" 
+                                pattern="^[0-9]{1,2}$" 
+                            />
+                            <label></label>
+                        </div>
+                    );
+                }
             }
         }
     }
@@ -99,20 +115,37 @@ class PartidaPlacar extends Component {
                 );
 
             }else{
-                return (
-                    <div>
-                        <input 
-                            type="text" 
-                            placeholder="X" 
-                            name={this.props.team.idfixture+"_away"} 
-                            onChange={this.handleInputChange} 
-                            required="required" 
-                            maxLength="2" 
-                            pattern="^[0-9]{1,2}$"
-                        />
-                        <label></label>
-                    </div>
-                );
+
+                if(this.props.isAdmin==="admin"){
+                    return (
+                        <div>
+                            <input 
+                                type="text" 
+                                placeholder="X" 
+                                name={this.props.team.idfixture+"_away"} 
+                                onChange={this.handleInputChange} 
+                                maxLength="2" 
+                                pattern="^[0-9]{1,2}$"
+                            />
+                            <label></label>
+                        </div>
+                    );
+                }else{
+                    return (
+                        <div>
+                            <input 
+                                type="text" 
+                                placeholder="X" 
+                                name={this.props.team.idfixture+"_away"} 
+                                onChange={this.handleInputChange} 
+                                required="required" 
+                                maxLength="2" 
+                                pattern="^[0-9]{1,2}$"
+                            />
+                            <label></label>
+                        </div>
+                    );
+                }
             }
         }
     }

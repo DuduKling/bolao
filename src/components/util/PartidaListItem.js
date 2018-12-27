@@ -17,6 +17,15 @@ class PartidaListItem extends Component {
                     typeAway={this.checkIfAwayNeedsInput()}
                 />
             );
+        }else if(this.props.isAdmin==="admin"){
+            return (
+                <PartidaPlacar 
+                    team={this.props.team}
+                    typeHome={this.checkIfHomeNeedsInput()}
+                    typeAway={this.checkIfAwayNeedsInput()}
+                    isAdmin={"admin"}
+                />
+            );
         }else{
             return (
                 <PartidaPlacar 
