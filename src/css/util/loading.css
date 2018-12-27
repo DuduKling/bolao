@@ -4,6 +4,10 @@
 	justify-content: center;
 }
 
+.spinner-hide {
+	display: none;
+}
+
 .half-circle-spinner, .half-circle-spinner * {
 	box-sizing: border-box;
 }

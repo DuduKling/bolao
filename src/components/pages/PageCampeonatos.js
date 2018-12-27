@@ -18,106 +18,106 @@ class PageCampeonatos extends Component {
         super();
         this.state = {
             campeonatos: [
-                // {
-                //     "nomeCampeonato": "Copa do Mundo Rússia 2018",
-                //     "logoCampeonato": "russia_2018.png",
-                //     "dataInicioCampeonato": "88/88/888",
-                //     // "statusCampeonato": "finalizado",
-                //     "idCampeonato": "1",
-                //     // "participacaoCampeonato": "yes",
-                //     "fases": [
-                //         {
-                //             "id": "1",
-                //             "nomeFase": "Grupos",
-                //             // "apostaFase": true,
-                //             "partes": [
-                //                 {
-                //                     "id": 1,
-                //                     "nomeParte": "Tabela",
-                //                     "statusParte": "finalizado"
-                //                 }
-                //             ]
-                //         },
-                //         {
-                //             "id": "2",
-                //             "nomeFase": "Eliminatórias",
-                //             // "apostaFase": true,
-                //             "partes": [
-                //                 {
-                //                     "id": 1,
-                //                     "nomeParte": "Oitavas",
-                //                     "statusParte": "finalizado"
-                //                 },
-                //                 {
-                //                     "id": 2,
-                //                     "nomeParte": "Quartas",
-                //                     "statusParte": "finalizado"
-                //                 }
-                //             ]
-                //         }
-                //     ]
-                // },  
-                // {
-                //     "nomeCampeonato": "Copa América Brasil 2019",
-                //     "logoCampeonato": "copa_america_2019.png",
-                //     "dataInicioCampeonato": "88/88/888",
-                //     // "statusCampeonato": "aberto",
-                //     "idCampeonato": "2",
-                //     // "participacaoCampeonato": "no",
-                //     "fases": [
-                //         {
-                //             "id": "1",
-                //             "nomeFase": "Grupos",
-                //             // "apostaFase": true,
-                //             "partes": [
-                //                 {
-                //                     "id": 1,
-                //                     "nomeParte": "Oitavas",
-                //                     "statusParte": "aberto"
-                //                 }
-                //             ]
-                //         },
-                //         {
-                //             "id": "1",
-                //             "nomeFase": "Eliminatórias",
-                //             // "apostaFase": true,
-                //             "partes": [
-                //                 {
-                //                     "id": 1,
-                //                     "nomeParte": "Oitavas",
-                //                     "statusParte": "aberto"
-                //                 },
-                //                 {
-                //                     "id": 2,
-                //                     "nomeParte": "Quartas",
-                //                     "statusParte": "aposta"
-                //                 }
-                //             ]
-                //         }
-                //     ]
-                // },
-                // {
-                //     "nomeCampeonato": "Copa do Mundo Catar 2022",
-                //     "logoCampeonato": "qatar_2022.png",
-                //     "dataInicioCampeonato": "88/88/888",
-                //     // "statusCampeonato": "aposta",
-                //     "idCampeonato": "3",
-                //     // "participacaoCampeonato": "no",
-                //     "fases": [
-                //         {
-                //             "id": "1",
-                //             "nomeFase": "Grupos",
-                //             // "apostaFase": false,
-                //             "partes": [
-                //                 {
-                //                     "id": 1,
-                //                     "nomeParte": "Tabela",
-                //                     "statusParte": "tba"
-                //                 }
-                //             ]
-                //         }
-                //     ]
-                // }
+                {
+                    "nomeCampeonato": "Copa do Mundo Rússia 2018",
+                    "logoCampeonato": "russia_2018.png",
+                    "dataInicioCampeonato": "88/88/888",
+                    // "statusCampeonato": "finalizado",
+                    "idCampeonato": "1",
+                    // "participacaoCampeonato": "yes",
+                    "fases": [
+                        {
+                            "id": "1",
+                            "nomeFase": "Grupos",
+                            // "apostaFase": true,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nomeParte": "Tabela",
+                                    "statusParte": "finalizado"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "2",
+                            "nomeFase": "Eliminatórias",
+                            // "apostaFase": true,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nomeParte": "Oitavas",
+                                    "statusParte": "finalizado"
+                                },
+                                {
+                                    "id": 2,
+                                    "nomeParte": "Quartas",
+                                    "statusParte": "finalizado"
+                                }
+                            ]
+                        }
+                    ]
+                },  
+                {
+                    "nomeCampeonato": "Copa América Brasil 2019",
+                    "logoCampeonato": "copa_america_2019.png",
+                    "dataInicioCampeonato": "88/88/888",
+                    // "statusCampeonato": "aberto",
+                    "idCampeonato": "2",
+                    // "participacaoCampeonato": "no",
+                    "fases": [
+                        {
+                            "id": "1",
+                            "nomeFase": "Grupos",
+                            // "apostaFase": true,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nomeParte": "Oitavas",
+                                    "statusParte": "aberto"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "1",
+                            "nomeFase": "Eliminatórias",
+                            // "apostaFase": true,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nomeParte": "Oitavas",
+                                    "statusParte": "aberto"
+                                },
+                                {
+                                    "id": 2,
+                                    "nomeParte": "Quartas",
+                                    "statusParte": "aposta"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "nomeCampeonato": "Copa do Mundo Catar 2022",
+                    "logoCampeonato": "qatar_2022.png",
+                    "dataInicioCampeonato": "88/88/888",
+                    // "statusCampeonato": "aposta",
+                    "idCampeonato": "3",
+                    // "participacaoCampeonato": "no",
+                    "fases": [
+                        {
+                            "id": "1",
+                            "nomeFase": "Grupos",
+                            // "apostaFase": false,
+                            "partes": [
+                                {
+                                    "id": 1,
+                                    "nomeParte": "Tabela",
+                                    "statusParte": "tba"
+                                }
+                            ]
+                        }
+                    ]
+                }
             ]
         };
     }
@@ -144,7 +144,7 @@ class PageCampeonatos extends Component {
             }.bind(this)
         });
     }
-    
+
     //TODO Fazer uma área "meus campeonatos" para os campeonatos que a pessoa já está participando..
 
     render() {

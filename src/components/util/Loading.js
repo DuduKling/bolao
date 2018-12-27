@@ -2,25 +2,21 @@ import React, { Component } from 'react';
 import '../../css/util/loading.css';
 
 class Loading extends Component {
-
     render() {
-        let content;
-        if(this.props.loading) {
-            content = <div className="spinner">
-                        <div className="half-circle-spinner">
-                            <div className="circle circle-1"></div>
-                            <div className="circle circle-2"></div>
-                        </div>
-                    </div>;
-        } else { 
-            content = '';
+        if(this.props.loading){
+            return(
+                <div className="spinner">
+                    <div className="half-circle-spinner">
+                        <div className="circle circle-1"></div>
+                        <div className="circle circle-2"></div>
+                    </div>
+                </div>
+            );
+        }else{
+            return(
+                <div className="spinner-hide"></div>
+            ); 
         }
-
-        return (
-            <div>
-                {content}
-            </div>
-        );
     }
 }
 
