@@ -344,8 +344,7 @@ class PageDashboard extends Component {
                     "name": "Nome completo 2",
                     "points": "0"
                 }
-            ]
-            ,
+            ],
             campeonato: {
                 "nomeCampeonato": "Copa do Mundo Rússia 2018",
                 "logoCampeonato": "russia_2018.png",
