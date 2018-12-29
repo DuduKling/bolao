@@ -116,6 +116,22 @@
 	background-color: #388E3C;
 }
 
+.main-partidaForm  > .partidaLista > .errorMessage {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-color: white;
+	color: #424242;
+
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,.3), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+
+	border-left: 1px solid #c7c7c7;
+	border-right: 1px solid #c7c7c7;
+	border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
 
 .main-partidaForm > .EnviarAposta {
 	padding-top: 10px;
@@ -241,16 +257,88 @@
 .dashbord-top > h2 {
 	width: 100%;
 	text-align: center;
-	margin-top: 0;
 	color: #4caf50;
-    font-size: 30px;
+	font-size: 30px;
+
+	margin-top: 0;
+	margin-bottom: 5px;
+	
 }
 
-.dashbord-top > .dashboard-statusFase {
-	margin: 0 0 20px 0;
+.dashbord-top > h4 {
+	width: 100%;
+	text-align: center;
+	color: #424242;
+	font-size: 20px;
+
+	margin-top: 0;
+	margin-bottom: 20px;
+	
+}
+
+
+
+.dashboard-statusFase {
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	height: 45px;
+	padding: 0;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	border-top-right-radius: 10px;
+
+	/* padding: 0 10px 0px 10px; */
+}
+
+.dashboard-statusFase p {
+	display: inline-block;
+	
+	padding: 0px 15px;
+	margin: 0;
 
 	text-align: center;
-    color: #424242;
+	border-radius: 15px;
+	font-size: 14px;
 }
+
+.dashboard-statusFase.-finalizado {
+	background-color: #424242;
+	color: whitesmoke;
+}
+
+.dashboard-statusFase.-aberto {
+	background-color: #388E3C;
+	color: whitesmoke;
+}
+
+.dashboard-statusFase a {
+	height: 100%;
+	
+	background-color: #e60000;
+	padding: 0px 15px;
+	/* margin: 10px; */
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	text-align: center;
+	text-decoration: none;
+	border-top-right-radius: 10px;
+
+	color: #f5f5f5;
+	transition: all .3s ease;
+}
+
+.dashboard-statusFase a:hover{
+	background-color: #b90000;
+}
+
+
 
 

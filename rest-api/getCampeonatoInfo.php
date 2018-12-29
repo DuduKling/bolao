@@ -10,29 +10,28 @@ include_once 'config/database.php';
  
 $database = new Database();
 $db = $database->getConnection();
- 
-// $campeonato = new Campeonato($db);
- 
 
-$query = "SELECT * FROM campeonato";
+$data = json_decode(file_get_contents("php://input"));
+$campeonatoId = $data->campeonatoID;
 
+$query = "SELECT * FROM campeonato WHERE Id=:campeonatoID";
 $stmt = $db->prepare($query);
+
+$stmt->bindParam(':campeonatoID', $campeonatoId);
+
 $stmt->execute();
 $num = $stmt->rowCount();
 
 if($num>0){
-    
-    $dbCampeonatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $campeonatos = array();
+    $dbCampeonato = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $campeonato = new stdClass;
 
-    foreach($dbCampeonatos as $row){
-        $campeonato = new stdClass;
-
+    foreach($dbCampeonato as $row){
         $campeonato->idCampeonato = $row['Id'];
         $campeonato->nomeCampeonato = $row['nome'];
         $campeonato->logoCampeonato = $row['logo'];
         $campeonato->dataInicioCampeonato = date_format($date = date_create($row['dataInicio']), 'd/m/Y');
-        $campeonato->dataFimCampeonato = date_format(date_create($row['dataFim']), 'd/m/Y');
+        // $campeonato->dataFimCampeonato = date_format(date_create($row['dataFim']), 'd/m/Y');
         // $campeonato->statusCampeonato = $row['status'];
 
         // Fase
@@ -88,14 +87,13 @@ if($num>0){
         }
         
         $campeonato->fases = $fases;
-        array_push($campeonatos, $campeonato);
     }
     
     http_response_code(200);
-    echo json_encode($campeonatos);
+    echo json_encode(array("campeonato" => $campeonato));
 }else{
     http_response_code(401);
-    echo json_encode(array("message" => "Não foi possível encontrar os campeonatos."));
+    echo json_encode(array("message" => "Não foi possível encontrar este campeonato. Favor entrar em contato com o administrador."));
 }
 
 

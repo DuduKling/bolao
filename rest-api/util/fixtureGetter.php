@@ -8,7 +8,7 @@ function getFixtures($parteId) {
     INNER JOIN parte ON f.parte_id=parte.Id
     INNER JOIN fase ON parte.fase_Id=fase.Id
     INNER JOIN campeonato ON fase.campeonato_Id=campeonato.Id
-    WHERE parte.id=:parteID AND parte.status='true' ORDER BY f.Id ASC, dateTime ASC";
+    WHERE parte.id=:parteID AND parte.status='aposta' ORDER BY f.Id ASC, dateTime ASC";
     $stmt2 = $db->prepare($query2);
     
     $stmt2->bindParam(':parteID', $parteId);

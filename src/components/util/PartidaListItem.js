@@ -36,7 +36,7 @@ class PartidaListItem extends Component {
             );
         }
     }
-
+    
     checkIfHomeNeedsInput(){
         if(this.props.team.home_score){
             return "ReadOnly"

@@ -6,10 +6,15 @@ import { Link } from 'react-router-dom';
 class RankListItem extends Component {
     render() {
         return (
-            <tr key={this.props.index}>
+            <tr className={
+                this.props.position===1?"-gold"
+                // :this.props.position===2?"-silver"
+                // :this.props.position===3?"-bronze"
+                :""
+                } key={this.props.index}>
                 <td className="positionColumn">
                     <Link to={"/"+this.props.link.fase+"/apostado/"+this.props.rank.name}>
-                        {this.props.rank.position}
+                        {this.props.positionIgual?'':this.props.position}
                     </Link>
                 </td>
                 <td className="nameColumn">

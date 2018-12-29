@@ -81,7 +81,7 @@
     height: auto;
     
     background-color: white;
-	border-bottom: 1px solid #c7c7c7;
+	border-bottom: 1px solid #c7c7c73d;
 	border-left: 1px solid #c7c7c7;
     border-right: 1px solid #c7c7c7;
     
@@ -125,3 +125,14 @@
 }
 
 
+/* COLORS: */
+.rankTable > tbody > .-gold {background-color: #C98910ab;}
+.rankTable > tbody > .-gold:hover {background-color: #C98910cf;}
+
+/* 
+.rankTable > tbody > .-silver {background-color: #A8A8A8ab;}
+.rankTable > tbody > .-silver:hover {background-color: #A8A8A8cf;}
+
+.rankTable > tbody > .-bronze {background-color: #965A38ab;}
+.rankTable > tbody > .-bronze:hover {background-color: #965A38cf;} 
+*/
