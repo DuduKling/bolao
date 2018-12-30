@@ -72,9 +72,9 @@ class App extends Component {
             <PrivateRoute exact path='/user/config' component={PageUser} />
 
             <PrivateRoute exact path="/:parte/apostar" component={PageApostar} />  
-            <PrivateRoute exact path="/:campeonato/:fase/apostado/:nome" component={PageApostado} />
+            <PrivateRoute exact path="/:fase/apostado/:nome" component={PageApostado} />
             <PrivateRoute exact path="/:campeonato/:fase/jogos" component={PageFixtures} />
-            <PrivateRoute exact path="/:campeonato/:fase/jogo/:num_jogo" component={PageApostadoJogo} />
+            <PrivateRoute exact path="/:fase/jogo/:fixture" component={PageApostadoJogo} />
 
             <PrivateRoute exact path="/:campeonato/:fase/dashboard" component={PageDashboard} />
 

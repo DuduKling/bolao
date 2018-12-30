@@ -189,204 +189,90 @@ class PageDashboard extends Component {
             //         "away_path": ""
             //     }
             // ],
-            // // lastFixtures: [
-            // // //     {
-            // // //         "idfixture": "1",
-            // // //         "datetime": "Date Time",
-            // // //         "local": "Russia",
-            // // //         "home_score": "0",
-            // // //         "away_score": "0",
-            // // //         "home_team_name": "Time 1",
-            // // //         "home_path": "",
-            // // //         "away_team_name": "Time 2",
-            // // //         "away_path": ""
-            // // //     },
-            // // //     {
-            // // //         "idfixture": "2",
-            // // //         "datetime": "Date Time",
-            // // //         "local": "Russia",
-            // // //         "home_score": "0",
-            // // //         "away_score": "0",
-            // // //         "home_team_name": "Time 1",
-            // // //         "home_path": "",
-            // // //         "away_team_name": "Time 2",
-            // // //         "away_path": ""
-            // // //     },
-            // // //     {
-            // // //         "idfixture": "1",
-            // // //         "datetime": "Date Time",
-            // // //         "local": "Russia",
-            // // //         "home_score": "0",
-            // // //         "away_score": "0",
-            // // //         "home_team_name": "Time 1",
-            // // //         "home_path": "",
-            // // //         "away_team_name": "Time 2",
-            // // //         "away_path": ""
-            // // //     },
-            // // //     {
-            // // //         "idfixture": "2",
-            // // //         "datetime": "Date Time",
-            // // //         "local": "Russia",
-            // // //         "home_score": "0",
-            // // //         "away_score": "0",
-            // // //         "home_team_name": "Time 1",
-            // // //         "home_path": "",
-            // // //         "away_team_name": "Time 2",
-            // // //         "away_path": ""
-            // // //     },
-            // // //     {
-            // // //         "idfixture": "1",
-            // // //         "datetime": "Date Time",
-            // // //         "local": "Russia",
-            // // //         "home_score": "0",
-            // // //         "away_score": "0",
-            // // //         "home_team_name": "Time 1",
-            // // //         "home_path": "",
-            // // //         "away_team_name": "Time 2",
-            // // //         "away_path": ""
-            // // //     }
-            // // ], 
-            // // nextFixtures: [
-            // //     {
-            // //         "idfixture": "11",
-            // //         "datetime": "Date Time",
-            // //         "local": "Russia",
-            // //         "home_score": null,
-            // //         "away_score": null,
-            // //         "home_team_name": "Time 1",
-            // //         "home_path": "",
-            // //         "away_team_name": "Time 2",
-            // //         "away_path": ""
-            // //     },
-            // //     {
-            // //         "idfixture": "12",
-            // //         "datetime": "Date Time",
-            // //         "local": "Russia",
-            // //         "home_score": null,
-            // //         "away_score": null,
-            // //         "home_team_name": "Time 1",
-            // //         "home_path": "",
-            // //         "away_team_name": "Time 2",
-            // //         "away_path": ""
-            // //     },
-            // //     {
-            // //         "idfixture": "11",
-            // //         "datetime": "Date Time",
-            // //         "local": "Russia",
-            // //         "home_score": null,
-            // //         "away_score": null,
-            // //         "home_team_name": "Time 1",
-            // //         "home_path": "",
-            // //         "away_team_name": "Time 2",
-            // //         "away_path": ""
-            // //     },
-            // //     {
-            // //         "idfixture": "12",
-            // //         "datetime": "Date Time",
-            // //         "local": "Russia",
-            // //         "home_score": null,
-            // //         "away_score": null,
-            // //         "home_team_name": "Time 1",
-            // //         "home_path": "",
-            // //         "away_team_name": "Time 2",
-            // //         "away_path": ""
-            // //     },
-            // //     {
-            // //         "idfixture": "11",
-            // //         "datetime": "Date Time",
-            // //         "local": "Russia",
-            // //         "home_score": null,
-            // //         "away_score": null,
-            // //         "home_team_name": "Time 1",
-            // //         "home_path": "",
-            // //         "away_team_name": "Time 2",
-            // //         "away_path": ""
-            // //     }
-            // // ],
-            rank: [
-                {
-                    "position": "0",
-                    "name": "Nome completo 1234",
-                    "points": "40"
-                },
-                {
-                    "position": "1",
-                    "name": "Nome completo 2",
-                    "points": "30"
-                },
-                {
-                    "position": "0",
-                    "name": "Nome completo 1234",
-                    "points": "23"
-                },
-                {
-                    "position": "0",
-                    "name": "Nome completo 2",
-                    "points": "23"
-                },
-                {
-                    "position": "5",
-                    "name": "Nome completo 1234",
-                    "points": "11"
-                },
-                {
-                    "position": "0",
-                    "name": "Nome completo 2",
-                    "points": "8"
-                },
-                {
-                    "position": "0",
-                    "name": "Nome completo 1234",
-                    "points": "8"
-                },
-                {
-                    "position": "0",
-                    "name": "Nome completo 2",
-                    "points": "0"
-                }
-            ],
-            campeonato: {
-                "nomeCampeonato": "Copa do Mundo Rússia 2018",
-                "logoCampeonato": "russia_2018.png",
-                "dataInicioCampeonato": "88/88/888",
-                // "statusCampeonato": "finalizado",
-                "idCampeonato": "1",
-                // "participacaoCampeonato": "yes",
-                "fases": [
-                    {
-                        "id": "1",
-                        "nomeFase": "Grupos",
-                        // "apostaFase": true,
-                        "partes": [
-                            {
-                                "id": 1,
-                                "nomeParte": "Tabela",
-                                "statusParte": "finalizado"
-                            }
-                        ]
-                    },
-                    {
-                        "id": "2",
-                        "nomeFase": "Eliminatórias",
-                        // "apostaFase": true,
-                        "partes": [
-                            {
-                                "id": 1,
-                                "nomeParte": "Oitavas",
-                                "statusParte": "finalizado"
-                            },
-                            {
-                                "id": 2,
-                                "nomeParte": "Quartas",
-                                "statusParte": "aposta"
-                            }
-                        ]
-                    }
-                ]
-            }
+            // rank: [
+            //     {
+            //         "position": "0",
+            //         "name": "Nome completo 1234",
+            //         "points": "40"
+            //     },
+            //     {
+            //         "position": "1",
+            //         "name": "Nome completo 2",
+            //         "points": "30"
+            //     },
+            //     {
+            //         "position": "0",
+            //         "name": "Nome completo 1234",
+            //         "points": "23"
+            //     },
+            //     {
+            //         "position": "0",
+            //         "name": "Nome completo 2",
+            //         "points": "23"
+            //     },
+            //     {
+            //         "position": "5",
+            //         "name": "Nome completo 1234",
+            //         "points": "11"
+            //     },
+            //     {
+            //         "position": "0",
+            //         "name": "Nome completo 2",
+            //         "points": "8"
+            //     },
+            //     {
+            //         "position": "0",
+            //         "name": "Nome completo 1234",
+            //         "points": "8"
+            //     },
+            //     {
+            //         "position": "0",
+            //         "name": "Nome completo 2",
+            //         "points": "0"
+            //     }
+            // ],
+            // campeonato: {
+            //     "nomeCampeonato": "Copa do Mundo Rússia 2018",
+            //     "logoCampeonato": "russia_2018.png",
+            //     "dataInicioCampeonato": "88/88/888",
+            //     // "statusCampeonato": "finalizado",
+            //     "idCampeonato": "1",
+            //     // "participacaoCampeonato": "yes",
+            //     "fases": [
+            //         {
+            //             "id": "1",
+            //             "nomeFase": "Grupos",
+            //             // "apostaFase": true,
+            //             "partes": [
+            //                 {
+            //                     "id": 1,
+            //                     "nomeParte": "Tabela",
+            //                     "statusParte": "finalizado"
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             "id": "2",
+            //             "nomeFase": "Eliminatórias",
+            //             // "apostaFase": true,
+            //             "partes": [
+            //                 {
+            //                     "id": 1,
+            //                     "nomeParte": "Oitavas",
+            //                     "statusParte": "finalizado"
+            //                 },
+            //                 {
+            //                     "id": 2,
+            //                     "nomeParte": "Quartas",
+            //                     "statusParte": "aposta"
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // }
         };
     }
-
+    
     componentDidMount(){
         this.setState({loadingFixture: true});
         this.setState({loadingRank: true});
@@ -443,7 +329,7 @@ class PageDashboard extends Component {
         });
 
 
-
+        //TODO Rever que com o id da fase da pra pegar essas informações do campeonato....
         // Campeonato
         textJSON = `{
             "campeonatoID":"${campeonatoID}"

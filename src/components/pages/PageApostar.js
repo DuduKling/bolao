@@ -205,7 +205,7 @@ class PageApostar extends Component {
 
                         <ul className="partidaLista">
                             <h3 className="pageTitle">
-                                Aposte: {this.state.campeonato} - {this.state.fase}/{this.state.parte}
+                                Aposte: {this.state.campeonato?this.state.campeonato:""}{this.state.fase?" - "+this.state.fase:""}{"/"+this.state.parte?this.state.parte:""}
                             </h3>
                             <Loading loading={this.state.loading}/>
                             {

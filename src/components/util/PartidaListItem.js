@@ -62,7 +62,7 @@ class PartidaListItem extends Component {
                             this.props.team.usernames.split(",").map(function(name, index) {
                                 return (
                                     <div key={index}>
-                                        <Link  to={"../apostado/"+name}>{name}</Link>
+                                        <Link to={"../apostado/"+name}>{name}</Link>
                                     </div>
                                 );
                             })
