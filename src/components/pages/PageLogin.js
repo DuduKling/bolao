@@ -72,8 +72,15 @@ class PageLogin extends Component {
         if(this.props.match.params.typeOfLogin === "login"){
             return (
                 <div className="checkbox-container">
+                    <label className="pure-material-checkbox">
+                        <input type="checkbox" name="keepLogin" value="keepLogin" className="checkbox" id="keepLogin" />
+                        <span>Mantenha-me logado!</span>
+                    </label>
+
+                    {/* 
                     <input type="checkbox" name="keepLogin" value="keepLogin" className="checkbox" id="keepLogin" />
                     <label htmlFor="keepLogin">Mantenha-me logado!</label>
+                    */}
                 </div>
             );
         }
@@ -123,7 +130,7 @@ class PageLogin extends Component {
             }else{
 
                 
-                // Liberar interno local:
+                // // Liberar interno local:
                 // var pessoa = {userName:"John", userEmail:"email@exemplo.com"};
                 // updateJWT(pessoa);
                 // this.setState({redirectToUser: true});
@@ -131,6 +138,7 @@ class PageLogin extends Component {
                 //     userName: "Teste local", 
                 //     userEmail: "teste@local.com",
                 //     userID: "666",
+                //     userImg: "/imagens/users/avatar.png",
                 //     userJWT: "numeros.numeros.numeros"
                 // };
                 // updateJWT(userInfo);
@@ -156,18 +164,23 @@ class PageLogin extends Component {
                     data: dataString,
                     success: function(resposta){
                         // console.log(resposta);
-
+                        
                         var userInfo = {
                             userName: resposta.name, 
-                            userEmail:resposta.email,
+                            userEmail: resposta.email,
                             userID: resposta.id,
+                            userImg: resposta.imagePath,
                             userJWT: resposta.jwt
                         };
                         updateJWT(userInfo);
 
+                        
                         if(keeplogin.is(':checked')){
-                            // console.log("quer ficar logado!");
-                            SetCookie("userLogin", JSON.stringify(userInfo), 7);
+                            // SetCookie("userLogin", JSON.stringify(userInfo), 7);
+                            SetCookie("userLogin", resposta.jwt, 7);
+                        }else{
+                            // SetCookie("userLogin", JSON.stringify(userInfo), 0);
+                            SetCookie("userLogin", resposta.jwt, 0)
                         }
 
                         this.setState({redirectToUser: true});
@@ -257,7 +270,7 @@ class PageLogin extends Component {
         if(this.state.redirectToUser) return <Redirect to={"/user/campeonatos"} />;
         
     }
-
+    
     render() {
         return (
             <div className="login-container">
@@ -311,9 +324,8 @@ class PageLogin extends Component {
     }
 }
 
-const mapStateToProps = store => ({});
 
 const mapDispatchToProps = dispatch => 
 bindActionCreators({ updateJWT }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageLogin);
+export default connect(null, mapDispatchToProps)(PageLogin);

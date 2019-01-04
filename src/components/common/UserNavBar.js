@@ -20,7 +20,8 @@ class UserNavBar extends Component {
         };
         updateJWT(userInfo);
         
-        SetCookie("userLogin", JSON.stringify(userInfo), 0)
+        // SetCookie("userLogin", JSON.stringify(userInfo), 0);
+        SetCookie("userLogin", "", 0);
     }
 
     render() {

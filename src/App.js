@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './css/App.css';
+import $ from 'jquery';
 
 import { Switch, Route } from 'react-router-dom';
 
@@ -9,6 +10,8 @@ import { connect } from 'react-redux';
 
 import SiteHeader from './components/common/SiteHeader';
 import SiteFooter from './components/common/SiteFooter';
+
+import SetCookie from './components/util/setCookie';
 
 import PageHome from './components/pages/PageHome';
 import PageRegulamento from './components/pages/Regulamento';
@@ -28,72 +31,113 @@ import PageCampeonatos from './components/pages/PageCampeonatos';
 
 
 class App extends Component {
-  getCookie(cname){
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
+	getCookie(cname){
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
 
-    for(var i = 0; i <ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) === ' '){
-        c = c.substring(1);
-      }
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) === ' '){
+				c = c.substring(1);
+			}
 
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-  
-  componentWillMount(){
-    var userInfo = this.getCookie('userLogin');
-    
-    if(userInfo !== ""){
-      userInfo = JSON.parse(userInfo);
+			if (c.indexOf(name) === 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	componentWillMount(){
+		// var userInfo = this.getCookie('userLogin');
+		
+		// if(userInfo !== ""){
+		//   userInfo = JSON.parse(userInfo);
 
-      const { updateJWT } = this.props;
-      updateJWT(userInfo);
-    }
-  }
+		//   const { updateJWT } = this.props;
+		//   updateJWT(userInfo);
+		// }
+		
+		var userInfo = this.getCookie('userLogin');
 
-  render() {
-    return (
-        <div className="wrapper">
-          <SiteHeader />
+		if(userInfo) {
+			const { updateJWT } = this.props;
 
-          <Switch>
-            <Route exact path='/' component={PageHome} />
-            <Route exact path='/regulamento' component={PageRegulamento} />
+			var textJSON = `{
+				"jwt":"${userInfo}"
+			}`;
+			var textJSON2 = JSON.parse(textJSON);
+			var dataString = JSON.stringify(textJSON2);
+			
+			$.ajax({
+				url:"../rest-api/validateCookie.php",
+				type: 'post',
+				contentType : 'application/json',
+				data: dataString,
+				success: function(resposta){
+	
+					var userInfo = {
+						userName: resposta.name, 
+						userEmail: resposta.email,
+						userID: resposta.id,
+						userImg: resposta.userImg,
+						userJWT: resposta.jwt
+					};
+					updateJWT(userInfo);
+					
+				},
+				error: function(xhr, status, err){
+					console.error(status, err.toString());
+					console.log(JSON.parse(xhr.responseText));
 
+					if(JSON.parse(xhr.responseText).message.toString() === "JWT não decodificado") {
+						SetCookie("userLogin", "", 0);
+					}
+				}
+			});	
+		}
+	}
 
-            <PrivateRoute exact path='/user/campeonatos' component={PageCampeonatos} />
-            <Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
-            <PrivateRoute exact path='/user/config' component={PageUser} />
+	render() {
+		return (
+				<div className="wrapper">
+					<SiteHeader />
 
-            <PrivateRoute exact path="/:parte/apostar" component={PageApostar} />  
-            <PrivateRoute exact path="/:fase/apostado/:nome" component={PageApostado} />
-            <PrivateRoute exact path="/:campeonato/:fase/jogos" component={PageFixtures} />
-            <PrivateRoute exact path="/:fase/jogo/:fixture" component={PageApostadoJogo} />
+					<Switch>
+						{/* ALL */}
+						<Route exact path='/' component={PageHome} />
+						<Route exact path='/regulamento' component={PageRegulamento} />
 
-            <PrivateRoute exact path="/:campeonato/:fase/dashboard" component={PageDashboard} />
+						{/* LOGGED ONLY - USER */}
+						<PrivateRoute exact path='/user/campeonatos' component={PageCampeonatos} />
+						<Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
+						<PrivateRoute exact path='/user/config' component={PageUser} />
 
+						{/* LOGGED ONLY - JOGOS/CAMPEONATOS */}
+						<PrivateRoute exact path="/:campeonato/:fase/dashboard" component={PageDashboard} />
+						<PrivateRoute exact path="/:campeonato/:fase/jogos" component={PageFixtures} />
 
-            <PrivateRoute exact path="/:parte/admin" component={PageAdmin} />
+						{/* TODO: Colocar o /:campeonato nesses 3 caras para ficar tudo formatadinho igual? */}
+						<PrivateRoute exact path="/:fase/apostado/:nome" component={PageApostado} />
+						<PrivateRoute exact path="/:fase/jogo/:fixture" component={PageApostadoJogo} />
 
+						<PrivateRoute exact path="/:parte/apostar" component={PageApostar} />
 
-            <Route component={Page404} />
-          </Switch>
-      
-          <SiteFooter />
-        </div>
-    );
-  }
+						{/* ADMIN ONLY */}
+						<PrivateRoute exact path="/:parte/admin" component={PageAdmin} />
+
+						{/* WRONG ROUTES */}
+						<Route component={Page404} />
+					</Switch>
+			
+					<SiteFooter />
+				</div>
+		);
+	}
 }
-
-const mapStateToProps = store => ({});
 
 const mapDispatchToProps = dispatch => 
 bindActionCreators({ updateJWT }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(null, mapDispatchToProps)(App)

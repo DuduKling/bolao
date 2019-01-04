@@ -11,7 +11,8 @@ class User{
     public $completename;
     public $email;
     public $password;
-    
+    public $imagePath;
+
     // constructor
     public function __construct($db){
         $this->conn = $db;
@@ -50,7 +51,7 @@ class User{
     
         return false;
     }
-
+    
     function CheckIfEmailExists(){
         $query = "SELECT *
                 FROM " . $this->table_name . "
@@ -77,7 +78,7 @@ class User{
     function emailExists(){
     
         // query to check if email exists
-        $query = "SELECT id, name, passwd
+        $query = "SELECT id, name, passwd, imagePath
                 FROM " . $this->table_name . "
                 WHERE email = ?
                 LIMIT 0,1";
@@ -107,6 +108,7 @@ class User{
             $this->id = $row['id'];
             $this->completename = $row['name'];
             $this->password = $row['passwd'];
+            $this->imagePath = $row['imagePath'];
     
             // return true because email exists in the database
             return true;
@@ -118,50 +120,51 @@ class User{
     
     //---- update() method will be here
     // update a user record
-    public function update(){
+    public function updateNopass(){
 
-        if(!empty($this->password)){
-            $query = "UPDATE " . $this->table_name . "
-                SET
-                    passwd = :password
-                WHERE id = :id";  
-        }elseif(empty($this->email)){
-            $query = "UPDATE " . $this->table_name . "
-                SET
-                    name = :completename
-                WHERE id = :id";
-        }elseif(empty($this->completename)){
-            $query = "UPDATE " . $this->table_name . "
-                SET
-                    email = :email
-                WHERE id = :id";
-        }else{
-            $query = "UPDATE " . $this->table_name . "
-                SET
-                    name = :completename,
-                    email = :email
-                WHERE id = :id";
-        }
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                name = :completename,
+                email = :email
+            WHERE id = :id";
         
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+    
+        // bind the values from the form
+        $this->completename=htmlspecialchars(strip_tags($this->completename));
+        $this->email=htmlspecialchars(strip_tags($this->email));
+
+        $stmt->bindParam(':completename', $this->completename);
+        $stmt->bindParam(':email', $this->email);
+        
+        // unique ID of record to be edited
+        $stmt->bindParam(':id', $this->id);
+
+        // execute the query
+        if($stmt->execute()){
+            return true;
+        }
+    
+        return false;
+    }
+
+    public function updatePass(){
+
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                passwd = :password
+            WHERE id = :id";
+            
         // prepare the query
         $stmt = $this->conn->prepare($query);        
     
-        // bind the values from the form
-        if(!empty($this->completename)){
-            $this->completename=htmlspecialchars(strip_tags($this->completename));
-            $stmt->bindParam(':completename', $this->completename);
-        }
-        if(!empty($this->email)){
-            $this->email=htmlspecialchars(strip_tags($this->email));
-            $stmt->bindParam(':email', $this->email);
-        }
-    
         // hash the password before saving to database
-        if(!empty($this->password)){
-            $this->password=htmlspecialchars(strip_tags($this->password));
-            $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
-            $stmt->bindParam(':password', $password_hash);
-        }
+
+        $this->password=htmlspecialchars(strip_tags($this->password));
+        $password_hash=password_hash($this->password, PASSWORD_BCRYPT);
+        
+        $stmt->bindParam(':password', $password_hash);
         
         // unique ID of record to be edited
         $stmt->bindParam(':id', $this->id);
@@ -175,7 +178,7 @@ class User{
     }
 
     public function updateInternalInfo(){
-        $query = "SELECT name, email FROM users WHERE id = :id";
+        $query = "SELECT name, email, imagePath FROM users WHERE id = :id";
         $stmt = $this->conn->prepare( $query );
         $stmt->bindParam(':id', $this->id);
         $stmt->execute();
@@ -185,7 +188,7 @@ class User{
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->completename = $row['name'];
             $this->email = $row['email'];
+            $this->imagePath = $row['imagePath'];
         }
     }
-
 }

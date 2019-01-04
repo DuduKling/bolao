@@ -69,6 +69,8 @@
     width: 100px;
     height: 100px;
 
+    position: relative;
+
     background-color: #4caf50;
     border-radius: 50%;
     overflow: hidden;
@@ -81,13 +83,47 @@
     object-fit: cover;
 }
 
+.userInfo-img > #selectImage {
+    display: none;
+}
 
+.userInfo-img > .selectImageLabel {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    opacity: 0;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: all 0.3s ease;
+}
+
+.userInfo-img > .selectImageLabel > img {
+    width: 30px;
+    fill: whitesmoke;
+}
+
+.userInfo-img > .selectImageLabel:hover {
+    opacity: 1;
+}
 
 
 
 .userPage-userInfo > .userInfo > .userInfo-title {
     margin: -45px 0 0 0;
-    padding: 45px 15px 0px 15px;
+    padding: 45px 15px 10px 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .userPage-userInfo > .userInfo > .userInfo-title > .material-input > label {

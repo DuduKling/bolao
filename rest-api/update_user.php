@@ -59,58 +59,114 @@ if($jwt){
         $user->password = $data->password;
 
         $user->id = $decoded->data->id;
+        $tipo = $data->type;
+
         
+        if($tipo=="nopass"){
+            //---- update user will be here
+            // create the product
+            if($user->updateNopass()){
 
+                $user->updateInternalInfo();
 
-        //---- update user will be here
-        // create the product
-        if($user->update()){
-
-            $user->updateInternalInfo();
-
-            //---- regenerate jwt will be here
-            // we need to re-generate jwt because user details might be different
-            $token = array(
-                "iss" => $iss,
-                "aud" => $aud,
-                "iat" => $iat,
-                "nbf" => $nbf,
-                "exp" => $exp,
-                "data" => array(
-                    "id" => $user->id,
-                    "completename" => $user->completename,
-                    "email" => $user->email
-                )
-            );
-            $jwt = JWT::encode($token, $key);
+                //---- regenerate jwt will be here
+                // we need to re-generate jwt because user details might be different
+                $token = array(
+                    "iss" => $iss,
+                    "aud" => $aud,
+                    "iat" => $iat,
+                    "nbf" => $nbf,
+                    "exp" => $exp,
+                    "data" => array(
+                        "id" => $user->id,
+                        "completename" => $user->completename,
+                        "email" => $user->email
+                    )
+                );
+                $jwt = JWT::encode($token, $key);
+                
+                // set response code
+                http_response_code(200);
+                
+                // response in json format
+                echo json_encode(
+                    array(
+                        "message" => "Informações atualizadas!",
+                        "jwt" => $jwt,
+                        "name" => $user->completename,
+                        "email" => $user->email,
+                        "userImg" => $user->imagePath,
+                        "id" => $user->id
+                    )
+                );
+            }
             
-            // set response code
-            http_response_code(200);
+            // message if unable to update user
+            else{
+                // set response code
+                http_response_code(401);
             
-            // response in json format
-            echo json_encode(
-                array(
-                    "message" => "Informações atualizadas!",
-                    "jwt" => $jwt,
+                // show error message
+                echo json_encode(array(
+                    "message" => "Não foi possível atualizar as informações, favor entrar em contato com o Administrador.",
                     "name" => $user->completename,
                     "email" => $user->email,
                     "id" => $user->id
-                )
-            );
-        }
-        
-        // message if unable to update user
-        else{
-            // set response code
-            http_response_code(401);
-        
-            // show error message
-            echo json_encode(array(
-                "message" => "Não foi possível atualizar as informações, favor entrar em contato com o Administrador.",
-                "name" => $user->completename,
-                "email" => $user->email,
-                "id" => $user->id
-            ));
+                ));
+            }
+        }elseif($tipo=="pass"){
+            //---- update user will be here
+            // create the product
+            if($user->updatePass()){
+
+                $user->updateInternalInfo();
+
+                //---- regenerate jwt will be here
+                // we need to re-generate jwt because user details might be different
+                $token = array(
+                    "iss" => $iss,
+                    "aud" => $aud,
+                    "iat" => $iat,
+                    "nbf" => $nbf,
+                    "exp" => $exp,
+                    "data" => array(
+                        "id" => $user->id,
+                        "completename" => $user->completename,
+                        "email" => $user->email
+                    )
+                );
+                $jwt = JWT::encode($token, $key);
+                
+                // set response code
+                http_response_code(200);
+                
+                // response in json format
+                echo json_encode(
+                    array(
+                        "message" => "Senha atualizada!",
+                        "jwt" => $jwt,
+                        "name" => $user->completename,
+                        "email" => $user->email,
+                        "userImg" => $user->imagePath,
+                        "id" => $user->id
+                    )
+                );
+            }
+            
+            // message if unable to update user
+            else{
+                // set response code
+                http_response_code(401);
+            
+                // show error message
+                echo json_encode(array(
+                    "message" => "Não foi possível atualizar a sua senha, favor entrar em contato com o Administrador.",
+                    "name" => $user->completename,
+                    "email" => $user->email,
+                    "userImg" => $user->imagePath,
+                    "id" => $user->id
+                ));
+            }
         }
     }
 
@@ -142,3 +198,6 @@ else{
     echo json_encode(array("message" => "Acesso Negado. Favor fazer login novamente."));
 }
 ?>
+
+
+

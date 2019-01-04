@@ -64,15 +64,17 @@ if($email_exists && password_verify($data->password, $user->password)){
  
     // generate jwt
     $jwt = JWT::encode($token, $key);
+    $user->updateInternalInfo();
     echo json_encode(
-            array(
-                "message" => "Login efetuado com sucesso!",
-                "jwt" => $jwt,
-                "name" => $user->completename,
-                "email" => $user->email,
-                "id" => $user->id
-            )
-        );
+        array(
+            "message" => "Login efetuado com sucesso!",
+            "jwt" => $jwt,
+            "name" => $user->completename,
+            "email" => $user->email,
+            "imagePath" => $user->imagePath,
+            "id" => $user->id
+        )
+    );
  
 }
 
