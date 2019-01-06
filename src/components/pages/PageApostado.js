@@ -5,7 +5,7 @@ import '../../css/pages/pageInside.css';
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 
-// import Avatar from '../../imgs/avatar.png';
+import Avatar from '../../imgs/avatar.png';
 
 
 class PageApostar extends Component {
@@ -122,7 +122,10 @@ class PageApostar extends Component {
 
                         <div className="userImage-container">
                             <div className="userImage">
-                                <img src={this.state.userImage?this.state.userImage:"/imagens/users/avatar.png"}alt="Avatar do usuário"/>
+                                <img src={this.state.userImage?
+                                    this.state.userImage
+                                    :Avatar}
+                                    alt="Avatar do usuário"/>
                             </div>
                         </div>
 

@@ -29,8 +29,17 @@ import PageDashboard from './components/pages/PageDashboard';
 import PageUser from './components/pages/PageUser';
 import PageCampeonatos from './components/pages/PageCampeonatos';
 
+import BigLoading from './components/util/BigLoading';
+
 
 class App extends Component {
+	constructor() {
+        super();
+        this.state = {
+            isAuth: 'noResponseFromAjax'
+        };
+	}
+	
 	getCookie(cname){
 		var name = cname + "=";
 		var decodedCookie = decodeURIComponent(document.cookie);
@@ -71,7 +80,7 @@ class App extends Component {
 			var dataString = JSON.stringify(textJSON2);
 			
 			$.ajax({
-				url:"../rest-api/validateCookie.php",
+				url:"https://bolaodogui.000webhostapp.com/rest-api/validateCookie.php",
 				type: 'post',
 				contentType : 'application/json',
 				data: dataString,
@@ -85,8 +94,12 @@ class App extends Component {
 						userJWT: resposta.jwt
 					};
 					updateJWT(userInfo);
+
+					this.setState({
+						isAuth: true
+					});
 					
-				},
+				}.bind(this),
 				error: function(xhr, status, err){
 					console.error(status, err.toString());
 					console.log(JSON.parse(xhr.responseText));
@@ -94,50 +107,79 @@ class App extends Component {
 					if(JSON.parse(xhr.responseText).message.toString() === "JWT não decodificado") {
 						SetCookie("userLogin", "", 0);
 					}
-				}
+					this.setState({
+						isAuth: false
+					});
+				}.bind(this)
 			});	
+		}else{
+			this.setState({
+				isAuth: false
+			});
 		}
+	}
+
+	returnBigLoading(){
+		return (
+			<BigLoading />
+		);
+	}
+
+	returnApp(){
+		return (
+			<div className="wrapper">
+				<SiteHeader />
+
+				<Switch>
+					{/* ALL */}
+					<Route exact path='/' component={PageHome} />
+					<Route exact path='/regulamento' component={PageRegulamento} />
+					<Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
+
+					{/* LOGGED ONLY - USER */}
+					<PrivateRoute exact path='/user/campeonatos' component={PageCampeonatos} />
+					<PrivateRoute exact path='/user/config' component={PageUser} />
+
+					{/* LOGGED ONLY - JOGOS/CAMPEONATOS */}
+					<PrivateRoute exact path="/:campeonato/:fase/dashboard" component={PageDashboard} />
+					<PrivateRoute exact path="/:campeonato/:fase/jogos" component={PageFixtures} />
+
+					{/* TODO: Colocar o /:campeonato nesses 3 caras para ficar tudo formatadinho igual? */}
+					<PrivateRoute exact path="/:fase/apostado/:nome" component={PageApostado} />
+					<PrivateRoute exact path="/:fase/jogo/:fixture" component={PageApostadoJogo} />
+
+					<PrivateRoute exact path="/:parte/apostar" component={PageApostar} />
+
+					{/* ADMIN ONLY */}
+					<PrivateRoute exact path="/:parte/admin" component={PageAdmin} />
+
+					{/* WRONG ROUTES */}
+					<Route component={Page404} />
+				</Switch>
+		
+				<SiteFooter />
+			</div>
+		);
 	}
 
 	render() {
 		return (
-				<div className="wrapper">
-					<SiteHeader />
-
-					<Switch>
-						{/* ALL */}
-						<Route exact path='/' component={PageHome} />
-						<Route exact path='/regulamento' component={PageRegulamento} />
-
-						{/* LOGGED ONLY - USER */}
-						<PrivateRoute exact path='/user/campeonatos' component={PageCampeonatos} />
-						<Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
-						<PrivateRoute exact path='/user/config' component={PageUser} />
-
-						{/* LOGGED ONLY - JOGOS/CAMPEONATOS */}
-						<PrivateRoute exact path="/:campeonato/:fase/dashboard" component={PageDashboard} />
-						<PrivateRoute exact path="/:campeonato/:fase/jogos" component={PageFixtures} />
-
-						{/* TODO: Colocar o /:campeonato nesses 3 caras para ficar tudo formatadinho igual? */}
-						<PrivateRoute exact path="/:fase/apostado/:nome" component={PageApostado} />
-						<PrivateRoute exact path="/:fase/jogo/:fixture" component={PageApostadoJogo} />
-
-						<PrivateRoute exact path="/:parte/apostar" component={PageApostar} />
-
-						{/* ADMIN ONLY */}
-						<PrivateRoute exact path="/:parte/admin" component={PageAdmin} />
-
-						{/* WRONG ROUTES */}
-						<Route component={Page404} />
-					</Switch>
-			
-					<SiteFooter />
-				</div>
+			<div>
+				{
+					this.state.isAuth==='noResponseFromAjax'?
+						this.returnBigLoading()
+						:this.returnApp()
+				}
+			</div>
 		);
 	}
 }
 
+const mapStateToProps = store => ({
+    userName: store.AuthJWTState.userName
+});
+
 const mapDispatchToProps = dispatch => 
 bindActionCreators({ updateJWT }, dispatch);
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

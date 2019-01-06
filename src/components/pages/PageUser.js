@@ -65,7 +65,7 @@ class PageUser extends Component {
                         userName: resposta.name, 
                         userEmail: resposta.email,
                         userID: resposta.id,
-                        userImg: resposta.imagePath,
+                        userImg: resposta.userImg,
                         userJWT: resposta.jwt
                     };
                     updateJWT(userInfo);
@@ -226,7 +226,7 @@ class PageUser extends Component {
             );
         }
     }
-
+    
     showForm2Messages() {
         if(this.state.ajax2ErrorResp === '' && this.state.ajax2SuccessResp === ''){
             return (
