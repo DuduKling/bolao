@@ -46,6 +46,20 @@
     align-items: center;
 }
 
+.login-container > .form-container > .form > a {
+    margin-top: 20px;
+
+    color: #4CAF50;
+    font-size: 14px;
+    text-decoration: none;
+
+    transition: all 0.3s ease;
+}
+
+.login-container > .form-container > .form > a:hover {
+    color: #388E3C;
+}
+
 
 
 

@@ -30,6 +30,7 @@ import PageUser from './components/pages/PageUser';
 import PageCampeonatos from './components/pages/PageCampeonatos';
 
 import BigLoading from './components/util/BigLoading';
+import PageEsqueci from './components/pages/PageEsqueci';
 
 
 class App extends Component {
@@ -59,16 +60,32 @@ class App extends Component {
 	}
 	
 	componentWillMount(){
-		// var userInfo = this.getCookie('userLogin');
-		
-		// if(userInfo !== ""){
-		//   userInfo = JSON.parse(userInfo);
-
-		//   const { updateJWT } = this.props;
-		//   updateJWT(userInfo);
-		// }
-		
 		var userInfo = this.getCookie('userLogin');
+
+
+
+		/* LOCALHOST */
+			this.setState({
+				isAuth: true
+			});
+
+			const { updateJWT } = this.props;
+
+			var userInfo2 = {
+				userName: "Localhost User", 
+				userEmail: "email@localhost.com",
+				userID: "6666666",
+				userImg: "",
+				userJWT: userInfo.jwt
+			};
+			updateJWT(userInfo2);
+
+		/* END: LOCALHOST */
+
+
+
+
+		
 
 		if(userInfo) {
 			const { updateJWT } = this.props;
@@ -135,6 +152,7 @@ class App extends Component {
 					<Route exact path='/' component={PageHome} />
 					<Route exact path='/regulamento' component={PageRegulamento} />
 					<Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
+					<Route exact path='/user/esqueci/:id?/:jwtCode?' component={PageEsqueci} />
 
 					{/* LOGGED ONLY - USER */}
 					<PrivateRoute exact path='/user/campeonatos' component={PageCampeonatos} />
@@ -166,9 +184,9 @@ class App extends Component {
 		return (
 			<div>
 				{
-					this.state.isAuth==='noResponseFromAjax'?
-						this.returnBigLoading()
-						:this.returnApp()
+				this.state.isAuth==='noResponseFromAjax'?
+					this.returnBigLoading()
+					:this.returnApp()
 				}
 			</div>
 		);

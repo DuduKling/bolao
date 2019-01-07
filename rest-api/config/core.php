@@ -12,5 +12,5 @@ $aud = "https://bolaodogui.000webhostapp.com";    //"aud" (Audience) Claim
 // $iat = 1356999524;
 $iat =  time();  //"iat" (Issued At) Claim
 $nbf = $iat + 1;  //"nbf" (Not Before) Claim
-$exp = $iat + 604800;   // Expire
+$exp = $iat + 604800;   // Expire (7 dias dps)
 ?>

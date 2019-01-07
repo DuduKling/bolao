@@ -36,7 +36,9 @@ $user = new User($db);
 //---- retrieve given jwt here
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
- 
+$tipo = $data->type;
+$id = $data->id;
+
 // get jwt
 $jwt=isset($data->jwt) ? $data->jwt : "";
  
@@ -45,6 +47,54 @@ $jwt=isset($data->jwt) ? $data->jwt : "";
 //---- decode jwt here
 // if jwt is not empty
 if($jwt){
+
+    if($tipo=="resetPass"){
+        
+        $query = "SELECT *
+            FROM users
+            WHERE Id = ?
+            LIMIT 0,1
+        ";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(1, $id);
+
+        $stmt->execute();
+        $num = $stmt->rowCount();
+
+        if($num>0){
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $id = $row['Id'];
+            $password = $row['passwd'];
+            $created = $row['created'];
+            
+            
+            $secret = $password . $created;
+
+            try {
+                $decoded = JWT::decode($jwt, $secret, array('HS256'));
+
+                $user->password = $data->password;
+                $user->id = $id;
+                
+                if($user->updatePass()){
+                    http_response_code(200);
+                    echo json_encode(array(
+                        "message" => "Senha atualizada com sucesso!"
+                    ));
+
+                    return true;
+                }
+
+            }catch(Exception $e){
+                http_response_code(401);
+                echo json_encode(array(
+                    "message" => "Não foi possível redefinir sua senha. Código de segurança errado.",
+                    "error" => $e->getMessage()
+                ));
+            }
+        }
+    }
  
     // if decode succeed, show user details
     try {
@@ -59,7 +109,7 @@ if($jwt){
         $user->password = $data->password;
 
         $user->id = $decoded->data->id;
-        $tipo = $data->type;
+        
 
         
         if($tipo=="nopass"){
@@ -168,11 +218,7 @@ if($jwt){
                 ));
             }
         }
-    }
-
-    //---- catch failed decoding will be here
-    // if decode fails, it means jwt is invalid
-    catch (Exception $e){
+    }catch (Exception $e){
     
         // set response code
         http_response_code(401);
@@ -184,12 +230,7 @@ if($jwt){
         ));
     }
 
-}
-
-
-//---- error message if jwt is empty will be here
-// show error message if jwt is empty
-else{
+}else{
  
     // set response code
     http_response_code(401);

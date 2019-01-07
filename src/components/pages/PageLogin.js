@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import '../../css/pages/login.css';
 import '../../css/util/formMessage.css';
 import $ from 'jquery';
+
 import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import SetCookie from '../util/setCookie';
 
@@ -23,7 +25,7 @@ class PageLogin extends Component {
             redirectToUser: false
         };
     }
-
+    
     fixPageName(){
         var pathName = ""+this.props.match.params.typeOfLogin;
         pathName = pathName.charAt(0).toUpperCase() + pathName.slice(1);
@@ -82,6 +84,16 @@ class PageLogin extends Component {
                     <label htmlFor="keepLogin">Mantenha-me logado!</label>
                     */}
                 </div>
+            );
+        }
+    }
+
+    CheckIfFormLogin2ForEsqueciASenha(){
+        if(this.props.match.params.typeOfLogin === "login"){
+            return (
+                <Link className="menuItem" to="/user/esqueci">
+                    Esqueci a senha
+                </Link>
             );
         }
     }
@@ -312,6 +324,8 @@ class PageLogin extends Component {
                             className="SendButton" 
                             value={this.SetButtonName()}
                         />
+
+                        {this.CheckIfFormLogin2ForEsqueciASenha()}
 
                         {/*// TODO colocar um esqueci minha senha..*/}
                     </form>
