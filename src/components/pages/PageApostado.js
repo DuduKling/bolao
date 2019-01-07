@@ -22,7 +22,10 @@ class PageApostar extends Component {
                 //     "home_team_name": "Time 1",
                 //     "home_path": "",
                 //     "away_team_name": "Time 2",
-                //     "away_path": ""
+                //     "away_path": "",
+                //     "final_scoreHome": "1",
+                //     "final_scoreAway": "0",
+                //     "points": "3"
                 // },
                 // {
                 //     "idfixture": "2",
@@ -33,7 +36,10 @@ class PageApostar extends Component {
                 //     "home_team_name": "Time 1",
                 //     "home_path": "",
                 //     "away_team_name": "Time 2",
-                //     "away_path": ""
+                //     "away_path": "",
+                //     "final_scoreHome": "1",
+                //     "final_scoreAway": "0",
+                //     "points": "3"
                 // },
                 // {
                 //     "idfixture": "2",
@@ -44,7 +50,10 @@ class PageApostar extends Component {
                 //     "home_team_name": "Time 1",
                 //     "home_path": "",
                 //     "away_team_name": "Time 2",
-                //     "away_path": ""
+                //     "away_path": "",
+                //     "final_scoreHome": "1",
+                //     "final_scoreAway": "0",
+                //     "points": "3"
                 // },
                 // {
                 //     "idfixture": "2",
@@ -66,7 +75,10 @@ class PageApostar extends Component {
                 //     "home_team_name": "Time 1",
                 //     "home_path": "",
                 //     "away_team_name": "Time 2",
-                //     "away_path": ""
+                //     "away_path": "",
+                //     "final_scoreHome": "null",
+                //     "final_scoreAway": null,
+                //     "points": null
                 // }
             ], 
             // userImage: null, 

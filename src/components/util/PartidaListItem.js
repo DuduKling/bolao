@@ -84,6 +84,23 @@ class PartidaListItem extends Component {
         }
     }
 
+    checkIfShowPoints(){
+        if(this.props.team.points !== undefined){
+            if(this.props.team.points !== null){
+                return(
+                    <div className="users-points">
+                        Final:
+                        {" "+this.props.team.final_scoreHome} 
+                        x
+                        {this.props.team.final_scoreAway+" "}
+                        | Pontos:
+                        {" "+this.props.team.points}
+                    </div>
+                );
+            }
+        }
+    }
+
     
     checkIfShowAsLink(){
         if(this.props.link !== undefined){
@@ -125,6 +142,8 @@ class PartidaListItem extends Component {
                 </div>
 
                 {this.checkIfShowUsernames()}
+
+                {this.checkIfShowPoints()}
 
                 {this.checkIfShowPorcent()}
 

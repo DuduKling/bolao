@@ -17,7 +17,7 @@ $faseId = $data->faseID;
 $userName = $data->userName;
 
 
-$query = "SELECT c.nome as campeonato, fa.nome as fase, u.imagePath as userImage, f.Id, bet.bet_homeTeam, tb.nome as home_nome, tb.image as home_image, bet.bet_awayTeam, ta.nome as away_nome, ta.image as away_image, f.dateTime, f.local FROM bet
+$query = "SELECT c.nome as campeonato, fa.nome as fase, u.imagePath as userImage, f.Id, bet.bet_homeTeam, tb.nome as home_nome, tb.image as home_image, bet.bet_awayTeam, ta.nome as away_nome, ta.image as away_image, f.dateTime, f.local, bet.points, f.score_homeTeam as final_scoreHome, f.score_awayTeam as final_scoreAway FROM bet
 INNER JOIN users u ON bet.users_Id=u.Id
 INNER JOIN fixture f ON bet.fixture_Id=f.Id
 INNER JOIN parte p ON f.parte_id=p.Id
@@ -53,6 +53,10 @@ if($num>0){
         $fixture->away_score = $row['bet_awayTeam'];
         $fixture->away_team_name = $row['away_nome'];
         $fixture->away_path = $row['away_image'];
+
+        $fixture->final_scoreHome = $row['final_scoreHome'];
+        $fixture->final_scoreAway = $row['final_scoreAway'];
+        $fixture->points = $row['points'];
 
         array_push($fixtures, $fixture);
 
