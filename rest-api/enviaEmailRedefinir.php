@@ -86,26 +86,13 @@ if($num>0){
     $mail->setFrom('contato@bolaoimperial.com', 'Bolão Imperial Team'); // From email and name
     $mail->addAddress($email, $completename); // to email and name
     $mail->Subject = 'Redefinição de senha - Bolão Imperial';
-    $mail->msgHTML("
-    <div style='background-color: #4CAF50; padding: 1px 10px 1px 10px;'>
-        <div style='text-align: center;'>
-            <h1 style='color: whitesmoke;'>Bolão Imperial</h1>
-        </div>
-        <div style='text-align: center;'>
-            <p style='color: whitesmoke;'>Clique no botão abaixo para redefinir sua senha:</p>
-        </div>
-        <br>
-        <div style='text-align: center;'>
-            <p>
-                <a href='https://bolaodogui.000webhostapp.com/user/esqueci/$id/$jwt' style='color: #424242; text-decoration: none; border-radius: 10px; padding: 10px; background-color: whitesmoke; display: inline-block;'>Redefinir senha</a>
-            </p>
-        </div>
-        <br>
-        <div style='text-align: center;'>
-            <p style='color: whitesmoke; font-size: 10px;'>Se não foi você que realizou o pedido para redefinição de senha para a sua conta, desconsidere este e-mail.</p>
-        </div>
-    </div>
-    "); //$mail->msgHTML(file_get_contents('contents.html'), __DIR__); //Read an HTML message body from an external file, convert referenced images to embedded,
+    
+    $message = file_get_contents(__DIR__ . '/emailTemplates/reset_password.php'); 
+    $message = str_replace('%id%', $id, $message); 
+    $message = str_replace('%jwt%', $jwt, $message); 
+    $mail->msgHTML($message); //$mail->msgHTML(file_get_contents('contents.html'), __DIR__); //Read an HTML message body from an external file, convert referenced images to embedded,
+
+
     $mail->AltBody = 'Acesse o link: https://bolaodogui.000webhostapp.com/user/esqueci/'.$jwt; // If html emails is not supported by the receiver, show this body
     // $mail->addAttachment('images/phpmailer_mini.png'); //Attach an image file
     
