@@ -63,7 +63,7 @@ class SiteHeader extends Component {
                         <NavLink className="menuItem" to="/regulamento">
                             Regulamento
                         </NavLink>
-                        <NavLink className="menuItem" to="/">
+                        <NavLink className="menuItem" to="/faleconosco">
                             Fale Conosco
                         </NavLink>
                     </nav>

@@ -12,24 +12,26 @@ class SiteFooter extends Component {
                 <div className="links-container">
                     <div className="links -external">
                         <h4>Links externos</h4>
+                        
                         <Link className="menuItem" to="/">
                             Home
                         </Link>
                         <Link className="menuItem" to="/regulamento">
                             Regulamento
                         </Link>
-                        <Link className="menuItem" to="/">
+                        <Link className="menuItem" to="/faleconosco">
                             Fale Conosco
                         </Link>
+                    </div>
+                    <div className="links -internal">
+                        <h4>Links internos</h4>
+
                         <Link className="menuItem" to="/user/cadastrar">
                             Cadastrar
                         </Link>
                         <Link className="menuItem" to="/user/login">
                             Login
                         </Link>
-                    </div>
-                    <div className="links -internal">
-                        <h4>Links internos</h4>
                         <Link className="menuItem" to="/user/campeonatos">
                             Campeonatos
                         </Link>

@@ -1,0 +1,129 @@
+.faleconosco {
+	background-color: #f5f5f5;
+	border-top: 1px solid #c7c7c7;
+    padding: 25px 25px 100px 25px;
+    
+    font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
+    color: #424242;
+}
+
+.faleconosco > h3 {  
+    margin: 0 0 20px 0;
+    text-align: center;
+    font-size: 36px;
+}
+
+.faleconosco > p {
+    margin: 0 30% 30px 30%;
+    font-size: 14px;
+    text-align: center;
+}
+
+
+
+
+/* Material Textarea */
+.contatoForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contatoForm  > .materialTextarea {
+	position: relative;
+    font-size: 16px;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 300px;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px 0;
+}
+
+.contatoForm > .materialTextarea > textarea {
+	border: none;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+    display: block;
+    font-size: 16px;
+    font-family: "Helvetica","Arial",sans-serif;
+    margin: 0;
+    padding: 4px 0;
+    width: 100%;
+    background: 0 0;
+    text-align: left;
+    color: inherit;
+
+    resize: none;
+}
+
+.contatoForm > .materialTextarea > textarea:focus {
+	outline: none;
+}
+
+.contatoForm > .materialTextarea > textarea:focus + label {
+	color: #388E3C;
+	font-size: 12px;
+	top: 4px;
+	visibility: visible;
+	transition: all ease 0.3s;
+}
+
+.contatoForm > .materialTextarea > textarea:focus + label:after {
+	left: 0;
+	visibility: visible;
+	width: 100%;
+}
+
+/* Valid is for the autocomplete of the browser. */
+.contatoForm > .materialTextarea > textarea:valid {
+	outline: none;
+}
+
+.contatoForm > .materialTextarea > textarea:valid + label {
+	color: #388E3C;
+	font-size: 12px;
+	top: 4px;
+	visibility: visible;
+	transition: all ease 0.3s;
+}
+
+.contatoForm > .materialTextarea > textarea:valid + label:after {
+	left: 0;
+	visibility: visible;
+	width: 100%;
+}
+
+.contatoForm > .materialTextarea > label {
+	bottom: 0;
+    color: rgba(0,0,0,.4);
+    font-size: 16px;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    position: absolute;
+    display: block;
+    top: 24px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+	text-align: left;
+	
+	transition-duration: .2s;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+}
+
+.contatoForm > .materialTextarea > label:after {
+    background-color: #388E3C;
+    bottom: 20px;
+    content: '';
+    height: 2px;
+    left: 45%;
+    position: absolute;
+    transition-duration: .2s;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    visibility: hidden;
+	width: 10px;
+	transition: all ease 0.3s;
+}
+
+

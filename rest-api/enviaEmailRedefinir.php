@@ -96,13 +96,12 @@ if($num>0){
     $mail->AltBody = 'Acesse o link: https://bolaodogui.000webhostapp.com/user/esqueci/'.$jwt; // If html emails is not supported by the receiver, show this body
     // $mail->addAttachment('images/phpmailer_mini.png'); //Attach an image file
     
-    if($mail->send()){
-    //     http_response_code(401);
-    //     // $respostaError = "Mailer Error: " . $mail->ErrorInfo;
-    //     echo json_encode(array(
-    //         "message" => "erro.."
-    //     ));
-    // }else{
+    if(!$mail->send()){
+        http_response_code(401);
+        echo json_encode(array(
+            "message" => "Mailer Error: " . $mail->ErrorInfo
+        ));
+    }else{
         http_response_code(200);
         echo json_encode(array(
             "message" => "Verifique sua caixa de e-mail para continuar a redefinir a sua senha."

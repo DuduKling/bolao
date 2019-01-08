@@ -35,6 +35,7 @@ import PageCampeonatos from './components/pages/PageCampeonatos';
 
 import BigLoading from './components/util/BigLoading';
 import PageEsqueci from './components/pages/PageEsqueci';
+import PageContato from './components/pages/PageContato';
 
 
 class App extends Component {
@@ -156,6 +157,7 @@ class App extends Component {
 					{/* ALL */}
 					<Route exact path='/' component={PageHome} />
 					<Route exact path='/regulamento' component={PageRegulamento} />
+					<Route exact path='/faleconosco' component={PageContato} />
 
 					{/* LOGGED ONLY - USER */}
 					<PrivateRouteInverso exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
