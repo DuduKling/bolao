@@ -12,6 +12,7 @@ class User{
     public $email;
     public $password;
     public $imagePath;
+    public $role;
 
     // constructor
     public function __construct($db){
@@ -178,7 +179,7 @@ class User{
     }
 
     public function updateInternalInfo(){
-        $query = "SELECT name, email, imagePath FROM users WHERE id = :id";
+        $query = "SELECT name, email, imagePath, role FROM users WHERE id = :id";
         $stmt = $this->conn->prepare( $query );
         $stmt->bindParam(':id', $this->id);
         $stmt->execute();
@@ -189,6 +190,7 @@ class User{
             $this->completename = $row['name'];
             $this->email = $row['email'];
             $this->imagePath = $row['imagePath'];
+            $this->role = $row['role'];
         }
     }
 }

@@ -28,6 +28,7 @@
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	border-bottom: none;
+	overflow: hidden;
 }
 
 .partidaLista > li p {
@@ -94,32 +95,6 @@
 
 
 
-/* .partidaLista > li .link-container {
-	position: absolute;
-	top: 0;
-	right: 0;
-	
-	font-size: 12px;
-}
-
-.partidaLista > li .link-container > a {
-	padding: 5px 10px;
-	display: block;
-
-	background-color: #4caf50;
-	color: whitesmoke;
-	text-decoration: none;
-	transition: all 0.3s ease;
-
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-}
-
-.partidaLista > li .link-container > a:hover {
-	background-color: #388E3C;
-}  */
-
-
 
 .partidaLista .-apostadoJogo {
 	padding: 10px 0 0 0;
@@ -130,7 +105,38 @@
 	margin-top: 15px;
 }
 
-.partidaLista > li .users-container > div > a {
+
+
+.partidaLista > li .users-container > .users-usernamesList {
+	/* height: auto; */
+	overflow: hidden;
+	transition: all 0.3s ease;
+}
+
+.partidaLista > li .users-container > input[id^=toggleUsernames] {
+	display: none;
+}
+
+.partidaLista > li .users-container > label {
+	width: 100%;
+	text-align: center;
+	display: block;
+	padding: 5px 0;
+	font-size: 14px;
+	background-color: #eaeaea;
+	color: #424242;
+	cursor: pointer;
+}
+
+.partidaLista > li .users-container > input[id^=toggleUsernames]:not(:checked) + .users-usernamesList {
+	height: 0px !important;
+}
+
+.partidaLista > li .users-container > .users-usernamesList > div {
+	height: 39px;
+}
+
+.partidaLista > li .users-container > .users-usernamesList > div > a {
 	width: 100%;
 	display: block;
 
@@ -143,7 +149,7 @@
 	transition: all 0.3s ease;
 }
 
-.partidaLista > li .users-container > div > a:hover {
+.partidaLista > li .users-container > div > div > a:hover {
 	background-color: #c7c7c7;
 }
 

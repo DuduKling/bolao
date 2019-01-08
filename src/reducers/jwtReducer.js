@@ -5,6 +5,7 @@ const initialState = {
   userEmail: "",
   userID: "",
   userImg: "",
+  userRole: "",
   userJWT: ""
 };
 
@@ -17,6 +18,7 @@ export const jwtReducer = (state = initialState, action) => {
         userEmail: action.userEmail,
         userID: action.userID,
         userImg: action.userImg,
+        userRole: action.userRole,
         userJWT: action.userJWT
       };
     case UPDATE_IMG_VALUE:

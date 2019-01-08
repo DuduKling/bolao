@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import '../../css/pages/pageInside.css';
 import '../../css/util/formMessage.css';
-import { connect } from 'react-redux';
 
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 
-
-class PageApostar extends Component {
+class PageAdminScore extends Component {
 	constructor() {
         super();
         this.state = {
@@ -17,7 +15,7 @@ class PageApostar extends Component {
                 //     "idfixture": "1",
                 //     "datetime": "Date Time",
                 //     "local": "Russia",
-                //     "home_score": "",
+                //     "home_score": "0",
                 //     "away_score": "",
                 //     "home_team_name": "Time 1",
                 //     "home_path": "",
@@ -29,7 +27,7 @@ class PageApostar extends Component {
                 //     "datetime": "Date Time",
                 //     "local": "Russia",
                 //     "home_score": "",
-                //     "away_score": "",
+                //     "away_score": "1",
                 //     "home_team_name": "Time 1",
                 //     "home_path": "",
                 //     "away_team_name": "Time 2",
@@ -39,8 +37,8 @@ class PageApostar extends Component {
                 //     "idfixture": "3",
                 //     "datetime": "Date Time",
                 //     "local": "Russia",
-                //     "home_score": "",
-                //     "away_score": "",
+                //     "home_score": "2",
+                //     "away_score": "3",
                 //     "home_team_name": "Time 1",
                 //     "home_path": "",
                 //     "away_team_name": "Time 2",
@@ -73,20 +71,67 @@ class PageApostar extends Component {
             resp: '',
             campeonato: '',
             fase: '',
-            parte: '',
-            redirectToCampeonatos: false
+            parte: ''
         };
     }
 
+    enviaResultado(evento) {
+        evento.preventDefault();
+        // console.log("enviando..")
+        this.setState({error: ''});
+        this.setState({resp: ''});
+
+        var data = {};
+        $("input[type='text']").each(function(index, item){
+            var val = $(item).val();
+            var name = $(item).attr('name');
+
+            data[name] = val;
+        });
+
+        // console.log(data);
+        var dataString = JSON.stringify(data);
+        // console.log("dataString:");
+        // console.log(dataString);
+
+        this.setState({loading2: true});
+
+        $.ajax({
+            url:"../rest-api/postResult.php",
+			type: 'post',
+            data: dataString,
+            dataType: "json",
+            success: function(resposta){
+                // console.log("Resposta PHP:");
+                // console.log(resposta);
+                this.setState({
+                    resp: resposta.message,
+                    // fixtures: resposta.fixtures,
+                    loading2: false
+                });
+                this.getFixtures();
+            }.bind(this),
+            error: function(xhr, status, err){
+                console.error(status, err.toString());
+                this.setState({
+                    error: JSON.parse(xhr.responseText).message,
+                    loading2: false
+                });
+            }.bind(this)
+        });
+    }
+
     componentDidMount() {
+        this.getFixtures();
+    }
+    
+    getFixtures(){
         this.setState({loading: true});
 
         var parteId = this.props.match.params.parte;
-        var userId = this.props.userId;
 
         var textJSON = `{
-            "parteId":"${parteId}",
-            "userId": "${userId}"
+            "parteId":"${parteId}"
         }`;
         var textJSON2 = JSON.parse(textJSON);
         var dataString = JSON.stringify(textJSON2);
@@ -108,51 +153,10 @@ class PageApostar extends Component {
             error: function(xhr, status, err){
                 console.error(status, err.toString());
                 // console.log(JSON.parse(xhr.responseText));
-                this.setState({loading: false});
-                this.setState({error: JSON.parse(xhr.responseText).message});
-            }.bind(this)
-        });
-    }
-
-	enviaAposta(evento) {
-        evento.preventDefault();
-        // console.log("enviando..")
-        this.setState({error: ''});
-        this.setState({resp: ''});
-
-        var data = {};
-
-        data["userId"] = this.props.userId;
-        
-        $("input[type='text']").each(function(index, item){
-            var val = $(item).val();
-            var name = $(item).attr('name');
-
-            data[name] = val;
-        });
-
-        // console.log(data);
-        var dataString = JSON.stringify(data);
-        // console.log("dataString:");
-        // console.log(dataString);
-
-        this.setState({loading2: true});
-
-        $.ajax({
-            url:"../rest-api/makeBets.php",
-			type: 'post',
-            data: dataString,
-            dataType: "json",
-            success: function(resposta){
-                // console.log("Resposta PHP:");
-                console.log(resposta);
-                this.setState({resp: resposta.message});
-                this.setState({loading2: false});
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
-                this.setState({loading2: false});
-                this.setState({error: JSON.parse(xhr.responseText).message});
+                this.setState({
+                    loading: false,
+                    error: JSON.parse(xhr.responseText).message,
+                });
             }.bind(this)
         });
     }
@@ -191,7 +195,7 @@ class PageApostar extends Component {
             );
         }
     }
-
+    
     render() {
         return (
             <section className="main-container">
@@ -199,13 +203,23 @@ class PageApostar extends Component {
                 
                     <form 
                         className="main-partidaForm" 
-                        onSubmit={function(event){this.enviaAposta(event)}.bind(this)} 
+                        onSubmit={function(event){this.enviaResultado(event)}.bind(this)} 
                         method="post"
                     >
-
-                        <ul className="partidaLista">
+                    
+                        <ul className="partidaLista -admin">
                             <h3 className="pageTitle">
-                                Aposte: {this.state.campeonato?this.state.campeonato:""}{this.state.fase?" - "+this.state.fase:""}{this.state.parte?"/"+this.state.parte:""}
+                                administrador
+                                <br />
+                                <span class="subTitle">
+                                    {this.state.campeonato?
+                                        this.state.campeonato+" - "
+                                        :""}
+                                    {this.state.fase}
+                                    {this.state.parte?
+                                        " / "+this.state.parte
+                                        :""}
+                                </span>
                             </h3>
                             <Loading loading={this.state.loading}/>
                             {
@@ -215,18 +229,20 @@ class PageApostar extends Component {
                                     <PartidaListItem 
                                         key={index}
                                         team={team} 
-                                        />
+                                        typeAll={""} 
+                                        isAdmin={"admin"}
+                                    />
                                     
                                 );
                             }, this)
                             }
 
                         </ul>
-
+                        
                         {this.showButton()}
 
-                    </form>
-
+                        </form>
+                    
                     {this.AJAXresp()}
                 </div>
             </section>      
@@ -234,8 +250,4 @@ class PageApostar extends Component {
     }
 }
 
-const mapStateToProps = store => ({
-    userId: store.AuthJWTState.userID
-});
-
-export default connect(mapStateToProps)(PageApostar);
+export default PageAdminScore;

@@ -20,8 +20,12 @@ import PageLogin from './components/pages/PageLogin';
 import PageApostar from './components/pages/PageApostar';
 
 import PrivateRoute from './components/util/Auth';
+import PrivateRouteInverso from './components/util/AuthInverso';
+import PrivateRouteAdmin from './components/util/AuthAdmin';
+
 
 import PageApostado from './components/pages/PageApostado';
+import PageAdminScore from './components/pages/PageAdminScore';
 import PageAdmin from './components/pages/PageAdmin';
 import PageFixtures from './components/pages/PageFixtures';
 import PageApostadoJogo from './components/pages/PageApostadoJogo';
@@ -108,6 +112,7 @@ class App extends Component {
 						userEmail: resposta.email,
 						userID: resposta.id,
 						userImg: resposta.userImg,
+						userRole: resposta.userRole,
 						userJWT: resposta.jwt
 					};
 					updateJWT(userInfo);
@@ -141,7 +146,7 @@ class App extends Component {
 			<BigLoading />
 		);
 	}
-
+	
 	returnApp(){
 		return (
 			<div className="wrapper">
@@ -151,8 +156,11 @@ class App extends Component {
 					{/* ALL */}
 					<Route exact path='/' component={PageHome} />
 					<Route exact path='/regulamento' component={PageRegulamento} />
-					<Route exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
-					<Route exact path='/user/esqueci/:id?/:jwtCode?' component={PageEsqueci} />
+
+					{/* LOGGED ONLY - USER */}
+					<PrivateRouteInverso exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
+					<PrivateRouteInverso exact path='/user/esqueci/:id?/:jwtCode?' component={PageEsqueci} />
+
 
 					{/* LOGGED ONLY - USER */}
 					<PrivateRoute exact path='/user/campeonatos' component={PageCampeonatos} />
@@ -169,7 +177,8 @@ class App extends Component {
 					<PrivateRoute exact path="/:parte/apostar" component={PageApostar} />
 
 					{/* ADMIN ONLY */}
-					<PrivateRoute exact path="/:parte/admin" component={PageAdmin} />
+					<PrivateRouteAdmin exact path="/:parte/adminscore" component={PageAdminScore} />
+					<PrivateRouteAdmin exact path="/admin" component={PageAdmin} />
 
 					{/* WRONG ROUTES */}
 					<Route component={Page404} />

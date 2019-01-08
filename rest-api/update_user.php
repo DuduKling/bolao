@@ -146,6 +146,7 @@ if($jwt){
                         "name" => $user->completename,
                         "email" => $user->email,
                         "userImg" => $user->imagePath,
+                        "userRole" => $user->role,
                         "id" => $user->id
                     )
                 );

@@ -11,7 +11,7 @@ class PageApostadoJogo extends Component {
         this.state = {
             fixtures: [
                 // {
-                //     "usernames": "Nome completo 1234,Nome completo 2,Nome,Nome completo 4",
+                //     "usernames": "Nome completo 1234,Nome completo 2,Nome,Nome completo 4,Nome completo 1234,Nome completo 2,Nome,Nome completo 4",
                 //     "idfixture": "1",
                 //     "datetime": "Date Time",
                 //     "local": "Russia",
@@ -21,11 +21,12 @@ class PageApostadoJogo extends Component {
                 //     "home_path": "",
                 //     "away_team_name": "Time 2",
                 //     "away_path": "",
-                //     "porcentagem": "3"
+                //     "porcentagem": "3",
+                //     "frontID": "1"
                 // },
                 // {
                 //     "usernames": "Nome completo 4,Nome completo 3,Nome completo 2,Nome completo 1",
-                //     "idfixture": "2",
+                //     "idfixture": "1",
                 //     "datetime": "Date Time",
                 //     "local": "Russia",
                 //     "home_score": "3",
@@ -34,7 +35,8 @@ class PageApostadoJogo extends Component {
                 //     "home_path": "",
                 //     "away_team_name": "Time 2",
                 //     "away_path": "",
-                //     "porcentagem": "3,11"
+                //     "porcentagem": "3,11",
+                //     "frontID": "2"
                 // }
             ]
         };

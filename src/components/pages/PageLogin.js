@@ -182,6 +182,7 @@ class PageLogin extends Component {
                             userEmail: resposta.email,
                             userID: resposta.id,
                             userImg: resposta.imagePath,
+                            userRole: resposta.userRole,
                             userJWT: resposta.jwt
                         };
                         updateJWT(userInfo);

@@ -6,6 +6,7 @@ export const updateJWT = value => ({
   userEmail: value.userEmail,
   userID: value.userID,
   userImg: value.userImg,
+  userRole: value.userRole,
   userJWT: value.userJWT
 });
 

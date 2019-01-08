@@ -24,7 +24,7 @@ INNER JOIN team ta ON f.awayTeam_Id=ta.Id
 INNER JOIN team tb ON f.homeTeam_Id=tb.Id
 WHERE f.Id=:fixtureID
 GROUP BY bet.bet_homeTeam, bet.bet_awayTeam 
-ORDER BY bet.bet_homeTeam DESC, bet.bet_awayTeam DESC";
+ORDER BY porcentagem DESC";
 
 $stmt = $db->prepare($query);
 
@@ -37,6 +37,8 @@ if($num>0){
     
     $dbFixtures = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $fixtures = array();
+
+    $countRows = 0;
 
     foreach($dbFixtures as $row){
         $fixture = new stdClass;
@@ -56,7 +58,11 @@ if($num>0){
         $fixture->usernames = $row['usernames'];
         $fixture->porcentagem = $row['porcentagem'];
 
+        $fixture->frontID = $countRows;
+
         array_push($fixtures, $fixture);
+
+        $countRows = $countRows + 1;
     }
     
     http_response_code(200);

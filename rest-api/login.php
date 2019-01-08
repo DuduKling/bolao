@@ -61,7 +61,7 @@ if($email_exists && password_verify($data->password, $user->password)){
     
     // set response code
     http_response_code(200);
- 
+    
     // generate jwt
     $jwt = JWT::encode($token, $key);
     $user->updateInternalInfo();
@@ -72,6 +72,7 @@ if($email_exists && password_verify($data->password, $user->password)){
             "name" => $user->completename,
             "email" => $user->email,
             "imagePath" => $user->imagePath,
+            "userRole" => $user->role,
             "id" => $user->id
         )
     );

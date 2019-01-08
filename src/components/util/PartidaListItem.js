@@ -57,17 +57,23 @@ class PartidaListItem extends Component {
         if(this.props.users){
             return(
                 <div className="users-container">
-                    {
-                        this.props.team.usernames ? 
-                            this.props.team.usernames.split(",").map(function(name, index) {
-                                return (
-                                    <div key={index}>
-                                        <Link to={"../apostado/"+name}>{name}</Link>
-                                    </div>
-                                );
-                            })
-                        : null
-                    }
+                    <label htmlFor={"toggleUsernames"+this.props.team.frontID}>
+                        Mostrar pessoas
+                    </label>
+                    <input type="checkbox" id={"toggleUsernames"+this.props.team.frontID} />
+                    <div className="users-usernamesList">
+                        {
+                            this.props.team.usernames ? 
+                                this.props.team.usernames.split(",").map(function(name, index) {
+                                    return (
+                                        <div key={index}>
+                                            <Link to={"../apostado/"+name}>{name}</Link>
+                                        </div>
+                                    );
+                                })
+                            : null
+                        }
+                    </div>
                 </div>
             );
         }

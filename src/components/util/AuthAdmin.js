@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-
-class Auth extends Component {
+class AuthAdmin extends Component {
     checkAuth(){
-        if (this.props.userName===''){
+        if (this.props.userRole==='admin'){return (
+                <Route 
+                    exact
+                    path={this.props.path} 
+                    component={this.props.component} 
+                />
+            );    
+        }else{
             return (
                 <Route render={() => 
                     <Redirect to={{
@@ -14,17 +20,9 @@ class Auth extends Component {
                     }}/>
                 }/>
             );
-        }else{
-            return (
-                <Route 
-                    exact
-                    path={this.props.path} 
-                    component={this.props.component} 
-                />
-            );
         }
     }
-
+    
     render() {
         return (
             <div>
@@ -35,7 +33,7 @@ class Auth extends Component {
 }
 
 const mapStateToProps = store => ({
-    userName: store.AuthJWTState.userName
+    userRole: store.AuthJWTState.userRole
 });
 
-export default connect(mapStateToProps)(Auth);
+export default connect(mapStateToProps)(AuthAdmin);

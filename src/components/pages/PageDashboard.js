@@ -495,7 +495,7 @@ class PageDashboard extends Component {
             
         }
     }
-
+    
     showLastFixtures(){
         if(this.state.fixtures){
             var qtdLastFixtures = this.state.fixtures
@@ -527,7 +527,7 @@ class PageDashboard extends Component {
                                 key={index}
                                 team={team} 
                                 typeAll={"ReadOnly"}
-                                link={true}
+                                link={this.props.match.params}
                             />
                             
                         );

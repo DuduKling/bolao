@@ -225,10 +225,15 @@
 
 
 
-.main-partidaForm  > .partidaLista.-admin > .pageTitle {
+.main-partidaForm > .partidaLista.-admin > .pageTitle {
 	background-color: #f44336;
 	text-transform: uppercase;
 	text-align: center;
+}
+
+.main-partidaForm > .partidaLista.-admin > .pageTitle > .subTitle {
+    color: #424242;
+    font-size: 12px;
 }
 
 

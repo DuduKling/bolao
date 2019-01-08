@@ -16,12 +16,23 @@ class UserNavBar extends Component {
             userName: '', 
             userEmail:'',
             userID: '',
+            userImg: '',
+            userRole: '',
             userJWT: ''
         };
         updateJWT(userInfo);
         
         // SetCookie("userLogin", JSON.stringify(userInfo), 0);
         SetCookie("userLogin", "", 0);
+    }
+    showAdminLink(){
+        if(this.props.userRole==='admin'){
+            return(
+                <Link to="/admin" className="navUser-container">
+                    Admin
+                </Link>
+            );
+        }
     }
 
     render() {
@@ -30,6 +41,9 @@ class UserNavBar extends Component {
                 <Link to="/user/config" className="navUser-container">
                     Configurações
                 </Link>
+                
+                {this.showAdminLink()}
+
                 <a className="navUser-container" onClick={this.logout.bind(this)}>
                     Sair
                 </a>
@@ -38,7 +52,9 @@ class UserNavBar extends Component {
     }
 }
 
-const mapStateToProps = store => ({});
+const mapStateToProps = store => ({
+    userRole: store.AuthJWTState.userRole
+});
 
 const mapDispatchToProps = dispatch => 
 bindActionCreators({ updateJWT }, dispatch);

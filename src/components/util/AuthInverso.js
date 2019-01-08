@@ -3,24 +3,24 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 
-class Auth extends Component {
+class AuthInverso extends Component {
     checkAuth(){
         if (this.props.userName===''){
-            return (
-                <Route render={() => 
-                    <Redirect to={{
-                        pathname: "/user/login", 
-                        state: {from: this.props.location}
-                    }}/>
-                }/>
-            );
-        }else{
             return (
                 <Route 
                     exact
                     path={this.props.path} 
                     component={this.props.component} 
                 />
+            );
+        }else{
+            return (
+                <Route render={() => 
+                    <Redirect to={{
+                        pathname: "/user/campeonatos", 
+                        state: {from: this.props.location}
+                    }}/>
+                }/>
             );
         }
     }
@@ -38,4 +38,4 @@ const mapStateToProps = store => ({
     userName: store.AuthJWTState.userName
 });
 
-export default connect(mapStateToProps)(Auth);
+export default connect(mapStateToProps)(AuthInverso);
