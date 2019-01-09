@@ -328,7 +328,6 @@ class PageLogin extends Component {
 
                         {this.CheckIfFormLogin2ForEsqueciASenha()}
 
-                        {/*// TODO colocar um esqueci minha senha..*/}
                     </form>
                 </div>
 

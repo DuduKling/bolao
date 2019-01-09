@@ -153,7 +153,6 @@ class PartidaListItem extends Component {
 
                 {this.checkIfShowPorcent()}
 
-                {/*// TODO show comparação de apostado com real.. */}
             </div>
         );
     }

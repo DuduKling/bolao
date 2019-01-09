@@ -42,12 +42,23 @@ class PageApostadoJogo extends Component {
         };
     }
 
+    componentWillMount(){
+        var fixtureID = this.props.match.params.fixture;
+        var faseID = this.props.match.params.fase;
+
+        const cachedFixtures = localStorage.getItem(faseID+fixtureID+'campeonatoJogo');
+        if(cachedFixtures){
+            this.setState({
+                fixtures: JSON.parse(cachedFixtures)
+            });
+        }
+    }
+
     componentDidMount(){
-        this.setState({loadingFixture: true});
-        this.setState({loadingRank: true});
+        this.setState({loading: true});
 
         var fixtureID = this.props.match.params.fixture;
-
+        var faseID = this.props.match.params.fase;
 
         // Fixtures
         var textJSON = `{
@@ -63,14 +74,15 @@ class PageApostadoJogo extends Component {
             dataType: 'json',
             success: function(resposta){
                 this.setState({
-                    loadingFixture: false,
+                    loading: false,
                     fixtures: resposta.fixtures
                 });
+                localStorage.setItem(faseID+fixtureID+'campeonatoJogo', JSON.stringify(resposta.fixtures));
             }.bind(this),
             error: function(xhr, status, err){
                 console.error(status, err.toString());
                 // console.log(JSON.parse(xhr.responseText));
-                this.setState({loadingFixture: false});
+                this.setState({loading: false});
                 this.setState({error: JSON.parse(xhr.responseText).message});
             }.bind(this)
         });
@@ -88,8 +100,10 @@ class PageApostadoJogo extends Component {
                     >
 
                         <ul className="partidaLista">
-                            <h3 className="pageTitle">Apostas para este jogo</h3>
-                            <Loading loading={this.state.loading}/>
+                            <h3 className="pageTitle">
+                                Apostas para este jogo
+                                <Loading loading={this.state.loading} localstorage="-withLocalStorage2"/>
+                            </h3>
                             {
                             this.state.fixtures.map(function(team, index){
                                 return(

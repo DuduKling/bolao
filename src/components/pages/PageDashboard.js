@@ -272,10 +272,36 @@ class PageDashboard extends Component {
             // }
         };
     }
+
+    componentWillMount(){
+        var campeonatoID = this.props.match.params.campeonato;
+        var faseID = this.props.match.params.fase;
+
+        // campeonato rank fixtures
+        const cachedCampeonato = localStorage.getItem(campeonatoID+faseID+'campeonato');
+        if(cachedCampeonato){
+            this.setState({
+                campeonato: JSON.parse(cachedCampeonato)
+            });
+        }
+
+        const cachedRank = localStorage.getItem(campeonatoID+faseID+'rank');
+        if(cachedRank){
+            this.setState({
+                rank: JSON.parse(cachedRank)
+            });
+        }
+
+        const cachedFixtures = localStorage.getItem(campeonatoID+faseID+'fixtures');
+        if(cachedFixtures){
+            this.setState({
+                fixtures: JSON.parse(cachedFixtures)
+            });
+        }
+    }
     
     componentDidMount(){
-        this.setState({loadingFixture: true});
-        this.setState({loadingRank: true});
+        this.setState({loading: true});
 
         var campeonatoID = this.props.match.params.campeonato;
         var faseID = this.props.match.params.fase;
@@ -294,14 +320,15 @@ class PageDashboard extends Component {
             dataType: 'json',
             success: function(resposta){
                 this.setState({
-                    loadingFixture: false,
+                    loading: false,
                     fixtures: resposta.fixtures
                 });
+                localStorage.setItem(campeonatoID+faseID+'fixtures', JSON.stringify(resposta.fixtures));
             }.bind(this),
             error: function(xhr, status, err){
                 console.error(status, err.toString());
                 // console.log(JSON.parse(xhr.responseText));
-                this.setState({loadingFixture: false});
+                this.setState({loading: false});
                 this.setState({error: JSON.parse(xhr.responseText).message});
             }.bind(this)
         });
@@ -316,14 +343,15 @@ class PageDashboard extends Component {
             dataType: 'json',
             success: function(resposta){
                 this.setState({
-                    loadingRank: false,
+                    loading: false,
                     rank: resposta.rank,
                 });
+                localStorage.setItem(campeonatoID+faseID+'rank', JSON.stringify(resposta.rank));
             }.bind(this),
             error: function(xhr, status, err){
                 console.error(status, err.toString());
                 // console.log(JSON.parse(xhr.responseText));
-                this.setState({loadingRank: false});
+                this.setState({loading: false});
                 this.setState({error: JSON.parse(xhr.responseText).message});
             }.bind(this)
         });
@@ -346,6 +374,7 @@ class PageDashboard extends Component {
                 this.setState({
                     campeonato: resposta.campeonato
                 });
+                localStorage.setItem(campeonatoID+faseID+'campeonato', JSON.stringify(resposta.campeonato));
             }.bind(this),
             error: function(xhr, status, err){
                 console.error(status, err.toString());
@@ -592,6 +621,8 @@ class PageDashboard extends Component {
                     <div className="dashbord-top">
                         <h2>{this.state.campeonato?this.state.campeonato.nomeCampeonato:""}</h2>
                         <h4>{this.state.campeonato?this.checkFaseName():""}</h4>
+
+                        <Loading loading={this.state.loading}/>
                     </div>
 
                     <div>
@@ -614,7 +645,7 @@ class PageDashboard extends Component {
                                         {this.showRank()}
                                     </tbody>
                                 </table>
-                                <Loading loading={this.state.loadingRank}/>
+                                
                             </div>
                         
                         </div>
@@ -625,7 +656,7 @@ class PageDashboard extends Component {
                                 <ul className="partidaLista">
                                     <h3 className="pageTitle">Próximos Jogos</h3>
                                     <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos ></Link>
-                                    <Loading loading={this.state.loadingFixture}/>
+                                    
                                     
                                     {this.showNextFixtures()}
 
@@ -638,7 +669,7 @@ class PageDashboard extends Component {
                                 <ul className="partidaLista">
                                     <h3 className="pageTitle">Últimos Jogos</h3>
                                     <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos ></Link>
-                                    <Loading loading={this.state.loadingFixture}/>
+                                    
 
                                     {this.showLastFixtures()}
 

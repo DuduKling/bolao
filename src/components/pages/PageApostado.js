@@ -87,6 +87,18 @@ class PageApostar extends Component {
         };
     }
 
+    componentWillMount(){
+        var userName = this.props.match.params.nome;
+        var faseID = this.props.match.params.fase;
+
+        const cachedFixtures = localStorage.getItem(userName+faseID+'fixtures');
+        if(cachedFixtures){
+            this.setState({
+                fixtures: JSON.parse(cachedFixtures)
+            });
+        }
+    }
+
     componentDidMount(){
         this.setState({loading: true});
 
@@ -115,6 +127,8 @@ class PageApostar extends Component {
                     campeonato: resposta.campeonato,
                     fase: resposta.fase
                 });
+                localStorage.setItem(userName+faseID+'fixtures', JSON.stringify(resposta.fixtures));
+                
             }.bind(this),
             error: function(xhr, status, err){
                 console.error(status, err.toString());
@@ -145,15 +159,16 @@ class PageApostar extends Component {
                         <ul className="partidaLista -apostado">
                             <h3 className="pageTitle">
                                 {this.props.match.params.nome}
-
+                                
                                 <br />
                                 <span className="subTitle">
                                     {this.state.campeonato?this.state.campeonato:""}
                                     
                                     {this.state.fase?" - "+this.state.fase:""}
                                 </span>
+
+                                <Loading loading={this.state.loading} localstorage="-withLocalStorage2"/>
                             </h3>
-                            <Loading loading={this.state.loading}/>
                             {
                             this.state.fixtures.map(function(team, index){
                                 return(

@@ -81,13 +81,14 @@ class App extends Component {
 				userEmail: "email@localhost.com",
 				userID: "6666666",
 				userImg: "",
+				userRole: "admin",
 				userJWT: userInfo.jwt
 			};
 			updateJWT(userInfo2);
 
 		/* END: LOCALHOST */
 
-
+		
 
 
 		
@@ -167,7 +168,7 @@ class App extends Component {
 					{/* LOGGED ONLY - USER */}
 					<PrivateRoute exact path='/user/campeonatos' component={PageCampeonatos} />
 					<PrivateRoute exact path='/user/config' component={PageUser} />
-
+					
 					{/* LOGGED ONLY - JOGOS/CAMPEONATOS */}
 					<PrivateRoute exact path="/:campeonato/:fase/dashboard" component={PageDashboard} />
 					<PrivateRoute exact path="/:campeonato/:fase/jogos" component={PageFixtures} />

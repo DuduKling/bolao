@@ -68,7 +68,6 @@ class SiteHeader extends Component {
                         </NavLink>
                     </nav>
                     <div className="user-login">
-                        {/*// TODO login com Facebook? */}
                         <NavLink className="menuItem" to="/user/cadastrar">
                             Cadastrar
                         </NavLink>

@@ -17,6 +17,7 @@ class PageCampeonatos extends Component {
     constructor() {
         super();
         this.state = {
+            loading: true,
             campeonatos: [
                 // {
                 //     "nomeCampeonato": "Copa do Mundo Rússia 2018",
@@ -122,6 +123,15 @@ class PageCampeonatos extends Component {
         };
     }
 
+    componentWillMount(){
+        const cachedCampeonatos = localStorage.getItem('campeonatos');
+        if(cachedCampeonatos){
+            this.setState({
+                campeonatos: JSON.parse(cachedCampeonatos)
+            });
+        }
+    }
+
     componentDidMount(){
         this.setState({loading: true});
         $.ajax({
@@ -130,8 +140,13 @@ class PageCampeonatos extends Component {
             contentType : 'application/json',
             success: function(resposta){
                 // console.log(resposta);
-                this.setState({campeonatos: resposta});
-                this.setState({loading: false});
+                this.setState({
+                    campeonatos: resposta,
+                    loading: false
+                });
+
+                localStorage.setItem('campeonatos', JSON.stringify(resposta));
+
             }.bind(this),
             error: function(xhr, status, err){
                 // console.log("erro:");
@@ -152,9 +167,12 @@ class PageCampeonatos extends Component {
             <div className="userPage-container">
                 
                 <div className="userPage-userCampeonatos">
-                    <h3 className="page-title">Campeonatos</h3>
+                    <h3 className="page-title">
+                        Campeonatos 
+                        <Loading loading={this.state.loading} localstorage="-withLocalStorage"/>
+                    </h3>
                     <div className="userCampeonatos-container">
-                        <Loading loading={this.state.loading}/>
+                        
                         {
                         this.state.campeonatos.map(function(campeonato, index){
                             return(

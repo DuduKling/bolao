@@ -109,6 +109,25 @@ class PageFixtures extends Component {
         };
     }
 
+    componentWillMount(){
+        var campeonatoID = this.props.match.params.campeonato;
+        var faseID = this.props.match.params.fase;
+
+        const cachedCampeonato = localStorage.getItem(campeonatoID+faseID+'campeonato');
+        if(cachedCampeonato){
+            this.setState({
+                campeonato: JSON.parse(cachedCampeonato)
+            });
+        }
+
+        const cachedFixtures = localStorage.getItem(campeonatoID+faseID+'fixtures');
+        if(cachedFixtures){
+            this.setState({
+                fixtures: JSON.parse(cachedFixtures)
+            });
+        }
+    }
+
     componentDidMount(){
         this.setState({loading: true});
 
@@ -132,11 +151,12 @@ class PageFixtures extends Component {
                     loading: false,
                     fixtures: resposta.fixtures
                 });
+                localStorage.setItem(campeonatoID+faseID+'fixtures', JSON.stringify(resposta.fixtures));
             }.bind(this),
             error: function(xhr, status, err){
                 console.error(status, err.toString());
                 // console.log(JSON.parse(xhr.responseText));
-                this.setState({loading: false});
+                // this.setState({loading: false});
                 this.setState({error: JSON.parse(xhr.responseText).message});
             }.bind(this)
         });
@@ -159,6 +179,7 @@ class PageFixtures extends Component {
                 this.setState({
                     campeonato: resposta.campeonato
                 });
+                localStorage.setItem(campeonatoID+faseID+'campeonato', JSON.stringify(resposta.campeonato));
             }.bind(this),
             error: function(xhr, status, err){
                 console.error(status, err.toString());
@@ -187,8 +208,10 @@ class PageFixtures extends Component {
                     <div className="main-partidaForm">
 
                         <ul className="partidaLista">
-                            <h3 className="pageTitle">Jogos de {this.state.campeonato?this.state.campeonato.nomeCampeonato:""} - {this.state.campeonato?this.checkFaseName():""}</h3>
-                            <Loading loading={this.state.loading}/>
+                            <h3 className="pageTitle">
+                                Jogos de {this.state.campeonato?this.state.campeonato.nomeCampeonato:""} - {this.state.campeonato?this.checkFaseName():""}
+                                <Loading loading={this.state.loading} localstorage="-withLocalStorage2"/>
+                            </h3>
                             {
                             this.state.fixtures.map(function(team, index){
                                 return(
