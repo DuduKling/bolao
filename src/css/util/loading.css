@@ -77,6 +77,22 @@
 	border-bottom-color: whitesmoke;
 }
 
+.spinner.-withLocalStorage3 {
+    position: absolute;
+    top: -2px;
+	right: 10px;
+}
+.spinner.-withLocalStorage3 > .half-circle-spinner {
+	width: 30px;
+	height: 30px;
+}
+.spinner.-withLocalStorage3 > .half-circle-spinner > .circle.circle-1 {
+	border-top-color: whitesmoke;
+}
+.spinner.-withLocalStorage3 > .half-circle-spinner > .circle.circle-2 {
+	border-bottom-color: whitesmoke;
+}
+
 
 @keyframes half-circle-spinner-animation {
 	0% {

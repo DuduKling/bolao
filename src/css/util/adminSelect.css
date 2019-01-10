@@ -1,0 +1,87 @@
+.materialSelect {
+    position: relative;
+    width: 110px;
+    padding: 5px 0;
+    border-radius: 5px;
+}
+.materialSelect:after {
+    position: absolute;
+    top: 24px;
+    right: 10px;
+
+    width: 0;
+    height: 0;
+    padding: 0;
+    content: '';
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(0, 0, 0, 0.12);
+    pointer-events: none;
+}
+
+
+.materialSelect > .selectField {
+    appearance: none;
+    -webkit-appearance:none
+}
+.selectField {
+    position: relative;
+    font-family: inherit;
+    background-color: transparent;
+    width: 100%;
+    padding: 10px 10px 5px 0;
+    font-size: 14px;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0, 0.12);
+}
+.selectField:focus {
+    outline: none;
+    border-bottom: 1px solid rgba(0,0,0, 0);
+}
+
+
+.selectLabel {
+    color: rgba(0,0,0, 0.26);
+    font-size: 14px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 0;
+    top: 17px;
+    transition: 0.2s ease all;
+}
+.selectField:focus ~ .selectLabel, 
+.selectField:valid ~ .selectLabel {
+    color: #4CAF50;
+    top: 0;
+    transition: 0.2s ease all;
+    font-size: 12px;
+}
+
+
+.selectBottomBbar {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+.selectBottomBbar:before,
+.selectBottomBbar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: #4CAF50;
+    transition: 0.2s ease all;
+}
+.selectBottomBbar:before {
+    left: 50%;
+}
+.selectBottomBbar:after {
+    right: 50%;
+}
+.selectField:focus ~ .selectBottomBbar:before,
+.selectField:focus ~ .selectBottomBbar:after {
+    width: 50%;
+}

@@ -17,7 +17,6 @@ class PageCampeonatos extends Component {
     constructor() {
         super();
         this.state = {
-            loading: true,
             campeonatos: [
                 // {
                 //     "nomeCampeonato": "Copa do Mundo Rússia 2018",

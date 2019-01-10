@@ -131,7 +131,8 @@ class PageAdminScore extends Component {
         var parteId = this.props.match.params.parte;
 
         var textJSON = `{
-            "parteId":"${parteId}"
+            "parteId":"${parteId}",
+            "status":"aberto"
         }`;
         var textJSON2 = JSON.parse(textJSON);
         var dataString = JSON.stringify(textJSON2);
@@ -211,7 +212,7 @@ class PageAdminScore extends Component {
                             <h3 className="pageTitle">
                                 administrador
                                 <br />
-                                <span class="subTitle">
+                                <span className="subTitle">
                                     {this.state.campeonato?
                                         this.state.campeonato+" - "
                                         :""}

@@ -1,5 +1,5 @@
 <?php
-function getFixtures($parteId) {
+function getFixtures($parteId, $statusAposta) {
     global $db;
 
     $query2 = "SELECT campeonato.nome as campeonato, fase.nome as fase, parte.nome as parte, f.Id, f.score_homeTeam, b.nome as home_nome, b.image as home_image, f.score_awayTeam, a.nome as away_nome, a.image as away_image, f.dateTime, f.local FROM fixture f
@@ -8,10 +8,11 @@ function getFixtures($parteId) {
     INNER JOIN parte ON f.parte_id=parte.Id
     INNER JOIN fase ON parte.fase_Id=fase.Id
     INNER JOIN campeonato ON fase.campeonato_Id=campeonato.Id
-    WHERE parte.id=:parteID AND parte.status='aposta' ORDER BY f.Id ASC, dateTime ASC";
+    WHERE parte.id=:parteID AND parte.status=:statusAposta ORDER BY f.Id ASC, dateTime ASC";
     $stmt2 = $db->prepare($query2);
     
     $stmt2->bindParam(':parteID', $parteId);
+    $stmt2->bindParam(':statusAposta', $statusAposta);
     
     $stmt2->execute();
     $num2 = $stmt2->rowCount();

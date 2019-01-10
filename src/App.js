@@ -26,6 +26,8 @@ import PrivateRouteAdmin from './components/util/AuthAdmin';
 
 import PageApostado from './components/pages/PageApostado';
 import PageAdminScore from './components/pages/PageAdminScore';
+import PageAdminApostas from './components/pages/PageAdminApostas';
+
 import PageAdmin from './components/pages/PageAdmin';
 import PageFixtures from './components/pages/PageFixtures';
 import PageApostadoJogo from './components/pages/PageApostadoJogo';
@@ -181,6 +183,7 @@ class App extends Component {
 
 					{/* ADMIN ONLY */}
 					<PrivateRouteAdmin exact path="/:parte/adminscore" component={PageAdminScore} />
+					<PrivateRouteAdmin exact path="/:fase/adminapostas" component={PageAdminApostas} />
 					<PrivateRouteAdmin exact path="/admin" component={PageAdmin} />
 
 					{/* WRONG ROUTES */}

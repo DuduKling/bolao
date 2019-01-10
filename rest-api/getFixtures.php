@@ -14,7 +14,7 @@ $db = $database->getConnection();
 
 $data = json_decode(file_get_contents("php://input"));
 $parteId = $data->parteId;
-
+$statusNeeded = $data->status;
 $userId = $data->userId;
 
 if(!empty($userId)){
@@ -32,7 +32,7 @@ if(!empty($userId)){
     if($num==0){
         // Se o usuário ainda não apostou..
         
-        getFixtures($parteId);
+        getFixtures($parteId, "aposta");
 
         
     }else{
@@ -42,7 +42,11 @@ if(!empty($userId)){
 
 }else{
     //Assume-se que é um Admin..
-    getFixtures($parteId);
+    if($statusNeeded=="aberto"){
+        getFixtures($parteId, "abaerto");
+    }else{
+        getFixtures($parteId, "aposta");
+    }
 }
 
 ?>
