@@ -72,21 +72,21 @@ class App extends Component {
 
 
 		/* LOCALHOST */
-			this.setState({
-				isAuth: true
-			});
+			// this.setState({
+			// 	isAuth: true
+			// });
 
-			const { updateJWT } = this.props;
+			// const { updateJWT } = this.props;
 
-			var userInfo2 = {
-				userName: "Localhost User", 
-				userEmail: "email@localhost.com",
-				userID: "6666666",
-				userImg: "",
-				userRole: "admin",
-				userJWT: userInfo.jwt
-			};
-			updateJWT(userInfo2);
+			// var userInfo2 = {
+			// 	userName: "Localhost User", 
+			// 	userEmail: "email@localhost.com",
+			// 	userID: "6666666",
+			// 	userImg: "",
+			// 	userRole: "admin",
+			// 	userJWT: userInfo.jwt
+			// };
+			// updateJWT(userInfo2);
 
 		/* END: LOCALHOST */
 

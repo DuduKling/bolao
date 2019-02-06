@@ -25,6 +25,7 @@ class UserNavBar extends Component {
         // SetCookie("userLogin", JSON.stringify(userInfo), 0);
         SetCookie("userLogin", "", 0);
     }
+    
     showAdminLink(){
         if(this.props.userRole==='admin'){
             return(

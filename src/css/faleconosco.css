@@ -127,3 +127,16 @@
 }
 
 
+@media only screen and (max-width: 500px){
+	.faleconosco {
+        padding: 25px 10px 100px 10px;
+    }
+
+    .faleconosco > p {
+        margin: 20px 0;
+    }
+
+    .faleconosco > h3 {
+        font-size: 24px;
+    }
+}

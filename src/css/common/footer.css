@@ -80,3 +80,26 @@
 .footer > .links-container > .links > a:hover {
 	color: #388e3c;
 }
+
+
+@media only screen and (max-width: 400px){
+	.footer {
+		padding: 32px 10px;
+	}
+
+	.footer > .links-container {
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 0;
+	}
+
+	.footer > .links-container > .links {
+		width: 100%;
+		align-items: center;
+	}
+
+	.footer > .links-container > .links:not(:first-child) {
+		border-left: 0;
+		border-top: 1px solid #5b5b5b;
+	}
+}

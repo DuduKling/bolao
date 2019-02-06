@@ -136,3 +136,15 @@
 .rankTable > tbody > .-bronze {background-color: #965A38ab;}
 .rankTable > tbody > .-bronze:hover {background-color: #965A38cf;} 
 */
+
+
+
+
+@media only screen and (max-width: 400px){
+	.rankTable > tbody > tr > .pointsColumn {
+		padding-right: 0;
+    }
+    .rankTable > thead > tr > .pointsColumn {
+        width: 60px;
+    }
+}

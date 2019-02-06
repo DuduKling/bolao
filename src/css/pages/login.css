@@ -198,3 +198,24 @@
     opacity: 0.16;
 }
 
+
+
+@media only screen and (max-width: 570px){
+    .login-container {
+        padding: 40px 10px;
+    }
+
+    .login-container > .form-container {
+        width: 100%;
+        padding: 30px 15px;
+    }
+
+    .login-container > .form-container > .form {
+        width: 100%;
+    }
+
+    .login-container > .form-container > h2 {
+        font-size: 28px;
+        margin: 0 0 10px 0;
+    }
+}

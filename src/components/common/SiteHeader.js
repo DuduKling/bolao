@@ -12,7 +12,8 @@ class SiteHeader extends Component {
     constructor() {
         super();
         this.state = {
-            UserNavBarVisible: false
+            UserNavBarVisible: false,
+            NavBarVisible: false
         };
     }
 
@@ -28,10 +29,16 @@ class SiteHeader extends Component {
         }); 
     }
 
+    toggleNavBar(){
+        this.setState({
+            NavBarVisible: !this.state.NavBarVisible
+        }); 
+    }
+
     checkIfUserIsLoggedIn(){
         if(this.props.userName!==""){
             return(
-                <div className="header-right">
+                <div className={this.state.NavBarVisible?"header-right showMenu":"header-right"}>
                     <nav className="menu">
                         <NavLink className="menuItem" to="/user/campeonatos">
                         Campeonatos
@@ -54,11 +61,10 @@ class SiteHeader extends Component {
 
                     </div>
                 </div>
-                
             );
         }else{
             return(
-                <div className="header-right">
+                <div className={this.state.NavBarVisible?"header-right showMenu":"header-right"}>
                     <nav className="menu">
                         <NavLink className="menuItem" to="/regulamento">
                             Regulamento
@@ -88,6 +94,14 @@ class SiteHeader extends Component {
                     <h1 className="logoName">Bolão</h1>
                 </Link>
 
+                <div className={this.state.NavBarVisible?"menuToggle close":"menuToggle"} onClick={this.toggleNavBar.bind(this)}>
+                    MENU
+                    <div className="hamburguerMenu">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
                 {this.checkIfUserIsLoggedIn()}
 
             </header>

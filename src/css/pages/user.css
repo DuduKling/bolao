@@ -11,6 +11,8 @@
     color: #424242;
 
     display: flex;
+
+    overflow: hidden;
 }
 
 .userPage-container  > div {
@@ -192,3 +194,16 @@
 }
 
 
+@media only screen and (max-width: 770px){
+    .userPage-container > div {
+        padding: 0;
+    }
+
+
+}
+
+/* @media only screen and (max-width: 400px){
+    .userPage-container {
+        padding: 40px 0px 100px 0px;
+    }
+} */

@@ -49,37 +49,38 @@ class Regulamento extends Component {
                                     <li>Erro do placar (Ex: Participante aposta no Brasil Vencendo a Suíça por 2x0 e o placar do jogo é um empate de 1x1) – 00 ponto.</li>
                                 </ul>*/}
 
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Tipo</th>
-                                            <th>Ex. Apostado</th>
-                                            <th>Ex. Placar Final</th>
-                                            <th>Pontuação</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Acertou Placar</td>
-                                            <td>Brasil 1x0 Argentina</td>
-                                            <td>Brasil 1x0 Argentina</td>
-                                            <td className="points">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Acertou Vencedor</td>
-                                            <td>Brasil 1x0 Argentina</td>
-                                            <td>Brasil 2x1 Argentina</td>
-                                            <td className="points">1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Errou Placar</td>
-                                            <td>Brasil 2x0 Argentina</td>
-                                            <td>Brasil 1x1 Argentina</td>
-                                            <td className="points">0</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
+                                <li className="liTabela">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Tipo</th>
+                                                <th>Ex. Apostado</th>
+                                                <th>Ex. Placar Final</th>
+                                                <th>Pontuação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Acertou Placar</td>
+                                                <td>Brasil 1x0 Argentina</td>
+                                                <td>Brasil 1x0 Argentina</td>
+                                                <td className="points">3</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Acertou Vencedor</td>
+                                                <td>Brasil 1x0 Argentina</td>
+                                                <td>Brasil 2x1 Argentina</td>
+                                                <td className="points">1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Errou Placar</td>
+                                                <td>Brasil 2x0 Argentina</td>
+                                                <td>Brasil 1x1 Argentina</td>
+                                                <td className="points">0</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </li>
 
                                 <li>Obs: As regras acima se aplicam aos empates. (Ex, se em determinado jogo um participante aposta no placar de 1x1 e o resultado final é 1x1 ele receberá 3 pontos).</li>
 

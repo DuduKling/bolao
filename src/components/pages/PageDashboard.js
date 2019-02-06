@@ -11,185 +11,185 @@ class PageDashboard extends Component {
     constructor() {
         super();
         this.state = {
-            // fixtures: [
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": null,
-            //         "away_score": null,
-            //         "home_team_name": "Time AAA",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "2",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": null,
-            //         "away_score": null,
-            //         "home_team_name": "Time AAA",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": null,
-            //         "away_score": null,
-            //         "home_team_name": "Time AAA",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "2",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": null,
-            //         "away_score": null,
-            //         "home_team_name": "Time AAA",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": null,
-            //         "away_score": null,
-            //         "home_team_name": "Time AAA",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": null,
-            //         "away_score": null,
-            //         "home_team_name": "Time AAA",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": "0",
-            //         "away_score": "0",
-            //         "home_team_name": "Time BBB",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "2",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": "0",
-            //         "away_score": "0",
-            //         "home_team_name": "Time BBB",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": "0",
-            //         "away_score": "0",
-            //         "home_team_name": "Time BBB",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "2",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": "0",
-            //         "away_score": "0",
-            //         "home_team_name": "Time BBB",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": "0",
-            //         "away_score": "0",
-            //         "home_team_name": "Time BBB",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": "0",
-            //         "away_score": "0",
-            //         "home_team_name": "Time JJJ",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": "0",
-            //         "away_score": "0",
-            //         "home_team_name": "Time JJJ",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": "0",
-            //         "away_score": "0",
-            //         "home_team_name": "Time JJJa",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": null,
-            //         "away_score": null,
-            //         "home_team_name": "Time 11",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     },
-            //     {
-            //         "idfixture": "1",
-            //         "datetime": "Date Time",
-            //         "local": "Russia",
-            //         "home_score": null,
-            //         "away_score": null,
-            //         "home_team_name": "Time 11",
-            //         "home_path": "",
-            //         "away_team_name": "Time 2",
-            //         "away_path": ""
-            //     }
-            // ],
-            // rank: [
+            fixtures: [
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": null,
+                //     "away_score": null,
+                //     "home_team_name": "Time AAA",
+                //     "home_path": "",
+                //     "away_team_name": "Arábia Saudita",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "2",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": null,
+                //     "away_score": null,
+                //     "home_team_name": "Time AAA",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": null,
+                //     "away_score": null,
+                //     "home_team_name": "Time AAA",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "2",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": null,
+                //     "away_score": null,
+                //     "home_team_name": "Time AAA",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": null,
+                //     "away_score": null,
+                //     "home_team_name": "Time AAA",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": null,
+                //     "away_score": null,
+                //     "home_team_name": "Time AAA",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "0",
+                //     "away_score": "0",
+                //     "home_team_name": "Time BBB",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "2",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "0",
+                //     "away_score": "0",
+                //     "home_team_name": "Time BBB",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "0",
+                //     "away_score": "0",
+                //     "home_team_name": "Time BBB",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "2",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "0",
+                //     "away_score": "0",
+                //     "home_team_name": "Time BBB",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "0",
+                //     "away_score": "0",
+                //     "home_team_name": "Time BBB",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "0",
+                //     "away_score": "0",
+                //     "home_team_name": "Time JJJ",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "0",
+                //     "away_score": "0",
+                //     "home_team_name": "Time JJJ",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": "0",
+                //     "away_score": "0",
+                //     "home_team_name": "Time JJJa",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": null,
+                //     "away_score": null,
+                //     "home_team_name": "Time 11",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // },
+                // {
+                //     "idfixture": "1",
+                //     "datetime": "Date Time",
+                //     "local": "Russia",
+                //     "home_score": null,
+                //     "away_score": null,
+                //     "home_team_name": "Time 11",
+                //     "home_path": "",
+                //     "away_team_name": "Time 2",
+                //     "away_path": ""
+                // }
+            ],
+            rank: [
             //     {
             //         "position": "0",
             //         "name": "Nome completo 1234",
@@ -230,46 +230,46 @@ class PageDashboard extends Component {
             //         "name": "Nome completo 2",
             //         "points": "0"
             //     }
-            // ],
-            // campeonato: {
-            //     "nomeCampeonato": "Copa do Mundo Rússia 2018",
-            //     "logoCampeonato": "russia_2018.png",
-            //     "dataInicioCampeonato": "88/88/888",
-            //     // "statusCampeonato": "finalizado",
-            //     "idCampeonato": "1",
-            //     // "participacaoCampeonato": "yes",
-            //     "fases": [
-            //         {
-            //             "id": "1",
-            //             "nomeFase": "Grupos",
-            //             // "apostaFase": true,
-            //             "partes": [
-            //                 {
-            //                     "id": 1,
-            //                     "nomeParte": "Tabela",
-            //                     "statusParte": "finalizado"
-            //                 }
-            //             ]
-            //         },
-            //         {
-            //             "id": "2",
-            //             "nomeFase": "Eliminatórias",
-            //             // "apostaFase": true,
-            //             "partes": [
-            //                 {
-            //                     "id": 1,
-            //                     "nomeParte": "Oitavas",
-            //                     "statusParte": "finalizado"
-            //                 },
-            //                 {
-            //                     "id": 2,
-            //                     "nomeParte": "Quartas",
-            //                     "statusParte": "aposta"
-            //                 }
-            //             ]
-            //         }
-            //     ]
-            // }
+            ],
+            campeonato: {
+                "nomeCampeonato": "",
+                "logoCampeonato": "",
+                "dataInicioCampeonato": "",
+                // "statusCampeonato": "finalizado",
+                "idCampeonato": "1",
+                // "participacaoCampeonato": "yes",
+                "fases": [
+                    {
+                        "id": "1",
+                        "nomeFase": "",
+                        // "apostaFase": true,
+                        "partes": [
+                            {
+                                "id": 1,
+                                "nomeParte": "",
+                                "statusParte": ""
+                            }
+                        ]
+                    },
+                    {
+                        "id": "2",
+                        "nomeFase": "",
+                        // "apostaFase": true,
+                        "partes": [
+                            {
+                                "id": 1,
+                                "nomeParte": "",
+                                "statusParte": ""
+                            },
+                            {
+                                "id": 2,
+                                "nomeParte": "",
+                                "statusParte": ""
+                            }
+                        ]
+                    }
+                ]
+            }
         };
     }
 

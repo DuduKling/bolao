@@ -74,12 +74,16 @@
 
 
 
-.textao-container > table {
+.textao-container > li.liTabela {
+    overflow: scroll;
+}
+
+.textao-container > li.liTabela > table {
     margin: 20px 20px 20px 27px;
     border-collapse: collapse;
 }
 
-.textao-container > table th {
+.textao-container > li.liTabela > table th {
     padding: 8px;
 
     text-align: left;
@@ -88,13 +92,24 @@
     color: white;
 }
 
-.textao-container > table td {
+.textao-container > li.liTabela > table td {
     padding: 8px;
     
     text-align: left;
     border: 1px solid #c7c7c7;
 }
 
-.textao-container > table .points {
+.textao-container > li.liTabela > table .points {
     text-align: center;
+}
+
+
+
+
+@media only screen and (max-width: 500px){
+    .regulamento {
+        padding: 25px 10px 100px 10px;
+        overflow: hidden;
+    }
+
 }

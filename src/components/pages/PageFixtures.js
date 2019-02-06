@@ -67,45 +67,45 @@ class PageFixtures extends Component {
                 //     "away_path": ""
                 // }
             ],
-            // campeonato: {
-            //     "nomeCampeonato": "Copa do Mundo Rússia 2018",
-            //     "logoCampeonato": "russia_2018.png",
-            //     "dataInicioCampeonato": "88/88/888",
-            //     // "statusCampeonato": "finalizado",
-            //     "idCampeonato": "1",
-            //     // "participacaoCampeonato": "yes",
-            //     "fases": [
-            //         {
-            //             "id": "1",
-            //             "nomeFase": "Grupos",
-            //             // "apostaFase": true,
-            //             "partes": [
-            //                 {
-            //                     "id": 1,
-            //                     "nomeParte": "Tabela",
-            //                     "statusParte": "finalizado"
-            //                 }
-            //             ]
-            //         },
-            //         {
-            //             "id": "2",
-            //             "nomeFase": "Eliminatórias",
-            //             // "apostaFase": true,
-            //             "partes": [
-            //                 {
-            //                     "id": 1,
-            //                     "nomeParte": "Oitavas",
-            //                     "statusParte": "finalizado"
-            //                 },
-            //                 {
-            //                     "id": 2,
-            //                     "nomeParte": "Quartas",
-            //                     "statusParte": "aposta"
-            //                 }
-            //             ]
-            //         }
-            //     ]
-            // }
+            campeonato: {
+                // "nomeCampeonato": "Copa do Mundo Rússia 2018",
+                // "logoCampeonato": "russia_2018.png",
+                // "dataInicioCampeonato": "88/88/888",
+                // // "statusCampeonato": "finalizado",
+                // "idCampeonato": "1",
+                // // "participacaoCampeonato": "yes",
+                // "fases": [
+                //     {
+                //         "id": "1",
+                //         "nomeFase": "Grupos",
+                //         // "apostaFase": true,
+                //         "partes": [
+                //             {
+                //                 "id": 1,
+                //                 "nomeParte": "Tabela",
+                //                 "statusParte": "finalizado"
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         "id": "2",
+                //         "nomeFase": "Eliminatórias",
+                //         // "apostaFase": true,
+                //         "partes": [
+                //             {
+                //                 "id": 1,
+                //                 "nomeParte": "Oitavas",
+                //                 "statusParte": "finalizado"
+                //             },
+                //             {
+                //                 "id": 2,
+                //                 "nomeParte": "Quartas",
+                //                 "statusParte": "aposta"
+                //             }
+                //         ]
+                //     }
+                // ]
+            }
         };
     }
 

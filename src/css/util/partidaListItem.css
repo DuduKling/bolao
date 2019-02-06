@@ -34,6 +34,7 @@
 .partidaLista > li p {
 	margin: 0;
 	/* text-align: right; */
+	word-break: break-all;
 }
 
 .partidaLista > li > a {
@@ -194,4 +195,21 @@
 
 	display: flex;
 	justify-content: center;
+}
+
+
+
+@media only screen and (max-width: 400px){
+	.rankTable > tbody > tr > .pointsColumn {
+		padding-right: 0;
+	}
+	
+    .rankTable > thead > tr > .pointsColumn {
+        width: 60px;
+	}
+	
+	.partidaLista > li p {
+		font-size: 14px;
+	}
+
 }

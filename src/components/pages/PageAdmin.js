@@ -7,19 +7,6 @@ import { Link } from 'react-router-dom';
 import Loading from '../util/Loading';
 import AdminSelect from '../util/AdminSelect';
 
-/*
-- Lista com todos os campeonatos cadastrados, mostrando suas fases e partes.
-
-- Para as partes, colcocar um optionset com os status possíveis (tba, finalizado, aposta e aberto), colorindo de acordo.
-
-- Link para o /adminscore de cada uma das fases (Acho que é fase mesmo)
-
-- Link para o /adminviewapostas de cada uma das fases (Acho que é fase mesmo).
-
-
-- /adminparticipantes:
-- Fazer uma página para o "overview" das apostas.. Uma lista com os nomes de todos os apostadores para uma *fase*. E ao lado de cada um, cada coluna é uma parte. E colocando marcações em verde -apostado, vermelho -nãoApostado e cinza -aindaNãoApostado. E deve mostrar a quantidadade total no topo. (Não deve ser utilizado inner join, mas left join. Pq pode ter gente sem aposta para um tipo e tal..)
-*/
 
 class PageAdmin extends Component {
     constructor() {

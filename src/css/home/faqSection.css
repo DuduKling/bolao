@@ -50,3 +50,31 @@
     margin: 30px 0 0 0;
 }
 
+@media only screen and (max-width: 770px){
+    .FaqSection-container {
+        padding: 30px 10px 50px 10px;
+    }
+
+    .FaqSection-regulamento {
+        padding: 0;
+    }
+
+    .FaqSection-regulamento > p {
+        width: 100%;
+        padding: 0;
+    }
+}
+
+@media only screen and (max-width: 500px){
+    .FaqSection-container > h2 {
+        font-size: 24px;
+    }
+
+    .FaqSection-regulamento > h3 {
+        font-size: 18px;
+    }
+
+    .FaqSection-regulamento > p {
+        font-size: 14px;
+    }
+}

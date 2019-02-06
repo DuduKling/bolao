@@ -33,3 +33,32 @@
 	height: 100%;
 	object-fit: cover;
 }
+
+
+@media only screen and (max-width: 500px){
+	.match-container .-Away {
+		padding-right: 5px;
+		
+	}
+
+	.match-container .-Away > p {
+		text-align: right;
+	}
+
+	.match-container .-Home {
+		padding-left: 5px;
+		
+	}
+
+	.match-container .-Away > p {
+		text-align: left;
+	}
+}
+
+
+@media only screen and (max-width: 400px){
+	.match-container .time > div {
+		width: 20px;
+		height: 20px;
+	}
+}
