@@ -38,7 +38,7 @@ class MaterialTextInput extends Component {
         
         switch(inputName) {
             case "nome":
-                regx  = new RegExp('^[A-Za-zÀ-ú ]+([^ \\t\\r\\n])$', 'gi');
+                regx  = new RegExp('^[A-Za-zÀ-ú ]+([^\\t\\r\\n])$', 'gi');
                 resultado = regx.test(inputValue);
 
                 if(!resultado){

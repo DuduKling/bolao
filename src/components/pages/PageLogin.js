@@ -223,7 +223,7 @@ class PageLogin extends Component {
                 this.setState({ajaxErrorResp: "Senhas precisam ser idênticas."});
             }else{
                 textJSON = `{
-                    "completename":"${nomeValue}",
+                    "completename":"${nomeValue.trim()}",
                     "email":"${emailValue}",
                     "password":"${senhaValue}"
                 }`;
