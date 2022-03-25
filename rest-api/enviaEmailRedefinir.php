@@ -83,6 +83,7 @@ if($num>0){
     $mail->SMTPSecure = 'tls'; // ssl is deprecated
     $mail->SMTPAuth = true;
     $mail->Username = 'mestresdodisfarce@gmail.com'; // email
+$mail->Password = 'xxxxxxxxxxxxxx'; // password
     $mail->setFrom('contato@bolaoimperial.com', 'Bolão Imperial Team'); // From email and name
     $mail->addAddress($email, $completename); // to email and name
     $mail->Subject = 'Redefinição de senha - Bolão Imperial';

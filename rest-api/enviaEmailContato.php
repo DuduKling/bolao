@@ -31,6 +31,7 @@ $mail->Port = 587; // TLS only
 $mail->SMTPSecure = 'tls'; // ssl is deprecated
 $mail->SMTPAuth = true;
 $mail->Username = 'mestresdodisfarce@gmail.com'; // email
+$mail->Password = 'xxxxxxxxxxxxxx'; // password
 $mail->setFrom('contato@bolaoimperial.com', 'Bolão Imperial Team'); // From email and name
 $mail->addAddress("eduardokmesiano@gmail.com", "Eduardo Kling"); // to email and name
 $mail->Subject = 'Fale Conosco: '.$name.' - Bolão Imperial';
