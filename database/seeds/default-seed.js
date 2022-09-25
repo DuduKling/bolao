@@ -11,6 +11,14 @@ exports.seed = async function(knex) {
   await knex('fase').del();
   await knex('campeonato').del();
 
+  await knex.schema.raw('ALTER TABLE bet AUTO_INCREMENT = 1');
+  await knex.schema.raw('ALTER TABLE users AUTO_INCREMENT = 1');
+  await knex.schema.raw('ALTER TABLE fixture AUTO_INCREMENT = 1');
+  await knex.schema.raw('ALTER TABLE team AUTO_INCREMENT = 1');
+  await knex.schema.raw('ALTER TABLE parte AUTO_INCREMENT = 1');
+  await knex.schema.raw('ALTER TABLE fase AUTO_INCREMENT = 1');
+  await knex.schema.raw('ALTER TABLE campeonato AUTO_INCREMENT = 1');
+
   await knex('campeonato').insert([
     {
       nome: 'Copa América Brasil 2019',
