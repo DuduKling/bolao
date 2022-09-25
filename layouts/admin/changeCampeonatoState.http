@@ -1,0 +1,7 @@
+POST {{url}}/api/v1/admin/changeCampeonatoState.php
+Content-Type: application/json
+
+{
+    "newStatus": "aposta",
+    "parteID": "1"
+}

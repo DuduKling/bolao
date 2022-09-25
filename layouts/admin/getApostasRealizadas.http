@@ -1,0 +1,6 @@
+POST {{url}}/api/v1/admin/getApostasRealizadas.php
+Content-Type: application/json
+
+{
+    "faseID": "2"
+}

@@ -1,0 +1,7 @@
+POST {{url}}/api/v1/admin/postResult.php
+Content-Type: application/json
+
+{
+    "2_home": "2",
+    "2_away": "0"
+}
