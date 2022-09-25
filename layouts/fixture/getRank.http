@@ -1,0 +1,6 @@
+POST {{url}}/api/v1/fixture/getRank.php
+Content-Type: application/json
+
+{
+    "faseID": "2"
+}

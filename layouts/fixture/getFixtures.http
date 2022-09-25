@@ -1,0 +1,8 @@
+POST {{url}}/api/v1/fixture/getFixtures.php
+Content-Type: application/json
+
+{
+    "parteId": "3",
+    "status": "aberto",
+    "userId": "1"
+}
