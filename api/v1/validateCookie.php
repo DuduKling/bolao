@@ -1,63 +1,57 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost/rest-api-auth/");
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
+
+header("Access-Control-Allow-Origin: {$env["URL_FRONT"]}");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
- 
-include_once 'config/database.php';
-include_once 'objects/user.php';
 
-include_once 'config/core.php';
-include_once 'libs/php-jwt-master/src/BeforeValidException.php';
-include_once 'libs/php-jwt-master/src/ExpiredException.php';
-include_once 'libs/php-jwt-master/src/SignatureInvalidException.php';
-include_once 'libs/php-jwt-master/src/JWT.php';
-use \Firebase\JWT\JWT;
- 
+$inputData = json_decode(file_get_contents("php://input"));
 
-$database = new Database();
-$db = $database->getConnection();
- 
-$user = new User($db);
-
-$data = json_decode(file_get_contents("php://input"));
-$jwt=isset($data->jwt) ? $data->jwt : "";
- 
-if($jwt){
-    try {
-        $decoded = JWT::decode($jwt, $key, array('HS256'));
-
-        $user->id = $decoded->data->id;
-
-        $user->updateInternalInfo();
-
-        http_response_code(200);
-        echo json_encode(
-            array(
-                "message" => "Cookie validado com sucesso!",
-                "jwt" => $jwt,
-                "name" => $user->completename,
-                "email" => $user->email,
-                "userImg" => $user->imagePath,
-                "userRole" => $user->role,
-                "id" => $user->id
-            )
-        );
-    }catch(Exception $e){
-        http_response_code(401);
-        echo json_encode(array(
-            "message" => "JWT não decodificado",
-            "error" => $e->getMessage()
-        ));
-    }
-
-}else{
+if (!isset($inputData->jwt) || empty($inputData->jwt)) {
     http_response_code(401);
-    echo json_encode(array("message" => "Access denied."));
+    echo json_encode(array("message" => "Acesso Negado. Favor fazer login novamente. (Error: #VC1)"));
+    exit();
 }
 
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/jwt.php';
+$customJWT = new CustomJWT($env);
+
+$jwt = $inputData->jwt;
+$decoded = $customJWT->decodeToken($jwt);
+
+if (empty($decoded)) {
+    http_response_code(401);
+    echo json_encode(array("message" => "Acesso Negado. (Error: #VC2)"));
+    exit();
+}
+
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
+$db = new DatabaseConnection($env);
+
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/user.php';
+$user = new User($db);
+
+$id = $decoded->data->id;
+$foundUser = $user->find($id);
+
+if (!$foundUser) {
+    http_response_code(401);
+    echo json_encode(array("message" => "Não foi possível validar as informações, favor entrar em contato com o Administrador. (Error: #VC3)"));
+    exit();
+}
+
+http_response_code(200);
+echo json_encode(
+    array(
+        "message" => "Cookie validado com sucesso!",
+        "jwt" => $jwt,
+        "name" => $user->completename,
+        "email" => $user->email,
+        "userImg" => $user->imagePath,
+        "userRole" => $user->role,
+        "id" => $user->id
+    )
+);
 ?>
-
-
-

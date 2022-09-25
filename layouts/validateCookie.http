@@ -1,0 +1,6 @@
+POST {{url}}/api/v1/validateCookie.php
+Content-Type: application/json
+
+{
+    "jwt": "{{token}}"
+}
