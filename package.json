@@ -14,10 +14,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "server": "cd rest-api && php -S 127.0.0.1:8000",
+    "knex": "cd database && knex"
   },
   "devDependencies": {
+    "knex": "^2.3.0",
+    "mysql": "^2.18.1",
     "react-redux": "^5.1.1",
     "redux": "^4.0.1"
   }
