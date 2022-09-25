@@ -1,0 +1,23 @@
+### Update user
+GET {{url}}/api/v1/user/update.php
+Content-Type: application/json
+
+{
+    "type": "userInfo",
+    "id": "1",
+    "jwt": "{{token}}",
+    "name": "teste2",
+    "email": "email2@teste.com"
+}
+
+
+### Reset passowrd
+GET {{url}}/api/v1/user/update.php
+Content-Type: application/json
+
+{
+    "type": "userPassword",
+    "id": "1",
+    "jwt": "{{token}}",
+    "password": "senha"
+}

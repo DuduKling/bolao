@@ -1,6 +1,7 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/api/vendor/autoload.php';
 use \Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class CustomJWT {
     public function __construct($env) {
@@ -10,12 +11,14 @@ class CustomJWT {
         $this->key = $env["JWT_KEY"];
         $this->iss = $env["URL_FRONT"]; //"iss" (Issuer) Claim
         $this->aud = $env["URL_FRONT"]; //"aud" (Audience) Claim
+
+        $this->algorithm = 'HS256';
     }
 
     public function createToken($data) {
         $iat = time();
 
-        $token = array(
+        $values = array(
             "iss" => $this->iss,
             "aud" => $this->aud,
             "iat" => $iat, //"iat" (Issued At) Claim
@@ -24,6 +27,18 @@ class CustomJWT {
             "data" => $data
         );
 
-        return JWT::encode($token, $this->key, 'HS256');
+        return JWT::encode($values, $this->key, $this->algorithm);
+    }
+
+    public function decodeToken($token) {
+        $decoded = null;
+
+        try {
+            $decoded = JWT::decode($token, new Key($this->key, $this->algorithm));
+        } catch (Exception $e) {
+            return $decoded;
+        }
+
+        return $decoded;
     }
 }

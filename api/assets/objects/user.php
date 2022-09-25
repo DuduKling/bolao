@@ -1,9 +1,7 @@
 <?php
-// 'user' object
-class User
-{
+class User {
     private $conn;
-    private $table_name = "users";
+    private $tableName = "users";
 
     public $id;
     public $completename;
@@ -19,7 +17,7 @@ class User
     public function create() {
 
         // insert query
-        $query = "INSERT INTO " . $this->table_name . "
+        $query = "INSERT INTO " . $this->tableName . "
                 SET
                     name = :completename,
                     email = :email,
@@ -49,11 +47,43 @@ class User
         return false;
     }
 
-    function CheckIfEmailExists() {
+    public function find($id) {
+        $query = "SELECT *
+            FROM users
+            WHERE Id = ?
+            LIMIT 0,1
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->id=htmlspecialchars(strip_tags($id));
+
+        $stmt->bindParam(1, $id);
+
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+        if ($num > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $this->id = $row['Id'];
+            $this->completename = $row['name'];
+            $this->email = $row['email'];
+            $this->password = $row['passwd'];
+            $this->imagePath = $row['imagePath'];
+            $this->role = $row['role'];
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function CheckIfEmailExists() {
 
         // query to check if email exists
         $query = "SELECT id, name, passwd, imagePath
-                FROM " . $this->table_name . "
+                FROM " . $this->tableName . "
                 WHERE email = ?
                 LIMIT 0,1";
 
@@ -92,9 +122,9 @@ class User
         return false;
     }
 
-    public function updateNopass() {
+    public function updateInfo($name, $email) {
 
-        $query = "UPDATE " . $this->table_name . "
+        $query = "UPDATE " . $this->tableName . "
             SET
                 name = :completename,
                 email = :email
@@ -104,8 +134,8 @@ class User
         $stmt = $this->conn->prepare($query);
 
         // bind the values from the form
-        $this->completename = htmlspecialchars(strip_tags($this->completename));
-        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->completename = htmlspecialchars(strip_tags($name));
+        $this->email = htmlspecialchars(strip_tags($email));
 
         $stmt->bindParam(':completename', $this->completename);
         $stmt->bindParam(':email', $this->email);
@@ -121,9 +151,9 @@ class User
         return false;
     }
 
-    public function updatePass() {
+    public function updatePassword($password) {
 
-        $query = "UPDATE " . $this->table_name . "
+        $query = "UPDATE " . $this->tableName . "
             SET
                 passwd = :password
             WHERE id = :id";
@@ -132,8 +162,7 @@ class User
         $stmt = $this->conn->prepare($query);
 
         // hash the password before saving to database
-
-        $this->password = htmlspecialchars(strip_tags($this->password));
+        $this->password = htmlspecialchars(strip_tags($password));
         $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
 
         $stmt->bindParam(':password', $password_hash);
@@ -165,3 +194,4 @@ class User
         }
     }
 }
+?>
