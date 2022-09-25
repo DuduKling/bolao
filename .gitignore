@@ -24,4 +24,4 @@ database/knexfile.js
 /images
 .env
 vendor
-.lock
+*.lock
