@@ -151,6 +151,24 @@ class User {
         return false;
     }
 
+    public function updateAvatar($finalFileName) {
+
+        $query = "UPDATE users SET
+            imagePath = :imagePath
+            WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':imagePath', $finalFileName);
+        $stmt->bindParam(':id', $this->id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function updatePassword($password) {
 
         $query = "UPDATE " . $this->tableName . "

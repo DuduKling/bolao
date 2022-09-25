@@ -1,119 +1,101 @@
 <?php
-// required headers
-header("Access-Control-Allow-Origin: *");
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
+
+header("Access-Control-Allow-Origin: {$env["URL_FRONT"]}");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
- 
 
+#################### Validate jwt token ####################
+if (!isset($_POST["jwt"]) || empty($_POST["jwt"])) {
+    http_response_code(401);
+    echo json_encode(array("message" => "Acesso Negado. Favor fazer login novamente. (Error: #UUA1)"));
+    exit();
+}
 
-
-//---- files for decoding jwt will be here
-// required to encode json web token
-include_once 'config/core.php';
-include_once 'libs/php-jwt-master/src/BeforeValidException.php';
-include_once 'libs/php-jwt-master/src/ExpiredException.php';
-include_once 'libs/php-jwt-master/src/SignatureInvalidException.php';
-include_once 'libs/php-jwt-master/src/JWT.php';
-use \Firebase\JWT\JWT;
- 
-include_once 'config/database.php';
-include_once 'objects/user.php';
- 
-$database = new Database();
-$db = $database->getConnection();
-
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/jwt.php';
+$customJWT = new CustomJWT($env);
 
 $jwt = $_POST["jwt"];
- 
-if($jwt){
-    try {
-        $decoded = JWT::decode($jwt, $key, array('HS256'));
-        $userID = $decoded->data->id;
+$decoded = $customJWT->decodeToken($jwt);
 
-        $uploadOk = 1;
-        if ($_FILES["file"]["size"] > 500000) {
-            $uploadOk = 0;
-        }
-        $imageFileType = strtolower(pathinfo($_FILES["file"]["name"],PATHINFO_EXTENSION));
-        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif"){
-            $uploadOk = 0;
-        }
-
-        if($uploadOk){
-            $upFile = $_FILES['file'];
-            $tmpName = $upFile['tmp_name'];
-    
-            $fileName = $upFile['name'];
-            $fileNamePieces = explode(".", $fileName);
-    
-            $finalFileName = '/imagens/users/'. $fileNamePieces[0] ."-".time(). ".".$fileNamePieces[1];
-    
-            $error = (int) $upFile['error'];
-            if($error == 0){
-                if(move_uploaded_file($tmpName, dirname(__FILE__, 2).$finalFileName)){
-                    
-                    $query = "UPDATE users SET
-                        imagePath = :imagePath
-                        WHERE id = :id";
-                    $stmt = $db->prepare($query);
-    
-                    $stmt->bindParam(':imagePath', $finalFileName);
-                    $stmt->bindParam(':id', $userID);
-    
-                    if($stmt->execute()){
-
-                        http_response_code(200);
-                        echo json_encode(array(
-                            "message" => "Foto atualizada com sucesso!",
-                            "userImg" => $finalFileName 
-                        ));
-
-                    }else{
-
-                        http_response_code(401);
-                        echo json_encode(array(
-                            "message" => "Não foi possível atualizar a imagem no banco. Fale com o Administrador."
-                        ));
-                    }
-                }else{
-
-                    http_response_code(401);
-                    echo json_encode(array(
-                        "message" => "Problemas ao mover o arquivo para o servidor. Fale com o Administrador."
-                    ));
-                }
-            }else{
-
-                http_response_code(401);
-                echo json_encode(array(
-                    "message" => "Problemas ao enviar o arquivo para o servidor. Fale com o Administrador."
-                ));
-            }
-        }else{
-            http_response_code(401);
-            echo json_encode(array(
-                "message" => "Formato ou tamanho do arquivo indisponíveis para upload."
-            ));
-        }
-    }catch(Exception $e){
-
-        http_response_code(401);
-        echo json_encode(array(
-            "message" => "Acesso Negado. Error: Não foi possível decodificar o JWT.",
-            "error" => $e->getMessage()
-        ));
-    }
-}else{
-
+if (empty($decoded)) {
     http_response_code(401);
-    echo json_encode(array("message" => "Acesso Negado. Favor fazer login novamente."));
+    echo json_encode(array("message" => "Acesso Negado. Favor fazer login novamente. (Error: #UUA2)"));
+    exit();
 }
+
+#################### Validate file ####################
+$fileIsValid = true;
+
+if ($_FILES["file"]["size"] > 500000) {
+    $fileIsValid = false;
+}
+
+$imageFileType = strtolower(pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION));
+$availableFileTypes = array("jpg", "png", "jpeg", "gif");
+if (!in_array($imageFileType, $availableFileTypes)) {
+    $fileIsValid = false;
+}
+
+if (!$fileIsValid) {
+    http_response_code(400);
+    echo json_encode(array("message" => "Formato ou tamanho do arquivo indisponíveis para upload. (Error: #UUA3)"));
+    exit();
+}
+
+#################### Validate upload ####################
+$upFile = $_FILES['file'];
+
+$error = (int) $upFile['error'];
+if ($error != 0) {
+    http_response_code(400);
+    echo json_encode(array("message" => "Problemas ao enviar o arquivo para o servidor, favor entrar em contato com o Administrador. (Error: #UUA4)"));
+    exit();
+}
+
+$tmpName = $upFile['tmp_name'];
+
+$fileName = $upFile['name'];
+$fileNamePieces = explode(".", $fileName);
+$finalFileName = $env["UPLOAD_DIR"] . $fileNamePieces[0] ."-".time(). ".".$fileNamePieces[1];
+
+$fileUploaded = move_uploaded_file($tmpName, $_SERVER['DOCUMENT_ROOT'] . $finalFileName);
+
+if (!$fileUploaded) {
+    http_response_code(400);
+    echo json_encode(array("message" => "Problemas ao mover o arquivo para o servidor, favor entrar em contato com o Administrador. (Error: #UUA5)"));
+    exit();
+}
+
+#################### Update user ####################
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
+$db = new DatabaseConnection($env);
+
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/user.php';
+$user = new User($db);
+
+$id = $decoded->data->id;
+$foundUser = $user->find($id);
+
+if (!$foundUser) {
+    http_response_code(401);
+    echo json_encode(array("message" => "Não foi possível atualizar o avatar, favor entrar em contato com o Administrador. (Error: #UUA6)"));
+    exit();
+}
+
+$updated = $user->updateAvatar($finalFileName);
+
+if (!$updated) {
+    http_response_code(401);
+    echo json_encode(array("message" => "Não foi possível atualizar seu avatar, favor entrar em contato com o Administrador. (Error: #UUA7)"));
+    exit();
+}
+
+http_response_code(200);
+echo json_encode(array(
+    "message" => "Foto atualizada com sucesso!",
+    "userImg" => $finalFileName 
+));
 ?>
-
-
-
-
-
-
