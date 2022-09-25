@@ -37,7 +37,6 @@ if ($num <= 0) {
     exit();
 }
 
-
 $dbFixtures = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $fixtures = array();

@@ -11,11 +11,12 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
 $db = new DatabaseConnection($env);
 
 $inputData = json_decode(file_get_contents("php://input"));
+
 $userID = $inputData->userId;
 
 $allFieldOk = true;
 foreach ($inputData as $key => $value) {
-    if ($key!="userId" && !preg_match("/^[0-9]{1,2}$/", $value)){
+    if ($key != "userId" && !preg_match("/^[0-9]{1,2}$/", $value)) {
         $allFieldOk = false;
         break;
     }
