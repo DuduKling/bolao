@@ -1,4 +1,4 @@
-GET {{url}}/rest-api/create_user.php
+GET {{url}}/api/create_user.php
 Content-Type: application/json
 
 {

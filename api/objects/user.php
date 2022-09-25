@@ -16,7 +16,7 @@ class User
         $this->conn = $db;
     }
 
-    function create() {
+    public function create() {
 
         // insert query
         $query = "INSERT INTO " . $this->table_name . "
