@@ -1,7 +1,4 @@
 {
-  "name": "bolao",
-  "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
     "jquery": "^3.2.1",
@@ -13,13 +10,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "server": "php -S 127.0.0.1:8000",
-    "knex": "cd database && knex"
+    "build": "react-scripts build"
   },
   "devDependencies": {
-    "knex": "^2.3.0",
-    "mysql": "^2.18.1",
     "react-redux": "^5.1.1",
     "redux": "^4.0.1"
   }

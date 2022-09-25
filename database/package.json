@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "knex": "^2.3.0",
+    "mysql": "^2.18.1"
+  }
+}

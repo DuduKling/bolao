@@ -1,0 +1,10 @@
+{
+  "name": "bolao",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "cd app && yarn start",
+    "build": "cd app && yarn build",
+    "server": "php -S 127.0.0.1:8000",
+    "knex": "cd database && knex"
+  }
+}
