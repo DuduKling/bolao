@@ -1,0 +1,8 @@
+POST {{url}}/api/v1/email/enviaEmailContato.php
+Content-Type: application/json
+
+{
+    "name": "Pessoa Aleatória",
+    "email": "email@aleatorio.com",
+    "message": "Hello there!"
+}
