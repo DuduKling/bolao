@@ -1,5 +1,5 @@
 <?php
-include_once 'config/env.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
 
 header("Access-Control-Allow-Origin: {$env["URL_FRONT"]}");
 header("Content-Type: application/json; charset=UTF-8");
@@ -9,10 +9,10 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 $inputData = json_decode(file_get_contents("php://input"));
 
-include_once 'config/database.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
 $db = new DatabaseConnection($env);
 
-include_once 'objects/user.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/user.php';
 $user = new User($db);
 
 $user->email = $inputData->email;
@@ -28,7 +28,7 @@ if (!$emailExists || !$passwordMatch) {
     exit();
 }
 
-include_once 'config/jwt.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/jwt.php';
 $customJWT = new CustomJWT($env);
 
 $jwt = $customJWT->createToken(array(

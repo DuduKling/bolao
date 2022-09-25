@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/api/vendor/autoload.php';
 use \Firebase\JWT\JWT;
 
 class CustomJWT {

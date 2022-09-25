@@ -1,4 +1,4 @@
-GET {{url}}/api/create_user.php
+GET {{url}}/api/v1/user/create_user.php
 Content-Type: application/json
 
 {
