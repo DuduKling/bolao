@@ -1,0 +1,8 @@
+GET {{url}}/rest-api/create_user.php
+Content-Type: application/json
+
+{
+    "completename": "teste",
+    "email": "email@teste.com",
+    "password": "senha"
+}

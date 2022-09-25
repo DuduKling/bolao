@@ -1,0 +1,7 @@
+GET {{url}}/rest-api/login.php
+Content-Type: application/json
+
+{
+    "email": "email@teste.com",
+    "password": "senha"
+}
