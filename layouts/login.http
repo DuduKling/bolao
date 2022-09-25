@@ -1,4 +1,4 @@
-GET {{url}}/rest-api/login.php
+GET {{url}}/api/login.php
 Content-Type: application/json
 
 {
