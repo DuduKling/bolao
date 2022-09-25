@@ -8,14 +8,12 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 include_once 'config/database.php';
-$database = new Database();
-$db = $database->getConnection($env);
+$db = new DatabaseConnection($env);
 
 include_once 'objects/user.php';
 $user = new User($db);
 
 $data = json_decode(file_get_contents("php://input"));
-error_log(file_get_contents("php://input"));
 
 $user->completename = $data->completename;
 $user->email = $data->email;

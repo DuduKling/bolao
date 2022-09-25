@@ -8,8 +8,7 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 include_once 'config/database.php';
-$database = new Database();
-$db = $database->getConnection($env);
+$db = new DatabaseConnection($env);
 
 include_once 'objects/user.php';
 $user = new User($db);
@@ -19,29 +18,19 @@ $data = json_decode(file_get_contents("php://input"));
 $user->email = $data->email;
 $email_exists = $user->emailExists();
 
-include_once 'config/core.php';
-
-require __DIR__ . '/vendor/autoload.php';
-use \Firebase\JWT\JWT;
+include_once 'config/jwt.php';
+$customJWT = new CustomJWT($env);
 
 if ($email_exists && password_verify($data->password, $user->password)) {
 
-    $token = array(
-        "iss" => $iss,
-        "aud" => $aud,
-        "iat" => $iat,
-        "nbf" => $nbf,
-        "exp" => $exp,
-        "data" => array(
-            "id" => $user->id,
-            "completename" => $user->completename,
-            "email" => $user->email
-        )
-    );
+    $jwt = $customJWT->createToken(array(
+        "id" => $user->id,
+        "completename" => $user->completename,
+        "email" => $user->email
+    ));
 
     http_response_code(200);
 
-    $jwt = JWT::encode($token, $key, 'HS256');
     $user->updateInternalInfo();
     echo json_encode(
         array(

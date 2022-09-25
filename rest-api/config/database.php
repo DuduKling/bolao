@@ -1,28 +1,26 @@
 <?php
-class Database {
-    private $host;
-    private $db_name;
-    private $username;
-    private $password;
+class DatabaseConnection {
+    public $conn = null;
 
-    public $conn;
+    public function __construct($env) {
+        $host = $env["DB_HOST"];
+        $db_name = $env["DB_NAME"];
+        $username = $env["DB_USERNAME"];
+        $password = $env["DB_PASSWORD"];
 
-    public function getConnection($env){
-        $this->host = $env["DB_HOST"];
-        $this->db_name = $env["DB_NAME"];
-        $this->username = $env["DB_USERNAME"];
-        $this->password = $env["DB_PASSWORD"];
-
-        $this->conn = null;
+        $dsn = "mysql:host=" . $host . ";dbname=" . $db_name;
 
         try {
-            $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->db_name;
-            $this->conn = new PDO($dsn, $this->username, $this->password);
+            $this->conn = new PDO($dsn, $username, $password);
         } catch(PDOException $exception) {
             echo "Connection error: " . $exception->getMessage();
         }
 
         return $this->conn;
+    }
+
+    public function prepare($query) {
+        return $this->conn->prepare($query);
     }
 }
 ?>
