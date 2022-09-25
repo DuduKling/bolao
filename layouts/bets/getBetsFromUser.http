@@ -1,0 +1,7 @@
+POST {{url}}/api/v1/bets/getBetsFromUser.php
+Content-Type: application/json
+
+{
+    "faseID": "2",
+    "userName": "admin"
+}

@@ -1,0 +1,6 @@
+POST {{url}}/api/v1/bets/getBetsFromFixture.php
+Content-Type: application/json
+
+{
+    "fixtureID": "1"
+}

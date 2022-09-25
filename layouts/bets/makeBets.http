@@ -1,0 +1,8 @@
+POST {{url}}/api/v1/bets/makeBets.php
+Content-Type: application/json
+
+{
+    "userId": "1",
+    "1_home": "9",
+    "1_away": "3"
+}
