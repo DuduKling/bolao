@@ -2,5 +2,5 @@ POST {{url}}/api/v1/email/enviaEmailRedefinir.php
 Content-Type: application/json
 
 {
-    "email": "eduardokmesiano@gmail.com"
+    "email": "admin@mail.com"
 }
