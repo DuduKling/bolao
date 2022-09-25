@@ -94,7 +94,7 @@ $mail->Password = 'xxxxxxxxxxxxxx'; // password
     $mail->msgHTML($message); //$mail->msgHTML(file_get_contents('contents.html'), __DIR__); //Read an HTML message body from an external file, convert referenced images to embedded,
 
 
-    $mail->AltBody = 'Acesse o link: https://bolaodogui.000webhostapp.com/user/esqueci/'.$jwt; // If html emails is not supported by the receiver, show this body
+    $mail->AltBody = 'Acesse o link: https://bolaoimperial.000webhostapp.com/user/esqueci/'.$jwt; // If html emails is not supported by the receiver, show this body
     // $mail->addAttachment('images/phpmailer_mini.png'); //Attach an image file
     
     if(!$mail->send()){
