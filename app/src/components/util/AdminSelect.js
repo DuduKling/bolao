@@ -35,7 +35,7 @@ class AdminSelect extends Component {
         
         this.setState({loading: true});
         $.ajax({
-            url:"../rest-api/changeCampeonatoState.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/changeCampeonatoState.php`,
 			type: 'post',
             data: dataString,
             dataType: "json",

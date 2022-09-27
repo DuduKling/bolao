@@ -53,7 +53,7 @@ class PageUser extends Component {
             var dataString = JSON.stringify(textJSON2);
             
             $.ajax({
-                url:"../rest-api/update_user.php",
+                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 type: 'post',
                 contentType : 'application/json',
                 data: dataString,
@@ -119,7 +119,7 @@ class PageUser extends Component {
             var dataString = JSON.stringify(textJSON2);
             
             $.ajax({
-                url:"../rest-api/update_user.php",
+                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 type: 'post',
                 contentType : 'application/json',
                 data: dataString,
@@ -168,7 +168,7 @@ class PageUser extends Component {
             formData.append("jwt", userJWT);
             
             $.ajax({
-                url:"../rest-api/uploadAvatar.php",
+                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/uploadAvatar.php`,
                 type: 'post',
                 data: formData,
                 processData: false,

@@ -1,19 +1,18 @@
 {
   "dependencies": {
-    "classnames": "^2.2.5",
+    "axios": "^0.27.2",
     "jquery": "^3.2.1",
-    "npm": "^6.5.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.1.1",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.0.17"
+    "redux": "^4.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"
   },
   "devDependencies": {
-    "react-redux": "^5.1.1",
-    "redux": "^4.0.1"
+    "react-scripts": "1.0.17"
   }
 }

@@ -68,7 +68,7 @@ class PageApostadoJogo extends Component {
         var dataString = JSON.stringify(textJSON2);
 
         $.ajax({
-            url:"../../rest-api/getBetsFromFixture.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromFixture.php`,
             type: 'post',
             data: dataString,
             dataType: 'json',

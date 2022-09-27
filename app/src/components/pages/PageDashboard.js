@@ -314,7 +314,7 @@ class PageDashboard extends Component {
         var dataString = JSON.stringify(textJSON2);
 
         $.ajax({
-            url:"../../rest-api/getFixturesFromCampeonato.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
             type: 'post',
             data: dataString,
             dataType: 'json',
@@ -337,7 +337,7 @@ class PageDashboard extends Component {
 
         // Rank
         $.ajax({
-            url:"../../rest-api/getRank.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getRank.php`,
             type: 'post',
             data: dataString,
             dataType: 'json',
@@ -366,7 +366,7 @@ class PageDashboard extends Component {
         dataString = JSON.stringify(textJSON2);
 
         $.ajax({
-            url:"../../rest-api/getCampeonatoInfo.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatoInfo.php`,
             type: 'post',
             data: dataString,
             dataType: 'json',

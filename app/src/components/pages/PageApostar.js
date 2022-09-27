@@ -92,7 +92,7 @@ class PageApostar extends Component {
         var dataString = JSON.stringify(textJSON2);
 
         $.ajax({
-            url:"../rest-api/getFixtures.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixtures.php`,
             type: 'post',
             data: dataString,
             dataType: 'json',
@@ -139,7 +139,7 @@ class PageApostar extends Component {
         this.setState({loading2: true});
 
         $.ajax({
-            url:"../rest-api/makeBets.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/makeBets.php`,
 			type: 'post',
             data: dataString,
             dataType: "json",

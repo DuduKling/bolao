@@ -115,7 +115,7 @@ class PageApostar extends Component {
         var dataString = JSON.stringify(textJSON2);
 
         $.ajax({
-            url:"../../rest-api/getBetsFromUser.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromUser.php`,
             type: 'post',
             data: dataString,
             dataType: 'json',

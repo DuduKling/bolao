@@ -43,7 +43,7 @@ class PageContato extends Component {
             var dataString = JSON.stringify(textJSON2);
 
             $.ajax({
-                url:"../rest-api/enviaEmailContato.php",
+                url: `${process.env.REACT_APP_URL_BACK}/api/v1/email/enviaEmailContato.php`,
                 type: 'post',
                 contentType : 'application/json',
                 data: dataString,

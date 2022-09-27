@@ -55,7 +55,7 @@ class PageEsqueci extends Component {
         var dataString = JSON.stringify(textJSON2);
         
         $.ajax({
-            url:"../rest-api/enviaEmailRedefinir.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/email/enviaEmailRedefinir.php`,
             type: 'post',
             contentType : 'application/json',
             data: dataString,
@@ -137,7 +137,7 @@ class PageEsqueci extends Component {
             var dataString = JSON.stringify(textJSON2);
             
             $.ajax({
-                url:"https://bolaodogui.000webhostapp.com/rest-api/update_user.php",
+                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 type: 'post',
                 contentType : 'application/json',
                 data: dataString,

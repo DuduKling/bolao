@@ -105,7 +105,7 @@ class App extends Component {
 			var dataString = JSON.stringify(textJSON2);
 			
 			$.ajax({
-				url:"https://bolaodogui.000webhostapp.com/rest-api/validateCookie.php",
+				url: `${process.env.REACT_APP_URL_BACK}/api/v1/validateCookie.php`,
 				type: 'post',
 				contentType : 'application/json',
 				data: dataString,

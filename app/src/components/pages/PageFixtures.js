@@ -142,7 +142,7 @@ class PageFixtures extends Component {
         var dataString = JSON.stringify(textJSON2);
 
         $.ajax({
-            url:"../../rest-api/getFixturesFromCampeonato.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
             type: 'post',
             data: dataString,
             dataType: 'json',
@@ -171,7 +171,7 @@ class PageFixtures extends Component {
         dataString = JSON.stringify(textJSON2);
 
         $.ajax({
-            url:"../../rest-api/getCampeonatoInfo.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatoInfo.php`,
             type: 'post',
             data: dataString,
             dataType: 'json',

@@ -50,7 +50,7 @@ class PageAdminApostas extends Component {
         var dataString = JSON.stringify(textJSON2);
 
         $.ajax({
-            url:"../rest-api/getApostasRealizadas.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/getApostasRealizadas.php`,
             type: 'post',
             data: dataString,
             contentType : 'application/json',

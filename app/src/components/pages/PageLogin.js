@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../../css/pages/login.css';
 import '../../css/util/formMessage.css';
 import $ from 'jquery';
+import axios from "axios";
 
 import { Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -170,7 +171,7 @@ class PageLogin extends Component {
                 dataString = JSON.stringify(textJSON2);
                 
                 $.ajax({
-                    url:"../rest-api/login.php",
+                    url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/login.php`,
                     type: 'post',
                     contentType : 'application/json',
                     data: dataString,
@@ -222,42 +223,79 @@ class PageLogin extends Component {
             }else if(senhaValue!==senhaConfirmarValue){
                 this.setState({ajaxErrorResp: "Senhas precisam ser idênticas."});
             }else{
-                textJSON = `{
-                    "completename":"${nomeValue.trim()}",
-                    "email":"${emailValue}",
-                    "password":"${senhaValue}"
-                }`;
-                textJSON2 = JSON.parse(textJSON);
-                dataString = JSON.stringify(textJSON2);
-                
-                $.ajax({
-                    url:"../rest-api/create_user.php",
-                    type: 'post',
-                    contentType : 'application/json',
-                    data: dataString,
-                    success: function(resposta){
+                const dataString = JSON.stringify({
+                    "completename": nomeValue.trim(),
+                    "email": emailValue,
+                    "password": senhaValue
+                });
 
-                        this.setState({ajaxSuccessResp: resposta.message.toString()});
-                        // console.log(resposta);
+                axios.post(`${process.env.REACT_APP_URL_BACK}/api/v1/user/create.php`, dataString)
+                    .then((resposta) => {
+                        this.setState({ajaxSuccessResp: resposta.data.message.toString()});
 
                         this.setState({redirectToLogin: true});
+                    })
+                    .catch((error) => {
+                        if (error.response) {
+                            // The request was made and the server responded with a status code
+                            // that falls out of the range of 2xx
+                            console.log(error.response.data);
+                            console.log(error.response.status);
+                            console.log(error.response.headers);
+                        } else if (error.request) {
+                            // The request was made but no response was received
+                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                            // http.ClientRequest in node.js
+                            console.log(error.request);
+                        } else {
+                            // Something happened in setting up the request that triggered an Error
+                            console.log('Error', error.message);
+                        }
+                        console.log(error.config);
 
-                    }.bind(this),
-                    error: function(xhr, status, err){
-
-                        console.error(status, err.toString());
-
-                        // console.log(xhr.responseText);
-                        console.log(JSON.parse(xhr.responseText));
-                        
-                        // console.log(JSON.parse(xhr.responseText).message);
                         this.setState({
-                            ajaxErrorResp: JSON.parse(xhr.responseText).message.toString(),
+                            ajaxErrorResp: error.response.data.message.toString(),
                             ajaxSuccessResp: '0'
                         });
+                    });
 
-                    }.bind(this)
-                });
+
+                // textJSON = `{
+                //     "completename":"${nomeValue.trim()}",
+                //     "email":"${emailValue}",
+                //     "password":"${senhaValue}"
+                // }`;
+                // textJSON2 = JSON.parse(textJSON);
+                // dataString = JSON.stringify(textJSON2);
+
+                // $.ajax({
+                //     url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/create.php`,
+                //     type: 'post',
+                //     contentType : 'application/json',
+                //     data: dataString,
+                //     success: function(resposta){
+
+                //         this.setState({ajaxSuccessResp: resposta.message.toString()});
+                //         // console.log(resposta);
+
+                //         this.setState({redirectToLogin: true});
+
+                //     }.bind(this),
+                //     error: function(xhr, status, err){
+
+                //         console.error(status, err.toString());
+
+                //         // console.log(xhr.responseText);
+                //         console.log(JSON.parse(xhr.responseText));
+                        
+                //         // console.log(JSON.parse(xhr.responseText).message);
+                //         this.setState({
+                //             ajaxErrorResp: JSON.parse(xhr.responseText).message.toString(),
+                //             ajaxSuccessResp: '0'
+                //         });
+
+                //     }.bind(this)
+                // });
             }
 
         }

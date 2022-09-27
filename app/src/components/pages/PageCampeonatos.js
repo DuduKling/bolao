@@ -134,7 +134,7 @@ class PageCampeonatos extends Component {
     componentDidMount(){
         this.setState({loading: true});
         $.ajax({
-            url:"../rest-api/getCampeonatos.php",
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatos.php`,
             type: 'post',
             contentType : 'application/json',
             success: function(resposta){
