@@ -59,7 +59,9 @@ $tmpName = $upFile['tmp_name'];
 
 $fileName = $upFile['name'];
 $fileNamePieces = explode(".", $fileName);
-$finalFileName = $env["UPLOAD_DIR"] . $fileNamePieces[0] ."-".time(). ".".$fileNamePieces[1];
+
+$relativeFileName = $env["APP_RELATIVE_IMAGE_DIR"] . $fileNamePieces[0] ."-".time(). ".".$fileNamePieces[1];
+$finalFileName = $env["APP_PUBLIC_DIR"] . $relativeFileName;
 
 $fileUploaded = move_uploaded_file($tmpName, $_SERVER['DOCUMENT_ROOT'] . $finalFileName);
 
@@ -85,7 +87,7 @@ if (!$foundUser) {
     exit();
 }
 
-$updated = $user->updateAvatar($finalFileName);
+$updated = $user->updateAvatar($relativeFileName);
 
 if (!$updated) {
     http_response_code(401);
@@ -96,6 +98,6 @@ if (!$updated) {
 http_response_code(200);
 echo json_encode(array(
     "message" => "Foto atualizada com sucesso!",
-    "userImg" => $finalFileName 
+    "userImg" => $relativeFileName
 ));
 ?>

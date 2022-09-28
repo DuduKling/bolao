@@ -121,7 +121,7 @@ exports.seed = async function(knex) {
       name: 'admin',
       email: "admin@mail.com",
       passwd: '$2y$10$y/HcJqaMOSNMYAHDSA/cVem8A2VBU6G8fohb/r3IYa0BOG7WeefZ6', //admin
-      imagePath: 'spawn.jpg',
+      imagePath: '/imagens/users/spawn.jpg',
       role: 'admin',
     },
     {
