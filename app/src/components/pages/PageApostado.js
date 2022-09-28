@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 import '../../css/pages/pageInside.css';
+
+import http from '../../util/http';
 
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
@@ -100,42 +101,33 @@ class PageApostar extends Component {
     }
 
     componentDidMount(){
-        this.setState({loading: true});
+        this.setState({ loading: true });
 
-        // var campeonatoID = this.props.match.params.campeonato;
-        var faseID = this.props.match.params.fase;
-        var userName = this.props.match.params.nome;
-        
-        // Fixtures
-        var textJSON = `{
-            "faseID":"${faseID}",
-            "userName":"${userName}"
-        }`;
-        var textJSON2 = JSON.parse(textJSON);
-        var dataString = JSON.stringify(textJSON2);
+        const faseID = this.props.match.params.fase;
+        const userName = this.props.match.params.nome;
 
-        $.ajax({
+        const dataString = JSON.stringify({
+            faseID,
+            userName
+        });
+
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromUser.php`,
-            type: 'post',
             data: dataString,
-            dataType: 'json',
-            success: function(resposta){
+            thenCallback: (response) => {
                 this.setState({
                     loading: false,
-                    fixtures: resposta.fixtures,
-                    userImage: resposta.userImage,
-                    campeonato: resposta.campeonato,
-                    fase: resposta.fase
+                    fixtures: response.fixtures,
+                    userImage: response.userImage,
+                    campeonato: response.campeonato,
+                    fase: response.fase
                 });
-                localStorage.setItem(userName+faseID+'fixtures', JSON.stringify(resposta.fixtures));
-                
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
-                console.log(JSON.parse(xhr.responseText).message);
-                this.setState({loading: false});
-                // this.setState({error: JSON.parse(xhr.responseText).message});
-            }.bind(this)
+
+                localStorage.setItem(userName+faseID+'fixtures', JSON.stringify(response.fixtures));
+            },
+            catchCallback: ({ message }) => {
+                this.setState({ loading: false });
+            }
         });
     }
     

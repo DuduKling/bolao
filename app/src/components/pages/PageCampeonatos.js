@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/pages/campeonato.css';
-import $ from 'jquery';
+
+import http from '../../util/http';
 
 import CampeonatoCard from '../util/CampeonatoCard';
 import Loading from '../util/Loading';
@@ -132,30 +133,24 @@ class PageCampeonatos extends Component {
     }
 
     componentDidMount(){
-        this.setState({loading: true});
-        $.ajax({
+        this.setState({ loading: true });
+
+        const dataString = JSON.stringify({});
+
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatos.php`,
-            type: 'post',
-            contentType : 'application/json',
-            success: function(resposta){
-                // console.log(resposta);
+            data: dataString,
+            thenCallback: (response) => {
                 this.setState({
-                    campeonatos: resposta,
+                    campeonatos: response,
                     loading: false
                 });
 
-                localStorage.setItem('campeonatos', JSON.stringify(resposta));
-
-            }.bind(this),
-            error: function(xhr, status, err){
-                // console.log("erro:");
-                // console.log(xhr);   //erro completo
-                // console.log(status); // statusText do erro completo
-                // console.log(err);
-                // console.log(JSON.parse(xhr.responseText)); // É a resposta que eu coloco.
-                console.error(status, err.toString());
-                this.setState({loading: false});
-            }.bind(this)
+                localStorage.setItem('campeonatos', JSON.stringify(response));
+            },
+            catchCallback: ({ message }) => {
+                this.setState({ loading: false });
+            }
         });
     }
 
@@ -171,12 +166,11 @@ class PageCampeonatos extends Component {
                         <Loading loading={this.state.loading} localstorage="-withLocalStorage"/>
                     </h3>
                     <div className="userCampeonatos-container">
-                        
                         {
                         this.state.campeonatos.map(function(campeonato, index){
                             return(
-                                <CampeonatoCard 
-                                    key={index} 
+                                <CampeonatoCard
+                                    key={index}
                                     campeonato={campeonato}
                                 />
                             );

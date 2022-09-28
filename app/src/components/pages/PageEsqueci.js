@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import '../../css/pages/login.css';
 import $ from 'jquery';
 
+import http from '../../util/http';
+
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
 
@@ -40,43 +42,34 @@ class PageEsqueci extends Component {
 
     sendEmailForm(evento){
         evento.preventDefault();
+
         this.setState({
             ajaxSuccessResp: '',
             ajaxErrorResp: '',
             loading: true
         });
-        
-        var emailValue = $("input[name='email']").val();
 
-        var textJSON = `{
-            "email":"${emailValue}"
-        }`;
-        var textJSON2 = JSON.parse(textJSON);
-        var dataString = JSON.stringify(textJSON2);
-        
-        $.ajax({
+        const emailValue = $("input[name='email']").val();
+
+        const dataString = JSON.stringify({
+            email: emailValue
+        });
+
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/email/enviaEmailRedefinir.php`,
-            type: 'post',
-            contentType : 'application/json',
             data: dataString,
-            success: function(resposta){
-
+            thenCallback: (response) => {
                 this.setState({
-                    ajaxSuccessResp: resposta.message.toString(),
+                    ajaxSuccessResp: response.message.toString(),
                     loading: false
                 });
-
-            }.bind(this),
-            error: function(xhr, status, err){
-
-                console.error(status, err.toString());
-                console.log(JSON.parse(xhr.responseText));
+            },
+            catchCallback: ({ message }) => {
                 this.setState({
-                    ajaxErrorResp: JSON.parse(xhr.responseText).message.toString()
+                    ajaxErrorResp: message
                 });
-                this.setState({loading: false});
-
-            }.bind(this)
+                this.setState({ loading: false });
+            }
         });
     }
 
@@ -126,38 +119,29 @@ class PageEsqueci extends Component {
         }else if(senhaValue!==senhaConfirmarValue){
             this.setState({ajaxErrorResp: "Senhas precisam ser idênticas."});
         }else{
-            this.setState({loading: true});
-            var textJSON = `{
-                "type":"resetPass",
-                "password":"${senhaValue}",
-                "id":"${userID}",
-                "jwt":"${userJWT}"
-            }`;
-            var textJSON2 = JSON.parse(textJSON);
-            var dataString = JSON.stringify(textJSON2);
-            
-            $.ajax({
-                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
-                type: 'post',
-                contentType : 'application/json',
-                data: dataString,
-                success: function(resposta){
-                    // console.log(resposta);
-                    
-                    this.setState({ajaxSuccessResp: resposta.message.toString()});
-                    this.setState({loading: false});
-                }.bind(this),
-                error: function(xhr, status, err){
+            this.setState({ loading: true });
 
-                    console.error(status, err.toString());
-                    console.log(JSON.parse(xhr.responseText));
-                    
+            const dataString = JSON.stringify({
+                type: 'resetPass',
+                password: senhaValue,
+                id: userID,
+                jwt: userJWT
+            });
+
+            http({
+                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
+                data: dataString,
+                thenCallback: (response) => {
+                    this.setState({ ajaxSuccessResp: response.message.toString() });
+                    this.setState({ loading: false });
+                },
+                catchCallback: ({ message }) => {
                     this.setState({
-                        ajaxErrorResp: JSON.parse(xhr.responseText).message.toString(),
+                        ajaxErrorResp: message,
                         ajaxSuccessResp: ''
                     });
-                    this.setState({loading: false});
-                }.bind(this)
+                    this.setState({ loading: false });
+                }
             });
         }
     }

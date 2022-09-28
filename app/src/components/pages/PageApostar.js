@@ -4,6 +4,8 @@ import '../../css/pages/pageInside.css';
 import '../../css/util/formMessage.css';
 import { connect } from 'react-redux';
 
+import http from '../../util/http';
+
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 
@@ -79,81 +81,68 @@ class PageApostar extends Component {
     }
 
     componentDidMount() {
-        this.setState({loading: true});
+        this.setState({ loading: true });
 
-        var parteId = this.props.match.params.parte;
-        var userId = this.props.userId;
+        const parteId = this.props.match.params.parte;
+        const userId = this.props.userId;
 
-        var textJSON = `{
-            "parteId":"${parteId}",
-            "userId": "${userId}"
-        }`;
-        var textJSON2 = JSON.parse(textJSON);
-        var dataString = JSON.stringify(textJSON2);
+        const dataString = JSON.stringify({
+            parteId,
+            userId,
+            status: 'aberto'
+        });
 
-        $.ajax({
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixtures.php`,
-            type: 'post',
             data: dataString,
-            dataType: 'json',
-            success: function(resposta){
+            thenCallback: (response) => {
                 this.setState({
-                    fixtures: resposta.fixtures,
-                    campeonato: resposta.campeonato,
-                    fase: resposta.fase,
-                    parte: resposta.parte
+                    fixtures: response.fixtures,
+                    campeonato: response.campeonato,
+                    fase: response.fase,
+                    parte: response.parte
                 });
-                this.setState({loading: false});
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
-                // console.log(JSON.parse(xhr.responseText));
-                this.setState({loading: false});
-                this.setState({error: JSON.parse(xhr.responseText).message});
-            }.bind(this)
+
+                this.setState({ loading: false });
+            },
+            catchCallback: ({ message }) => {
+                this.setState({ loading: false });
+                this.setState({ error: message });
+            }
         });
     }
 
 	enviaAposta(evento) {
         evento.preventDefault();
-        // console.log("enviando..")
-        this.setState({error: ''});
-        this.setState({resp: ''});
 
-        var data = {};
+        this.setState({ error: '' });
+        this.setState({ resp: '' });
+        this.setState({ loading2: true });
 
-        data["userId"] = this.props.userId;
-        
+        const data = {
+            userId: this.props.userId
+        };
+
         $("input[type='text']").each(function(index, item){
-            var val = $(item).val();
-            var name = $(item).attr('name');
+            const val = $(item).val();
+            const name = $(item).attr('name');
 
             data[name] = val;
         });
 
-        // console.log(data);
-        var dataString = JSON.stringify(data);
-        // console.log("dataString:");
-        // console.log(dataString);
+        const dataString = JSON.stringify(data);
 
-        this.setState({loading2: true});
-
-        $.ajax({
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/makeBets.php`,
-			type: 'post',
             data: dataString,
-            dataType: "json",
-            success: function(resposta){
-                // console.log("Resposta PHP:");
-                console.log(resposta);
-                this.setState({resp: resposta.message});
-                this.setState({loading2: false});
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
-                this.setState({loading2: false});
-                this.setState({error: JSON.parse(xhr.responseText).message});
-            }.bind(this)
+            thenCallback: (response) => {
+                this.setState({ resp: response.message });
+                this.setState({ loading2: false });
+            },
+            catchCallback: ({ message }) => {
+                this.setState({ loading2: false });
+                this.setState({ error: message });
+            }
         });
     }
 

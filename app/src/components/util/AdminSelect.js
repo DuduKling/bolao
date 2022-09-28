@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/util/adminSelect.css';
-import $ from 'jquery';
+
+import http from '../../util/http';
 
 import Loading from '../util/Loading';
 
@@ -21,38 +22,31 @@ class AdminSelect extends Component {
         }
     }
 
-    handleChange = (event) => {        
-        var data = event.target.value;
-        var parteID = event.target.name;
+    handleChange = (event) => {
+        this.setState({ loading: true });
 
-        var textJSON = `{
-            "newStatus":"${data}",
-            "parteID":"${parteID}"
-        }`;
-        var textJSON2 = JSON.parse(textJSON);
-        var dataString = JSON.stringify(textJSON2);
-        // console.log(dataString);
-        
-        this.setState({loading: true});
-        $.ajax({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/changeCampeonatoState.php`,
-			type: 'post',
-            data: dataString,
-            dataType: "json",
-            success: function(resposta){
-                // console.log(resposta);
-                this.setState({selected: data});
-                this.setState({loading: false});
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
-                this.setState({loading: false});
-                this.setState({error: JSON.parse(xhr.responseText).message});
-            }.bind(this)
+        const data = event.target.value;
+        const parteID = event.target.name;
+
+        const dataString = JSON.stringify({
+            newStatus: data,
+            parteID: parteID
         });
 
+        http({
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/changeCampeonatoState.php`,
+            data: dataString,
+            thenCallback: (response) => {
+                this.setState({ selected: data });
+                this.setState({ loading: false });
+            },
+            catchCallback: ({ message }) => {
+                this.setState({ loading: false });
+                this.setState({ error: message });
+            }
+        });
     };
-    
+
     render() {
         return (
             <div className="materialSelect">

@@ -3,6 +3,8 @@ import $ from 'jquery';
 import '../../css/pages/pageInside.css';
 import '../../css/util/formMessage.css';
 
+import http from '../../util/http';
+
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 
@@ -77,47 +79,38 @@ class PageAdminScore extends Component {
 
     enviaResultado(evento) {
         evento.preventDefault();
-        // console.log("enviando..")
-        this.setState({error: ''});
-        this.setState({resp: ''});
 
-        var data = {};
+        this.setState({ error: '' });
+        this.setState({ resp: '' });
+        this.setState({ loading2: true });
+
+        const data = {};
         $("input[type='text']").each(function(index, item){
-            var val = $(item).val();
-            var name = $(item).attr('name');
+            const val = $(item).val();
+            const name = $(item).attr('name');
 
             data[name] = val;
         });
 
-        // console.log(data);
-        var dataString = JSON.stringify(data);
-        // console.log("dataString:");
-        // console.log(dataString);
+        const dataString = JSON.stringify(data);
 
-        this.setState({loading2: true});
-
-        $.ajax({
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/postResult.php`,
-			type: 'post',
             data: dataString,
-            dataType: "json",
-            success: function(resposta){
-                // console.log("Resposta PHP:");
-                // console.log(resposta);
+            thenCallback: (response) => {
                 this.setState({
-                    resp: resposta.message,
-                    // fixtures: resposta.fixtures,
+                    resp: response.message,
                     loading2: false
                 });
+
                 this.getFixtures();
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
+            },
+            catchCallback: ({ message }) => {
                 this.setState({
-                    error: JSON.parse(xhr.responseText).message,
+                    error: message,
                     loading2: false
                 });
-            }.bind(this)
+            }
         });
     }
 
@@ -126,39 +119,34 @@ class PageAdminScore extends Component {
     }
     
     getFixtures(){
-        this.setState({loading: true});
+        this.setState({ loading: true });
 
-        var parteId = this.props.match.params.parte;
+        const parteId = this.props.match.params.parte;
 
-        var textJSON = `{
-            "parteId":"${parteId}",
-            "status":"aberto"
-        }`;
-        var textJSON2 = JSON.parse(textJSON);
-        var dataString = JSON.stringify(textJSON2);
+        const dataString = JSON.stringify({
+            parteId: parteId,
+            status: 'aberto'
+        });
 
-        $.ajax({
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixtures.php`,
-            type: 'post',
             data: dataString,
-            dataType: 'json',
-            success: function(resposta){
+            thenCallback: (response) => {
                 this.setState({
-                    fixtures: resposta.fixtures,
-                    campeonato: resposta.campeonato,
-                    fase: resposta.fase,
-                    parte: resposta.parte
+                    fixtures: response.fixtures,
+                    campeonato: response.campeonato,
+                    fase: response.fase,
+                    parte: response.parte
                 });
-                this.setState({loading: false});
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
-                // console.log(JSON.parse(xhr.responseText));
+
+                this.setState({ loading: false });
+            },
+            catchCallback: ({ message }) => {
                 this.setState({
+                    error: message,
                     loading: false,
-                    error: JSON.parse(xhr.responseText).message,
                 });
-            }.bind(this)
+            }
         });
     }
 

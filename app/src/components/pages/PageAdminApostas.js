@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Loading from '../util/Loading';
-import $ from 'jquery';
 
+import http from '../../util/http';
 
 class PageAdminApostas extends Component {
     constructor() {
@@ -39,39 +39,27 @@ class PageAdminApostas extends Component {
     }
     
     componentDidMount(){
-        this.setState({loading: true});
+        this.setState({ loading: true });
 
-        var faseID = this.props.match.params.fase;
+        const faseID = this.props.match.params.fase;
 
-        var textJSON = `{
-            "faseID":"${faseID}"
-        }`;
-        var textJSON2 = JSON.parse(textJSON);
-        var dataString = JSON.stringify(textJSON2);
+        const dataString = JSON.stringify({
+            faseID
+        });
 
-        $.ajax({
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/getApostasRealizadas.php`,
-            type: 'post',
             data: dataString,
-            contentType : 'application/json',
-            success: function(resposta){
-                // console.log(resposta);
+            thenCallback: (response) => {
                 this.setState({
-                    partes: resposta.partes,
-                    listNames: resposta.listNames,
+                    partes: response.partes,
+                    listNames: response.listNames,
                     loading: false
                 });
-
-                // localStorage.setItem('campeonatos', JSON.stringify(resposta));
-
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
-                console.log(JSON.parse(xhr.responseText));
-                console.log(JSON.parse(xhr.responseText).message.toString());
-
-                this.setState({loading: false});
-            }.bind(this)
+            },
+            catchCallback: ({ message }) => {
+                this.setState({ loading: false });
+            }
         });
     }
 

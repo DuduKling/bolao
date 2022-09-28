@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/pages/pageInside.css';
-import $ from 'jquery';
 
+import http from '../../util/http';
 
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
@@ -129,63 +129,51 @@ class PageFixtures extends Component {
     }
 
     componentDidMount(){
-        this.setState({loading: true});
+        this.setState({ loading: true });
 
-        var campeonatoID = this.props.match.params.campeonato;
-        var faseID = this.props.match.params.fase;
+        const campeonatoID = this.props.match.params.campeonato;
+        const faseID = this.props.match.params.fase;
+
+        let dataString = JSON.stringify({
+            faseID
+        });
 
         // Fixtures
-        var textJSON = `{
-            "faseID":"${faseID}"
-        }`;
-        var textJSON2 = JSON.parse(textJSON);
-        var dataString = JSON.stringify(textJSON2);
-
-        $.ajax({
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
-            type: 'post',
             data: dataString,
-            dataType: 'json',
-            success: function(resposta){
+            thenCallback: (response) => {
                 this.setState({
                     loading: false,
-                    fixtures: resposta.fixtures
+                    fixtures: response.fixtures
                 });
-                localStorage.setItem(campeonatoID+faseID+'fixtures', JSON.stringify(resposta.fixtures));
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
-                // console.log(JSON.parse(xhr.responseText));
-                // this.setState({loading: false});
-                this.setState({error: JSON.parse(xhr.responseText).message});
-            }.bind(this)
-        });
-        
 
+                localStorage.setItem(campeonatoID+faseID+'fixtures', JSON.stringify(response.fixtures));
+            },
+            catchCallback: ({ message }) => {
+                this.setState({ error: message });
+            }
+        });
+
+
+        dataString = JSON.stringify({
+            campeonatoID
+        });
 
         // Campeonato
-        textJSON = `{
-            "campeonatoID":"${campeonatoID}"
-        }`;
-        textJSON2 = JSON.parse(textJSON);
-        dataString = JSON.stringify(textJSON2);
-
-        $.ajax({
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatoInfo.php`,
-            type: 'post',
             data: dataString,
-            dataType: 'json',
-            success: function(resposta){
+            thenCallback: (response) => {
                 this.setState({
-                    campeonato: resposta.campeonato
+                    campeonato: response.campeonato
                 });
-                localStorage.setItem(campeonatoID+faseID+'campeonato', JSON.stringify(resposta.campeonato));
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
-                // console.log(JSON.parse(xhr.responseText));
-                this.setState({error: JSON.parse(xhr.responseText).message});
-            }.bind(this)
+
+                localStorage.setItem(campeonatoID+faseID+'campeonato', JSON.stringify(response.campeonato));
+            },
+            catchCallback: ({ message }) => {
+                this.setState({ error: message });
+            }
         });
     }
     

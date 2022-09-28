@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './css/App.css';
-import $ from 'jquery';
 
 import { Switch, Route } from 'react-router-dom';
 
@@ -11,6 +10,7 @@ import { connect } from 'react-redux';
 import SiteHeader from './components/common/SiteHeader';
 import SiteFooter from './components/common/SiteFooter';
 
+import http from './util/http';
 import SetCookie from './components/util/setCookie';
 
 import PageHome from './components/pages/PageHome';
@@ -98,46 +98,32 @@ class App extends Component {
 		if(userInfo) {
 			const { updateJWT } = this.props;
 
-			var textJSON = `{
-				"jwt":"${userInfo}"
-			}`;
-			var textJSON2 = JSON.parse(textJSON);
-			var dataString = JSON.stringify(textJSON2);
-			
-			$.ajax({
+			const dataString = JSON.stringify({
+				jwt: userInfo
+			});
+
+			http({
 				url: `${process.env.REACT_APP_URL_BACK}/api/v1/validateCookie.php`,
-				type: 'post',
-				contentType : 'application/json',
 				data: dataString,
-				success: function(resposta){
-	
-					var userInfo = {
-						userName: resposta.name, 
-						userEmail: resposta.email,
-						userID: resposta.id,
-						userImg: resposta.userImg,
-						userRole: resposta.userRole,
-						userJWT: resposta.jwt
-					};
-					updateJWT(userInfo);
-
-					this.setState({
-						isAuth: true
+				thenCallback: (response) => {
+					updateJWT({
+						userName: response.name,
+						userEmail: response.email,
+						userID: response.id,
+						userImg: response.userImg,
+						userRole: response.userRole,
+						userJWT: response.jwt
 					});
-					
-				}.bind(this),
-				error: function(xhr, status, err){
-					console.error(status, err.toString());
-					console.log(JSON.parse(xhr.responseText));
 
-					if(JSON.parse(xhr.responseText).message.toString() === "JWT não decodificado") {
+					this.setState({ isAuth: true });
+				},
+				catchCallback: ({ message }) => {
+					if (message === "JWT não decodificado") {
 						SetCookie("userLogin", "", 0);
 					}
-					this.setState({
-						isAuth: false
-					});
-				}.bind(this)
-			});	
+					this.setState({ isAuth: false });
+				}
+			});
 		}else{
 			this.setState({
 				isAuth: false

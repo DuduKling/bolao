@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/pages/pageInside.css';
-import $ from 'jquery';
+
+import http from '../../util/http';
 
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
@@ -55,36 +56,30 @@ class PageApostadoJogo extends Component {
     }
 
     componentDidMount(){
-        this.setState({loading: true});
+        this.setState({ loading: true });
 
-        var fixtureID = this.props.match.params.fixture;
-        var faseID = this.props.match.params.fase;
+        const fixtureID = this.props.match.params.fixture;
+        const faseID = this.props.match.params.fase;
 
-        // Fixtures
-        var textJSON = `{
-            "fixtureID":"${fixtureID}"
-        }`;
-        var textJSON2 = JSON.parse(textJSON);
-        var dataString = JSON.stringify(textJSON2);
+        const dataString = JSON.stringify({
+            fixtureID
+        });
 
-        $.ajax({
+        http({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromFixture.php`,
-            type: 'post',
             data: dataString,
-            dataType: 'json',
-            success: function(resposta){
+            thenCallback: (response) => {
                 this.setState({
                     loading: false,
-                    fixtures: resposta.fixtures
+                    fixtures: response.fixtures
                 });
-                localStorage.setItem(faseID+fixtureID+'campeonatoJogo', JSON.stringify(resposta.fixtures));
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error(status, err.toString());
-                // console.log(JSON.parse(xhr.responseText));
-                this.setState({loading: false});
-                this.setState({error: JSON.parse(xhr.responseText).message});
-            }.bind(this)
+
+                localStorage.setItem(faseID+fixtureID+'campeonatoJogo', JSON.stringify(response.fixtures));
+            },
+            catchCallback: ({ message }) => {
+                this.setState({ loading: false });
+                this.setState({ error: message });
+            }
         });
     }
 

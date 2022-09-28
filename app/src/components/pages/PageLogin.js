@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import '../../css/pages/login.css';
 import '../../css/util/formMessage.css';
 import $ from 'jquery';
-import axios from "axios";
 
-import { Redirect } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
+import http from '../../util/http';
 import SetCookie from '../util/setCookie';
 
 import { bindActionCreators } from 'redux';
@@ -125,179 +124,81 @@ class PageLogin extends Component {
         evento.preventDefault();
         this.setState({ajaxErrorResp: ""});
         this.setState({ajaxSuccessResp: ""});
-        
-        var nomeValue = $("input[name='nome']").val();
-        var emailValue = $("input[name='email']").val();
-        var senhaValue = $("input[name='senha']").val();
-        var senhaConfirmarValue = $("input[name='senhaCheck']").val();
-        var keeplogin = $("input#keepLogin");
 
-        var textJSON = "";
-        var textJSON2 = "";
-        var dataString = "";
-        
-        if(this.props.match.params.typeOfLogin === "login"){
+        const nomeValue = $("input[name='nome']").val();
+        const emailValue = $("input[name='email']").val();
+        const senhaValue = $("input[name='senha']").val();
+        const senhaConfirmarValue = $("input[name='senhaCheck']").val();
+        const keeplogin = $("input#keepLogin");
 
+        const typeOfLogin = this.props.match.params.typeOfLogin;
+
+        if (typeOfLogin === "login") {
             if(emailValue==="" || senhaValue===""){
                 this.setState({ajaxErrorResp: "Favor preencha todos os campos!"});
             }else{
+                const dataString = JSON.stringify({
+                    email: emailValue,
+                    password: senhaValue
+                });
 
-                
-                // // Liberar interno local:
-                // var pessoa = {userName:"John", userEmail:"email@exemplo.com"};
-                // updateJWT(pessoa);
-                // this.setState({redirectToUser: true});
-                // var userInfo = {
-                //     userName: "Teste local", 
-                //     userEmail: "teste@local.com",
-                //     userID: "666",
-                //     userImg: "/imagens/users/avatar.png",
-                //     userJWT: "numeros.numeros.numeros"
-                // };
-                // updateJWT(userInfo);
-                // if(keeplogin.is(':checked')){
-                //     // console.log("quer ficar logado!");
-                //     SetCookie("userLogin", JSON.stringify(userInfo), 7);
-                // }
-
-
-
-
-                textJSON = `{
-                    "email":"${emailValue}", 
-                    "password":"${senhaValue}"
-                }`;
-                textJSON2 = JSON.parse(textJSON);
-                dataString = JSON.stringify(textJSON2);
-                
-                $.ajax({
+                http({
                     url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/login.php`,
-                    type: 'post',
-                    contentType : 'application/json',
                     data: dataString,
-                    success: function(resposta){
-                        // console.log(resposta);
-                        
-                        var userInfo = {
-                            userName: resposta.name, 
-                            userEmail: resposta.email,
-                            userID: resposta.id,
-                            userImg: resposta.imagePath,
-                            userRole: resposta.userRole,
-                            userJWT: resposta.jwt
-                        };
-                        updateJWT(userInfo);
-
-                        
-                        if(keeplogin.is(':checked')){
-                            // SetCookie("userLogin", JSON.stringify(userInfo), 7);
-                            SetCookie("userLogin", resposta.jwt, 7);
-                        }else{
-                            // SetCookie("userLogin", JSON.stringify(userInfo), 0);
-                            SetCookie("userLogin", resposta.jwt, 0)
-                        }
-
-                        this.setState({redirectToUser: true});
-                    }.bind(this),
-                    error: function(xhr, status, err){
-
-                        console.error(status, err.toString());
-
-                        // console.log(xhr.responseText);
-                        console.log(JSON.parse(xhr.responseText));
-                        
-                        // console.log(JSON.parse(xhr.responseText).message);
-                        this.setState({
-                            ajaxErrorResp: JSON.parse(xhr.responseText).message.toString(),
-                            ajaxSuccessResp: '0'
+                    thenCallback: (response) => {
+                        updateJWT({
+                            userName: response.name,
+                            userEmail: response.email,
+                            userID: response.id,
+                            userImg: response.imagePath,
+                            userRole: response.userRole,
+                            userJWT: response.jwt
                         });
 
-                    }.bind(this)
+                        if (keeplogin.is(':checked')) {
+                            SetCookie("userLogin", response.jwt, 7);
+                        } else {
+                            SetCookie("userLogin", response.jwt, 0)
+                        }
+
+                        this.setState({ redirectToUser: true });
+                    },
+                    catchCallback: ({ message }) => {
+                        this.setState({
+                            ajaxErrorResp: message,
+                            ajaxSuccessResp: '0'
+                        });
+                    }
                 });
             }
-
-        }else if(this.props.match.params.typeOfLogin === "cadastrar"){
-            
+        } else if(typeOfLogin === "cadastrar") {
             if(nomeValue==="" || emailValue==="" || senhaValue==="" || senhaConfirmarValue===""){
                 this.setState({ajaxErrorResp: "Favor preencha todos os campos!"});
             }else if(senhaValue!==senhaConfirmarValue){
                 this.setState({ajaxErrorResp: "Senhas precisam ser idênticas."});
             }else{
                 const dataString = JSON.stringify({
-                    "completename": nomeValue.trim(),
-                    "email": emailValue,
-                    "password": senhaValue
+                    completename: nomeValue.trim(),
+                    email: emailValue,
+                    password: senhaValue
                 });
 
-                axios.post(`${process.env.REACT_APP_URL_BACK}/api/v1/user/create.php`, dataString)
-                    .then((resposta) => {
-                        this.setState({ajaxSuccessResp: resposta.data.message.toString()});
+                http({
+                    url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/create.php`,
+                    data: dataString,
+                    thenCallback: (response) => {
+                        this.setState({ ajaxSuccessResp: response.data.message.toString() });
 
-                        this.setState({redirectToLogin: true});
-                    })
-                    .catch((error) => {
-                        if (error.response) {
-                            // The request was made and the server responded with a status code
-                            // that falls out of the range of 2xx
-                            console.log(error.response.data);
-                            console.log(error.response.status);
-                            console.log(error.response.headers);
-                        } else if (error.request) {
-                            // The request was made but no response was received
-                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                            // http.ClientRequest in node.js
-                            console.log(error.request);
-                        } else {
-                            // Something happened in setting up the request that triggered an Error
-                            console.log('Error', error.message);
-                        }
-                        console.log(error.config);
-
+                        this.setState({ redirectToLogin: true });
+                    },
+                    catchCallback: ({ message }) => {
                         this.setState({
-                            ajaxErrorResp: error.response.data.message.toString(),
+                            ajaxErrorResp: message,
                             ajaxSuccessResp: '0'
                         });
-                    });
-
-
-                // textJSON = `{
-                //     "completename":"${nomeValue.trim()}",
-                //     "email":"${emailValue}",
-                //     "password":"${senhaValue}"
-                // }`;
-                // textJSON2 = JSON.parse(textJSON);
-                // dataString = JSON.stringify(textJSON2);
-
-                // $.ajax({
-                //     url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/create.php`,
-                //     type: 'post',
-                //     contentType : 'application/json',
-                //     data: dataString,
-                //     success: function(resposta){
-
-                //         this.setState({ajaxSuccessResp: resposta.message.toString()});
-                //         // console.log(resposta);
-
-                //         this.setState({redirectToLogin: true});
-
-                //     }.bind(this),
-                //     error: function(xhr, status, err){
-
-                //         console.error(status, err.toString());
-
-                //         // console.log(xhr.responseText);
-                //         console.log(JSON.parse(xhr.responseText));
-                        
-                //         // console.log(JSON.parse(xhr.responseText).message);
-                //         this.setState({
-                //             ajaxErrorResp: JSON.parse(xhr.responseText).message.toString(),
-                //             ajaxSuccessResp: '0'
-                //         });
-
-                //     }.bind(this)
-                // });
+                    }
+                });
             }
-
         }
     }
 

@@ -3,6 +3,7 @@ import $ from 'jquery';
 
 import '../../css/faleconosco.css';
 
+import http from '../../util/http';
 
 import MaterialTextInput from '../util/MaterialTextInput';
 import Loading from '../util/Loading';
@@ -18,54 +19,44 @@ class PageContato extends Component {
         };
     }
 
-    sendFormContato(evento) {       
+    sendFormContato(evento) {
         evento.preventDefault();
+
         this.setState({
             ajaxErrorResp: "",
             ajaxSuccessResp: ""
         });
-        
-        var nomeValue = $("input[name='nome']").val();
-        var emailValue = $("input[name='email']").val();
-        var messageValue = $("textarea[id='textareaMessage']").val();
 
-       if(nomeValue==="" || emailValue==="" || messageValue===""){
+        const nomeValue = $("input[name='nome']").val();
+        const emailValue = $("input[name='email']").val();
+        const messageValue = $("textarea[id='textareaMessage']").val();
+
+        if(nomeValue==="" || emailValue==="" || messageValue===""){
             this.setState({ajaxErrorResp: "Favor preencha todos os campos!"});
         }else{
-            this.setState({loading: true});
+            this.setState({ loading: true });
 
-            var textJSON = `{
-                "name":"${nomeValue}",
-                "email":"${emailValue}",
-                "message":"${messageValue}"
-            }`;
-            var textJSON2 = JSON.parse(textJSON);
-            var dataString = JSON.stringify(textJSON2);
+            const dataString = JSON.stringify({
+                name: nomeValue,
+                email: emailValue,
+                message: messageValue
+            });
 
-            $.ajax({
+            http({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/email/enviaEmailContato.php`,
-                type: 'post',
-                contentType : 'application/json',
                 data: dataString,
-                success: function(resposta){
-                    // console.log(resposta);
-                    // console.log(resposta.name);
-                    
-                    this.setState({ajaxSuccessResp: resposta.message.toString()});
-                    this.setState({loading: false});
-                }.bind(this),
-                error: function(xhr, status, err){
-                    console.error(status, err.toString());
-                    console.log(JSON.parse(xhr.responseText));
-
-                    console.log(JSON.parse(xhr.responseText).error.toString());
-
+                thenCallback: (response) => {
+                    this.setState({ ajaxSuccessResp: response.message.toString() });
+                    this.setState({ loading: false });
+                },
+                catchCallback: ({ message }) => {
                     this.setState({
-                        ajaxErrorResp: JSON.parse(xhr.responseText).message.toString(),
+                        ajaxErrorResp: message,
                         ajaxSuccessResp: '0'
                     });
-                    this.setState({loading: false});
-                }.bind(this)
+
+                    this.setState({ loading: false });
+                }
             });
         }
     }

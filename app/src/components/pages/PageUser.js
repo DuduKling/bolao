@@ -4,6 +4,8 @@ import '../../css/util/formMessage.css';
 import $ from 'jquery';
 import Loading from '../util/Loading';
 
+import http from '../../util/http';
+
 import { bindActionCreators } from 'redux';
 import { updateJWT, updateImage } from '../../actions';
 import { connect } from 'react-redux';
@@ -25,128 +27,102 @@ class PageUser extends Component {
             ajax3SuccessResp: ''
         };
     }
-    
+
     sendFormUpdateInfo(evento, userJWT) {
         const { updateJWT } = this.props;
-        
+
         evento.preventDefault();
+
         this.setState({
             ajax1ErrorResp: "",
             ajax1SuccessResp: ""
         });
-        
-        var nomeValue = $("input[name='nome']").val();
-        var emailValue = $("input[name='email']").val();
+
+        const nomeValue = $("input[name='nome']").val();
+        const emailValue = $("input[name='email']").val();
 
         if(nomeValue===this.props.userName && emailValue===this.props.userEmail){
             this.setState({ajax1ErrorResp: "Você deve modificar pelo menos um dos campos!"});
         }else{
-            this.setState({loading1: true});
+            this.setState({ loading1: true });
 
-            var textJSON = `{
-                "type":"nopass",
-                "name":"${nomeValue}",
-                "email":"${emailValue}",
-                "jwt":"${userJWT}"
-            }`;
-            var textJSON2 = JSON.parse(textJSON);
-            var dataString = JSON.stringify(textJSON2);
-            
-            $.ajax({
+            const dataString = JSON.stringify({
+                type: 'nopass',
+                name: nomeValue,
+                email: emailValue,
+                jwt: userJWT
+            });
+
+            http({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
-                type: 'post',
-                contentType : 'application/json',
                 data: dataString,
-                success: function(resposta){
-                    // console.log(resposta);
-                    // console.log(resposta.name);
+                thenCallback: (response) => {
+                    updateJWT({
+                        userName: response.name, 
+                        userEmail: response.email,
+                        userID: response.id,
+                        userImg: response.userImg,
+                        userJWT: response.jwt
+                    });
 
-                    var userInfo = {
-                        userName: resposta.name, 
-                        userEmail: resposta.email,
-                        userID: resposta.id,
-                        userImg: resposta.userImg,
-                        userJWT: resposta.jwt
-                    };
-                    updateJWT(userInfo);
-                    
-                    this.setState({ajax1SuccessResp: resposta.message.toString()});
-                    this.setState({loading1: false});
-                }.bind(this),
-                error: function(xhr, status, err){
-
-                    console.error(status, err.toString());
-
-                    // console.log(xhr.responseText);
-                    console.log(JSON.parse(xhr.responseText));
-                    
-                    // console.log(JSON.parse(xhr.responseText).message);
+                    this.setState({ ajax1SuccessResp: response.message.toString() });
+                    this.setState({ loading1: false });
+                },
+                catchCallback: ({ message }) => {
                     this.setState({
-                        ajax1ErrorResp: JSON.parse(xhr.responseText).message.toString(),
+                        ajax1ErrorResp: message,
                         ajax1SuccessResp: '0'
                     });
-                    this.setState({loading1: false});
-                }.bind(this)
+
+                    this.setState({ loading1: false });
+                }
             });
         }
-
-
     }
 
     sendFormChangePassword(evento, userJWT) {
         evento.preventDefault();
+
         this.setState({
             ajax2ErrorResp: "",
             ajax2SuccessResp: ""
         });
-        
-        
-        var senhaValue = $("input[name='senha']").val();
-        var senhaConfirmarValue = $("input[name='senhaCheck']").val();
+
+        const senhaValue = $("input[name='senha']").val();
+        const senhaConfirmarValue = $("input[name='senhaCheck']").val();
 
         if(senhaValue==="" && senhaConfirmarValue===""){
             this.setState({ajax2ErrorResp: "Favor preencher ambos os campos!"});
         }else if(senhaValue!==senhaConfirmarValue){
             this.setState({ajax2ErrorResp: "Senhas precisam ser idênticas."});
         }else{
-            this.setState({loading2: true});
-            var textJSON = `{
-                "type":"pass",
-                "password":"${senhaValue}",
-                "jwt":"${userJWT}"
-            }`;
-            var textJSON2 = JSON.parse(textJSON);
-            var dataString = JSON.stringify(textJSON2);
-            
-            $.ajax({
+            this.setState({ loading2: true });
+
+            const dataString = JSON.stringify({
+                type: 'pass',
+                password: senhaValue,
+                jwt: userJWT
+            });
+
+            http({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
-                type: 'post',
-                contentType : 'application/json',
                 data: dataString,
-                success: function(resposta){
-                    // console.log(resposta);
-                    
-                    this.setState({ajax2SuccessResp: resposta.message.toString()});
-                    this.setState({loading2: false});
-                }.bind(this),
-                error: function(xhr, status, err){
-
-                    console.error(status, err.toString());
-
-                    // console.log(xhr.responseText);
-                    console.log(JSON.parse(xhr.responseText));
-                    
-                    // console.log(JSON.parse(xhr.responseText).message);
+                thenCallback: (response) => {
+                    this.setState({ ajax2SuccessResp: response.message.toString() });
+                    this.setState({ loading2: false });
+                },
+                catchCallback: ({ message }) => {
                     this.setState({
-                        ajax2ErrorResp: JSON.parse(xhr.responseText).message.toString(),
+                        ajax2ErrorResp: message,
                         ajax2SuccessResp: '0'
                     });
-                    this.setState({loading2: false});
-                }.bind(this)
+
+                    this.setState({ loading2: false });
+                }
             });
         }
     }
-    
+
     sendFormUploadImage(evento, userJWT) {
         const { updateImage } = this.props;
 
@@ -159,52 +135,32 @@ class PageUser extends Component {
         if(this.state.selectedFile===undefined || this.state.selectedFile===this.props.userImg){
             this.setState({ajax3ErrorResp: "Você deve incluir uma nova foto antes!"});
         }else{
-            // console.log(this.state.selectedFile);
-            this.setState({loading3: true});
+            this.setState({ loading3: true });
 
-            var img = this.state.selectedFile;
-            var formData = new FormData();
+            const img = this.state.selectedFile;
+            const formData = new FormData();
             formData.append("file", img);
             formData.append("jwt", userJWT);
-            
-            $.ajax({
+
+            http({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/uploadAvatar.php`,
-                type: 'post',
                 data: formData,
-                processData: false,
-                contentType: false,
-                success: function(resposta){
-                    // console.log(resposta);
-                    
-                    // URL.revokeObjectURL(imageURL);
+                thenCallback: (response) => {
+                    updateImage({ userImg: response.userImg });
 
-                    var userInfo = {
-                        userImg: resposta.userImg
-                    };
-                    updateImage(userInfo);
-                    
-                    this.setState({ajax3SuccessResp: resposta.message.toString()});
-                    this.setState({loading3: false});
-                }.bind(this),
-                error: function(xhr, status, err){
-
-                    console.error(status, err.toString());
-
-                    // console.log(xhr.responseText);
-                    console.log(JSON.parse(xhr.responseText));
-                    
-                    // console.log(JSON.parse(xhr.responseText).message);
+                    this.setState({ ajax3SuccessResp: response.message.toString() });
+                    this.setState({ loading3: false });
+                },
+                catchCallback: ({ message }) => {
                     this.setState({
-                        ajax3ErrorResp: JSON.parse(xhr.responseText).message.toString(),
+                        ajax3ErrorResp: message,
                         ajax3SuccessResp: '0'
                     });
-                    this.setState({loaging3: false});
 
-                }.bind(this)
+                    this.setState({ loading3: false });
+                }
             });
         }
-
-
     }
 
     showForm1Messages() {
