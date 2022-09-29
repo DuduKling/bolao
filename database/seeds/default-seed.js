@@ -321,5 +321,19 @@ exports.seed = async function(knex) {
       bet_awayTeam: '0',
       points: '2',
     },
+    {
+      users_Id: userAdminId,
+      fixture_Id: qAmericaF1,
+      bet_homeTeam: '1',
+      bet_awayTeam: '0',
+      points: '2',
+    },
+    {
+      users_Id: userAdminId,
+      fixture_Id: qAmericaF2,
+      bet_homeTeam: '0',
+      bet_awayTeam: '3',
+      points: '2',
+    },
   ]);
 };
