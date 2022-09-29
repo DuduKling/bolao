@@ -118,7 +118,7 @@ class PageLogin extends Component {
         }
     }
 
-    sendFormAjax(evento) {
+    async sendFormAjax(evento) {
         const { updateJWT } = this.props;
 
         evento.preventDefault();
@@ -142,7 +142,7 @@ class PageLogin extends Component {
                     password: senhaValue
                 });
 
-                http({
+                await http.post({
                     url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/login.php`,
                     data: dataString,
                     thenCallback: (response) => {
@@ -183,7 +183,7 @@ class PageLogin extends Component {
                     password: senhaValue
                 });
 
-                http({
+                await http.post({
                     url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/create.php`,
                     data: dataString,
                     thenCallback: (response) => {
@@ -233,8 +233,8 @@ class PageLogin extends Component {
 
                     <form 
                         className="form" 
-                        onSubmit={function(event){
-                            this.sendFormAjax(event)}.bind(this)
+                        onSubmit={async function(event){
+                            await this.sendFormAjax(event)}.bind(this)
                         } 
                         method="post"
                     >

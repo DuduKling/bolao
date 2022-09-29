@@ -38,7 +38,7 @@ class PageAdminApostas extends Component {
         };
     }
     
-    componentDidMount(){
+    async componentDidMount(){
         this.setState({ loading: true });
 
         const faseID = this.props.match.params.fase;
@@ -47,7 +47,7 @@ class PageAdminApostas extends Component {
             faseID
         });
 
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/getApostasRealizadas.php`,
             data: dataString,
             thenCallback: (response) => {

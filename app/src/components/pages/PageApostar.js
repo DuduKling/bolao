@@ -80,7 +80,7 @@ class PageApostar extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.setState({ loading: true });
 
         const parteId = this.props.match.params.parte;
@@ -92,7 +92,7 @@ class PageApostar extends Component {
             status: 'aberto'
         });
 
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixtures.php`,
             data: dataString,
             thenCallback: (response) => {
@@ -112,7 +112,7 @@ class PageApostar extends Component {
         });
     }
 
-	enviaAposta(evento) {
+	async enviaAposta(evento) {
         evento.preventDefault();
 
         this.setState({ error: '' });
@@ -132,7 +132,7 @@ class PageApostar extends Component {
 
         const dataString = JSON.stringify(data);
 
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/makeBets.php`,
             data: dataString,
             thenCallback: (response) => {
@@ -188,7 +188,7 @@ class PageApostar extends Component {
                 
                     <form 
                         className="main-partidaForm" 
-                        onSubmit={function(event){this.enviaAposta(event)}.bind(this)} 
+                        onSubmit={async function(event){await this.enviaAposta(event)}.bind(this)} 
                         method="post"
                     >
 

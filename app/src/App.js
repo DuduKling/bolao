@@ -66,7 +66,7 @@ class App extends Component {
 		return "";
 	}
 	
-	componentWillMount(){
+	async componentWillMount(){
 		var userInfo = this.getCookie('userLogin');
 
 
@@ -102,7 +102,7 @@ class App extends Component {
 				jwt: userInfo
 			});
 
-			http({
+			await http.post({
 				url: `${process.env.REACT_APP_URL_BACK}/api/v1/validateCookie.php`,
 				data: dataString,
 				thenCallback: (response) => {

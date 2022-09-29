@@ -55,7 +55,7 @@ class PageApostadoJogo extends Component {
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         this.setState({ loading: true });
 
         const fixtureID = this.props.match.params.fixture;
@@ -65,7 +65,7 @@ class PageApostadoJogo extends Component {
             fixtureID
         });
 
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromFixture.php`,
             data: dataString,
             thenCallback: (response) => {

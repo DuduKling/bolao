@@ -132,12 +132,12 @@ class PageCampeonatos extends Component {
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         this.setState({ loading: true });
 
         const dataString = JSON.stringify({});
 
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatos.php`,
             data: dataString,
             thenCallback: (response) => {

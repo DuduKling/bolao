@@ -300,8 +300,8 @@ class PageDashboard extends Component {
             });
         }
     }
-    
-    componentDidMount(){
+
+    async componentDidMount(){
         this.setState({ loading: true });
 
         const campeonatoID = this.props.match.params.campeonato;
@@ -312,7 +312,7 @@ class PageDashboard extends Component {
         });
 
         // Fixtures
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
             data: dataString,
             thenCallback: (response) => {
@@ -330,7 +330,7 @@ class PageDashboard extends Component {
         });
 
         // Rank
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getRank.php`,
             data: dataString,
             thenCallback: (response) => {
@@ -353,7 +353,7 @@ class PageDashboard extends Component {
 
         //TODO Rever que com o id da fase da pra pegar essas informações do campeonato....
         // Campeonato
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatoInfo.php`,
             data: dataString,
             thenCallback: (response) => {
@@ -368,7 +368,7 @@ class PageDashboard extends Component {
             }
         });
     }
-    
+
     checkStatus(){
         var campeonato = this.state.campeonato;
         var faseID = this.props.match.params.fase;
@@ -454,14 +454,12 @@ class PageDashboard extends Component {
     }
 
     checkFaseName(){
-        var faseID = this.props.match.params.fase;
+        const faseID = this.props.match.params.fase;
 
-        var fase = this.state.campeonato.fases
-            .filter(function(fase){
-                return fase.id === faseID;
-            })
-            
-        return fase[0].nomeFase;
+        const fase = this.state.campeonato.fases
+            .filter((fase) => fase.id === faseID);
+
+        return fase[0] ? fase[0].nomeFase : '';
     }
 
     showNextFixtures(){
@@ -509,7 +507,7 @@ class PageDashboard extends Component {
             
         }
     }
-    
+
     showLastFixtures(){
         if(this.state.fixtures){
             var qtdLastFixtures = this.state.fixtures
@@ -640,7 +638,7 @@ class PageDashboard extends Component {
                             <div className="main-partidaForm">
                                 <ul className="partidaLista">
                                     <h3 className="pageTitle">Próximos Jogos</h3>
-                                    <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos ></Link>
+                                    <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos &gt;</Link>
                                     
                                     
                                     {this.showNextFixtures()}
@@ -653,7 +651,7 @@ class PageDashboard extends Component {
 
                                 <ul className="partidaLista">
                                     <h3 className="pageTitle">Últimos Jogos</h3>
-                                    <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos ></Link>
+                                    <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos &gt;</Link>
                                     
 
                                     {this.showLastFixtures()}

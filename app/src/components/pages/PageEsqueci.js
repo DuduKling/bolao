@@ -40,7 +40,7 @@ class PageEsqueci extends Component {
         }
     }
 
-    sendEmailForm(evento){
+    async sendEmailForm(evento){
         evento.preventDefault();
 
         this.setState({
@@ -55,7 +55,7 @@ class PageEsqueci extends Component {
             email: emailValue
         });
 
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/email/enviaEmailRedefinir.php`,
             data: dataString,
             thenCallback: (response) => {
@@ -78,8 +78,8 @@ class PageEsqueci extends Component {
             return(
                 <form 
                     className="form" 
-                    onSubmit={function(event){
-                        this.sendEmailForm(event)}.bind(this)
+                    onSubmit={async function(event){
+                        await this.sendEmailForm(event)}.bind(this)
                     } 
                     method="post"
                 >
@@ -101,7 +101,7 @@ class PageEsqueci extends Component {
         }
     }
 
-    sendPasswdForm(evento){
+    async sendPasswdForm(evento){
         evento.preventDefault();
         this.setState({
             ajaxSuccessResp: '',
@@ -128,7 +128,7 @@ class PageEsqueci extends Component {
                 jwt: userJWT
             });
 
-            http({
+            await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 data: dataString,
                 thenCallback: (response) => {
@@ -151,8 +151,8 @@ class PageEsqueci extends Component {
             return(
                 <form 
                     className="form" 
-                    onSubmit={function(event){
-                        this.sendPasswdForm(event)}.bind(this)
+                    onSubmit={async function(event){
+                        await this.sendPasswdForm(event)}.bind(this)
                     } 
                     method="post"
                 >

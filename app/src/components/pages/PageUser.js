@@ -28,7 +28,7 @@ class PageUser extends Component {
         };
     }
 
-    sendFormUpdateInfo(evento, userJWT) {
+    async sendFormUpdateInfo(evento, userJWT) {
         const { updateJWT } = this.props;
 
         evento.preventDefault();
@@ -53,7 +53,7 @@ class PageUser extends Component {
                 jwt: userJWT
             });
 
-            http({
+            await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 data: dataString,
                 thenCallback: (response) => {
@@ -80,7 +80,7 @@ class PageUser extends Component {
         }
     }
 
-    sendFormChangePassword(evento, userJWT) {
+    async sendFormChangePassword(evento, userJWT) {
         evento.preventDefault();
 
         this.setState({
@@ -104,7 +104,7 @@ class PageUser extends Component {
                 jwt: userJWT
             });
 
-            http({
+            await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 data: dataString,
                 thenCallback: (response) => {
@@ -123,7 +123,7 @@ class PageUser extends Component {
         }
     }
 
-    sendFormUploadImage(evento, userJWT) {
+    async sendFormUploadImage(evento, userJWT) {
         const { updateImage } = this.props;
 
         evento.preventDefault();
@@ -142,7 +142,7 @@ class PageUser extends Component {
             formData.append("file", img);
             formData.append("jwt", userJWT);
 
-            http({
+            await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/uploadAvatar.php`,
                 data: formData,
                 thenCallback: (response) => {
@@ -241,8 +241,8 @@ class PageUser extends Component {
                 <div className="userPage-userInfo">
                     <form 
                         className="userInfo"
-                        onSubmit={function(event){
-                            this.sendFormUploadImage(event,  this.props.userJWT)}.bind(this)
+                        onSubmit={async function(event){
+                            await this.sendFormUploadImage(event,  this.props.userJWT)}.bind(this)
                         } 
                         method="post" 
                         encType='multipart/form-data'
@@ -275,8 +275,8 @@ class PageUser extends Component {
 
                     <form 
                         className="userInfo"
-                        onSubmit={function(event){
-                            this.sendFormUpdateInfo(event,  this.props.userJWT)}.bind(this)
+                        onSubmit={async function(event){
+                            await this.sendFormUpdateInfo(event,  this.props.userJWT)}.bind(this)
                         } 
                         method="post"
                     >
@@ -310,8 +310,8 @@ class PageUser extends Component {
                     
                     <form 
                         className="userInfo"
-                        onSubmit={function(event){
-                            this.sendFormChangePassword(event,  this.props.userJWT)}.bind(this)
+                        onSubmit={async function(event){
+                            await this.sendFormChangePassword(event,  this.props.userJWT)}.bind(this)
                         } 
                         method="post"
                     >

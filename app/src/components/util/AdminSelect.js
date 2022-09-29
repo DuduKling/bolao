@@ -22,7 +22,7 @@ class AdminSelect extends Component {
         }
     }
 
-    handleChange = (event) => {
+    handleChange = async (event) => {
         this.setState({ loading: true });
 
         const data = event.target.value;
@@ -33,7 +33,7 @@ class AdminSelect extends Component {
             parteID: parteID
         });
 
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/changeCampeonatoState.php`,
             data: dataString,
             thenCallback: (response) => {
@@ -51,7 +51,7 @@ class AdminSelect extends Component {
         return (
             <div className="materialSelect">
                 <select 
-                    onChange={this.handleChange} 
+                    onChange={async () => this.handleChange} 
                     className="selectField" 
                     name={this.props.parteID}  
                     value={this.state.selected}

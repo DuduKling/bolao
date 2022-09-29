@@ -77,7 +77,7 @@ class PageAdminScore extends Component {
         };
     }
 
-    enviaResultado(evento) {
+    async enviaResultado(evento) {
         evento.preventDefault();
 
         this.setState({ error: '' });
@@ -94,7 +94,7 @@ class PageAdminScore extends Component {
 
         const dataString = JSON.stringify(data);
 
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/postResult.php`,
             data: dataString,
             thenCallback: (response) => {
@@ -114,11 +114,11 @@ class PageAdminScore extends Component {
         });
     }
 
-    componentDidMount() {
-        this.getFixtures();
+    async componentDidMount() {
+        await this.getFixtures();
     }
     
-    getFixtures(){
+    async getFixtures(){
         this.setState({ loading: true });
 
         const parteId = this.props.match.params.parte;
@@ -128,7 +128,7 @@ class PageAdminScore extends Component {
             status: 'aberto'
         });
 
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixtures.php`,
             data: dataString,
             thenCallback: (response) => {
@@ -192,7 +192,7 @@ class PageAdminScore extends Component {
                 
                     <form 
                         className="main-partidaForm" 
-                        onSubmit={function(event){this.enviaResultado(event)}.bind(this)} 
+                        onSubmit={async function(event){await this.enviaResultado(event)}.bind(this)} 
                         method="post"
                     >
                     

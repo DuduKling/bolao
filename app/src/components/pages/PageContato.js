@@ -19,7 +19,7 @@ class PageContato extends Component {
         };
     }
 
-    sendFormContato(evento) {
+    async sendFormContato(evento) {
         evento.preventDefault();
 
         this.setState({
@@ -42,7 +42,7 @@ class PageContato extends Component {
                 message: messageValue
             });
 
-            http({
+            await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/email/enviaEmailContato.php`,
                 data: dataString,
                 thenCallback: (response) => {
@@ -101,8 +101,8 @@ class PageContato extends Component {
 
                     <form 
                         className="userInfo"
-                        onSubmit={function(event){
-                            this.sendFormContato(event,  this.props.userJWT)}.bind(this)
+                        onSubmit={async function(event){
+                            await this.sendFormContato(event,  this.props.userJWT)}.bind(this)
                         } 
                         method="post"
                     >

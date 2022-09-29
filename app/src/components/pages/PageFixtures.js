@@ -128,7 +128,7 @@ class PageFixtures extends Component {
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         this.setState({ loading: true });
 
         const campeonatoID = this.props.match.params.campeonato;
@@ -139,7 +139,7 @@ class PageFixtures extends Component {
         });
 
         // Fixtures
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
             data: dataString,
             thenCallback: (response) => {
@@ -161,7 +161,7 @@ class PageFixtures extends Component {
         });
 
         // Campeonato
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatoInfo.php`,
             data: dataString,
             thenCallback: (response) => {

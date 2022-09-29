@@ -100,7 +100,7 @@ class PageApostar extends Component {
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         this.setState({ loading: true });
 
         const faseID = this.props.match.params.fase;
@@ -111,7 +111,7 @@ class PageApostar extends Component {
             userName
         });
 
-        http({
+        await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromUser.php`,
             data: dataString,
             thenCallback: (response) => {
