@@ -1,4 +1,6 @@
 {
+  "name": "bolao-app",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.27.2",
     "jquery": "^3.2.1",

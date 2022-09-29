@@ -1,6 +1,7 @@
 {
   "name": "bolao",
   "version": "0.1.0",
+  "license": "MIT",
   "scripts": {
     "start": "cd app && yarn start",
     "build": "cd app && yarn build",
