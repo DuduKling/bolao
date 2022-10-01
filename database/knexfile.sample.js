@@ -12,5 +12,6 @@ module.exports = {
             user: 'db_user',
             password: '*******'
         },
+        onlyLogQuery: false,
     }
 };

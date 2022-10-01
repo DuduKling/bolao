@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema
+    const query = knex.schema
         .createTable('fixture', function (table) {
             table.increments('Id');
 
@@ -21,6 +21,13 @@ exports.up = function(knex) {
             table.integer('score_awayTeam');
             table.string('local');
         });
+
+    if (knex.client.config.onlyLogQuery) {
+        console.log(query.toString());
+        return new Promise((resolve) => resolve());
+    }
+
+    return query;
 };
 
 /**

@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema
+    const query = knex.schema
         .createTable('parte', function (table) {
             table.increments('Id');
             table.string('nome', 255).notNullable();
@@ -12,6 +12,13 @@ exports.up = function(knex) {
             table.integer('fase_Id').unsigned();
             table.foreign('fase_Id').references('Id').inTable('fase');
         });
+
+    if (knex.client.config.onlyLogQuery) {
+        console.log(query.toString());
+        return new Promise((resolve) => resolve());
+    }
+
+    return query;
 };
 
 /**

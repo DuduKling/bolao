@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema
+    const query = knex.schema
         .createTable('users', function (table) {
             table.increments('Id');
             table.string('name', 255).notNullable();
@@ -16,6 +16,13 @@ exports.up = function(knex) {
             table.dateTime('created').notNullable().defaultTo(knex.fn.now());
             table.dateTime('modified').defaultTo(knex.fn.now());
         });
+
+    if (knex.client.config.onlyLogQuery) {
+        console.log(query.toString());
+        return new Promise((resolve) => resolve());
+    }
+
+    return query;
 };
 
 /**
