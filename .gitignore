@@ -8,6 +8,7 @@ coverage
 
 # production
 build
+deploy
 
 # misc
 .DS_Store
@@ -20,8 +21,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-database/knexfile.js
-/images
-.env
+# Custom
 vendor
+
+database/knexfile.js
+
+.env
+.env.production
+
+package-lock.json
 *.lock

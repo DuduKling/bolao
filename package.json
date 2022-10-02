@@ -3,9 +3,24 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "cd app && yarn start",
-    "build": "cd app && yarn build",
+    "install-app": "cd app && npm install",
+    "install-api": "cd api && composer update",
+    "install-database": "cd database && npm install",
+    "install-all": "npm run install-app && npm run install-database && npm run install-api",
+
+    "start": "cd app && npm run react-scripts start",
     "server": "php -S 127.0.0.1:8000",
-    "knex": "cd database && yarn knex"
+    "knex": "cd database && npx knex",
+
+    "deploy-clear": "if exist deploy rmdir /s /q deploy",
+
+    "deploy-api-v1": "cd api && robocopy .\\v1 ..\\deploy\\api\\v1\\ /s /NFL /NDL /NJH /NJS /nc /ns /np & exit 0",
+    "deploy-api-vendor": "cd api && robocopy .\\vendor ..\\deploy\\api\\vendor\\ /s /NFL /NDL /NJH /NJS /nc /ns /np & exit 0",
+    "deploy-api-env": "cd api && copy .env.production ..\\deploy\\api\\.env",
+    "deploy-api": "npm run deploy-api-v1 && npm run deploy-api-vendor && npm run deploy-api-env",
+
+    "deploy-app": "cd app && npx react-scripts build && robocopy .\\build ..\\deploy\\ /s /NFL /NDL /NJH /NJS /nc /ns /np & exit 0",
+
+    "deploy": "npm run deploy-clear && (npm run deploy-api & npm run deploy-app)"
   }
 }
