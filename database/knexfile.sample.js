@@ -8,9 +8,9 @@ module.exports = {
         client: 'mysql',
         connection: {
             server: 'localhost:3306',
-            database: 'db_name',
-            user: 'db_user',
-            password: '*******'
+            database: 'bolao',
+            user: 'root',
+            password: '123456'
         },
         onlyLogQuery: false,
     }
