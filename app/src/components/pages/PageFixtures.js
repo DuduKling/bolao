@@ -53,7 +53,7 @@ function PageFixtures() {
 
                 localStorage.setItem(campeonatoID + faseID + 'fixtures', JSON.stringify(response.fixtures));
             },
-            catchCallback: () => {},
+            catchCallback: () => { },
         });
 
         dataString = JSON.stringify({
@@ -69,12 +69,15 @@ function PageFixtures() {
 
                 localStorage.setItem(campeonatoID + faseID + 'campeonato', JSON.stringify(response.campeonato));
             },
-            catchCallback: () => {},
+            catchCallback: () => { },
         });
     };
 
     const checkFaseName = () => {
         const faseID = params.fase;
+        if (!campeonato.fases) {
+            return '';
+        }
 
         const fase = campeonato.fases
             .filter(function (fase) {

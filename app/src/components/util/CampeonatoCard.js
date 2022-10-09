@@ -152,7 +152,7 @@ function CampeonatoCard(props) {
                 <Link
                     key={index}
                     className="campeonatoFases"
-                    to={'/' + campeonato.idCampeonato + '/' + fase.id + '/dashboard'}
+                    to={'/campeonato/' + campeonato.idCampeonato + '/' + fase.id + '/dashboard'}
                 >
                     {fase.nomeFase}
                 </Link>
@@ -171,7 +171,7 @@ function CampeonatoCard(props) {
                 <div key={index}>
                     <Link
                         className="campeonatoFases"
-                        to={'/' + campeonato.idCampeonato + '/' + fase.id + '/dashboard'}
+                        to={'/campeonato/' + campeonato.idCampeonato + '/' + fase.id + '/dashboard'}
                     >
                         {fase.nomeFase}
                     </Link>

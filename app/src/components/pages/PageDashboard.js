@@ -11,45 +11,7 @@ import RankListItem from '../util/RankListItem';
 function PageDashboard() {
     const [fixtures, setFixtures] = useState([]);
     const [rank, setRank] = useState([]);
-    const [campeonato, setCampeonato] = useState({
-        'nomeCampeonato': '',
-        'logoCampeonato': '',
-        'dataInicioCampeonato': '',
-        // "statusCampeonato": "finalizado",
-        'idCampeonato': '1',
-        // "participacaoCampeonato": "yes",
-        'fases': [
-            {
-                'id': '1',
-                'nomeFase': '',
-                // "apostaFase": true,
-                'partes': [
-                    {
-                        'id': 1,
-                        'nomeParte': '',
-                        'statusParte': '',
-                    },
-                ],
-            },
-            {
-                'id': '2',
-                'nomeFase': '',
-                // "apostaFase": true,
-                'partes': [
-                    {
-                        'id': 1,
-                        'nomeParte': '',
-                        'statusParte': '',
-                    },
-                    {
-                        'id': 2,
-                        'nomeParte': '',
-                        'statusParte': '',
-                    },
-                ],
-            },
-        ],
-    });
+    const [campeonato, setCampeonato] = useState({});
 
     const [loading, setLoading] = useState(false);
 
@@ -137,8 +99,11 @@ function PageDashboard() {
     };
 
     const checkStatus = () => {
-        const campeonato = campeonato;
         const faseID = params.fase;
+
+        if (!campeonato.fases) {
+            return '';
+        }
 
         const qtdAposta = campeonato.fases
             .filter(function (fase) {
@@ -222,6 +187,10 @@ function PageDashboard() {
 
     const checkFaseName = () => {
         const faseID = params.fase;
+
+        if (!campeonato.fases) {
+            return '';
+        }
 
         const fase = campeonato.fases
             .filter((fase) => fase.id === faseID);
@@ -404,8 +373,7 @@ function PageDashboard() {
                         <div className="main-partidaForm">
                             <ul className="partidaLista">
                                 <h3 className="pageTitle">Próximos Jogos</h3>
-                                <Link className="allFixturesLink" to={'../' + params.fase + '/jogos'}>Todos &gt;</Link>
-
+                                <Link className="allFixturesLink" to={'/campeonato/' + params.campeonato + '/' + params.fase + '/jogos'}>Todos &gt;</Link>
 
                                 {showNextFixtures()}
 
@@ -417,7 +385,7 @@ function PageDashboard() {
 
                             <ul className="partidaLista">
                                 <h3 className="pageTitle">Últimos Jogos</h3>
-                                <Link className="allFixturesLink" to={'../' + params.fase + '/jogos'}>Todos &gt;</Link>
+                                <Link className="allFixturesLink" to={'/campeonato/' + params.campeonato + '/' + params.fase + '/jogos'}>Todos &gt;</Link>
 
 
                                 {showLastFixtures()}

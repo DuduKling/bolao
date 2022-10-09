@@ -10,7 +10,7 @@ import http from './util/http';
 import cookie from './util/cookie';
 
 import PrivateRoute from './components/util/Auth';
-// import PrivateRouteAdmin from './components/util/AuthAdmin';
+import PrivateRouteAdmin from './components/util/AuthAdmin';
 import PrivateRouteAlready from './components/util/AuthAlready';
 
 import BigLoading from './components/util/BigLoading';
@@ -19,7 +19,7 @@ import SiteHeader from './components/common/SiteHeader';
 import SiteFooter from './components/common/SiteFooter';
 
 import Page404 from './components/pages/Page404';
-// import PageAdmin from './components/pages/PageAdmin';
+import PageAdmin from './components/pages/PageAdmin';
 // import PageAdminApostas from './components/pages/PageAdminApostas';
 // import PageAdminScore from './components/pages/PageAdminScore';
 // import PageApostado from './components/pages/PageApostado';
@@ -27,9 +27,9 @@ import Page404 from './components/pages/Page404';
 // import PageApostar from './components/pages/PageApostar';
 import PageCampeonatos from './components/pages/PageCampeonatos';
 import PageContato from './components/pages/PageContato';
-// import PageDashboard from './components/pages/PageDashboard';
+import PageDashboard from './components/pages/PageDashboard';
 import PageEsqueci from './components/pages/PageEsqueci';
-// import PageFixtures from './components/pages/PageFixtures';
+import PageFixtures from './components/pages/PageFixtures';
 import PageHome from './components/pages/PageHome';
 import PageLogin from './components/pages/PageLogin';
 import PageRegulamento from './components/pages/Regulamento';
@@ -83,13 +83,14 @@ function App() {
 
                 <Routes>
                     <Route path='/' element={<Outlet />} >
-                        {/* ALL */}
+                        {/* ROOT */}
                         <Route path='' element={<PageHome />} />
                         <Route path='faleconosco' element={<PageContato />} />
                         <Route path='regulamento' element={<PageRegulamento />} />
 
+                        {/* USER */}
                         <Route path='user' element={<Outlet />} >
-                            {/* NOT LOGGED - USER */}
+                            {/* USER - NOT RESTRICTED */}
                             <Route element={<PrivateRouteAlready />} >
                                 <Route path='' element={<Page404 />} />
 
@@ -103,19 +104,32 @@ function App() {
                                 <Route path='*' element={<Page404 />} />
                             </Route>
 
-                            {/* LOGGED ONLY - USER */}
+                            {/* USER - RESTRICTED */}
                             <Route element={<PrivateRoute />} >
                                 <Route path='campeonatos' element={<PageCampeonatos />} />
                                 <Route path='config' element={<PageUser />} />
                             </Route>
                         </Route>
+
+                        {/* ADMIN - RESTRICTED */}
+                        <Route path='admin' element={<PrivateRouteAdmin />} >
+                            <Route path='' element={<PageAdmin />} />
+                        </Route>
+
+                        {/* CAMPEONATO - RESTRICTED */}
+                        <Route path='campeonato' element={<PrivateRoute />} >
+                            <Route path=':campeonato/:fase/dashboard' element={<PageDashboard />} />
+                            <Route path=':campeonato/:fase/jogos' element={<PageFixtures />} />
+                        </Route>
+
+
+
+
+
+
                     </Route>
 
-
-
-
-
-
+                    <Route path='*' element={<Page404 />} />
                 </Routes>
 
                 <SiteFooter />
