@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { updateJWT } from './redux/slicer/authSlicer';
 
 import http from './util/http';
-import setCookie from './util/setCookie';
+import cookie from './util/cookie';
 
 import PrivateRoute from './components/util/Auth';
 // import PrivateRouteAdmin from './components/util/AuthAdmin';
@@ -44,26 +44,8 @@ function App() {
         didMount();
     }, []);
 
-    const getCookie = (cname) => {
-        const name = `${cname}=`;
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const ca = decodedCookie.split(';');
-
-        for (const element of ca) {
-            let c = element;
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-
-            if (c.indexOf(name) === 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return '';
-    };
-
     const didMount = async () => {
-        const userInfo = getCookie('userLogin');
+        const userInfo = cookie.get('userLogin');
 
         if (userInfo) {
             const dataString = JSON.stringify({
@@ -85,7 +67,7 @@ function App() {
                 },
                 catchCallback: ({ message }) => {
                     if (message === 'JWT não decodificado') {
-                        setCookie('userLogin', '', 0);
+                        cookie.set('userLogin', '', 0);
                     }
                 },
             });

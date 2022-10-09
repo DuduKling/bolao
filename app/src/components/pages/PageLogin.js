@@ -6,7 +6,7 @@ import '../../css/pages/login.css';
 import '../../css/util/formMessage.css';
 
 import http from '../../util/http';
-import setCookie from '../../util/setCookie';
+import cookie from '../../util/cookie';
 
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
@@ -153,9 +153,9 @@ function PageLogin() {
                     }));
 
                     if (keeplogin.is(':checked')) {
-                        setCookie('userLogin', response.jwt, 7);
+                        cookie.set('userLogin', response.jwt, 7);
                     } else {
-                        setCookie('userLogin', response.jwt, 0);
+                        cookie.set('userLogin', response.jwt, 0);
                     }
 
                     navigate('/user/campeonatos');

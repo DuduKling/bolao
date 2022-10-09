@@ -7,7 +7,7 @@ import { updateJWT } from '../../redux/slicer/authSlicer';
 
 import PropTypes from 'prop-types';
 
-import setCookie from '../../util/setCookie';
+import cookie from '../../util/cookie';
 
 function UserNavBar(props) {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -17,7 +17,7 @@ function UserNavBar(props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    useEffect(() =>{
+    useEffect(() => {
         if (userRole === 'admin') {
             setIsAdmin(true);
         }
@@ -34,7 +34,7 @@ function UserNavBar(props) {
         };
         dispatch(updateJWT(userInfo));
 
-        setCookie('userLogin', '', 0);
+        cookie.set('userLogin', '', 0);
         navigate('/');
     };
 
