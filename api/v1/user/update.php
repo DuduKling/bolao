@@ -33,7 +33,7 @@ $db = new DatabaseConnection($env);
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/user.php';
 $user = new User($db);
 
-$id = $inputData->id;
+$id = $decoded->data->id;
 $foundUser = $user->find($id);
 
 if (!$foundUser) {

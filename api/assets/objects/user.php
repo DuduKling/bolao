@@ -82,7 +82,7 @@ class User {
     public function CheckIfEmailExists() {
 
         // query to check if email exists
-        $query = "SELECT id, name, passwd, imagePath
+        $query = "SELECT *
                 FROM " . $this->tableName . "
                 WHERE email = ?
                 LIMIT 0,1";
@@ -109,10 +109,12 @@ class User {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // assign values to object properties
-            $this->id = $row['id'];
+            $this->id = $row['Id'];
             $this->completename = $row['name'];
+            $this->email = $row['email'];
             $this->password = $row['passwd'];
             $this->imagePath = $row['imagePath'];
+            $this->role = $row['role'];
 
             // return true because email exists in the database
             return true;
