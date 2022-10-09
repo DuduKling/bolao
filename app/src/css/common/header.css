@@ -165,7 +165,7 @@
     display: none;
 }
 
-.header > .menuToggle > .hamburguerMenu {
+.header > .menuToggle > .hamburgerMenu {
     width: 35px;
     height: 19px;
     /* background-color: red; */
@@ -176,7 +176,7 @@
     align-items: center;
 }
 
-.header > .menuToggle > .hamburguerMenu > div {
+.header > .menuToggle > .hamburgerMenu > div {
     width: 20px;
     height: 3px;
     background-color: #fff;
@@ -184,15 +184,15 @@
     transition: all 0.3s ease;
 }
 
-.header > .menuToggle.close > .hamburguerMenu > div:nth-child(1) {
+.header > .menuToggle.close > .hamburgerMenu > div:nth-child(1) {
     transform: rotate(45deg) translate(4px, 5px);
 }
 
-.header > .menuToggle.close > .hamburguerMenu > div:nth-child(2) {
+.header > .menuToggle.close > .hamburgerMenu > div:nth-child(2) {
     opacity: 0;
 }
 
-.header > .menuToggle.close > .hamburguerMenu > div:nth-child(3) {
+.header > .menuToggle.close > .hamburgerMenu > div:nth-child(3) {
     transform: rotate(-45deg) translate(6px, -7px);
 }
 

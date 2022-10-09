@@ -1,26 +1,26 @@
-import axios from "axios";
+import axios from 'axios';
 
 class http {
 
-    static post({ url, data, thenCallback, catchCallback }){
+    static post({ url, data, thenCallback, catchCallback }) {
         return new Promise((resolve, reject) => {
-            const isDebug = process.env.REACT_APP_DEBUG === "true";
-    
+            const isDebug = process.env.REACT_APP_DEBUG === 'true';
+
             if (isDebug) {
                 console.groupCollapsed(`Request URL: ${url}`);
                 console.log(`Request Data: ${JSON.stringify(data)}`);
             }
-    
+
             function requestThen(response) {
                 if (isDebug) {
                     console.log(`Request Response: ${JSON.stringify(response.data)}`);
                     console.groupEnd();
                 }
-    
+
                 thenCallback(response.data);
                 resolve();
             }
-    
+
             function catchThen(error) {
                 if (isDebug) {
                     console.log('Request Error');
@@ -42,11 +42,11 @@ class http {
                     console.log(`Config: ${JSON.stringify(error.config)}`);
                     console.groupEnd();
                 }
-    
+
                 catchCallback(error.response.data);
                 reject();
             }
-    
+
             axios.post(url, data)
                 .then(requestThen)
                 .catch(catchThen);

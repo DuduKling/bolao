@@ -1,39 +1,18 @@
-import React, { Component } from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-class AuthAdmin extends Component {
-    checkAuth(){
-        if (this.props.userRole==='admin'){return (
-                <Route 
-                    exact
-                    path={this.props.path} 
-                    component={this.props.component} 
-                />
-            );    
-        }else{
-            return (
-                <Route render={() => 
-                    <Redirect to={{
-                        pathname: "/user/login", 
-                        state: {from: this.props.location}
-                    }}/>
-                }/>
-            );
+function AuthAdmin() {
+    const userRole = useSelector((state) => state.auth.userRole);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (userRole !== 'admin') {
+            navigate('/user/login');
         }
-    }
-    
-    render() {
-        return (
-            <div>
-                {this.checkAuth()}
-            </div>
-        );
-    }
+    }, []);
+
+    return (<Outlet />);
 }
 
-const mapStateToProps = store => ({
-    userRole: store.AuthJWTState.userRole
-});
-
-export default connect(mapStateToProps)(AuthAdmin);
+export default AuthAdmin;

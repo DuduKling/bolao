@@ -1,172 +1,180 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../../css/util/partidaListItem.css';
 import { Link } from 'react-router-dom';
 
 import PartidaTeam from './PartidaTeam';
-import  PartidaPlacar from './PartidaPlacar';
+import PartidaPlacar from './PartidaPlacar';
 
+import PropTypes from 'prop-types';
 
-class PartidaListItem extends Component {
-    checkTypeOfPlacar(){
-        if(this.props.typeAll === "ReadOnly"){
+function PartidaListItem(props) {
+
+    const checkTypeOfPlacar = () => {
+        if (props.typeAll === 'ReadOnly') {
             return (
-                <PartidaPlacar 
-                    team={this.props.team}
+                <PartidaPlacar
+                    team={props.team}
                     typeAll="ReadOnly"
-                    typeHome={this.checkIfHomeNeedsInput()}
-                    typeAway={this.checkIfAwayNeedsInput()}
+                    typeHome={checkIfHomeNeedsInput()}
+                    typeAway={checkIfAwayNeedsInput()}
                 />
             );
-        }else if(this.props.isAdmin==="admin"){
+        } else if (props.isAdmin === 'admin') {
             return (
-                <PartidaPlacar 
-                    team={this.props.team}
-                    typeHome={this.checkIfHomeNeedsInput()}
-                    typeAway={this.checkIfAwayNeedsInput()}
-                    isAdmin={"admin"}
+                <PartidaPlacar
+                    team={props.team}
+                    typeHome={checkIfHomeNeedsInput()}
+                    typeAway={checkIfAwayNeedsInput()}
+                    isAdmin={'admin'}
                 />
             );
-        }else{
+        } else {
             return (
-                <PartidaPlacar 
-                    team={this.props.team}
-                    typeHome={this.checkIfHomeNeedsInput()}
-                    typeAway={this.checkIfAwayNeedsInput()}
+                <PartidaPlacar
+                    team={props.team}
+                    typeHome={checkIfHomeNeedsInput()}
+                    typeAway={checkIfAwayNeedsInput()}
                 />
             );
         }
-    }
-    
-    checkIfHomeNeedsInput(){
-        if(this.props.team.home_score){
-            return "ReadOnly"
-        }else{
-            return ""
-        }
-    }
+    };
 
-    checkIfAwayNeedsInput(){
-        if(this.props.team.away_score){
-            return "ReadOnly"
-        }else{
-            return ""
+    const checkIfHomeNeedsInput = () => {
+        if (props.team.home_score) {
+            return 'ReadOnly';
+        } else {
+            return '';
         }
-    }
+    };
 
-    checkIfShowUsernames(){
-        if(this.props.users){
-            return(
+    const checkIfAwayNeedsInput = () => {
+        if (props.team.away_score) {
+            return 'ReadOnly';
+        } else {
+            return '';
+        }
+    };
+
+    const checkIfShowUsernames = () => {
+        if (props.users) {
+            return (
                 <div className="users-container">
-                    <label htmlFor={"toggleUsernames"+this.props.team.frontID}>
+                    <label htmlFor={'toggleUsernames' + props.team.frontID}>
                         Mostrar pessoas
                     </label>
-                    <input type="checkbox" id={"toggleUsernames"+this.props.team.frontID} />
+                    <input type="checkbox" id={'toggleUsernames' + props.team.frontID} />
                     <div className="users-usernamesList">
                         {
-                            this.props.team.usernames ? 
-                                this.props.team.usernames.split(",").map(function(name, index) {
+                            props.team.usernames ?
+                                props.team.usernames.split(',').map(function (name, index) {
                                     return (
                                         <div key={index}>
-                                            <Link to={"../apostado/"+name}>{name}</Link>
+                                            <Link to={'../apostado/' + name}>{name}</Link>
                                         </div>
                                     );
                                 })
-                            : null
+                                : null
                         }
                     </div>
                 </div>
             );
         }
-    }
+    };
 
-    checkIfShowPorcent(){
-        if(this.props.porcent){
-            return(
+    const checkIfShowPorcent = () => {
+        if (props.porcent) {
+            return (
                 <div className="users-porcent">
                     <div className="porcent-triangle"></div>
-                    <p>{this.props.team.porcentagem}%</p>
+                    <p>{props.team.porcentagem}%</p>
                 </div>
             );
         }
-    }
+    };
 
-    checkIfShowPoints(){
-        if(this.props.team.points !== undefined){
-            if(this.props.team.points !== null){
-                return(
+    const checkIfShowPoints = () => {
+        if (props.team.points !== undefined) {
+            if (props.team.points !== null) {
+                return (
                     <div className="users-points">
                         Final:
-                        {" "+this.props.team.final_scoreHome} 
+                        {' ' + props.team.final_scoreHome}
                         x
-                        {this.props.team.final_scoreAway+" "}
+                        {props.team.final_scoreAway + ' '}
                         | Pontos:
-                        {" "+this.props.team.points}
+                        {' ' + props.team.points}
                     </div>
                 );
             }
         }
-    }
+    };
 
-    
-    checkIfShowAsLink(){
-        if(this.props.link !== undefined){
-            return(
-                <Link to={"../../"+this.props.link.fase+"/jogo/"+this.props.team.idfixture}>
-                    {this.insideStuff()}
+    const checkIfShowAsLink = () => {
+        if (props.link !== undefined) {
+            return (
+                <Link to={'../../' + props.link.fase + '/jogo/' + props.team.idfixture}>
+                    {insideStuff()}
                 </Link>
             );
-        }else{
-            return(
+        } else {
+            return (
                 <div>
-                    {this.insideStuff()}
+                    {insideStuff()}
                 </div>
             );
         }
-    }
+    };
 
-    insideStuff(){
-        return(
+    const insideStuff = () => {
+        return (
             <div>
                 <p className="info">
-                    {this.props.team.datetime} | {this.props.team.local}
+                    {props.team.datetime} | {props.team.local}
                 </p>
 
                 <div className="match-container">
-                
-                    <PartidaTeam 
+
+                    <PartidaTeam
                         type="-Home"
-                        team={this.props.team} 
+                        team={props.team}
                     />
 
-                    {this.checkTypeOfPlacar()}
+                    {checkTypeOfPlacar()}
 
-                    <PartidaTeam 
+                    <PartidaTeam
                         type="-Away"
-                        team={this.props.team} 
+                        team={props.team}
                     />
 
                 </div>
 
-                {this.checkIfShowUsernames()}
+                {checkIfShowUsernames()}
 
-                {this.checkIfShowPoints()}
+                {checkIfShowPoints()}
 
-                {this.checkIfShowPorcent()}
+                {checkIfShowPorcent()}
 
             </div>
         );
-    }
+    };
 
+    return (
+        <li className="-apostadoJogo" key={props.index}>
 
-    render() {
-        return (
-            <li className="-apostadoJogo" key={this.props.index}>
+            {checkIfShowAsLink()}
 
-                {this.checkIfShowAsLink()}
-
-            </li>
-        );
-    }
+        </li>
+    );
 }
+
+PartidaListItem.propTypes = {
+    typeAll: PropTypes.string,
+    team: PropTypes.string,
+    isAdmin: PropTypes.string,
+    users: PropTypes.string,
+    porcent: PropTypes.string,
+    link: PropTypes.object,
+    index: PropTypes.string,
+};
 
 export default PartidaListItem;

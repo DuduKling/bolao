@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-function Auth() {
+function AuthAlready() {
     const userName = useSelector((state) => state.auth.userName);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!userName) {
-            navigate('/user/login');
+        if (userName) {
+            navigate('/user/campeonatos');
         }
     }, []);
 
-    return (<Outlet />);
+    return ( <Outlet />);
 }
 
-export default Auth;
+export default AuthAlready;

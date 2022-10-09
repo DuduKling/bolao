@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../../css/pages/campeonato.css';
 import { Link } from 'react-router-dom';
+
+import PropTypes from 'prop-types';
 
 /* Status:
     finalizado - Vai para dashboard (sem aposta lá).
@@ -9,204 +11,200 @@ import { Link } from 'react-router-dom';
     tba - Sem link (Mostra data de início).
 */
 
-class CampeonatoCard extends Component {
-    setImage(campeonato){
-        if(campeonato.logoCampeonato===""){
-            return "/imagens/campeonatos/default.png"
-        }else{
-            return "/imagens/campeonatos/"+campeonato.logoCampeonato
+function CampeonatoCard(props) {
+    const setImage = (campeonato) => {
+        if (campeonato.logoCampeonato === '') {
+            return '/imagens/campeonatos/default.png';
+        } else {
+            return '/imagens/campeonatos/' + campeonato.logoCampeonato;
         }
-    }
+    };
 
-    checkStatus(campeonato){
-        var qtdAposta = campeonato.fases
-        .reduce(function(acc, currValue){
-            return acc.concat(currValue.partes);
-        }, [])
-        .filter(function(parte){
-            return parte.statusParte === "aposta";
-        })
-        .length;
+    const checkStatus = (campeonato) => {
+        const qtdAposta = campeonato.fases
+            .reduce(function (acc, currValue) {
+                return acc.concat(currValue.partes);
+            }, [])
+            .filter(function (parte) {
+                return parte.statusParte === 'aposta';
+            })
+            .length;
 
-        var qtdAberto = campeonato.fases
-        .reduce(function(acc, currValue){
-            return acc.concat(currValue.partes);
-        }, [])
-        .filter(function(parte){
-            return parte.statusParte === "aberto";
-        })
-        .length;
+        const qtdAberto = campeonato.fases
+            .reduce(function (acc, currValue) {
+                return acc.concat(currValue.partes);
+            }, [])
+            .filter(function (parte) {
+                return parte.statusParte === 'aberto';
+            })
+            .length;
 
-        var qtdTba = campeonato.fases
-        .reduce(function(acc, currValue){
-            return acc.concat(currValue.partes);
-        }, [])
-        .filter(function(parte){
-            return parte.statusParte === "tba";
-        })
-        .length;
+        const qtdTba = campeonato.fases
+            .reduce(function (acc, currValue) {
+                return acc.concat(currValue.partes);
+            }, [])
+            .filter(function (parte) {
+                return parte.statusParte === 'tba';
+            })
+            .length;
 
-        var qtdFinalizado = campeonato.fases
-        .reduce(function(acc, currValue){
-            return acc.concat(currValue.partes);
-        }, [])
-        .filter(function(parte){
-            return parte.statusParte === "finalizado";
-        })
-        .length;
+        const qtdFinalizado = campeonato.fases
+            .reduce(function (acc, currValue) {
+                return acc.concat(currValue.partes);
+            }, [])
+            .filter(function (parte) {
+                return parte.statusParte === 'finalizado';
+            })
+            .length;
 
-        var totalPartes = qtdAposta+ qtdAberto + qtdFinalizado + qtdTba;
-        
-        if(qtdTba === totalPartes){
-            return(
+        const totalPartes = qtdAposta + qtdAberto + qtdFinalizado + qtdTba;
+
+        if (qtdTba === totalPartes) {
+            return (
                 <div className="campeonatoDiv tba">
                     <div className="imagemContainer">
-                        <img src={this.setImage(campeonato)}
-                        alt={"Logo do campeonato "+campeonato.nomeCampeonato} />
+                        <img src={setImage(campeonato)}
+                            alt={'Logo do campeonato ' + campeonato.nomeCampeonato} />
                     </div>
                     <h4>{campeonato.nomeCampeonato}</h4>
                     <div className="date-container">{campeonato.dataInicioCampeonato}</div>
                 </div>
             );
-        }else if(qtdFinalizado === totalPartes){ 
-            return(
+        } else if (qtdFinalizado === totalPartes) {
+            return (
                 <div className="campeonatoDiv finalizado">
                     <div className="imagemContainer">
-                        <img  src={this.setImage(this.props.campeonato)}
-                        alt={"Logo do campeonato "+this.props.campeonato.nomeCampeonato} />
+                        <img src={setImage(props.campeonato)}
+                            alt={'Logo do campeonato ' + props.campeonato.nomeCampeonato} />
                     </div>
-                    <h4>{this.props.campeonato.nomeCampeonato}</h4>
+                    <h4>{props.campeonato.nomeCampeonato}</h4>
                 </div>
             );
 
-        }else if(qtdAposta > 0){
-            return(
+        } else if (qtdAposta > 0) {
+            return (
                 <div className="campeonatoDiv aberto">
                     <div className="imagemContainer">
-                        <img  src={this.setImage(campeonato)}
-                        alt={"Logo do campeonato "+campeonato.nomeCampeonato} />
+                        <img src={setImage(campeonato)}
+                            alt={'Logo do campeonato ' + campeonato.nomeCampeonato} />
                     </div>
                     <h4>{campeonato.nomeCampeonato}</h4>
                     <div className="apostar-container aposte">Aposte!</div>
                 </div>
             );
-        }else{
-            return(
+        } else {
+            return (
                 <div className="campeonatoDiv aberto">
                     <div className="imagemContainer">
-                        <img  src={this.setImage(campeonato)}
-                        alt={"Logo do campeonato "+campeonato.nomeCampeonato} />
+                        <img src={setImage(campeonato)}
+                            alt={'Logo do campeonato ' + campeonato.nomeCampeonato} />
                     </div>
                     <h4>{campeonato.nomeCampeonato}</h4>
                     <div className="apostar-container">Veja!</div>
                 </div>
             );
         }
-    }
-    
-    checkFases(campeonato, fase, index){
-        var qtdFinalizado = fase.partes
-            .reduce(function(acc, currValue){
+    };
+
+    const checkFases = (campeonato, fase, index) => {
+        const qtdFinalizado = fase.partes
+            .reduce(function (acc, currValue) {
                 return acc.concat(currValue);
             }, [])
-            .filter(function(parte){
-                return parte.statusParte === "finalizado";
+            .filter(function (parte) {
+                return parte.statusParte === 'finalizado';
             })
             .length;
 
-        var qtdApostar = fase.partes
-            .reduce(function(acc, currValue){
+        const qtdApostar = fase.partes
+            .reduce(function (acc, currValue) {
                 return acc.concat(currValue);
             }, [])
-            .filter(function(parte){
-                return parte.statusParte === "aposta";
+            .filter(function (parte) {
+                return parte.statusParte === 'aposta';
             })
             .length;
 
-        var qtdAberto = fase.partes
-            .reduce(function(acc, currValue){
+        const qtdAberto = fase.partes
+            .reduce(function (acc, currValue) {
                 return acc.concat(currValue);
             }, [])
-            .filter(function(parte){
-                return parte.statusParte === "aberto";
+            .filter(function (parte) {
+                return parte.statusParte === 'aberto';
             })
             .length;
-        
-        var total = qtdFinalizado + qtdAberto + qtdApostar;
 
-        // console.log("FASE:")
-        // console.log(qtdFinalizado);
-        // console.log(qtdAberto);
-        // console.log(qtdApostar);
-        // console.log("TOTAL(fin, ab, ap): " + total +"\n\n");
+        const total = qtdFinalizado + qtdAberto + qtdApostar;
 
-        var parteAberta = fase.partes
-            .reduce(function(acc, currValue){
+        const parteAberta = fase.partes
+            .reduce(function (acc, currValue) {
                 return acc.concat(currValue);
             }, [])
-            .filter(function(parte){
-                return parte.statusParte === "aposta";
+            .filter(function (parte) {
+                return parte.statusParte === 'aposta';
             });
 
-        if(
-            (qtdFinalizado > 0 && qtdFinalizado === total) || 
+        if (
+            (qtdFinalizado > 0 && qtdFinalizado === total) ||
             (qtdAberto > 0 && qtdApostar === 0)
-        ){
-            return(
-                <Link 
-                    key={index} 
+        ) {
+            return (
+                <Link
+                    key={index}
                     className="campeonatoFases"
-                    to={"/"+campeonato.idCampeonato+"/"+fase.id+"/dashboard"}
+                    to={'/' + campeonato.idCampeonato + '/' + fase.id + '/dashboard'}
                 >
                     {fase.nomeFase}
                 </Link>
             );
-        }else if(qtdAberto === 0 && qtdApostar > 0){
-            return(
+        } else if (qtdAberto === 0 && qtdApostar > 0) {
+            return (
                 <Link
                     className="campeonatoFases apostar"
-                    to={"/"+parteAberta[0].id+"/apostar"}
+                    to={'/' + parteAberta[0].id + '/apostar'}
                 >
-                    {fase.nomeFase+" / "+parteAberta[0].nomeParte}
+                    {fase.nomeFase + ' / ' + parteAberta[0].nomeParte}
                 </Link>
             );
-        }else if(qtdAberto > 0 && qtdApostar > 0){
-            return(
+        } else if (qtdAberto > 0 && qtdApostar > 0) {
+            return (
                 <div key={index}>
                     <Link
                         className="campeonatoFases"
-                        to={"/"+campeonato.idCampeonato+"/"+fase.id+"/dashboard"}
+                        to={'/' + campeonato.idCampeonato + '/' + fase.id + '/dashboard'}
                     >
                         {fase.nomeFase}
                     </Link>
 
                     <Link
                         className="campeonatoFases apostar"
-                        to={"/"+parteAberta[0].id+"/apostar"}
+                        to={'/' + parteAberta[0].id + '/apostar'}
                     >
-                        {fase.nomeFase+" / "+parteAberta[0].nomeParte}
+                        {fase.nomeFase + ' / ' + parteAberta[0].nomeParte}
                     </Link>
                 </div>
             );
         }
-    }
+    };
 
-    render() {
-        return (
-            <div className="campeonatoCard">
+    return (
+        <div className="campeonatoCard">
 
-                {this.checkStatus(this.props.campeonato)}
+            {checkStatus(props.campeonato)}
 
-                <div className="campeonatoFases-container">
-                    {
-                    this.props.campeonato.fases.map(function(fase, index){
-                        return this.checkFases(this.props.campeonato, fase , index);
+            <div className="campeonatoFases-container">
+                {
+                    props.campeonato.fases.map(function (fase, index) {
+                        return checkFases(props.campeonato, fase, index);
                     }, this)
-                    }
-                </div>
+                }
             </div>
-        );
-    }
+        </div>
+    );
 }
+
+CampeonatoCard.propTypes = {
+    campeonato: PropTypes.object,
+};
 
 export default CampeonatoCard;

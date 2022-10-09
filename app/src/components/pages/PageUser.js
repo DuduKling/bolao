@@ -1,360 +1,344 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import '../../css/pages/user.css';
 import '../../css/util/formMessage.css';
 import $ from 'jquery';
 import Loading from '../util/Loading';
 
-import http from '../../util/http';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateJWT, updateImage } from '../../redux/slicer/authSlicer';
 
-import { bindActionCreators } from 'redux';
-import { updateJWT, updateImage } from '../../actions';
-import { connect } from 'react-redux';
+import http from '../../util/http';
 
 import Avatar from '../../imgs/avatar.png';
 import editIcon from '../../imgs/icons/edit-solid.svg';
 
 import MaterialTextInput from '../util/MaterialTextInput';
 
-class PageUser extends Component {
-    constructor() {
-        super();
-        this.state = {
-            ajax1ErrorResp: '',
-            ajax1SuccessResp: '',
-            ajax2ErrorResp: '',
-            ajax2SuccessResp: '',
-            ajax3ErrorResp:'',
-            ajax3SuccessResp: ''
-        };
-    }
+function PageUser() {
+    const [ajax1ErrorResp, setAjax1ErrorResp] = useState('');
+    const [ajax1SuccessResp, setAjax1SuccessResp] = useState('');
+    const [loading1, setLoading1] = useState(false);
 
-    async sendFormUpdateInfo(evento, userJWT) {
-        const { updateJWT } = this.props;
+    const [ajax2ErrorResp, setAjax2ErrorResp] = useState('');
+    const [ajax2SuccessResp, setAjax2SuccessResp] = useState('');
+    const [loading2, setLoading2] = useState(false);
 
+    const [ajax3ErrorResp, setAjax3ErrorResp] = useState('');
+    const [ajax3SuccessResp, setAjax3SuccessResp] = useState('');
+    const [loading3, setLoading3] = useState(false);
+
+    const [selectedFileURL, setSelectedFileURL] = useState('');
+    const [selectedFile, setSelectedFile] = useState('');
+
+    const dispatch = useDispatch();
+
+    const userName = useSelector((state) => state.auth.userName);
+    const userEmail = useSelector((state) => state.auth.userEmail);
+    const userJWT = useSelector((state) => state.auth.userJWT);
+    const userImg = useSelector((state) => state.auth.userImg);
+
+    const sendFormUpdateInfo = async (evento) => {
         evento.preventDefault();
 
-        this.setState({
-            ajax1ErrorResp: "",
-            ajax1SuccessResp: ""
-        });
+        setAjax3ErrorResp('');
+        setAjax1SuccessResp('');
 
-        const nomeValue = $("input[name='nome']").val();
-        const emailValue = $("input[name='email']").val();
+        const nomeValue = $('input[name=\'nome\']').val();
+        const emailValue = $('input[name=\'email\']').val();
 
-        if(nomeValue===this.props.userName && emailValue===this.props.userEmail){
-            this.setState({ajax1ErrorResp: "Você deve modificar pelo menos um dos campos!"});
-        }else{
-            this.setState({ loading1: true });
+        if (nomeValue === userName && emailValue === userEmail) {
+            setAjax1ErrorResp('Você deve modificar pelo menos um dos campos!');
+        } else {
+            setLoading1(true);
 
             const dataString = JSON.stringify({
-                type: 'nopass',
+                type: 'userInfo',
                 name: nomeValue,
                 email: emailValue,
-                jwt: userJWT
+                jwt: userJWT,
             });
 
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 data: dataString,
                 thenCallback: (response) => {
-                    updateJWT({
-                        userName: response.name, 
+                    dispatch(updateJWT({
+                        userName: response.name,
                         userEmail: response.email,
                         userID: response.id,
                         userImg: response.userImg,
-                        userJWT: response.jwt
-                    });
+                        userJWT: response.jwt,
+                    }));
 
-                    this.setState({ ajax1SuccessResp: response.message.toString() });
-                    this.setState({ loading1: false });
+                    setAjax1SuccessResp(response.message.toString());
+
+                    setLoading1(false);
                 },
                 catchCallback: ({ message }) => {
-                    this.setState({
-                        ajax1ErrorResp: message,
-                        ajax1SuccessResp: '0'
-                    });
+                    setAjax1ErrorResp(message);
+                    setAjax1SuccessResp('0');
 
-                    this.setState({ loading1: false });
-                }
+                    setLoading1(false);
+                },
             });
         }
-    }
+    };
 
-    async sendFormChangePassword(evento, userJWT) {
+    const sendFormChangePassword = async (evento) => {
         evento.preventDefault();
 
-        this.setState({
-            ajax2ErrorResp: "",
-            ajax2SuccessResp: ""
-        });
+        setAjax2ErrorResp('');
+        setAjax2SuccessResp('');
 
-        const senhaValue = $("input[name='senha']").val();
-        const senhaConfirmarValue = $("input[name='senhaCheck']").val();
+        const senhaValue = $('input[name=\'senha\']').val();
+        const senhaConfirmarValue = $('input[name=\'senhaCheck\']').val();
 
-        if(senhaValue==="" && senhaConfirmarValue===""){
-            this.setState({ajax2ErrorResp: "Favor preencher ambos os campos!"});
-        }else if(senhaValue!==senhaConfirmarValue){
-            this.setState({ajax2ErrorResp: "Senhas precisam ser idênticas."});
-        }else{
-            this.setState({ loading2: true });
+        if (senhaValue === '' && senhaConfirmarValue === '') {
+            setAjax2ErrorResp('Favor preencher ambos os campos!');
+        } else if (senhaValue !== senhaConfirmarValue) {
+            setAjax2ErrorResp('Senhas precisam ser idênticas.');
+        } else {
+            setLoading2(true);
 
             const dataString = JSON.stringify({
-                type: 'pass',
+                type: 'userPassword',
                 password: senhaValue,
-                jwt: userJWT
+                jwt: userJWT,
             });
 
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 data: dataString,
                 thenCallback: (response) => {
-                    this.setState({ ajax2SuccessResp: response.message.toString() });
-                    this.setState({ loading2: false });
+                    setAjax2SuccessResp(response.message.toString());
+
+                    setLoading2(false);
                 },
                 catchCallback: ({ message }) => {
-                    this.setState({
-                        ajax2ErrorResp: message,
-                        ajax2SuccessResp: '0'
-                    });
+                    setAjax2ErrorResp(message);
+                    setAjax2SuccessResp('0');
 
-                    this.setState({ loading2: false });
-                }
+                    setLoading2(false);
+                },
             });
         }
-    }
+    };
 
-    async sendFormUploadImage(evento, userJWT) {
-        const { updateImage } = this.props;
-
+    const sendFormUploadImage = async (evento) => {
         evento.preventDefault();
-        this.setState({
-            ajax3ErrorResp: "",
-            ajax3SuccessResp: ""
-        });
 
-        if(this.state.selectedFile===undefined || this.state.selectedFile===this.props.userImg){
-            this.setState({ajax3ErrorResp: "Você deve incluir uma nova foto antes!"});
-        }else{
-            this.setState({ loading3: true });
+        setAjax3ErrorResp('');
+        setAjax3SuccessResp('');
 
-            const img = this.state.selectedFile;
+        if (selectedFile === undefined || selectedFile === userImg) {
+            setAjax3ErrorResp('Você deve incluir uma nova foto antes!');
+        } else {
+            setLoading3(true);
+
+            const img = selectedFile;
             const formData = new FormData();
-            formData.append("file", img);
-            formData.append("jwt", userJWT);
+            formData.append('file', img);
+            formData.append('jwt', userJWT);
 
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/uploadAvatar.php`,
                 data: formData,
                 thenCallback: (response) => {
-                    updateImage({ userImg: response.userImg });
+                    dispatch(updateImage({ userImg: response.userImg }));
 
-                    this.setState({ ajax3SuccessResp: response.message.toString() });
-                    this.setState({ loading3: false });
+                    setAjax3SuccessResp(response.message.toString());
+
+                    setLoading3(false);
                 },
                 catchCallback: ({ message }) => {
-                    this.setState({
-                        ajax3ErrorResp: message,
-                        ajax3SuccessResp: '0'
-                    });
+                    setAjax3ErrorResp(message);
+                    setAjax3SuccessResp('0');
 
-                    this.setState({ loading3: false });
-                }
+                    setLoading3(false);
+                },
             });
         }
-    }
+    };
 
-    showForm1Messages() {
-        if(this.state.ajax1ErrorResp === '' && this.state.ajax1SuccessResp === ''){
+    const showForm1Messages = () => {
+        if (ajax1ErrorResp === '' && ajax1SuccessResp === '') {
             return (
                 null
             );
-        }else if (this.state.ajax1ErrorResp !== ''){
-            return(
+        } else if (ajax1ErrorResp !== '') {
+            return (
                 <div className="FormMessage -error">
-                    {this.state.ajax1ErrorResp}
+                    {ajax1ErrorResp}
                 </div>
             );
-        }else if (this.state.ajax1SuccessResp !== ''){
-            return(
+        } else if (ajax1SuccessResp !== '') {
+            return (
                 <div className="FormMessage -success">
-                    {this.state.ajax1SuccessResp}
+                    {ajax1SuccessResp}
                 </div>
             );
         }
-    }
-    
-    showForm2Messages() {
-        if(this.state.ajax2ErrorResp === '' && this.state.ajax2SuccessResp === ''){
+    };
+
+    const showForm2Messages = () => {
+        if (ajax2ErrorResp === '' && ajax2SuccessResp === '') {
             return (
                 null
             );
-        }else if (this.state.ajax2ErrorResp !== ''){
-            return(
+        } else if (ajax2ErrorResp !== '') {
+            return (
                 <div className="FormMessage -error">
-                    {this.state.ajax2ErrorResp}
+                    {ajax2ErrorResp}
                 </div>
             );
-        }else if (this.state.ajax2SuccessResp !== ''){
-            return(
+        } else if (ajax2SuccessResp !== '') {
+            return (
                 <div className="FormMessage -success">
-                    {this.state.ajax2SuccessResp}
+                    {ajax2SuccessResp}
                 </div>
             );
         }
-    }
+    };
 
-    showForm3Messages() {
-        if(this.state.ajax3ErrorResp === '' && this.state.ajax3SuccessResp === ''){
+    const showForm3Messages = () => {
+        if (ajax3ErrorResp === '' && ajax3SuccessResp === '') {
             return (
                 null
             );
-        }else if (this.state.ajax3ErrorResp !== ''){
-            return(
+        } else if (ajax3ErrorResp !== '') {
+            return (
                 <div className="FormMessage -error">
-                    {this.state.ajax3ErrorResp}
+                    {ajax3ErrorResp}
                 </div>
             );
-        }else if (this.state.ajax3SuccessResp !== ''){
-            return(
+        } else if (ajax3SuccessResp !== '') {
+            return (
                 <div className="FormMessage -success">
-                    {this.state.ajax3SuccessResp}
+                    {ajax3SuccessResp}
                 </div>
             );
         }
-    }
-    
-    fileChangedHandler = (event) => {
-        var ValidImageTypes = ["image/gif", "image/jpeg", "image/png"];
-        if(this.props.selectedFile !== event.target.files[0] && $.inArray(event.target.files[0].type, ValidImageTypes) > 0){
-            var imageURL = URL.createObjectURL(event.target.files[0]);
-            this.setState({
-                selectedFileURL: imageURL,
-                selectedFile: event.target.files[0]
-            });
+    };
+
+    const fileChangedHandler = (event) => {
+        const ValidImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+        if (selectedFile !== event.target.files[0] && $.inArray(event.target.files[0].type, ValidImageTypes) > 0) {
+            const imageURL = URL.createObjectURL(event.target.files[0]);
+
+            setSelectedFileURL(imageURL);
+            setSelectedFile(event.target.files[0]);
         }
-    }
-    
-    render() {
-        return (
-            <div className="userPage-container">
+    };
 
-                <div className="userPage-userInfo">
-                    <form 
-                        className="userInfo"
-                        onSubmit={async function(event){
-                            await this.sendFormUploadImage(event,  this.props.userJWT)}.bind(this)
-                        } 
-                        method="post" 
-                        encType='multipart/form-data'
-                    >
-                        <div className="userInfo-imgContainer">
-                            <div className="userInfo-img">
-                                <input type="file" id='selectImage' onChange={this.fileChangedHandler} accept="image/*" data-type='image'/>
-                                <label className='selectImageLabel' htmlFor="selectImage"><img src={editIcon} alt="Edit icon"/></label>
+    const chooseAvatarImage = () => {
+        if (selectedFileURL) {
+            return selectedFileURL;
+        }
 
-                                <img src={
-                                    this.state.selectedFileURL ?
-                                    this.state.selectedFileURL
-                                        :this.props.userImg ?
-                                            this.props.userImg
-                                            :Avatar
-                                } alt="avatar"/>
-                            </div>
+        if(userImg) {
+            return userImg;
+        }
+
+        return Avatar;
+    };
+
+    return (
+        <div className="userPage-container">
+
+            <div className="userPage-userInfo">
+                <form
+                    className="userInfo"
+                    onSubmit={(event) => sendFormUploadImage(event)}
+                    method="post"
+                    encType='multipart/form-data'
+                >
+                    <div className="userInfo-imgContainer">
+                        <div className="userInfo-img">
+                            <input type="file" id='selectImage' onChange={fileChangedHandler} accept="image/*" data-type='image' />
+                            <label className='selectImageLabel' htmlFor="selectImage"><img src={editIcon} alt="Edit icon" /></label>
+
+                            <img src={chooseAvatarImage()} alt="avatar" />
                         </div>
+                    </div>
 
-                        <div className="userInfo-title page-title">
-                            <input 
-                                type="submit" 
-                                className="SendButton" 
-                                value="Upload"
-                            />
-                            <Loading loading={this.state.loading3}/>
-                            {this.showForm3Messages()}
-                        </div>
-                    </form>
+                    <div className="userInfo-title page-title">
+                        <input
+                            type="submit"
+                            className="SendButton"
+                            value="Upload"
+                        />
+                        <Loading loading={loading3} />
+                        {showForm3Messages()}
+                    </div>
+                </form>
 
-                    <form 
-                        className="userInfo"
-                        onSubmit={async function(event){
-                            await this.sendFormUpdateInfo(event,  this.props.userJWT)}.bind(this)
-                        } 
-                        method="post"
-                    >
-                        <div className="userInfo-otherInfo">
-                            <MaterialTextInput 
-                                labelName="Nome e Sobrenome"
-                                fieldName="nome"
-                                fieldType="text"
-                                fieldRequired="no"
-                                fieldPlaceholder={this.props.userName}
-                            />
+                <form
+                    className="userInfo"
+                    onSubmit={(event) => sendFormUpdateInfo(event)}
+                    method="post"
+                >
+                    <div className="userInfo-otherInfo">
+                        <MaterialTextInput
+                            labelName="Nome e Sobrenome"
+                            fieldName="nome"
+                            fieldType="text"
+                            fieldRequired={false}
+                            fieldPlaceholder={userName}
+                        />
 
-                            <MaterialTextInput 
-                                labelName="E-mail"
-                                fieldName="email"
-                                fieldType="email"
-                                fieldRequired="no"
-                                fieldPlaceholder={this.props.userEmail}
-                            />
+                        <MaterialTextInput
+                            labelName="E-mail"
+                            fieldName="email"
+                            fieldType="email"
+                            fieldRequired={false}
+                            fieldPlaceholder={userEmail}
+                        />
 
-                            <input 
-                                type="submit" 
-                                className="SendButton" 
-                                value="Atualizar"
-                            />
+                        <input
+                            type="submit"
+                            className="SendButton"
+                            value="Atualizar"
+                        />
 
-                            <Loading loading={this.state.loading1}/>
-                            {this.showForm1Messages()}
-                        </div>
-                    </form>
-                    
-                    <form 
-                        className="userInfo"
-                        onSubmit={async function(event){
-                            await this.sendFormChangePassword(event,  this.props.userJWT)}.bind(this)
-                        } 
-                        method="post"
-                    >
-                        <div className="passwordChange">
-                            <MaterialTextInput 
-                                labelName="Senha"
-                                fieldName="senha"
-                                fieldType="password"
-                            />
+                        <Loading loading={loading1} />
+                        {showForm1Messages()}
+                    </div>
+                </form>
 
-                            <MaterialTextInput 
-                                labelName="Confirmar Senha"
-                                fieldName="senhaCheck"
-                                fieldType="password"
-                            />
+                <form
+                    className="userInfo"
+                    onSubmit={(event) => sendFormChangePassword(event)}
+                    method="post"
+                >
+                    <div className="passwordChange">
+                        <MaterialTextInput
+                            labelName="Senha"
+                            fieldName="senha"
+                            fieldType="password"
+                        />
 
-                            <input 
-                                type="submit" 
-                                className="SendButton" 
-                                value="Trocar Senha"
-                            />
+                        <MaterialTextInput
+                            labelName="Confirmar Senha"
+                            fieldName="senhaCheck"
+                            fieldType="password"
+                        />
 
-                            <Loading loading={this.state.loading2}/>
-                            {this.showForm2Messages()}
-                        </div>
-                    </form>
+                        <input
+                            type="submit"
+                            className="SendButton"
+                            value="Trocar Senha"
+                        />
 
+                        <Loading loading={loading2} />
+                        {showForm2Messages()}
+                    </div>
+                </form>
 
-                </div>
 
             </div>
-        );
-    }
+
+        </div>
+    );
 }
 
-const mapStateToProps = store => ({
-    userName: store.AuthJWTState.userName,
-    userEmail: store.AuthJWTState.userEmail,
-    userImg: store.AuthJWTState.userImg,
-    userJWT: store.AuthJWTState.userJWT
-});
-
-const mapDispatchToProps = dispatch => 
-bindActionCreators({ updateJWT, updateImage }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(PageUser);
+export default PageUser;

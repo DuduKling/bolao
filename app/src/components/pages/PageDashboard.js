@@ -1,314 +1,90 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+
 import '../../css/pages/pageInside.css';
-import { Link } from 'react-router-dom';
 
 import http from '../../util/http';
-
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 import RankListItem from '../util/RankListItem';
 
-class PageDashboard extends Component {
-    constructor() {
-        super();
-        this.state = {
-            fixtures: [
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": null,
-                //     "away_score": null,
-                //     "home_team_name": "Time AAA",
-                //     "home_path": "",
-                //     "away_team_name": "Arábia Saudita",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "2",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": null,
-                //     "away_score": null,
-                //     "home_team_name": "Time AAA",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": null,
-                //     "away_score": null,
-                //     "home_team_name": "Time AAA",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "2",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": null,
-                //     "away_score": null,
-                //     "home_team_name": "Time AAA",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": null,
-                //     "away_score": null,
-                //     "home_team_name": "Time AAA",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": null,
-                //     "away_score": null,
-                //     "home_team_name": "Time AAA",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": "0",
-                //     "away_score": "0",
-                //     "home_team_name": "Time BBB",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "2",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": "0",
-                //     "away_score": "0",
-                //     "home_team_name": "Time BBB",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": "0",
-                //     "away_score": "0",
-                //     "home_team_name": "Time BBB",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "2",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": "0",
-                //     "away_score": "0",
-                //     "home_team_name": "Time BBB",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": "0",
-                //     "away_score": "0",
-                //     "home_team_name": "Time BBB",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": "0",
-                //     "away_score": "0",
-                //     "home_team_name": "Time JJJ",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": "0",
-                //     "away_score": "0",
-                //     "home_team_name": "Time JJJ",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": "0",
-                //     "away_score": "0",
-                //     "home_team_name": "Time JJJa",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": null,
-                //     "away_score": null,
-                //     "home_team_name": "Time 11",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // },
-                // {
-                //     "idfixture": "1",
-                //     "datetime": "Date Time",
-                //     "local": "Russia",
-                //     "home_score": null,
-                //     "away_score": null,
-                //     "home_team_name": "Time 11",
-                //     "home_path": "",
-                //     "away_team_name": "Time 2",
-                //     "away_path": ""
-                // }
-            ],
-            rank: [
-            //     {
-            //         "position": "0",
-            //         "name": "Nome completo 1234",
-            //         "points": "40"
-            //     },
-            //     {
-            //         "position": "1",
-            //         "name": "Nome completo 2",
-            //         "points": "30"
-            //     },
-            //     {
-            //         "position": "0",
-            //         "name": "Nome completo 1234",
-            //         "points": "23"
-            //     },
-            //     {
-            //         "position": "0",
-            //         "name": "Nome completo 2",
-            //         "points": "23"
-            //     },
-            //     {
-            //         "position": "5",
-            //         "name": "Nome completo 1234",
-            //         "points": "11"
-            //     },
-            //     {
-            //         "position": "0",
-            //         "name": "Nome completo 2",
-            //         "points": "8"
-            //     },
-            //     {
-            //         "position": "0",
-            //         "name": "Nome completo 1234",
-            //         "points": "8"
-            //     },
-            //     {
-            //         "position": "0",
-            //         "name": "Nome completo 2",
-            //         "points": "0"
-            //     }
-            ],
-            campeonato: {
-                "nomeCampeonato": "",
-                "logoCampeonato": "",
-                "dataInicioCampeonato": "",
-                // "statusCampeonato": "finalizado",
-                "idCampeonato": "1",
-                // "participacaoCampeonato": "yes",
-                "fases": [
+function PageDashboard() {
+    const [fixtures, setFixtures] = useState([]);
+    const [rank, setRank] = useState([]);
+    const [campeonato, setCampeonato] = useState({
+        'nomeCampeonato': '',
+        'logoCampeonato': '',
+        'dataInicioCampeonato': '',
+        // "statusCampeonato": "finalizado",
+        'idCampeonato': '1',
+        // "participacaoCampeonato": "yes",
+        'fases': [
+            {
+                'id': '1',
+                'nomeFase': '',
+                // "apostaFase": true,
+                'partes': [
                     {
-                        "id": "1",
-                        "nomeFase": "",
-                        // "apostaFase": true,
-                        "partes": [
-                            {
-                                "id": 1,
-                                "nomeParte": "",
-                                "statusParte": ""
-                            }
-                        ]
+                        'id': 1,
+                        'nomeParte': '',
+                        'statusParte': '',
+                    },
+                ],
+            },
+            {
+                'id': '2',
+                'nomeFase': '',
+                // "apostaFase": true,
+                'partes': [
+                    {
+                        'id': 1,
+                        'nomeParte': '',
+                        'statusParte': '',
                     },
                     {
-                        "id": "2",
-                        "nomeFase": "",
-                        // "apostaFase": true,
-                        "partes": [
-                            {
-                                "id": 1,
-                                "nomeParte": "",
-                                "statusParte": ""
-                            },
-                            {
-                                "id": 2,
-                                "nomeParte": "",
-                                "statusParte": ""
-                            }
-                        ]
-                    }
-                ]
-            }
-        };
-    }
+                        'id': 2,
+                        'nomeParte': '',
+                        'statusParte': '',
+                    },
+                ],
+            },
+        ],
+    });
 
-    componentWillMount(){
-        var campeonatoID = this.props.match.params.campeonato;
-        var faseID = this.props.match.params.fase;
+    const [loading, setLoading] = useState(false);
 
-        // campeonato rank fixtures
-        const cachedCampeonato = localStorage.getItem(campeonatoID+faseID+'campeonato');
-        if(cachedCampeonato){
-            this.setState({
-                campeonato: JSON.parse(cachedCampeonato)
-            });
+    const params = useParams();
+
+    useEffect(() => {
+        const campeonatoID = params.campeonato;
+        const faseID = params.fase;
+
+        const cachedCampeonato = localStorage.getItem(campeonatoID + faseID + 'campeonato');
+        if (cachedCampeonato) {
+            setCampeonato(JSON.parse(cachedCampeonato));
         }
 
-        const cachedRank = localStorage.getItem(campeonatoID+faseID+'rank');
-        if(cachedRank){
-            this.setState({
-                rank: JSON.parse(cachedRank)
-            });
+        const cachedRank = localStorage.getItem(campeonatoID + faseID + 'rank');
+        if (cachedRank) {
+            setRank(JSON.parse(cachedRank));
         }
 
-        const cachedFixtures = localStorage.getItem(campeonatoID+faseID+'fixtures');
-        if(cachedFixtures){
-            this.setState({
-                fixtures: JSON.parse(cachedFixtures)
-            });
+        const cachedFixtures = localStorage.getItem(campeonatoID + faseID + 'fixtures');
+        if (cachedFixtures) {
+            setFixtures(JSON.parse(cachedFixtures));
         }
-    }
 
-    async componentDidMount(){
-        this.setState({ loading: true });
+        getInfo();
+    }, []);
 
-        const campeonatoID = this.props.match.params.campeonato;
-        const faseID = this.props.match.params.fase;
+    const getInfo = async () => {
+        setLoading(true);
+
+        const campeonatoID = params.campeonato;
+        const faseID = params.fase;
 
         let dataString = JSON.stringify({
-            faseID
+            faseID,
         });
 
         // Fixtures
@@ -316,17 +92,14 @@ class PageDashboard extends Component {
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
             data: dataString,
             thenCallback: (response) => {
-                this.setState({
-                    loading: false,
-                    fixtures: response.fixtures
-                });
+                setLoading(false);
+                setFixtures(response.fixtures);
 
-                localStorage.setItem(campeonatoID+faseID+'fixtures', JSON.stringify(response.fixtures));
+                localStorage.setItem(campeonatoID + faseID + 'fixtures', JSON.stringify(response.fixtures));
             },
-            catchCallback: ({ message }) => {
-                this.setState({ loading: false });
-                this.setState({ error: message });
-            }
+            catchCallback: () => {
+                setLoading(false);
+            },
         });
 
         // Rank
@@ -334,21 +107,18 @@ class PageDashboard extends Component {
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getRank.php`,
             data: dataString,
             thenCallback: (response) => {
-                this.setState({
-                    loading: false,
-                    rank: response.rank,
-                });
+                setLoading(false);
+                setRank(response.rank);
 
-                localStorage.setItem(campeonatoID+faseID+'rank', JSON.stringify(response.rank));
+                localStorage.setItem(campeonatoID + faseID + 'rank', JSON.stringify(response.rank));
             },
-            catchCallback: ({ message }) => {
-                this.setState({ loading: false });
-                this.setState({ error: message });
-            }
+            catchCallback: () => {
+                setLoading(false);
+            },
         });
 
         dataString = JSON.stringify({
-            campeonatoID
+            campeonatoID,
         });
 
         //TODO Rever que com o id da fase da pra pegar essas informações do campeonato....
@@ -357,74 +127,71 @@ class PageDashboard extends Component {
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatoInfo.php`,
             data: dataString,
             thenCallback: (response) => {
-                this.setState({
-                    campeonato: response.campeonato
-                });
+                setCampeonato(response.campeonato);
 
-                localStorage.setItem(campeonatoID+faseID+'campeonato', JSON.stringify(response.campeonato));
+                localStorage.setItem(campeonatoID + faseID + 'campeonato', JSON.stringify(response.campeonato));
             },
-            catchCallback: ({ message }) => {
-                this.setState({ error: message });
-            }
+            catchCallback: () => {
+            },
         });
-    }
+    };
 
-    checkStatus(){
-        var campeonato = this.state.campeonato;
-        var faseID = this.props.match.params.fase;
-        
-        var qtdAposta = campeonato.fases
-            .filter(function(fase){
+    const checkStatus = () => {
+        const campeonato = campeonato;
+        const faseID = params.fase;
+
+        const qtdAposta = campeonato.fases
+            .filter(function (fase) {
                 return fase.id === faseID;
             })
-            .reduce(function(acc, currValue){
+            .reduce(function (acc, currValue) {
                 return acc.concat(currValue.partes);
             }, [])
-            .filter(function(parte){
-                return parte.statusParte === "aposta";
+            .filter(function (parte) {
+                return parte.statusParte === 'aposta';
             })
             .length;
 
-        var qtdAberto = campeonato.fases
-            .filter(function(fase){
+        const qtdAberto = campeonato.fases
+            .filter(function (fase) {
                 return fase.id === faseID;
             })
-            .reduce(function(acc, currValue){
+            .reduce(function (acc, currValue) {
                 return acc.concat(currValue.partes);
             }, [])
-            .filter(function(parte){
-                return parte.statusParte === "aberto";
+            .filter(function (parte) {
+                return parte.statusParte === 'aberto';
             })
             .length;
 
-        var qtdFinalizado = campeonato.fases
-            .filter(function(fase){
+        const qtdFinalizado = campeonato.fases
+            .filter(function (fase) {
                 return fase.id === faseID;
             })
-            .reduce(function(acc, currValue){
+            .reduce(function (acc, currValue) {
                 return acc.concat(currValue.partes);
             }, [])
-            .filter(function(parte){
-                return parte.statusParte === "finalizado";
+            .filter(function (parte) {
+                return parte.statusParte === 'finalizado';
             })
             .length;
 
-        var totalPartes = qtdAposta+ qtdAberto + qtdFinalizado;
+        const totalPartes = qtdAposta + qtdAberto + qtdFinalizado;
 
 
-        var parteAberta = campeonato.fases
-            .filter(function(fase){
+        const parteAberta = campeonato.fases
+            .filter(function (fase) {
                 return fase.id === faseID;
             })
-            .reduce(function(acc, currValue){
+            .reduce(function (acc, currValue) {
                 return acc.concat(currValue.partes);
             }, [])
-            .filter(function(parte){
-                return parte.statusParte === "aposta";
+            .filter(function (parte) {
+                return parte.statusParte === 'aposta';
             });
 
-        if(qtdFinalizado === totalPartes){ 
-            return(
+        if (qtdFinalizado === totalPartes) {
+            return (
                 <div className="dashboard-statusFase -finalizado">
                     <p>
                         Campeonato finalizado
@@ -432,18 +199,18 @@ class PageDashboard extends Component {
                 </div>
             );
 
-        }else if(qtdAposta > 0){
-            return(
+        } else if (qtdAposta > 0) {
+            return (
                 <div className="dashboard-statusFase">
                     <Link
-                        to={"/"+parteAberta[0].id+"/apostar"}
+                        to={'/' + parteAberta[0].id + '/apostar'}
                     >
                         Aposte: {parteAberta[0].nomeParte}
                     </Link>
                 </div>
             );
-        }else{
-            return(
+        } else {
+            return (
                 <div className="dashboard-statusFase -aberto">
                     <p>
                         Campeonato em andamento
@@ -451,219 +218,217 @@ class PageDashboard extends Component {
                 </div>
             );
         }
-    }
+    };
 
-    checkFaseName(){
-        const faseID = this.props.match.params.fase;
+    const checkFaseName = () => {
+        const faseID = params.fase;
 
-        const fase = this.state.campeonato.fases
+        const fase = campeonato.fases
             .filter((fase) => fase.id === faseID);
 
         return fase[0] ? fase[0].nomeFase : '';
-    }
+    };
 
-    showNextFixtures(){
-        if(this.state.fixtures){
-            var qtdNextFixtures = this.state.fixtures
-                .filter(function(fixture){
+    const showNextFixtures = () => {
+        if (fixtures) {
+            const qtdNextFixtures = fixtures
+                .filter(function (fixture) {
                     return fixture.home_score === null;
                 })
-                .filter(function(fixture){
+                .filter(function (fixture) {
                     return fixture.away_score === null;
                 })
                 .slice(0, 5)
                 .length;
 
-            if(qtdNextFixtures > 0){
-                return(
-                    this.state.fixtures
-                    .filter(function(fixture){
-                        return fixture.home_score === null;
-                    })
-                    .filter(function(fixture){
-                        return fixture.away_score === null;
-                    })
-                    .slice(0, 5)
-                    .map(function(team, index){
-                        return(
-            
-                            <PartidaListItem
-                                key={index}
-                                team={team} 
-                                typeAll={"ReadOnly"}
-                                link={this.props.match.params}
-                            />
-                            
-                        );
-                    }, this)
+            if (qtdNextFixtures > 0) {
+                return (
+                    fixtures
+                        .filter(function (fixture) {
+                            return fixture.home_score === null;
+                        })
+                        .filter(function (fixture) {
+                            return fixture.away_score === null;
+                        })
+                        .slice(0, 5)
+                        .map(function (team, index) {
+                            return (
+
+                                <PartidaListItem
+                                    key={index}
+                                    team={team}
+                                    typeAll={'ReadOnly'}
+                                    link={params}
+                                />
+
+                            );
+                        }, this)
                 );
-            }else{
-                return(
+            } else {
+                return (
                     <div className="errorMessage">
                         <p>Não há próximos jogos</p>
                     </div>
                 );
             }
-            
-        }
-    }
 
-    showLastFixtures(){
-        if(this.state.fixtures){
-            var qtdLastFixtures = this.state.fixtures
-                .filter(function(fixture){
+        }
+    };
+
+    const showLastFixtures = () => {
+        if (fixtures) {
+            const qtdLastFixtures = fixtures
+                .filter(function (fixture) {
                     return fixture.home_score !== null;
                 })
-                .filter(function(fixture){
+                .filter(function (fixture) {
                     return fixture.away_score !== null;
                 })
                 .reverse()
                 .slice(0, 5)
                 .length;
-            
-            if(qtdLastFixtures > 0){
-                return(
-                    this.state.fixtures
-                    .filter(function(fixture){
-                        return fixture.home_score !== null;
-                    })
-                    .filter(function(fixture){
-                        return fixture.away_score !== null;
-                    })
-                    .reverse()
-                    .slice(0, 5)
-                    .map(function(team, index){
-                        return(
 
-                            <PartidaListItem
-                                key={index}
-                                team={team} 
-                                typeAll={"ReadOnly"}
-                                link={this.props.match.params}
-                            />
-                            
-                        );
-                    }, this)
+            if (qtdLastFixtures > 0) {
+                return (
+                    fixtures
+                        .filter(function (fixture) {
+                            return fixture.home_score !== null;
+                        })
+                        .filter(function (fixture) {
+                            return fixture.away_score !== null;
+                        })
+                        .reverse()
+                        .slice(0, 5)
+                        .map(function (team, index) {
+                            return (
+
+                                <PartidaListItem
+                                    key={index}
+                                    team={team}
+                                    typeAll={'ReadOnly'}
+                                    link={params}
+                                />
+
+                            );
+                        }, this)
                 );
-            }else{
-                return(
+            } else {
+                return (
                     <div className="errorMessage">
                         <p>Ainda não há jogos finalizados</p>
                     </div>
                 );
             }
-            
+
         }
-    }
+    };
 
-    showRank(){
-        if(this.state.rank){
-            var lastPoints = -1;
-            var rankPosition = 0;
+    const showRank = () => {
+        if (rank) {
+            let lastPoints = -1;
+            let rankPosition = 0;
 
-            return(
+            return (
 
-                this.state.rank
-                .map(function(rank, index){
-                    if(lastPoints !== rank.points){
-                        rankPosition = rankPosition + 1;
-                        lastPoints = rank.points;
-                        return(
-                            <RankListItem 
-                                key={index}
-                                rank={rank}
-                                position={rankPosition} 
-                                link={this.props.match.params}
-                            />
-                        );
-                    }else{
-                        lastPoints = rank.points;
-                        return(
-                            <RankListItem 
-                                key={index}
-                                rank={rank}
-                                position={rankPosition}
-                                positionIgual={true}
-                                link={this.props.match.params}
-                            />
-                        );
-                    }
-                    
-                }, this)
+                rank
+                    .map(function (rank, index) {
+                        if (lastPoints !== rank.points) {
+                            rankPosition = rankPosition + 1;
+                            lastPoints = rank.points;
+                            return (
+                                <RankListItem
+                                    key={index}
+                                    rank={rank}
+                                    position={rankPosition}
+                                    link={params}
+                                />
+                            );
+                        } else {
+                            lastPoints = rank.points;
+                            return (
+                                <RankListItem
+                                    key={index}
+                                    rank={rank}
+                                    position={rankPosition}
+                                    positionIgual={true}
+                                    link={params}
+                                />
+                            );
+                        }
+
+                    }, this)
             );
-        }else{
-            return <tr></tr>
+        } else {
+            return <tr></tr>;
         }
-    }
+    };
 
-    render() {
-        return (
-            <section className="main-container">
-                <div className="main-dashboard">
+    return (
+        <section className="main-container">
+            <div className="main-dashboard">
 
-                    <div className="dashbord-top">
-                        <h2>{this.state.campeonato?this.state.campeonato.nomeCampeonato:""}</h2>
-                        <h4>{this.state.campeonato?this.checkFaseName():""}</h4>
+                <div className="dashbord-top">
+                    <h2>{campeonato ? campeonato.nomeCampeonato : ''}</h2>
+                    <h4>{campeonato ? checkFaseName() : ''}</h4>
 
-                        <Loading loading={this.state.loading}/>
-                    </div>
+                    <Loading loading={loading} />
+                </div>
 
-                    <div>
-                        <div className="dashboard-main">
+                <div>
+                    <div className="dashboard-main">
 
-                            <div className="main-partidaForm">
-                                <table className="rankTable">
-                                    <caption>
-                                        <h3 className="pageTitle">Rank</h3>
-                                        {this.state.campeonato?this.checkStatus():""}
-                                    </caption>
-                                    <thead>
-                                        <tr>
-                                            <td className="positionColumn">#</td>
-                                            <td className="nameColumn">Nome</td>
-                                            <td className="pointsColumn">Pontos</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.showRank()}
-                                    </tbody>
-                                </table>
-                                
-                            </div>
-                        
+                        <div className="main-partidaForm">
+                            <table className="rankTable">
+                                <caption>
+                                    <h3 className="pageTitle">Rank</h3>
+                                    {campeonato ? checkStatus() : ''}
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <td className="positionColumn">#</td>
+                                        <td className="nameColumn">Nome</td>
+                                        <td className="pointsColumn">Pontos</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {showRank()}
+                                </tbody>
+                            </table>
+
                         </div>
 
-                        <div className="dashboard-aside">
+                    </div>
 
-                            <div className="main-partidaForm">
-                                <ul className="partidaLista">
-                                    <h3 className="pageTitle">Próximos Jogos</h3>
-                                    <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos &gt;</Link>
-                                    
-                                    
-                                    {this.showNextFixtures()}
+                    <div className="dashboard-aside">
 
-                                </ul>
-                                
-                            </div>
+                        <div className="main-partidaForm">
+                            <ul className="partidaLista">
+                                <h3 className="pageTitle">Próximos Jogos</h3>
+                                <Link className="allFixturesLink" to={'../' + params.fase + '/jogos'}>Todos &gt;</Link>
 
-                            <div className="main-partidaForm">
 
-                                <ul className="partidaLista">
-                                    <h3 className="pageTitle">Últimos Jogos</h3>
-                                    <Link className="allFixturesLink" to={"../"+this.props.match.params.fase+"/jogos"}>Todos &gt;</Link>
-                                    
+                                {showNextFixtures()}
 
-                                    {this.showLastFixtures()}
+                            </ul>
 
-                                </ul>
-                            </div>
+                        </div>
+
+                        <div className="main-partidaForm">
+
+                            <ul className="partidaLista">
+                                <h3 className="pageTitle">Últimos Jogos</h3>
+                                <Link className="allFixturesLink" to={'../' + params.fase + '/jogos'}>Todos &gt;</Link>
+
+
+                                {showLastFixtures()}
+
+                            </ul>
                         </div>
                     </div>
                 </div>
-            </section>
-        );
-    }
+            </div>
+        </section>
+    );
 }
 
 export default PageDashboard;

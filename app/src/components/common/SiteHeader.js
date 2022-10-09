@@ -1,117 +1,98 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import '../../css/common/header.css';
-import { Link, NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 import logo from '../../imgs/logo.png';
 import Avatar from '../../imgs/avatar.png';
 import UserNavBar from './UserNavBar';
 
+function SiteHeader() {
+    const [UserNavBarVisible, setUserNavBarVisible] = useState(false);
+    const [NavBarVisible, setNavbarVisible] = useState(false);
 
-class SiteHeader extends Component {
-    constructor() {
-        super();
-        this.state = {
-            UserNavBarVisible: false,
-            NavBarVisible: false
-        };
-    }
+    const userName = useSelector((state) => state.auth.userName);
+    const userImg = useSelector((state) => state.auth.userImg);
 
-    componentWillMount(){
-        this.setState({
-            UserNavBarVisible:  false
-        }); 
-    }
+    const toggleUserNavBar = () => {
+        setUserNavBarVisible(!UserNavBarVisible);
+    };
 
-    toggleUserNavBar(){
-        this.setState({
-            UserNavBarVisible: !this.state.UserNavBarVisible
-        }); 
-    }
+    const toggleNavBar = () => {
+        setNavbarVisible(!NavBarVisible);
+    };
 
-    toggleNavBar(){
-        this.setState({
-            NavBarVisible: !this.state.NavBarVisible
-        }); 
-    }
-
-    checkIfUserIsLoggedIn(){
-        if(this.props.userName!==""){
-            return(
-                <div className={this.state.NavBarVisible?"header-right showMenu":"header-right"}>
+    const checkIfUserIsLoggedIn = () => {
+        if (userName !== '') {
+            return (
+                <div className={NavBarVisible ? 'header-right showMenu' : 'header-right'}>
                     <nav className="menu">
-                        <NavLink className="menuItem" to="/user/campeonatos">
-                        Campeonatos
-                        </NavLink>
+                        <Link className="menuItem" to="/user/campeonatos">
+                            Campeonatos
+                        </Link>
                     </nav>
                     <div className="navUser-menuContainer">
 
-                        <div className="navUser-container" onClick={this.toggleUserNavBar.bind(this)}>
+                        <div className="navUser-container" onClick={toggleUserNavBar}>
                             <div className="user-avatar">
-                                <img className="avatar" alt="" src={this.props.userImg ?
-                                    this.props.userImg
-                                    :Avatar}/>
+                                <img className="avatar" alt="" src={userImg ?
+                                    userImg
+                                    : Avatar} />
                             </div>
                             <p className="user-name">
-                                {this.props.userName}
+                                {userName}
                             </p>
                         </div>
 
-                        <UserNavBar visible={this.state.UserNavBarVisible} />
+                        <UserNavBar visible={UserNavBarVisible} />
 
                     </div>
                 </div>
             );
-        }else{
-            return(
-                <div className={this.state.NavBarVisible?"header-right showMenu":"header-right"}>
+        } else {
+            return (
+                <div className={NavBarVisible ? 'header-right showMenu' : 'header-right'}>
                     <nav className="menu">
-                        <NavLink className="menuItem" to="/regulamento">
+                        <Link className="menuItem" to="/regulamento">
                             Regulamento
-                        </NavLink>
-                        <NavLink className="menuItem" to="/faleconosco">
+                        </Link>
+                        <Link className="menuItem" to="/faleconosco">
                             Fale Conosco
-                        </NavLink>
+                        </Link>
                     </nav>
                     <div className="user-login">
-                        <NavLink className="menuItem" to="/user/cadastrar">
+                        <Link className="menuItem" to="/user/cadastrar">
                             Cadastrar
-                        </NavLink>
-                        <NavLink className="menuItem" to="/user/login">
+                        </Link>
+                        <Link className="menuItem" to="/user/login">
                             Login
-                        </NavLink>
+                        </Link>
                     </div>
                 </div>
             );
         }
-    }
+    };
 
-    render() {
-        return (
-            <header className="header">
-                <Link className="logo-container" to="/">
-                    <img className="logo" alt="" src={logo}/>
-                    <h1 className="logoName">Bolão</h1>
-                </Link>
+    return (
+        <header className="header">
+            <Link className="logo-container" to="/">
+                <img className="logo" alt="" src={logo} />
+                <h1 className="logoName">Bolão</h1>
+            </Link>
 
-                <div className={this.state.NavBarVisible?"menuToggle close":"menuToggle"} onClick={this.toggleNavBar.bind(this)}>
-                    MENU
-                    <div className="hamburguerMenu">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
+            <div className={NavBarVisible ? 'menuToggle close' : 'menuToggle'} onClick={toggleNavBar}>
+                MENU
+                <div className="hamburgerMenu">
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </div>
-                {this.checkIfUserIsLoggedIn()}
+            </div>
+            {checkIfUserIsLoggedIn()}
 
-            </header>
-        );
-    }
+        </header>
+    );
 }
 
-const mapStateToProps = store => ({
-    userName: store.AuthJWTState.userName,
-    userImg: store.AuthJWTState.userImg
-});
-
-export default connect(mapStateToProps)(SiteHeader);
+export default SiteHeader;

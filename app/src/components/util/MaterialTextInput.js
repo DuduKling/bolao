@@ -1,131 +1,112 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../css/util/materialInput.css';
 
-class MaterialTextInput extends Component {
-    constructor() {
-        super();
-        this.state = {
-            value: '',
-            status: '',
-            error: '',
-            nomeValue: ''
+import PropTypes from 'prop-types';
+
+function MaterialTextInput(props) {
+    const [value, setValue] = useState('');
+    const [status, setStatus] = useState('');
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (props.fieldPlaceholder !== undefined) {
+            setValue(props.fieldPlaceholder);
         }
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.checkRegex = this.checkRegex.bind(this);
-    }
-    
-    handleInputChange(event) {
+    }, []);
+
+    const handleInputChange = (event) => {
         const inputName = event.target.name;
-        // const inputType = event.target.type;
         const inputValue = event.target.value;
-        
-        this.setState({
-            value: inputValue
-        });
 
-        if(this.state.value !== ''){
-            this.setState({status: 'NotEmpty'});
-            this.checkRegex(inputValue, inputName);
+        setValue(inputValue);
+
+        if (value !== '') {
+            setStatus('NotEmpty');
+            checkRegex(inputValue, inputName);
         } else {
-            this.setState({status: ''});
+            setStatus('');
         }
 
-    }
+    };
 
-    checkRegex(inputValue, inputName){
-        var regx = '';
-        var resultado = '';
-        
-        switch(inputName) {
-            case "nome":
-                regx  = new RegExp('^[A-Za-zÀ-ú ]+([^\\t\\r\\n])$', 'gi');
-                resultado = regx.test(inputValue);
+    const checkRegex = (inputValue, inputName) => {
+        let regx = '';
+        let resultado = '';
 
-                if(!resultado){
-                    this.setState({
-                        error: "error"
-                    });
-                }else{
-                    this.setState({
-                        error: ""
-                    });
-                }
+        switch (inputName) {
+        case 'nome':
+            regx = new RegExp('^[A-Za-zÀ-ú ]+([^\\t\\r\\n])$', 'gi');
+            resultado = regx.test(inputValue);
+
+            if (!resultado) {
+                setError('error');
+            } else {
+                setError('');
+            }
             break;
 
-            case "email":
-                regx  = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$', 'gi');
-                resultado = regx.test(inputValue);
+        case 'email':
+            regx = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$', 'gi');
+            resultado = regx.test(inputValue);
 
-                if(!resultado){
-                    this.setState({
-                        error: "error"
-                    });
-                }else{
-                    this.setState({
-                        error: ""
-                    });
-                }
+            if (!resultado) {
+                setError('error');
+            } else {
+                setError('');
+            }
             break;
 
-            case "senha":
-            case "senhaCheck":
-                regx  = new RegExp('^[\\w]{8,}$', 'gi');
-                resultado = regx.test(inputValue);
+        case 'senha':
+        case 'senhaCheck':
+            regx = new RegExp('^[\\w]{8,}$', 'gi');
+            resultado = regx.test(inputValue);
 
-                if(!resultado){
-                    this.setState({
-                        error: "error"
-                    });
-                }else{
-                    this.setState({
-                        error: ""
-                    });
-                }
+            if (!resultado) {
+                setError('error');
+            } else {
+                setError('');
+            }
             break;
 
-            default:
-                if(inputValue === ''){
-                    this.setState({
-                        error: "error"
-                    });
-                }else{
-                    this.setState({
-                        error: ""
-                    });
-                }
+        default:
+            if (inputValue === '') {
+                setError('error');
+            } else {
+                setError('');
+            }
         }
-    }
+    };
 
-    componentDidMount(){
-        if(this.props.fieldPlaceholder !== undefined){
-            this.setState({value: this.props.fieldPlaceholder});
-        }
-    }
+    return (
+        <div className="material-input">
 
-    render() {
-        return (
-            <div className="material-input">
-                
-                <input 
-                    type={this.props.fieldType} 
-                    name={this.props.fieldName} 
-                    onChange={this.handleInputChange} 
-                    className={this.state.error}
-                    required={this.props.fieldRequired?false:true}
-                    maxLength="30" 
-                    value={this.state.value}
-                />
+            <input
+                type={props.fieldType}
+                name={props.fieldName}
+                onChange={handleInputChange}
+                className={error}
+                required={props.fieldRequired ? false : true}
+                maxLength="30"
+                value={value}
+            />
 
-                <label 
-                    htmlFor={this.props.fieldName} 
-                    className={this.state.status}>
+            <label
+                htmlFor={props.fieldName}
+                className={status}>
 
-                    {this.props.labelName}
-                    
-                </label>
-            </div>
-        );
-    }
+                {props.labelName}
+
+            </label>
+        </div>
+    );
 }
+
+MaterialTextInput.propTypes = {
+    fieldPlaceholder: PropTypes.string,
+    fieldType: PropTypes.string,
+    fieldName: PropTypes.string,
+    fieldRequired: PropTypes.bool,
+    labelName: PropTypes.string,
+};
 
 export default MaterialTextInput;

@@ -1,145 +1,62 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../../css/util/partidaPlacar.css';
 
-class PartidaPlacar extends Component {
-    constructor() {
-        super();
-        this.state = {};
-        this.handleInputChange = this.handleInputChange.bind(this);
-    }
-    
-    handleInputChange(event) {
-        const name = event.target.name;
-        const inputValue = event.target.value
-        this.setState({
-            [name]: inputValue
-        });
-        //console.log(name);
-        // console.log(name.substring(0, 1));
+import PropTypes from 'prop-types';
 
-        if (name==="nome"){
-            let regx  = new RegExp('^[A-Za-z]+([ |\x20]{1}[A-Za-z]+)?$', 'gi');
-            let resultado = regx.test(inputValue);
+function PartidaPlacar(props) {
 
-            if(!resultado){
-                this.setState({
-                    error_nome: "error"
-                    // ["error_"+name]: "error"
-                });
-            }else{
-                this.setState({
-                    error_nome: ""
-                });
-            }
+    const handleInputChange = (event) => {
+        const inputValue = event.target.value;
+
+        let regx = new RegExp('^[0-9]{1,2}$', 'gi');
+        let resultado = regx.test(inputValue);
+
+        if (!resultado) {
+            event.target.classList.add('error');
         } else {
-            let regx  = new RegExp('^[0-9]{1,2}$', 'gi');
-            let resultado = regx.test(inputValue);
+            event.target.classList.remove('error');
 
-            if(!resultado){
-                event.target.classList.add("error");
-                // this.setState({
-                //     // [name]: [inputValue, "error"]
-                // });
-                // console.log(name+"_error");
-            }else{
-                event.target.classList.remove("error");
-                // this.setState({
-                //     // [name]: [inputValue, ""]
-                // });
-            }
         }
-        
-        // console.log(this.state);
-        // console.log(this.state.Fixtures);
-    }
+    };
 
-    checkTypeHomeTeam(){
-        if(this.props.typeAll === "ReadOnly"){
+    const checkTypeHomeTeam = () => {
+        if (props.typeAll === 'ReadOnly') {
             return (
-                <p className="plac-num1">{this.props.team.home_score}</p>
+                <p className="plac-num1">{props.team.home_score}</p>
             );
 
-        }else{
+        } else {
 
-            if(this.props.typeHome === "ReadOnly"){
+            if (props.typeHome === 'ReadOnly') {
                 return (
-                    <p className="plac-num1">{this.props.team.home_score}</p>
+                    <p className="plac-num1">{props.team.home_score}</p>
                 );
 
-            }else{
-                if(this.props.isAdmin==="admin"){
+            } else {
+                if (props.isAdmin === 'admin') {
                     return (
                         <div>
-                            <input 
-                                type="text" 
-                                placeholder="X" 
-                                name={this.props.team.idfixture+"_home"} 
-                                onChange={this.handleInputChange} 
-                                maxLength="2" 
-                                pattern="^[0-9]{1,2}$" 
-                            />
-                            <label></label>
-                        </div>
-                    );
-                }else{
-                    return (
-                        <div>
-                            <input 
-                                type="text" 
-                                placeholder="X" 
-                                name={this.props.team.idfixture+"_home"} 
-                                onChange={this.handleInputChange} 
-                                required="required" 
-                                maxLength="2" 
-                                pattern="^[0-9]{1,2}$" 
-                            />
-                            <label></label>
-                        </div>
-                    );
-                }
-            }
-        }
-    }
-
-    checkTypeAwayTeam(){
-        if(this.props.typeAll === "ReadOnly"){
-            return (
-                <p className="plac-num2">{this.props.team.away_score}</p>
-            );
-
-        }else{
-
-            if(this.props.typeAway === "ReadOnly"){
-                return (
-                    <p className="plac-num2">{this.props.team.away_score}</p>
-                );
-
-            }else{
-
-                if(this.props.isAdmin==="admin"){
-                    return (
-                        <div>
-                            <input 
-                                type="text" 
-                                placeholder="X" 
-                                name={this.props.team.idfixture+"_away"} 
-                                onChange={this.handleInputChange} 
-                                maxLength="2" 
+                            <input
+                                type="text"
+                                placeholder="X"
+                                name={props.team.idfixture + '_home'}
+                                onChange={handleInputChange}
+                                maxLength="2"
                                 pattern="^[0-9]{1,2}$"
                             />
                             <label></label>
                         </div>
                     );
-                }else{
+                } else {
                     return (
                         <div>
-                            <input 
-                                type="text" 
-                                placeholder="X" 
-                                name={this.props.team.idfixture+"_away"} 
-                                onChange={this.handleInputChange} 
-                                required="required" 
-                                maxLength="2" 
+                            <input
+                                type="text"
+                                placeholder="X"
+                                name={props.team.idfixture + '_home'}
+                                onChange={handleInputChange}
+                                required="required"
+                                maxLength="2"
                                 pattern="^[0-9]{1,2}$"
                             />
                             <label></label>
@@ -148,21 +65,76 @@ class PartidaPlacar extends Component {
                 }
             }
         }
-    }
+    };
 
-    render() {
-        return (
-            <span className="placar">
+    const checkTypeAwayTeam = () => {
+        if (props.typeAll === 'ReadOnly') {
+            return (
+                <p className="plac-num2">{props.team.away_score}</p>
+            );
 
-                {this.checkTypeHomeTeam()}
-                
-                <p className="x">X</p>
+        } else {
 
-                {this.checkTypeAwayTeam()}
+            if (props.typeAway === 'ReadOnly') {
+                return (
+                    <p className="plac-num2">{props.team.away_score}</p>
+                );
 
-            </span>
-        );
-    }
+            } else {
+
+                if (props.isAdmin === 'admin') {
+                    return (
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="X"
+                                name={props.team.idfixture + '_away'}
+                                onChange={handleInputChange}
+                                maxLength="2"
+                                pattern="^[0-9]{1,2}$"
+                            />
+                            <label></label>
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="X"
+                                name={props.team.idfixture + '_away'}
+                                onChange={handleInputChange}
+                                required="required"
+                                maxLength="2"
+                                pattern="^[0-9]{1,2}$"
+                            />
+                            <label></label>
+                        </div>
+                    );
+                }
+            }
+        }
+    };
+
+    return (
+        <span className="placar">
+
+            {checkTypeHomeTeam()}
+
+            <p className="x">X</p>
+
+            {checkTypeAwayTeam()}
+
+        </span>
+    );
 }
+
+PartidaPlacar.propTypes = {
+    typeAll: PropTypes.string,
+    team: PropTypes.object,
+    typeHome: PropTypes.string,
+    isAdmin: PropTypes.string,
+    typeAway: PropTypes.string,
+};
 
 export default PartidaPlacar;

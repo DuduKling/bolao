@@ -1,56 +1,56 @@
 import './css/App.css';
 
-import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, Outlet } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+import { updateJWT } from './redux/slicer/authSlicer';
+
+import http from './util/http';
+import setCookie from './util/setCookie';
+
+import PrivateRoute from './components/util/Auth';
+// import PrivateRouteAdmin from './components/util/AuthAdmin';
+import PrivateRouteAlready from './components/util/AuthAlready';
 
 import BigLoading from './components/util/BigLoading';
 
+import SiteHeader from './components/common/SiteHeader';
+import SiteFooter from './components/common/SiteFooter';
+
 import Page404 from './components/pages/Page404';
-import PageAdmin from './components/pages/PageAdmin';
-import PageAdminApostas from './components/pages/PageAdminApostas';
-import PageAdminScore from './components/pages/PageAdminScore';
-import PageApostado from './components/pages/PageApostado';
-import PageApostadoJogo from './components/pages/PageApostadoJogo';
-import PageApostar from './components/pages/PageApostar';
+// import PageAdmin from './components/pages/PageAdmin';
+// import PageAdminApostas from './components/pages/PageAdminApostas';
+// import PageAdminScore from './components/pages/PageAdminScore';
+// import PageApostado from './components/pages/PageApostado';
+// import PageApostadoJogo from './components/pages/PageApostadoJogo';
+// import PageApostar from './components/pages/PageApostar';
 import PageCampeonatos from './components/pages/PageCampeonatos';
 import PageContato from './components/pages/PageContato';
-import PageDashboard from './components/pages/PageDashboard';
+// import PageDashboard from './components/pages/PageDashboard';
 import PageEsqueci from './components/pages/PageEsqueci';
-import PageFixtures from './components/pages/PageFixtures';
+// import PageFixtures from './components/pages/PageFixtures';
 import PageHome from './components/pages/PageHome';
 import PageLogin from './components/pages/PageLogin';
 import PageRegulamento from './components/pages/Regulamento';
 import PageUser from './components/pages/PageUser';
+import PageRedefinir from './components/pages/PageRedefinir';
 
-import PrivateRoute from './components/util/Auth';
-import PrivateRouteAdmin from './components/util/AuthAdmin';
-import PrivateRouteInverso from './components/util/AuthInverso';
+function App() {
+    const [loading, setLoading] = useState(true);
+    const dispatch = useDispatch();
 
-import SiteFooter from './components/common/SiteFooter';
-import SiteHeader from './components/common/SiteHeader';
+    useEffect(() => {
+        didMount();
+    }, []);
 
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import http from './util/http';
-import setCookie from './components/util/setCookie';
-import { updateJWT } from './actions';
-
-class App extends Component {
-
-    constructor() {
-        super();
-        this.state = {
-            isAuth: 'noResponseFromAjax',
-        };
-    }
-
-    getCookie(cname) {
+    const getCookie = (cname) => {
         const name = `${cname}=`;
         const decodedCookie = decodeURIComponent(document.cookie);
         const ca = decodedCookie.split(';');
 
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
+        for (const element of ca) {
+            let c = element;
             while (c.charAt(0) === ' ') {
                 c = c.substring(1);
             }
@@ -60,11 +60,10 @@ class App extends Component {
             }
         }
         return '';
-    }
+    };
 
-    // eslint-disable-next-line react/no-deprecated
-    async componentWillMount() {
-        const userInfo = this.getCookie('userLogin');
+    const didMount = async () => {
+        const userInfo = getCookie('userLogin');
 
         if (userInfo) {
             const dataString = JSON.stringify({
@@ -72,103 +71,81 @@ class App extends Component {
             });
 
             await http.post({
-                // eslint-disable-next-line no-process-env
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/validateCookie.php`,
                 data: dataString,
                 thenCallback: (response) => {
-                    updateJWT({
+                    dispatch(updateJWT({
                         userName: response.name,
                         userEmail: response.email,
                         userID: response.id,
                         userImg: response.userImg,
                         userRole: response.userRole,
                         userJWT: response.jwt,
-                    });
-
-                    this.setState({ isAuth: true });
+                    }));
                 },
                 catchCallback: ({ message }) => {
                     if (message === 'JWT não decodificado') {
                         setCookie('userLogin', '', 0);
                     }
-                    this.setState({ isAuth: false });
                 },
             });
-        } else {
-            this.setState({
-                isAuth: false,
-            });
         }
-    }
 
-    returnBigLoading() {
-        return (
-            <BigLoading />
-        );
-    }
+        setLoading(false);
+    };
 
-    returnApp() {
+    const returnApp = () => {
         return (
             <div className='wrapper'>
                 <SiteHeader />
 
-                <Switch>
-                    {/* ALL */}
-                    <Route exact path='/' component={PageHome} />
-                    <Route exact path='/regulamento' component={PageRegulamento} />
-                    <Route exact path='/faleconosco' component={PageContato} />
+                <Routes>
+                    <Route path='/' element={<Outlet />} >
+                        {/* ALL */}
+                        <Route path='' element={<PageHome />} />
+                        <Route path='faleconosco' element={<PageContato />} />
+                        <Route path='regulamento' element={<PageRegulamento />} />
 
-                    {/* LOGGED ONLY - USER */}
-                    <PrivateRouteInverso exact path='/user/:typeOfLogin(cadastrar|login)' component={PageLogin} />
-                    <PrivateRouteInverso exact path='/user/esqueci/:id?/:jwtCode?' component={PageEsqueci} />
+                        <Route path='user' element={<Outlet />} >
+                            {/* NOT LOGGED - USER */}
+                            <Route element={<PrivateRouteAlready />} >
+                                <Route path='' element={<Page404 />} />
+
+                                <Route path=':typeOfLogin' element={<PageLogin />} />
+
+                                <Route path='esqueci' element={<PageEsqueci />} />
+
+                                <Route path='redefinir/:id/:jwtCode' element={<PageRedefinir />} />
+                                <Route path='redefinir/*' element={<Page404 />} />
+
+                                <Route path='*' element={<Page404 />} />
+                            </Route>
+
+                            {/* LOGGED ONLY - USER */}
+                            <Route element={<PrivateRoute />} >
+                                <Route path='campeonatos' element={<PageCampeonatos />} />
+                                <Route path='config' element={<PageUser />} />
+                            </Route>
+                        </Route>
+                    </Route>
 
 
-                    {/* LOGGED ONLY - USER */}
-                    <PrivateRoute exact path='/user/campeonatos' component={PageCampeonatos} />
-                    <PrivateRoute exact path='/user/config' component={PageUser} />
 
-                    {/* LOGGED ONLY - JOGOS/CAMPEONATOS */}
-                    <PrivateRoute exact path='/:campeonato/:fase/dashboard' component={PageDashboard} />
-                    <PrivateRoute exact path='/:campeonato/:fase/jogos' component={PageFixtures} />
 
-                    {/* TODO: Colocar o /:campeonato nesses 3 caras para ficar tudo formatadinho igual? */}
-                    <PrivateRoute exact path='/:fase/apostado/:nome' component={PageApostado} />
-                    <PrivateRoute exact path='/:fase/jogo/:fixture' component={PageApostadoJogo} />
 
-                    <PrivateRoute exact path='/:parte/apostar' component={PageApostar} />
 
-                    {/* ADMIN ONLY */}
-                    <PrivateRouteAdmin exact path='/:parte/adminscore' component={PageAdminScore} />
-                    <PrivateRouteAdmin exact path='/:fase/adminapostas' component={PageAdminApostas} />
-                    <PrivateRouteAdmin exact path='/admin' component={PageAdmin} />
-
-                    {/* WRONG ROUTES */}
-                    <Route component={Page404} />
-                </Switch>
+                </Routes>
 
                 <SiteFooter />
             </div>
         );
-    }
+    };
 
-    render() {
-        return (
-            <div>
-                {
-                    this.state.isAuth === 'noResponseFromAjax' ?
-                        this.returnBigLoading() :
-                        this.returnApp()
-                }
-            </div>
-        );
-    }
-
+    return (
+        <div>
+            {loading ? <BigLoading /> : returnApp()}
+        </div>
+    );
 }
 
-const mapStateToProps = (store) => ({
-    userName: store.AuthJWTState.userName,
-});
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({ updateJWT }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

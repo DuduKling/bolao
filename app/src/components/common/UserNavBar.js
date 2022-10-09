@@ -1,63 +1,70 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../css/common/userNavBar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import SetCookie from '../util/setCookie';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateJWT } from '../../redux/slicer/authSlicer';
 
-import { bindActionCreators } from 'redux';
-import { updateJWT } from '../../actions';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-class UserNavBar extends Component {
-    logout(){
-        const { updateJWT } = this.props;
+import setCookie from '../../util/setCookie';
 
-        var userInfo = {
-            userName: '', 
-            userEmail:'',
+function UserNavBar(props) {
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    const userRole = useSelector((state) => state.auth.userRole);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() =>{
+        if (userRole === 'admin') {
+            setIsAdmin(true);
+        }
+    }, []);
+
+    const logout = () => {
+        const userInfo = {
+            userName: '',
+            userEmail: '',
             userID: '',
             userImg: '',
             userRole: '',
-            userJWT: ''
+            userJWT: '',
         };
-        updateJWT(userInfo);
-        
-        // SetCookie("userLogin", JSON.stringify(userInfo), 0);
-        SetCookie("userLogin", "", 0);
-    }
-    
-    showAdminLink(){
-        if(this.props.userRole==='admin'){
-            return(
+        dispatch(updateJWT(userInfo));
+
+        setCookie('userLogin', '', 0);
+        navigate('/');
+    };
+
+    const showAdminLink = () => {
+        if (isAdmin) {
+            return (
                 <Link to="/admin" className="navUser-container">
                     Admin
                 </Link>
             );
         }
-    }
+    };
 
-    render() {
-        return (
-            <div className={this.props.visible?"userNavBar-container -show":"userNavBar-container -hide"}>
-                <Link to="/user/config" className="navUser-container">
-                    Configurações
-                </Link>
-                
-                {this.showAdminLink()}
+    return (
+        <div className={props.visible ? 'userNavBar-container -show' : 'userNavBar-container -hide'}>
+            <Link to="/user/config" className="navUser-container">
+                Configurações
+            </Link>
 
-                <a className="navUser-container" onClick={this.logout.bind(this)}>
-                    Sair
-                </a>
-            </div>
-        );
-    }
+            {showAdminLink()}
+
+            <a className="navUser-container" onClick={logout}>
+                Sair
+            </a>
+        </div>
+    );
 }
 
-const mapStateToProps = store => ({
-    userRole: store.AuthJWTState.userRole
-});
+UserNavBar.propTypes = {
+    visible: PropTypes.bool,
+};
 
-const mapDispatchToProps = dispatch => 
-bindActionCreators({ updateJWT }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserNavBar);
+export default UserNavBar;

@@ -1,129 +1,119 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import $ from 'jquery';
 
 import '../../css/faleconosco.css';
 
 import http from '../../util/http';
-
 import MaterialTextInput from '../util/MaterialTextInput';
 import Loading from '../util/Loading';
 
+import PropTypes from 'prop-types';
 
-class PageContato extends Component {
-    constructor() {
-        super();
-        this.state = {
-            loading: '',
-            ajaxSuccessResp: '',
-            ajaxErrorResp: ''
-        };
-    }
+function PageContato() {
+    const [loading, setLoading] = useState(false);
+    const [ajaxSuccessResp, setAjaxSuccessResp] = useState('');
+    const [ajaxErrorResp, setAjaxErrorResp] = useState('');
 
-    async sendFormContato(evento) {
+    const sendFormContato = async (evento) => {
         evento.preventDefault();
 
-        this.setState({
-            ajaxErrorResp: "",
-            ajaxSuccessResp: ""
-        });
+        setAjaxErrorResp('');
+        setAjaxSuccessResp('');
 
-        const nomeValue = $("input[name='nome']").val();
-        const emailValue = $("input[name='email']").val();
-        const messageValue = $("textarea[id='textareaMessage']").val();
+        const nomeValue = $('input[name=\'nome\']').val();
+        const emailValue = $('input[name=\'email\']').val();
+        const messageValue = $('textarea[id=\'textareaMessage\']').val();
 
-        if(nomeValue==="" || emailValue==="" || messageValue===""){
-            this.setState({ajaxErrorResp: "Favor preencha todos os campos!"});
-        }else{
-            this.setState({ loading: true });
+        if (nomeValue === '' || emailValue === '' || messageValue === '') {
+            setAjaxErrorResp('Favor preencha todos os campos!');
+        } else {
+            setLoading(true);
 
             const dataString = JSON.stringify({
                 name: nomeValue,
                 email: emailValue,
-                message: messageValue
+                message: messageValue,
             });
 
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/email/enviaEmailContato.php`,
                 data: dataString,
                 thenCallback: (response) => {
-                    this.setState({ ajaxSuccessResp: response.message.toString() });
-                    this.setState({ loading: false });
+                    setAjaxSuccessResp(response.message.toString());
+
+                    setLoading(false);
                 },
                 catchCallback: ({ message }) => {
-                    this.setState({
-                        ajaxErrorResp: message,
-                        ajaxSuccessResp: '0'
-                    });
+                    setAjaxErrorResp(message);
+                    setAjaxSuccessResp('0');
 
-                    this.setState({ loading: false });
-                }
+                    setLoading(false);
+                },
             });
         }
-    }
+    };
 
-    showFormMessages() {
-        if(this.state.ajaxErrorResp === '' && this.state.ajaxSuccessResp === ''){
+    const showFormMessages = () => {
+        if (ajaxErrorResp === '' && ajaxSuccessResp === '') {
             return (
                 null
             );
-        }else if (this.state.ajaxErrorResp !== ''){
-            return(
+        } else if (ajaxErrorResp !== '') {
+            return (
                 <div className="FormMessage -error">
-                    {this.state.ajaxErrorResp}
+                    {ajaxErrorResp}
                 </div>
             );
-        }else if (this.state.ajaxSuccessResp !== ''){
-            return(
+        } else if (ajaxSuccessResp !== '') {
+            return (
                 <div className="FormMessage -success">
-                    {this.state.ajaxSuccessResp}
+                    {ajaxSuccessResp}
                 </div>
             );
         }
-    }
+    };
 
-    showFormContato(){
-        if(this.state.ajaxSuccessResp!==''){
-            return(
+    const showFormContato = () => {
+        if (ajaxSuccessResp !== '') {
+            return (
                 <div className="faleconosco">
                     <h3>Fale Conosco</h3>
-                    <br/><br/>
+                    <br /><br />
                     <div className="contatoForm">
-                        {this.showFormMessages()}
+                        {showFormMessages()}
                     </div>
                 </div>
             );
-        }else{
-            return(
+        } else {
+            return (
                 <div className="faleconosco">
                     <h3>Fale Conosco</h3>
 
                     <p>Mande suas dúvidas, problemas ou sugestões! Nós gostamos de conversar ;)</p>
 
-                    <form 
+                    <form
                         className="userInfo"
-                        onSubmit={async function(event){
-                            await this.sendFormContato(event,  this.props.userJWT)}.bind(this)
-                        } 
+                        onSubmit={(event) => sendFormContato(event)}
                         method="post"
                     >
 
                         <div className="contatoForm">
-                            <MaterialTextInput 
+                            <MaterialTextInput
                                 labelName="Nome e Sobrenome"
                                 fieldName="nome"
                                 fieldType="text"
                             />
 
-                            <MaterialTextInput 
+                            <MaterialTextInput
                                 labelName="E-mail"
                                 fieldName="email"
                                 fieldType="email"
                             />
 
                             <div className="materialTextarea">
-                                <textarea 
-                                    type="text" 
-                                    id="textareaMessage" 
+                                <textarea
+                                    type="text"
+                                    id="textareaMessage"
                                     rows="4"
                                     required>
                                 </textarea>
@@ -132,28 +122,30 @@ class PageContato extends Component {
                                 </label>
                             </div>
 
-                            <input 
-                                type="submit" 
-                                className="SendButton" 
+                            <input
+                                type="submit"
+                                className="SendButton"
                                 value="Enviar"
                             />
 
-                            <Loading loading={this.state.loading}/>
-                            
+                            <Loading loading={loading} />
+
                         </div>
                     </form>
                 </div>
             );
         }
-    }
+    };
 
-    render() {
-        return (
-            <div className="MainContent-container">
-                {this.showFormContato()}
-            </div>
-        );
-    }
+    return (
+        <div className="MainContent-container">
+            {showFormContato()}
+        </div>
+    );
 }
+
+PageContato.propTypes = {
+    userJWT: PropTypes.string,
+};
 
 export default PageContato;

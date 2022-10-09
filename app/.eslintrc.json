@@ -1,0 +1,47 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "overrides": [
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-trailing-spaces": "warn", // Desabilita o uso de espaços desnecessários no final de linhas
+        "comma-dangle": ["warn", "always-multiline"], // Força o uso de vírgulas no final de um objeto ou array
+        "comma-spacing": "warn", // Desabilita o uso de espaço antes de vírgula e força o uso após uma vírgula
+        "comma-style": "warn" // Força o uso de vírgula no final da linha, ao invés de no início da próxima linha
+    }
+}

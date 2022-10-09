@@ -1,19 +1,44 @@
 {
   "name": "bolao-app",
-  "license": "MIT",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.5",
     "axios": "^0.27.2",
-    "jquery": "^3.2.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.1.1",
-    "react-router-dom": "^4.2.2",
-    "redux": "^4.0.1"
+    "jquery": "^3.6.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.4",
+    "react-router-dom": "^6.4.1",
+    "react-scripts": "5.0.1",
+    "redux": "^4.2.0"
   },
   "devDependencies": {
     "eslint": "^8.24.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-react": "^7.31.8",
-    "react-scripts": "1.0.17"
+    "eslint-plugin-react": "^7.31.8"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "lint": "eslint src/**/*.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
