@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import '../../css/pages/pageInside.css';
@@ -16,6 +16,8 @@ function PageDashboard() {
     const [loading, setLoading] = useState(false);
 
     const params = useParams();
+
+    const dataFetchedRef = useRef(false);
 
     useEffect(() => {
         const campeonatoID = params.campeonato;
@@ -35,6 +37,9 @@ function PageDashboard() {
         if (cachedFixtures) {
             setFixtures(JSON.parse(cachedFixtures));
         }
+
+        if (dataFetchedRef.current) return;
+        dataFetchedRef.current = true;
 
         getInfo();
     }, []);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../../css/pages/campeonato.css';
 
 import http from '../../util/http';
@@ -17,11 +17,16 @@ function PageCampeonatos() {
     const [campeonatos, setCampeonatos] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    const dataFetchedRef = useRef(false);
+
     useEffect(() => {
         const cachedCampeonatos = localStorage.getItem('campeonatos');
         if (cachedCampeonatos) {
             setCampeonatos(JSON.parse(cachedCampeonatos));
         }
+
+        if (dataFetchedRef.current) return;
+        dataFetchedRef.current = true;
 
         getCampeonatos();
     }, []);

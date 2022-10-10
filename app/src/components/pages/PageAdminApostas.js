@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Loading from '../util/Loading';
@@ -11,11 +11,16 @@ function PageAdminApostas() {
 
     const params = useParams();
 
+    const dataFetchedRef = useRef(false);
+
     useEffect(() => {
-        componentDidMount();
+        if (dataFetchedRef.current) return;
+        dataFetchedRef.current = true;
+
+        getApostas();
     }, []);
 
-    const componentDidMount = async () => {
+    const getApostas = async () => {
         setLoading(true);
 
         const faseID = params.params.fase;

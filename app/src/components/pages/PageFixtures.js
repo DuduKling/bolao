@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import '../../css/pages/pageInside.css';
@@ -16,6 +16,8 @@ function PageFixtures() {
 
     const params = useParams();
 
+    const dataFetchedRef = useRef(false);
+
     useEffect(() => {
         const campeonatoID = params.campeonato;
         const faseID = params.fase;
@@ -29,6 +31,9 @@ function PageFixtures() {
         if (cachedFixtures) {
             setFixtures(JSON.parse(cachedFixtures));
         }
+
+        if (dataFetchedRef.current) return;
+        dataFetchedRef.current = true;
 
         getFixturesAndCampeonato();
     }, []);

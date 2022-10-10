@@ -146,7 +146,7 @@ function PageLogin() {
                     dispatch(updateJWT({
                         userName: response.name,
                         userEmail: response.email,
-                        userID: response.id,
+                        userId: response.id,
                         userImg: response.imagePath,
                         userRole: response.userRole,
                         userJWT: response.jwt,

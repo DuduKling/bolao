@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import '../../css/pages/pageInside.css';
@@ -14,6 +14,8 @@ function PageApostadoJogo() {
 
     const params = useParams();
 
+    const dataFetchedRef = useRef(false);
+
     useEffect(() => {
         const fixtureID = params.fixture;
         const faseID = params.fase;
@@ -22,6 +24,9 @@ function PageApostadoJogo() {
         if (cachedFixtures) {
             setFixtures(JSON.parse(cachedFixtures));
         }
+
+        if (dataFetchedRef.current) return;
+        dataFetchedRef.current = true;
 
         getBets();
     }, []);

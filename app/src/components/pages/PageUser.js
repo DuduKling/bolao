@@ -65,7 +65,7 @@ function PageUser() {
                     dispatch(updateJWT({
                         userName: response.name,
                         userEmail: response.email,
-                        userID: response.id,
+                        userId: response.id,
                         userImg: response.userImg,
                         userJWT: response.jwt,
                     }));

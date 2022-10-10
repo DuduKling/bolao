@@ -27,7 +27,7 @@ function UserNavBar(props) {
         const userInfo = {
             userName: '',
             userEmail: '',
-            userID: '',
+            userId: '',
             userImg: '',
             userRole: '',
             userJWT: '',

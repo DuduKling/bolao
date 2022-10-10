@@ -46,7 +46,7 @@ function PageEsqueci() {
         setAjaxSuccessResp('');
 
         const userJWT = params.jwtCode;
-        const userID = params.id;
+        const userId = params.id;
 
         const senhaValue = $('input[name=\'senha\']').val();
         const senhaConfirmarValue = $('input[name=\'senhaCheck\']').val();
@@ -61,7 +61,7 @@ function PageEsqueci() {
             const dataString = JSON.stringify({
                 type: 'resetPass',
                 password: senhaValue,
-                id: userID,
+                id: userId,
                 jwt: userJWT,
             });
 

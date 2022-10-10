@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import '../../css/pages/pageInside.css';
@@ -10,7 +10,7 @@ import PartidaListItem from '../util/PartidaListItem';
 
 import Avatar from '../../imgs/avatar.png';
 
-function PageApostar() {
+function PageApostado() {
     const [fixtures, setFixtures] = useState([]);
     const [userImage, setUserImage] = useState('');
     const [campeonato, setCampeonato] = useState('');
@@ -20,6 +20,8 @@ function PageApostar() {
 
     const params = useParams();
 
+    const dataFetchedRef = useRef(false);
+
     useEffect(() => {
         const userName = params.nome;
         const faseID = params.fase;
@@ -28,6 +30,9 @@ function PageApostar() {
         if (cachedFixtures) {
             setFixtures(JSON.parse(cachedFixtures));
         }
+
+        if (dataFetchedRef.current) return;
+        dataFetchedRef.current = true;
 
         getBets();
     }, []);
@@ -113,4 +118,4 @@ function PageApostar() {
     );
 }
 
-export default PageApostar;
+export default PageApostado;

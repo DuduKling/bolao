@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import $ from 'jquery';
@@ -26,7 +26,12 @@ function PageApostar() {
 
     const params = useParams();
 
+    const dataFetchedRef = useRef(false);
+
     useEffect(() => {
+        if (dataFetchedRef.current) return;
+        dataFetchedRef.current = true;
+
         getFixtures();
     }, []);
 

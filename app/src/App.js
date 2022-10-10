@@ -1,6 +1,6 @@
 import './css/App.css';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
@@ -24,7 +24,7 @@ import PageAdmin from './components/pages/PageAdmin';
 // import PageAdminScore from './components/pages/PageAdminScore';
 import PageApostado from './components/pages/PageApostado';
 import PageApostadoJogo from './components/pages/PageApostadoJogo';
-// import PageApostar from './components/pages/PageApostar';
+import PageApostar from './components/pages/PageApostar';
 import PageCampeonatos from './components/pages/PageCampeonatos';
 import PageContato from './components/pages/PageContato';
 import PageDashboard from './components/pages/PageDashboard';
@@ -40,7 +40,12 @@ function App() {
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
 
+    const dataFetchedRef = useRef(false);
+
     useEffect(() => {
+        if (dataFetchedRef.current) return;
+        dataFetchedRef.current = true;
+
         didMount();
     }, []);
 
@@ -59,7 +64,7 @@ function App() {
                     dispatch(updateJWT({
                         userName: response.name,
                         userEmail: response.email,
-                        userID: response.id,
+                        userId: response.id,
                         userImg: response.userImg,
                         userRole: response.userRole,
                         userJWT: response.jwt,
