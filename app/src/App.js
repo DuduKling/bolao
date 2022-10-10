@@ -22,8 +22,8 @@ import Page404 from './components/pages/Page404';
 import PageAdmin from './components/pages/PageAdmin';
 // import PageAdminApostas from './components/pages/PageAdminApostas';
 // import PageAdminScore from './components/pages/PageAdminScore';
-// import PageApostado from './components/pages/PageApostado';
-// import PageApostadoJogo from './components/pages/PageApostadoJogo';
+import PageApostado from './components/pages/PageApostado';
+import PageApostadoJogo from './components/pages/PageApostadoJogo';
 // import PageApostar from './components/pages/PageApostar';
 import PageCampeonatos from './components/pages/PageCampeonatos';
 import PageContato from './components/pages/PageContato';
@@ -118,11 +118,11 @@ function App() {
 
                         {/* CAMPEONATO - RESTRICTED */}
                         <Route path='campeonato' element={<PrivateRoute />} >
-                            <Route path=':campeonato/:fase/dashboard' element={<PageDashboard />} />
+                            <Route path=':campeonato/:fase' element={<PageDashboard />} />
                             <Route path=':campeonato/:fase/jogos' element={<PageFixtures />} />
+                            <Route path=':campeonato/:fase/jogo/:fixture' element={<PageApostadoJogo />} />
+                            <Route path=':campeonato/:fase/apostado/:nome' element={<PageApostado />} />
                         </Route>
-
-
 
 
 

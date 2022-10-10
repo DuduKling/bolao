@@ -158,7 +158,7 @@
 
 
 
-.partidaLista > li .users-porcent {
+.partidaLista > li .users-percent {
 	width: 90px;
     height: 30px;
 
@@ -169,12 +169,12 @@
 	overflow: hidden;
 }
 
-.partidaLista > li .users-porcent > .porcent-triangle {
+.partidaLista > li .users-percent > .percent-triangle {
 	border-top: 30px solid #4caf50;
 	border-left: 30px solid transparent;
 }
 
-.partidaLista > li .users-porcent > p {
+.partidaLista > li .users-percent > p {
 	position: absolute;
 	top: 5px;
 	right: 5px;

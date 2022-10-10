@@ -106,7 +106,7 @@ function PageFixtures() {
                                         key={index}
                                         team={team}
                                         typeAll={'ReadOnly'}
-                                        link={params}
+                                        params={params}
                                     />
 
                                 );

@@ -227,7 +227,7 @@ function PageDashboard() {
                                     key={index}
                                     team={team}
                                     typeAll={'ReadOnly'}
-                                    link={params}
+                                    params={params}
                                 />
 
                             );
@@ -275,7 +275,7 @@ function PageDashboard() {
                                     key={index}
                                     team={team}
                                     typeAll={'ReadOnly'}
-                                    link={params}
+                                    params={params}
                                 />
 
                             );
@@ -309,7 +309,7 @@ function PageDashboard() {
                                     key={index}
                                     rank={rank}
                                     position={rankPosition}
-                                    link={params}
+                                    params={params}
                                 />
                             );
                         } else {
@@ -320,7 +320,7 @@ function PageDashboard() {
                                     rank={rank}
                                     position={rankPosition}
                                     positionIgual={true}
-                                    link={params}
+                                    params={params}
                                 />
                             );
                         }

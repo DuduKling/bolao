@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 function RankListItem(props) {
+    const params = props.params;
+
     return (
         <tr className={
             props.position === 1 ? '-gold'
@@ -14,17 +16,17 @@ function RankListItem(props) {
                 : ''
         } key={props.index}>
             <td className="positionColumn">
-                <Link to={'/' + props.link.fase + '/apostado/' + props.rank.name}>
+                <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/apostado/' + props.rank.name}>
                     {props.positionIgual ? '' : props.position}
                 </Link>
             </td>
             <td className="nameColumn">
-                <Link to={'/' + props.link.fase + '/apostado/' + props.rank.name}>
+                <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/apostado/' + props.rank.name}>
                     {props.rank.name}
                 </Link>
             </td>
             <td className="pointsColumn">
-                <Link to={'/' + props.link.fase + '/apostado/' + props.rank.name}>
+                <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/apostado/' + props.rank.name}>
                     {props.rank.points}
                 </Link>
             </td>
@@ -34,7 +36,7 @@ function RankListItem(props) {
 
 RankListItem.propTypes = {
     position: PropTypes.number,
-    link: PropTypes.object,
+    params: PropTypes.object,
     index: PropTypes.string,
     rank: PropTypes.object,
     positionIgual: PropTypes.string,

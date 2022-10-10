@@ -8,6 +8,7 @@ import PartidaPlacar from './PartidaPlacar';
 import PropTypes from 'prop-types';
 
 function PartidaListItem(props) {
+    const params = props.params;
 
     const checkTypeOfPlacar = () => {
         if (props.typeAll === 'ReadOnly') {
@@ -56,7 +57,7 @@ function PartidaListItem(props) {
     };
 
     const checkIfShowUsernames = () => {
-        if (props.users) {
+        if (props.showUsers) {
             return (
                 <div className="users-container">
                     <label htmlFor={'toggleUsernames' + props.team.frontID}>
@@ -69,7 +70,7 @@ function PartidaListItem(props) {
                                 props.team.usernames.split(',').map(function (name, index) {
                                     return (
                                         <div key={index}>
-                                            <Link to={'../apostado/' + name}>{name}</Link>
+                                            <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/apostado/' + name}>{name}</Link>
                                         </div>
                                     );
                                 })
@@ -81,11 +82,11 @@ function PartidaListItem(props) {
         }
     };
 
-    const checkIfShowPorcent = () => {
-        if (props.porcent) {
+    const checkIfShowPercent = () => {
+        if (props.showPercent) {
             return (
-                <div className="users-porcent">
-                    <div className="porcent-triangle"></div>
+                <div className="users-percent">
+                    <div className="percent-triangle"></div>
                     <p>{props.team.porcentagem}%</p>
                 </div>
             );
@@ -110,11 +111,13 @@ function PartidaListItem(props) {
     };
 
     const checkIfShowAsLink = () => {
-        if (props.link !== undefined) {
-            return (
-                <Link to={'../../' + props.link.fase + '/jogo/' + props.team.idfixture}>
+        if (params !== undefined) {
+            return (<>
+                <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/jogo/' + props.team.idfixture}>
                     {insideStuff()}
                 </Link>
+                {checkIfShowUsernames()}
+            </>
             );
         } else {
             return (
@@ -148,11 +151,10 @@ function PartidaListItem(props) {
 
                 </div>
 
-                {checkIfShowUsernames()}
 
                 {checkIfShowPoints()}
 
-                {checkIfShowPorcent()}
+                {checkIfShowPercent()}
 
             </div>
         );
@@ -169,11 +171,11 @@ function PartidaListItem(props) {
 
 PartidaListItem.propTypes = {
     typeAll: PropTypes.string,
-    team: PropTypes.string,
+    team: PropTypes.object,
     isAdmin: PropTypes.string,
-    users: PropTypes.string,
-    porcent: PropTypes.string,
-    link: PropTypes.object,
+    showUsers: PropTypes.bool,
+    showPercent: PropTypes.bool,
+    params: PropTypes.object,
     index: PropTypes.string,
 };
 

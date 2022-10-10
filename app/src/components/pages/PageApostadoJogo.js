@@ -70,8 +70,9 @@ function PageApostadoJogo() {
                                         key={index}
                                         team={team}
                                         typeAll={'ReadOnly'}
-                                        users={true}
-                                        porcent={true}
+                                        showUsers={true}
+                                        showPercent={true}
+                                        params={params}
                                     />
 
                                 );
