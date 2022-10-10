@@ -172,9 +172,7 @@ function PageDashboard() {
         } else if (qtdAposta > 0) {
             return (
                 <div className="dashboard-statusFase">
-                    <Link
-                        to={'/' + parteAberta[0].id + '/apostar'}
-                    >
+                    <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/' + parteAberta[0].id + '/apostar'} >
                         Aposte: {parteAberta[0].nomeParte}
                     </Link>
                 </div>

@@ -161,7 +161,7 @@ function CampeonatoCard(props) {
             return (
                 <Link
                     className="campeonatoFases apostar"
-                    to={'/' + parteAberta[0].id + '/apostar'}
+                    to={'/campeonato/' + campeonato.idCampeonato + '/' + fase.id+ '/' + parteAberta[0].id + '/apostar'}
                 >
                     {fase.nomeFase + ' / ' + parteAberta[0].nomeParte}
                 </Link>
@@ -178,7 +178,7 @@ function CampeonatoCard(props) {
 
                     <Link
                         className="campeonatoFases apostar"
-                        to={'/' + parteAberta[0].id + '/apostar'}
+                        to={'/campeonato/' + campeonato.idCampeonato + '/' + fase.id+ '/' + parteAberta[0].id + '/apostar'}
                     >
                         {fase.nomeFase + ' / ' + parteAberta[0].nomeParte}
                     </Link>

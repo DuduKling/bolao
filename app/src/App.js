@@ -127,6 +127,7 @@ function App() {
                             <Route path=':campeonato/:fase/jogos' element={<PageFixtures />} />
                             <Route path=':campeonato/:fase/jogo/:fixture' element={<PageApostadoJogo />} />
                             <Route path=':campeonato/:fase/apostado/:nome' element={<PageApostado />} />
+                            <Route path=':campeonato/:fase/:parte/apostar' element={<PageApostar/>} />
                         </Route>
 
 
