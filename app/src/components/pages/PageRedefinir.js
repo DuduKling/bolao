@@ -11,7 +11,7 @@ import Canvas from '../home/Canvas';
 
 import Loading from '../util/Loading';
 
-function PageEsqueci() {
+function PageRedefinir() {
     const [ajaxErrorResp, setAjaxErrorResp] = useState('');
     const [ajaxSuccessResp, setAjaxSuccessResp] = useState('');
 
@@ -130,4 +130,4 @@ function PageEsqueci() {
     );
 }
 
-export default PageEsqueci;
+export default PageRedefinir;

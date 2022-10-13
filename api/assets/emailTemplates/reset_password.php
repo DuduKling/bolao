@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <td align="center">
-                <a href='%url%/user/esqueci/%id%/%jwt%' style='color: #424242; text-decoration: none; border-radius: 10px; padding: 10px; background-color: whitesmoke; display: inline-block;'>Redefinir senha</a>
+                <a href='%url%/user/redefinir/%id%/%jwt%' style='color: #424242; text-decoration: none; border-radius: 10px; padding: 10px; background-color: whitesmoke; display: inline-block;'>Redefinir senha</a>
             </td>
         </tr>
         <tr>
