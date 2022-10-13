@@ -88,12 +88,12 @@ function PageApostar() {
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/makeBets.php`,
             data: dataString,
             thenCallback: (response) => {
-                setResp(response);
+                setResp(response.message);
                 setLoading2(false);
             },
             catchCallback: ({ message }) => {
-                setLoading2(false);
                 setError(message);
+                setLoading2(false);
             },
         });
     };

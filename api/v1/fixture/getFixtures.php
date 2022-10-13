@@ -33,7 +33,13 @@ if (empty($userId)) {
 }
 
 // Verifica se o usuário já apostou para a parte..
-$query = "SELECT * FROM bet INNER JOIN fixture ON bet.fixture_Id=fixture.Id INNER JOIN parte ON fixture.parte_id=parte.Id WHERE parte.id=:parteID AND parte.status='true' AND users_Id=:userID";
+$query = "SELECT * FROM bet
+    INNER JOIN fixture ON bet.fixture_Id=fixture.Id
+    INNER JOIN parte ON fixture.parte_id=parte.Id
+    WHERE parte.id=:parteID
+    AND parte.status='aposta'
+    AND users_Id=:userID
+";
 
 $stmt = $db->prepare($query);
 
