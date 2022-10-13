@@ -23,6 +23,11 @@
     margin: 0 0 10px 0;
 }
 
+.page404-container > img {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
 .page404-container > a {
     width: 100px;
     height: 40px;
