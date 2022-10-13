@@ -38,15 +38,36 @@ function PageAdminScore() {
         setResp('');
         setLoading2(true);
 
-        const data = {};
+        const data = [];
         $('input[type=\'text\']').each(function (index, item) {
             const val = $(item).val();
             const name = $(item).attr('name');
 
-            data[name] = val;
+            const [fixture, type] = name.split('_');
+
+            const resultIndex = data.findIndex((el) => el && el.fixture === fixture);
+
+            if (resultIndex === -1) {
+                data.push({
+                    fixture,
+                    [type]: val,
+                });
+            } else {
+                data[resultIndex] = {
+                    ...data[resultIndex],
+                    [type]: val,
+                };
+            }
         });
 
-        const dataString = JSON.stringify(data);
+        const dataFilter = data.filter((el) => el.home && el.away);
+        if (dataFilter.length === 0) {
+            setError('Preencha ao menos um jogo completo.');
+            setLoading2(false);
+            return;
+        }
+
+        const dataString = JSON.stringify(dataFilter);
 
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/postResult.php`,
@@ -142,13 +163,9 @@ function PageAdminScore() {
                             administrador
                             <br />
                             <span className="subTitle">
-                                {campeonato ?
-                                    campeonato + ' - '
-                                    : ''}
+                                {campeonato ? campeonato + ' - ' : ''}
                                 {fase}
-                                {parte ?
-                                    ' / ' + parte
-                                    : ''}
+                                {parte ? ' / ' + parte : ''}
                             </span>
                         </h3>
                         <Loading loading={loading} />

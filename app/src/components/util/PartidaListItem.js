@@ -41,19 +41,11 @@ function PartidaListItem(props) {
     };
 
     const checkIfHomeNeedsInput = () => {
-        if (props.team.home_score) {
-            return 'ReadOnly';
-        } else {
-            return '';
-        }
+        return props.team.home_score ? 'ReadOnly' : '';
     };
 
     const checkIfAwayNeedsInput = () => {
-        if (props.team.away_score) {
-            return 'ReadOnly';
-        } else {
-            return '';
-        }
+        return props.team.away_score ? 'ReadOnly' : '';
     };
 
     const checkIfShowUsernames = () => {

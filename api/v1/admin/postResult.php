@@ -13,8 +13,16 @@ $db = new DatabaseConnection($env);
 $inputData = json_decode(file_get_contents("php://input"));
 
 $allFieldOk = true;
-foreach ($inputData as $key => $value) {
-    if ($key != "userId" && !preg_match("/^[0-9]{1,2}$/", $value)) {
+foreach ($inputData as $value) {
+    $homeScore = $value->home;
+    $awayScore = $value->away;
+
+    if (
+        empty($homeScore) ||
+        !preg_match("/^[0-9]{1,2}$/", $homeScore) ||
+        empty($awayScore) ||
+        !preg_match("/^[0-9]{1,2}$/", $awayScore)
+    ) {
         $allFieldOk = false;
         break;
     }
@@ -29,79 +37,80 @@ if (!$allFieldOk) {
 $fixture1 = 0;
 $value1 = 0;
 
-foreach ($inputData as $key => $value) {
-    $fixture = str_replace("_", "", substr($key, 0, 2));
-    $type = str_replace("_", "", substr($key, 2, 7));
+foreach ($inputData as $value) {
+    $fixture = $value->fixture;
+    $homeScore = $value->home;
+    $awayScore = $value->away;
 
-    // considerando que o home sempre vem antes do away:
-    if ($type == "home") {
-        $fixture1 = $fixture;
-        $value1 = $value;
-    } elseif ($type == "away" && $fixture == $fixture1) {
-        $query = "UPDATE fixture SET
+    $query = "UPDATE fixture
+        SET
             score_homeTeam = :scoreHome,
             score_awayTeam = :scoreAway
-            WHERE Id = :fixtureID";
+        WHERE Id = :fixtureID";
 
-        $stmt = $db->prepare($query);
+    $stmt = $db->prepare($query);
 
-        $stmt->bindParam(':scoreHome', $value1);
-        $stmt->bindParam(':scoreAway', $value);
-        $stmt->bindParam(':fixtureID', $fixture);
+    $stmt->bindParam(':scoreHome', $homeScore);
+    $stmt->bindParam(':scoreAway', $awayScore);
+    $stmt->bindParam(':fixtureID', $fixture);
 
-        if ($stmt->execute()) {
+    //PONTOS
+    if ($stmt->execute()) {
+        //ACERTOU
+        $sql = "UPDATE bet
+            SET points=3
+            WHERE fixture_Id = :fixtureID
+            AND (
+                bet_homeTeam = :scoreHome
+                AND bet_awayTeam = :scoreAway
+            )";
 
-            //PONTOS:
+        $stmt2 = $db->prepare($sql);
 
-            //ACERTOU
-            $sql = "UPDATE bet SET points=3 WHERE
-                fixture_Id = :fixtureID AND 
-                (bet_homeTeam = :scoreHome AND 
-                bet_awayTeam = :scoreAway)";
+        $stmt2->bindParam(':scoreHome', $homeScore);
+        $stmt2->bindParam(':scoreAway', $awayScore);
+        $stmt2->bindParam(':fixtureID', $fixture);
 
-            $stmt2 = $db->prepare($sql);
+        $stmt2->execute();
 
-            $stmt2->bindParam(':scoreHome', $value1);
-            $stmt2->bindParam(':scoreAway', $value);
-            $stmt2->bindParam(':fixtureID', $fixture);
-
-            $stmt2->execute();
-
-            // NÃO ACERTOU PLACAR / OU ACERTOU VENCEDOR (x2) / OU EMPATE
-            $sql2 = "UPDATE bet SET points=1 WHERE 
-                fixture_Id = :fixtureID AND 
-                NOT(
-                    bet_homeTeam = :scoreHome AND 
-                    bet_awayTeam = :scoreAway
-                    ) AND 
+        // NÃO ACERTOU PLACAR / OU ACERTOU VENCEDOR (x2) / OU EMPATE
+        $sql2 = "UPDATE bet
+            SET points=1
+            WHERE fixture_Id = :fixtureID
+            AND NOT (
+                bet_homeTeam = :scoreHome
+                AND bet_awayTeam = :scoreAway
+            )
+            AND (
                 (
-                    (
-                        :scoreHome>:scoreAway AND bet_homeTeam>bet_awayTeam
-                    ) 
-                    OR (
-                        :scoreHome<:scoreAway AND 
-                        bet_homeTeam<bet_awayTeam
-                    ) 
-                    OR (
-                        :scoreHome=:scoreAway AND bet_homeTeam=bet_awayTeam
-                    )
-                )";
+                    :scoreHome > :scoreAway
+                    AND bet_homeTeam > bet_awayTeam
+                ) 
+                OR (
+                    :scoreHome < :scoreAway
+                    AND bet_homeTeam < bet_awayTeam
+                )
+                OR (
+                    :scoreHome = :scoreAway
+                    AND bet_homeTeam = bet_awayTeam
+                )
+            )";
 
-            $stmt3 = $db->prepare($sql2);
+        $stmt3 = $db->prepare($sql2);
 
-            $stmt3->bindParam(':scoreHome', $value1);
-            $stmt3->bindParam(':scoreAway', $value);
-            $stmt3->bindParam(':fixtureID', $fixture);
+        $stmt3->bindParam(':scoreHome', $homeScore);
+        $stmt3->bindParam(':scoreAway', $awayScore);
+        $stmt3->bindParam(':fixtureID', $fixture);
 
-            $stmt3->execute();
-
-            http_response_code(200);
-            echo json_encode(array("message" => "Resultado e pontuação atualizados com sucesso!"));
-        } else {
-            http_response_code(400);
-            echo json_encode(array("message" => "Não foi possível realizar o cadastro do resultado. Favor entrar em contato com o Administrador. (Error #APR2)"));
-            break;
-        }
+        $stmt3->execute();
+    } else {
+        http_response_code(400);
+        echo json_encode(array("message" => "Não foi possível realizar o cadastro do resultado. Favor entrar em contato com o Administrador. (Error #APR2)"));
+        exit();
     }
+
 }
-?>
+
+http_response_code(200);
+echo json_encode(array("message" => "Resultado e pontuação atualizados com sucesso!"));
+exit();
