@@ -14,7 +14,11 @@ $inputData = json_decode(file_get_contents("php://input"));
 
 $parteId = $inputData->parteId;
 $statusNeeded = $inputData->status;
-$userId = $inputData->userId;
+
+$userId = null;
+if (isset($inputData->userId)) {
+    $userId = $inputData->userId;
+}
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/util/fixtureGetter.php'; 
 

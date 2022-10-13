@@ -20,8 +20,8 @@ import SiteFooter from './components/common/SiteFooter';
 
 import Page404 from './components/pages/Page404';
 import PageAdmin from './components/pages/PageAdmin';
-// import PageAdminApostas from './components/pages/PageAdminApostas';
-// import PageAdminScore from './components/pages/PageAdminScore';
+import PageAdminApostas from './components/pages/PageAdminApostas';
+import PageAdminScore from './components/pages/PageAdminScore';
 import PageApostado from './components/pages/PageApostado';
 import PageApostadoJogo from './components/pages/PageApostadoJogo';
 import PageApostar from './components/pages/PageApostar';
@@ -128,11 +128,13 @@ function App() {
                             <Route path=':campeonato/:fase/jogo/:fixture' element={<PageApostadoJogo />} />
                             <Route path=':campeonato/:fase/apostado/:nome' element={<PageApostado />} />
                             <Route path=':campeonato/:fase/:parte/apostar' element={<PageApostar/>} />
+
+                            {/* ADMIN - RESTRICTED */}
+                            <Route path=':campeonato' element={<PrivateRouteAdmin />} >
+                                <Route path=':fase/admin' element={<PageAdminApostas/>} />
+                                <Route path=':fase/:parte/admin' element={<PageAdminScore/>} />
+                            </Route>
                         </Route>
-
-
-
-
                     </Route>
 
                     <Route path='*' element={<Page404 />} />

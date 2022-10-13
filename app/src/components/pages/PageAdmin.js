@@ -53,7 +53,8 @@ function PageAdmin() {
                 <div className="adminCampeonatos-fase">
                     {
                         campeonato.fases.map(function (fase, index) {
-                            return showFases(fase, index);
+                            const campeonatoId = campeonato.idCampeonato;
+                            return showFases(fase, index, campeonatoId);
                         }, this)
                     }
                 </div>
@@ -61,14 +62,14 @@ function PageAdmin() {
         );
     };
 
-    const showFases = (fase, index) => {
+    const showFases = (fase, index, campeonatoId) => {
         return (
             <div key={index}>
                 <div>{fase.nomeFase}</div>
                 <div className="adminCampeonatos-parte">
                     {
                         fase.partes.map(function (parte, index) {
-                            return showPartes(parte, index, fase.id);
+                            return showPartes(parte, index, campeonatoId, fase.id);
                         }, this)
                     }
                 </div>
@@ -76,37 +77,29 @@ function PageAdmin() {
         );
     };
 
-    const showPartes = (parte, index, faseID) => {
+    const showPartes = (parte, index, campeonatoId, faseId) => {
         return (
             <div key={index}>
                 <div>{parte.nomeParte}</div>
 
                 <div className="adminCampeonatos-actions">
-                    {checkIfShowLinks(parte, faseID)}
-                    <AdminSelect parteID={parte.id} selected={parte.statusParte} />
+                    {checkIfShowLinks(parte, campeonatoId, faseId)}
+                    <AdminSelect parteID={parte.id} selected={parte.statusParte} updateCampeonatos={getCampeonatos} />
                     <div className={'statusMark -' + parte.statusParte}></div>
                 </div>
             </div>
         );
     };
 
-    const checkIfShowLinks = (parte, faseID) => {
+    const checkIfShowLinks = (parte, campeonatoId, faseId) => {
         if (parte.statusParte === 'aberto') {
             return (
                 <div className="links">
-                    <Link to={'/' + faseID + '/adminapostas'}>
-                        Apostas
+                    <Link to={'/campeonato/' + campeonatoId + '/' + faseId + '/admin'}>
+                        Participantes
                     </Link>
-                    <Link to={'/' + parte.id + '/adminscore'}>
+                    <Link to={'/campeonato/' + campeonatoId + '/' + faseId + '/' + parte.id + '/admin'}>
                         Resultados
-                    </Link>
-                </div>
-            );
-        } else if (parte.statusParte === 'aposta') {
-            return (
-                <div className="links">
-                    <Link to={'/' + parte.id + '/adminviewapostas'}>
-                        Apostas
                     </Link>
                 </div>
             );

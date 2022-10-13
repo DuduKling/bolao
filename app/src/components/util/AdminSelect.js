@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../../css/util/adminSelect.css';
 
 import http from '../../util/http';
@@ -7,14 +7,8 @@ import Loading from '../util/Loading';
 import PropTypes from 'prop-types';
 
 function AdminSelect(props) {
-    const [selected, setSelected] = useState('');
+    const [selected] = useState(props.selected);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (props.selected) {
-            setSelected(props.selected);
-        }
-    }, []);
 
     const handleChange = async (event) => {
         setLoading(true);
@@ -31,8 +25,8 @@ function AdminSelect(props) {
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/changeCampeonatoState.php`,
             data: dataString,
             thenCallback: () => {
-                setSelected(data);
                 setLoading(false);
+                props.updateCampeonatos();
             },
             catchCallback: () => {
                 setLoading(false);
@@ -40,18 +34,22 @@ function AdminSelect(props) {
         });
     };
 
+    const isSelected = (value) => {
+        return value === selected ? 'selected' : '';
+    };
+
     return (
         <div className="materialSelect">
             <select
-                onChange={async () => handleChange}
+                onChange={async (event) => handleChange(event)}
                 className="selectField"
                 name={props.parteID}
-                value={selected}
+                defaultValue={selected}
             >
-                <option value="aposta">aposta</option>
-                <option value="aberto">aberto</option>
-                <option value="finalizado">finalizado</option>
-                <option value="tba">tba</option>
+                <option selected={isSelected('aposta')} value="aposta">aposta</option>
+                <option selected={isSelected('aberto')} value="aberto">aberto</option>
+                <option selected={isSelected('finalizado')} value="finalizado">finalizado</option>
+                <option selected={isSelected('tba')} value="tba">tba</option>
             </select>
             <span className="selectBottomBbar"></span>
             <label className="selectLabel">Status</label>
@@ -63,6 +61,7 @@ function AdminSelect(props) {
 AdminSelect.propTypes = {
     selected: PropTypes.string,
     parteID: PropTypes.string,
+    updateCampeonatos: PropTypes.func,
 };
 
 export default AdminSelect;

@@ -23,7 +23,7 @@ function PageAdminApostas() {
     const getApostas = async () => {
         setLoading(true);
 
-        const faseID = params.params.fase;
+        const faseID = params.fase;
 
         const dataString = JSON.stringify({
             faseID,

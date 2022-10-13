@@ -26,7 +26,7 @@
     width: 100%;
 
     padding: 10px;
-    overflow: scroll;
+    /* overflow: scroll; */
 
     display: flex;
     justify-content: flex-start;
@@ -156,9 +156,9 @@
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 
-    /* overflow: hidden; */
-    display: block;
-    overflow: scroll;
+    overflow: hidden;
+    /* display: block; */
+    /* overflow: scroll; */
     box-shadow: 0 2px 2px 0 rgba(0,0,0,.3), 0 3px 1px -2px rgba(0,0,0,.2);
 }
 
