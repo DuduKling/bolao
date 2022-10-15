@@ -22,19 +22,24 @@ function NextAndTimer(props) {
             <h2>Próximos bolões</h2>
 
             <div className="nextBolao-logos">
-                <div className="nextBolao-logosEqual">
+                {/* <div className="nextBolao-logosEqual nextBolao-old">
                     <div className="nextBolao-logoContainer">
                         <img className="nextBolao-logo" alt="" src={'/imagens/campeonatos/russia_2018.png'} />
                     </div>
-                </div>
-                <div className="nextBolao-logosEqual">
+                </div> */}
+                <div className="nextBolao-logosEqual nextBolao-old">
                     <div className="nextBolao-logoContainer">
                         <img className="nextBolao-logo" alt="" src={'/imagens/campeonatos/copa_america_2019.png'} />
                     </div>
                 </div>
-                <div className="nextBolao-logosEqual">
+                <div className="nextBolao-logosEqual nextBolao-current-next">
                     <div className="nextBolao-logoContainer">
                         <img className="nextBolao-logo" alt="" src={'/imagens/campeonatos/qatar_2022.png'} />
+                    </div>
+                </div>
+                <div className="nextBolao-logosEqual nextBolao-next">
+                    <div className="nextBolao-logoContainer">
+                        <img className="nextBolao-logo" alt="" src={'/imagens/campeonatos/united_2026.png'} />
                     </div>
                 </div>
             </div>

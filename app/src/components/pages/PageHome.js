@@ -8,7 +8,7 @@ import FaqSection from '../home/FaqSection';
 import Canvas from '../home/Canvas';
 
 function PageHome() {
-    const [dataFinal] = useState('Jun 14, 2019 11:00:00');
+    const [dataFinal] = useState('Nov 20, 2022 13:00:00');
 
     return (
         <div className="MainContent-container">
