@@ -15,7 +15,9 @@ function Regulamento() {
 
                             <li>Para tal, a pessoa deve se cadastrar na plataforma, escolher a competição que irá participar e depois preencher os resultados de cada partida.</li>
 
-                            <li>Após a realização das apostas, o participante deve finalizar a inscrição no bolão, pagando o valor de R$ 10,00 (dez reais) para qualquer um dos responsáveis pela organização do bolão.</li>
+                            <li>Após a realização das apostas, o participante deve finalizar a inscrição no bolão, pagando o valor de R$ 20,00 (vinte reais) para qualquer um dos responsáveis pela organização do bolão.</li>
+
+                            <li>O pagamento poderá ser realizado em dinheiro, ou via Pix, devendo, para tanto, ser comprovado o depósito mediante contato com um dos responsáveis.</li>
 
                         </ol>
                     </li>
@@ -42,13 +44,7 @@ function Regulamento() {
 
                             <li>A pontuação dos acertos será feita a partir dos seguintes critérios:</li>
 
-                            {/*<ul>
-                                    <li>Acerto do placar exato (Ex: Participante aposta no Brasil vencendo a Suíça pelo placar de 1x0 e o placar do jogo é 1x0 para o Brasil) – 03 pontos;</li>
-                                    <li>Acerto apenas do time vencedor (Ex: Participante aposta no Brasil vencendo a Suíça pelo placar de 1x0 e o placar do jogo é 2x1 para o Brasil) – 01 ponto;</li>
-                                    <li>Erro do placar (Ex: Participante aposta no Brasil Vencendo a Suíça por 2x0 e o placar do jogo é um empate de 1x1) – 00 ponto.</li>
-                                </ul>*/}
-
-                            <li className="liTabela">
+                            <div className="liTabela">
                                 <table>
                                     <thead>
                                         <tr>
@@ -79,7 +75,7 @@ function Regulamento() {
                                         </tr>
                                     </tbody>
                                 </table>
-                            </li>
+                            </div>
 
                             <li>Obs: As regras acima se aplicam aos empates. (Ex, se em determinado jogo um participante aposta no placar de 1x1 e o resultado final é 1x1 ele receberá 3 pontos).</li>
 

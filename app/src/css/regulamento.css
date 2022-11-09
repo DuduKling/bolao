@@ -72,18 +72,12 @@
 	color: #388E3C;
 }
 
-
-
-.textao-container > li.liTabela {
-    overflow: scroll;
-}
-
-.textao-container > li.liTabela > table {
+.textao-container > div.liTabela > table {
     margin: 20px 20px 20px 27px;
     border-collapse: collapse;
 }
 
-.textao-container > li.liTabela > table th {
+.textao-container > div.liTabela > table th {
     padding: 8px;
 
     text-align: left;
@@ -92,14 +86,14 @@
     color: white;
 }
 
-.textao-container > li.liTabela > table td {
+.textao-container > div.liTabela > table td {
     padding: 8px;
     
     text-align: left;
     border: 1px solid #c7c7c7;
 }
 
-.textao-container > li.liTabela > table .points {
+.textao-container > div.liTabela > table .points {
     text-align: center;
 }
 
@@ -112,4 +106,7 @@
         overflow: hidden;
     }
 
+    .textao-container > div.liTabela {
+        overflow: scroll;
+    }
 }
