@@ -132,6 +132,17 @@
     border-bottom-right-radius: 10px;
 }
 
+.main-partidaForm > .sendButtonMessage {
+	padding: 10px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	background-color: #ecbc2d;
+	border-radius: 10px;
+	margin-bottom: 0px;
+}
 
 .main-partidaForm > .EnviarAposta {
 	padding-top: 10px;

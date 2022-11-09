@@ -125,10 +125,13 @@ function PageApostar() {
     const showButton = () => {
         if (Object.keys(fixtures).length !== 0 && !resp) {
             return (
-                <div className="EnviarAposta">
-                    <input type="submit" className="SendButton" value="Enviar" />
-                    <Loading loading={loading2} />
-                </div>
+                <>
+                    <p className="sendButtonMessage">Lembre-se que, ao enviar suas apostas não será mais possível modificá-las.</p>
+                    <div className="EnviarAposta">
+                        <input type="submit" className="SendButton" value="Enviar" />
+                        <Loading loading={loading2} />
+                    </div>
+                </>
             );
         }
     };
