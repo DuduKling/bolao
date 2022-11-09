@@ -65,7 +65,15 @@ function PageAdmin() {
     const showFases = (fase, index, campeonatoId) => {
         return (
             <div key={index}>
-                <div>{fase.nomeFase}</div>
+                <div className="adminFase-actions">
+                    <div>{fase.nomeFase}</div>
+                    <div className="links">
+                        <Link to={'/campeonato/' + campeonatoId + '/' + fase.id + '/admin'}>
+                        Participantes
+                        </Link>
+                    </div>
+                </div>
+
                 <div className="adminCampeonatos-parte">
                     {
                         fase.partes.map(function (parte, index) {
@@ -95,9 +103,6 @@ function PageAdmin() {
         if (parte.statusParte === 'aberto') {
             return (
                 <div className="links">
-                    <Link to={'/campeonato/' + campeonatoId + '/' + faseId + '/admin'}>
-                        Participantes
-                    </Link>
                     <Link to={'/campeonato/' + campeonatoId + '/' + faseId + '/' + parte.id + '/admin'}>
                         Resultados
                     </Link>

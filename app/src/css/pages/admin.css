@@ -126,6 +126,31 @@
     color: #388e3c;
 }
 
+.adminFase-actions > .links {
+    display: flex;
+    align-items: center;
+
+}
+
+.adminFase-actions > .links > a {
+    padding: 5px 10px;
+    margin-right: 10px;
+
+    display: flex;
+    align-items: center;
+
+    color: #4CAF50;
+    border-radius: 10px;
+
+    text-decoration: none;
+    letter-spacing: 0.5px;
+
+    transition: all 0.3s ease;
+}
+
+.adminFase-actions > .links > a:hover {
+    color: #388e3c;
+}
 
 
 .adminCampeonatos-actions > .statusMark {
