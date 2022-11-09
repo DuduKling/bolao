@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import $ from 'jquery';
 
@@ -18,11 +18,13 @@ function PageApostar() {
     const [campeonato, setCampeonato] = useState('');
     const [fase, setFase] = useState('');
     const [parte, setParte] = useState('');
+    const [isBet, setIsBet] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
 
     const userId = useSelector((state) => state.auth.userId);
+    const userName = useSelector((state) => state.auth.userName);
 
     const params = useParams();
 
@@ -60,6 +62,10 @@ function PageApostar() {
             catchCallback: ({ message }) => {
                 setLoading(false);
                 setError(message);
+
+                if (message.includes('#FGF1')) {
+                    setIsBet(true);
+                }
             },
         });
     };
@@ -112,6 +118,10 @@ function PageApostar() {
             );
 
         } else if (error !== '') {
+            if (isBet) {
+                return showButtonToUserBets();
+            }
+
             return (
                 <div className="message">
                     <p className="FormMessage -error">
@@ -120,6 +130,22 @@ function PageApostar() {
                 </div>
             );
         }
+    };
+
+    const showButtonToUserBets = () => {
+        const {campeonato, fase } = params;
+
+        const buttonLink = `/campeonato/${campeonato}/${fase}/apostado/${userName}`;
+        return (
+            <div className="multipleMessage">
+                <p className="FormMessage -success">
+                    Você já apostou para esta parte do campeonato!
+                </p>
+                <Link className="SendButton" to={buttonLink}>
+                    Veja sua aposta
+                </Link>
+            </div>
+        );
     };
 
     const showButton = () => {
