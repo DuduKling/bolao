@@ -64,8 +64,8 @@ function PageApostar() {
         });
     };
 
-    const enviaAposta = async (evento) => {
-        evento.preventDefault();
+    const sendBets = async (event) => {
+        event.preventDefault();
 
         setError('');
         setResp('');
@@ -123,7 +123,7 @@ function PageApostar() {
     };
 
     const showButton = () => {
-        if (Object.keys(fixtures).length !== 0) {
+        if (Object.keys(fixtures).length !== 0 && !resp) {
             return (
                 <div className="EnviarAposta">
                     <input type="submit" className="SendButton" value="Enviar" />
@@ -133,13 +133,28 @@ function PageApostar() {
         }
     };
 
+    const showFixtures = () => {
+        if (!resp) {
+            return fixtures.map(function (team, index) {
+                return (
+
+                    <PartidaListItem
+                        key={index}
+                        team={team}
+                    />
+
+                );
+            }, this);
+        }
+    };
+
     return (
         <section className="main-container">
             <div className="main-content">
 
                 <form
                     className="main-partidaForm"
-                    onSubmit={(event) => enviaAposta(event)}
+                    onSubmit={(event) => sendBets(event)}
                     method="post"
                 >
 
@@ -148,18 +163,7 @@ function PageApostar() {
                             Aposte: {campeonato ? campeonato : ''}{fase ? ' - ' + fase : ''}{parte ? '/' + parte : ''}
                         </h3>
                         <Loading loading={loading} />
-                        {
-                            fixtures.map(function (team, index) {
-                                return (
-
-                                    <PartidaListItem
-                                        key={index}
-                                        team={team}
-                                    />
-
-                                );
-                            }, this)
-                        }
+                        {showFixtures()}
 
                     </ul>
 
