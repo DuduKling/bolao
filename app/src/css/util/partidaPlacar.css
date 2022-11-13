@@ -12,7 +12,8 @@
 .match-container > .placar input {
 	/* 
 	background-color: transparent;
-	border: 1px solid #c7c7c7; */
+	border: 1px solid #c7c7c7;
+	*/
 
 	width: 40px;
 	height: 30px;
@@ -21,29 +22,31 @@
 	font-family: "Open Sans", sans-serif;
 
 	border: none;
-    border-bottom: 1px solid rgba(0,0,0,.2);
-    display: block;
-    margin: 0;
-    background: 0 0;
+	border-bottom: 1px solid rgba(0,0,0,.2);
+	display: block;
+	margin: 0;
+	background: 0 0;
 	color: inherit;
-	
+
 	text-size-adjust: 100%;
+
+	appearance: none;
 }
 
 .match-container > .placar > div {
 	position: relative;
-    font-size: 16px;
-    display: inline-block;
-    box-sizing: border-box;
-    margin: 0;
+	font-size: 16px;
+	display: inline-block;
+	box-sizing: border-box;
+	margin: 0;
 }
 
 .match-container > .placar input:focus {
 	outline: none;
 }
 .match-container > .placar input:focus + label:after {
-    left: 0;
-    visibility: visible;
+	left: 0;
+	visibility: visible;
 	width: 100%;
 }
 
