@@ -62,10 +62,10 @@ foreach($dbFixtures as $row){
 
     array_push($fixtures, $fixture);
 
+    $fixture->frontID = $countRows;
+
     $countRows = $countRows + 1;
 }
-
-$fixture->frontID = $countRows;
 
 http_response_code(200);
 echo json_encode(array("fixtures" => $fixtures));
