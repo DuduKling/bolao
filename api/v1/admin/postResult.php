@@ -18,9 +18,7 @@ foreach ($inputData as $value) {
     $awayScore = $value->away;
 
     if (
-        empty($homeScore) ||
         !preg_match("/^[0-9]{1,2}$/", $homeScore) ||
-        empty($awayScore) ||
         !preg_match("/^[0-9]{1,2}$/", $awayScore)
     ) {
         $allFieldOk = false;
