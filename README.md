@@ -11,39 +11,55 @@ Além disso, o foco era facilitar e melhorar a forma como era feito os bolões n
 
 ## O Projeto
 
+### Tela inicial
+
 ![image-1](./docs/image-1.png)
 
-![image-2](./docs/image-2.png)
+### Tela Cadastro e Login
 
-![image-3](./docs/image-3.png)
+![image-4](./docs/image-2.png)
 
-![image-4](./docs/image-4.png)
+![image-5](./docs/image-3.png)
 
-![image-5](./docs/image-5.png)
+### Tela de loading
 
-![image-6](./docs/image-6.png)
+![image-6](./docs/image-4.png)
+
+### Tela de campeonatos
 
 ![image-7](./docs/image-7.png)
 
-![image-8](./docs/image-8.png)
+### Tela de aposta
 
-![image-9](./docs/image-9.png)
+![image-8](./docs/image-6.png)
 
-![image-10](./docs/image-10.png)
+### Tela de dashboard do campeonato
 
-![image-11](./docs/image-11.png)
+![image-9](./docs/image-7.png)
 
-![image-12](./docs/image-12.png)
+### Tela de jogos do campeonato
 
-![image-13](./docs/image-13.png)
+![image-10](./docs/image-8.png)
 
-![image-14](./docs/image-14.png)
+### Tela de apostas para um jogo
 
-![image-15](./docs/image-15.png)
+![image-11](./docs/image-9.png)
 
-![image-16](./docs/image-16.png)
+### Tela de apostas de um usuário
 
-![image-17](./docs/image-17.png)
+![image-13](./docs/image-10.png)
+
+### Tela de configurações
+
+![image-14](./docs/image-11.png)
+
+### Tela de administrador
+
+![image-15](./docs/image-12.png)
+
+![image-16](./docs/image-13.png)
+
+![image-17](./docs/image-14.png)
 
 ## Pré-requisitos
 
