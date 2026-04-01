@@ -1,0 +1,9 @@
+name: bolao
+services:
+    mariadb:
+        container_name: bolao-mariadb
+        ports:
+            - 3306:3306
+        environment:
+            - MARIADB_ROOT_PASSWORD=123456
+        image: mariadb:11.4.10

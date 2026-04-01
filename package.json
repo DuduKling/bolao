@@ -7,9 +7,11 @@
         "install-api": "cd api && composer update",
         "install-database": "cd database && npm install",
         "install-all": "npm run install-app && npm run install-database && npm run install-api",
+        "install-mariadb": "cd database && docker-compose up -d",
 
         "start": "cd app && npx react-scripts start",
         "server": "php -S 127.0.0.1:8000",
+        "mariadb": "cd database && docker-compose start",
         "knex": "cd database && npx knex",
 
         "deploy-clear": "if exist deploy rmdir /s /q deploy",

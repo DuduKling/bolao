@@ -65,11 +65,11 @@ Além disso, o foco era facilitar e melhorar a forma como era feito os bolões n
 
 Instalar os componentes:
 
-- `Node 14` ~ Front-End;
-- `PHP 8.0` ~ Back-End;
-    - `Composer 2.4` ~ PHP Dependency Manager;
-- `MariaDB 10.5` ~ Database;
-    - `Docker Desktop 4.12` ~ Container platform;
+- `Node 24.14.x` ~ Front-End;
+- `PHP 8.5` ~ Back-End;
+    - `Composer 2.9.5` ~ PHP Dependency Manager;
+- `MariaDB 11.4.10` ~ Database;
+    - Ou no `Docker Desktop 4.67` ~ Container platform;
 
 ### Instalar dependências
 
@@ -79,12 +79,10 @@ Instale as dependências da `api`, do `app` e do `banco` com o comando:
 npm run install-all
 ```
 
-## Desenvolvimento
-
-Instale o banco no docker com o comando:
+Se for utilizar o docker, rode o comando:
 
 ```bash
-docker run --detach --name bolao-mariadb -p 3306:3306 --env MARIADB_ROOT_PASSWORD=123456  mariadb:10.5
+npm run install-mariadb
 ```
 
 ### Configurações necessárias
@@ -99,7 +97,7 @@ Crie e configure o arquivo `knexfile.js` baseado no arquivo `knexfile.sample.js`
 
 Crie toda a estrutura do banco rodando o comando:
 
-```
+```bash
 npm run knex migrate:latest
 ```
 
@@ -135,8 +133,11 @@ Iniciar APP:
 npm run start
 ```
 
-Não esqueça de iniciar o container do banco no docker.
+Se estiver utilizando o banco no docker:
 
+```bash
+npm run mariadb
+```
 
 ## Deploy
 
