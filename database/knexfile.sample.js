@@ -5,9 +5,10 @@
  */
 module.exports = {
     development: {
-        client: 'mysql',
+        client: 'mysql2',
         connection: {
-            server: 'localhost:3306',
+            host: 'localhost',
+            port: 3306,
             database: 'bolao',
             user: 'root',
             password: '123456'

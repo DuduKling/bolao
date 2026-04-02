@@ -151,10 +151,17 @@ Crie e configure o arquivo `.env.production` baseado no arquivo `.env.developmen
 
 Crie e configure o arquivo `.env.production` baseado no arquivo `.env.development`.
 
-### Executar
+### Front & Back-End
 
-Para gerar o diretório `deploy` com tudo que é necessário para o ambiente produtivo.
+Para gerar o diretório `deploy` com tudo que é necessário para o ambiente produtivo:
 
 ```bash
 npm run deploy
 ```
+
+### Database
+
+Para somente gerar os SQLs para executar no banco de dados:
+1. Crie um schema "vazio" ou utilize um em que as migrations não tenham sido executadas nele ainda.
+2. Modifique, no arquivo `knexfile.js`, o parâmetro `onlyLogQuery` para `true`.
+3. Rode o comando de migration: `npm run knex migrate:latest`.

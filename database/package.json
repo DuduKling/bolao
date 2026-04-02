@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "knex": "^2.3.0",
-    "mysql": "^2.18.1"
+    "knex": "3.2.8",
+    "mysql2": "3.20.0"
   }
 }
