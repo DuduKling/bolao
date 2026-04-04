@@ -15,14 +15,14 @@ $inputData = json_decode(file_get_contents("php://input"));
 $faseId = $inputData->faseID;
 $userName = $inputData->userName;
 
-$query = "SELECT c.nome as championship, fa.nome as phase, u.imagePath as userImagePath, f.Id, bet.bet_homeTeam, tb.nome as home_nome, tb.imagePath as home_imagePath, bet.bet_awayTeam, ta.nome as away_nome, ta.imagePath as away_imagePath, f.dateTime, f.location, bet.points, f.score_homeTeam as final_scoreHome, f.score_awayTeam as final_scoreAway FROM bet
-    INNER JOIN users u ON bet.users_Id=u.Id
-    INNER JOIN fixture f ON bet.fixture_Id=f.Id
-    INNER JOIN part p ON f.part_id=p.Id
-    INNER JOIN phase fa ON p.phase_Id=fa.Id
-    INNER JOIN championship c ON fa.championship_Id=c.Id
-    INNER JOIN team ta ON f.awayTeam_Id=ta.Id 
-    INNER JOIN team tb ON f.homeTeam_Id=tb.Id
+$query = "SELECT c.name as championship, fa.name as phase, u.imagePath as userImagePath, f.Id, bet.homeTeamScoreBet, tb.name as home_name, tb.imagePath as home_imagePath, bet.awayTeamScoreBet, ta.name as away_name, ta.imagePath as away_imagePath, f.dateTime, f.location, bet.points, f.homeTeamScore as final_scoreHome, f.awayTeamScore as final_scoreAway FROM bet
+    INNER JOIN users u ON bet.fkUserId=u.Id
+    INNER JOIN fixture f ON bet.fkFixtureId=f.Id
+    INNER JOIN part p ON f.fkPartId=p.Id
+    INNER JOIN phase fa ON p.fkPhaseId=fa.Id
+    INNER JOIN championship c ON fa.fkChampionshipId=c.Id
+    INNER JOIN team ta ON f.fkAwayTeamId=ta.Id 
+    INNER JOIN team tb ON f.fkHomeTeamId=tb.Id
     WHERE fa.Id=:phaseID AND u.name=:userName";
 
 $stmt = $db->prepare($query);
@@ -51,12 +51,12 @@ foreach($dbFixtures as $row){
     $fixture->datetime = date("d/m/Y H:i", strtotime($row['dateTime']));
     $fixture->local = $row['location'];
 
-    $fixture->home_score = $row['bet_homeTeam'];
-    $fixture->home_team_name = $row['home_nome'];
+    $fixture->home_score = $row['homeTeamScoreBet'];
+    $fixture->home_team_name = $row['home_name'];
     $fixture->home_path = $row['home_imagePath'];
 
-    $fixture->away_score = $row['bet_awayTeam'];
-    $fixture->away_team_name = $row['away_nome'];
+    $fixture->away_score = $row['awayTeamScoreBet'];
+    $fixture->away_team_name = $row['away_name'];
     $fixture->away_path = $row['away_imagePath'];
 
     $fixture->final_scoreHome = $row['final_scoreHome'];

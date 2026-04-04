@@ -42,10 +42,10 @@ foreach ($inputData as $key => $value) {
         $value1 = $value;
     } elseif ($type == "away" && $fixture == $fixture1) {
         $query = "INSERT INTO bet SET
-            users_Id = :userID,
-            fixture_Id = :fixtureID,
-            bet_homeTeam = :betHome,
-            bet_awayTeam = :betAway";
+            fkUserId = :userID,
+            fkFixtureId = :fixtureID,
+            homeTeamScoreBet = :betHome,
+            awayTeamScoreBet = :betAway";
 
         $stmt = $db->prepare($query);
 

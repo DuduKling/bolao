@@ -37,7 +37,7 @@ foreach ($dbCampeonatos as $row) {
 
     // Fase
     $queryFase = "SELECT * FROM phase WHERE 
-        championship_Id=:championshipID";
+        fkChampionshipId=:championshipID";
 
     $stmtFase = $db->prepare($queryFase);
 
@@ -59,7 +59,7 @@ foreach ($dbCampeonatos as $row) {
 
             // Parte
             $queryParte = "SELECT * FROM part WHERE 
-                phase_Id=:phaseID";
+                fkPhaseId=:phaseID";
 
             $stmtParte = $db->prepare($queryParte);
 

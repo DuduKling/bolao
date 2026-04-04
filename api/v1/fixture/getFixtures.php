@@ -34,11 +34,11 @@ if (empty($userId)) {
 
 // Verifica se o usuário já apostou para a parte..
 $query = "SELECT * FROM bet
-    INNER JOIN fixture ON bet.fixture_Id=fixture.Id
-    INNER JOIN part ON fixture.part_id=part.Id
+    INNER JOIN fixture ON bet.fkFixtureId=fixture.Id
+    INNER JOIN part ON fixture.fkPartId=part.Id
     WHERE part.id=:partID
     AND part.status='aposta'
-    AND users_Id=:userID
+    AND fkUserId=:userID
 ";
 
 $stmt = $db->prepare($query);

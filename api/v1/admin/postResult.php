@@ -42,8 +42,8 @@ foreach ($inputData as $value) {
 
     $query = "UPDATE fixture
         SET
-            score_homeTeam = :scoreHome,
-            score_awayTeam = :scoreAway
+            homeTeamScore = :scoreHome,
+            awayTeamScore = :scoreAway
         WHERE Id = :fixtureID";
 
     $stmt = $db->prepare($query);
@@ -57,10 +57,10 @@ foreach ($inputData as $value) {
         //ACERTOU
         $sql = "UPDATE bet
             SET points=3
-            WHERE fixture_Id = :fixtureID
+            WHERE fkFixtureId = :fixtureID
             AND (
-                bet_homeTeam = :scoreHome
-                AND bet_awayTeam = :scoreAway
+                homeTeamScoreBet = :scoreHome
+                AND awayTeamScoreBet = :scoreAway
             )";
 
         $stmt2 = $db->prepare($sql);
@@ -74,23 +74,23 @@ foreach ($inputData as $value) {
         // NÃO ACERTOU PLACAR / OU ACERTOU VENCEDOR (x2) / OU EMPATE
         $sql2 = "UPDATE bet
             SET points=1
-            WHERE fixture_Id = :fixtureID
+            WHERE fkFixtureId = :fixtureID
             AND NOT (
-                bet_homeTeam = :scoreHome
-                AND bet_awayTeam = :scoreAway
+                homeTeamScoreBet = :scoreHome
+                AND awayTeamScoreBet = :scoreAway
             )
             AND (
                 (
                     :scoreHome > :scoreAway
-                    AND bet_homeTeam > bet_awayTeam
+                    AND homeTeamScoreBet > awayTeamScoreBet
                 ) 
                 OR (
                     :scoreHome < :scoreAway
-                    AND bet_homeTeam < bet_awayTeam
+                    AND homeTeamScoreBet < awayTeamScoreBet
                 )
                 OR (
                     :scoreHome = :scoreAway
-                    AND bet_homeTeam = bet_awayTeam
+                    AND homeTeamScoreBet = awayTeamScoreBet
                 )
             )";
 

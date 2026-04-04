@@ -15,10 +15,10 @@ $inputData = json_decode(file_get_contents("php://input"));
 $faseId = $inputData->faseID;
 
 $query = "SELECT SUM(points) as position, users.name, SUM(points) as points FROM bet
-    INNER JOIN users ON bet.users_Id=users.Id
-    INNER JOIN fixture ON bet.fixture_Id=fixture.Id
-    INNER JOIN part ON fixture.part_id=part.Id
-    INNER JOIN phase ON part.phase_Id=phase.Id
+    INNER JOIN users ON bet.fkUserId=users.Id
+    INNER JOIN fixture ON bet.fkFixtureId=fixture.Id
+    INNER JOIN part ON fixture.fkPartId=part.Id
+    INNER JOIN phase ON part.fkPhaseId=phase.Id
     WHERE phase.Id=:phaseID
     GROUP BY users.name ORDER BY points DESC, users.name ASC";
 

@@ -14,14 +14,14 @@ $inputData = json_decode(file_get_contents("php://input"));
 
 $fixtureID = $inputData->fixtureID;
 
-$query = "SELECT f.Id, f.dateTime, f.location, tb.name as home_name, tb.imagePath as home_imagePath, bet.bet_homeTeam, ta.name as away_name, ta.imagePath as away_imagePath, bet.bet_awayTeam, round((count(*)/(SELECT count(*) FROM users INNER JOIN bet ON users.Id=bet.users_Id WHERE bet.fixture_Id=:fixtureID) * 100),2) as porcentagem, GROUP_CONCAT(u.name ORDER BY u.name ASC SEPARATOR ',') as usernames 
+$query = "SELECT f.Id, f.dateTime, f.location, tb.name as home_name, tb.imagePath as home_imagePath, bet.homeTeamScoreBet, ta.name as away_name, ta.imagePath as away_imagePath, bet.awayTeamScoreBet, round((count(*)/(SELECT count(*) FROM users INNER JOIN bet ON users.Id=bet.fkUserId WHERE bet.fkFixtureId=:fixtureID) * 100),2) as porcentagem, GROUP_CONCAT(u.name ORDER BY u.name ASC SEPARATOR ',') as usernames 
     FROM bet
-    INNER JOIN users u ON bet.users_Id=u.Id
-    INNER JOIN fixture f ON bet.fixture_Id=f.Id
-    INNER JOIN team ta ON f.awayTeam_Id=ta.Id 
-    INNER JOIN team tb ON f.homeTeam_Id=tb.Id
+    INNER JOIN users u ON bet.fkUserId=u.Id
+    INNER JOIN fixture f ON bet.fkFixtureId=f.Id
+    INNER JOIN team ta ON f.fkAwayTeamId=ta.Id 
+    INNER JOIN team tb ON f.fkHomeTeamId=tb.Id
     WHERE f.Id=:fixtureID
-    GROUP BY bet.bet_homeTeam, bet.bet_awayTeam 
+    GROUP BY bet.homeTeamScoreBet, bet.awayTeamScoreBet 
     ORDER BY porcentagem DESC";
 
 $stmt = $db->prepare($query);
@@ -49,11 +49,11 @@ foreach($dbFixtures as $row){
     $fixture->datetime = date("d/m/Y H:i", strtotime($row['dateTime']));
     $fixture->local = $row['location'];
 
-    $fixture->home_score = $row['bet_homeTeam'];
+    $fixture->home_score = $row['homeTeamScoreBet'];
     $fixture->home_team_name = $row['home_name'];
     $fixture->home_path = $row['home_imagePath'];
 
-    $fixture->away_score = $row['bet_awayTeam'];
+    $fixture->away_score = $row['awayTeamScoreBet'];
     $fixture->away_team_name = $row['away_name'];
     $fixture->away_path = $row['away_imagePath'];
 

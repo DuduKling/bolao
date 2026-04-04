@@ -7,18 +7,18 @@ exports.up = function(knex) {
         .createTable('fixture', function (table) {
             table.increments('Id');
 
-            table.integer('awayTeam_Id').unsigned();
-            table.foreign('awayTeam_Id').references('Id').inTable('team');
+            table.integer('fkAwayTeamId').unsigned();
+            table.foreign('fkAwayTeamId').references('Id').inTable('team');
 
-            table.integer('homeTeam_Id').unsigned();
-            table.foreign('homeTeam_Id').references('Id').inTable('team');
+            table.integer('fkHomeTeamId').unsigned();
+            table.foreign('fkHomeTeamId').references('Id').inTable('team');
 
-            table.integer('part_Id').unsigned();
-            table.foreign('part_Id').references('Id').inTable('part');
+            table.integer('fkPartId').unsigned();
+            table.foreign('fkPartId').references('Id').inTable('part');
 
             table.dateTime('dateTime').notNullable();
-            table.integer('score_homeTeam');
-            table.integer('score_awayTeam');
+            table.integer('homeTeamScore');
+            table.integer('awayTeamScore');
             table.string('location');
         });
 

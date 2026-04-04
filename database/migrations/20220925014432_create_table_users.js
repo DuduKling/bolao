@@ -13,7 +13,7 @@ exports.up = function(knex) {
             table.string('imagePath', 255);
             table.string('role', 255);
 
-            table.dateTime('created').notNullable().defaultTo(knex.fn.now());
+            table.dateTime('createdAt').notNullable().defaultTo(knex.fn.now());
             table.dateTime('modified').defaultTo(knex.fn.now());
         });
 

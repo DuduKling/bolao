@@ -7,16 +7,16 @@ exports.up = function(knex) {
         .createTable('bet', function (table) {
             table.increments('Id');
 
-            table.integer('users_Id').unsigned();
-            table.foreign('users_Id').references('Id').inTable('users');
+            table.integer('fkUserId').unsigned();
+            table.foreign('fkUserId').references('Id').inTable('users');
 
-            table.integer('fixture_Id').unsigned();
-            table.foreign('fixture_Id').references('Id').inTable('fixture');
+            table.integer('fkFixtureId').unsigned();
+            table.foreign('fkFixtureId').references('Id').inTable('fixture');
 
-            table.integer('bet_homeTeam').notNullable();
-            table.integer('bet_awayTeam').notNullable();
+            table.integer('homeTeamScoreBet').notNullable();
+            table.integer('awayTeamScoreBet').notNullable();
             table.integer('points');
-            table.dateTime('created').notNullable().defaultTo(knex.fn.now());
+            table.dateTime('createdAt').notNullable().defaultTo(knex.fn.now());
         });
 
     if (knex.client.config.onlyLogQuery) {
