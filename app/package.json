@@ -29,7 +29,8 @@
     "workbox-streams": "^7.4.0"
   },
   "devDependencies": {
-    "eslint": "^10.2.0"
+    "eslint": "^9.7",
+    "eslint-plugin-react": "^7.37.5"
   },
   "scripts": {
     "start": "react-scripts start",
