@@ -29,4 +29,3 @@ database/knexfile.js
 .env
 .env.production
 
-*.lock
