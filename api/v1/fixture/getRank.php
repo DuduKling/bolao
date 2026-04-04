@@ -17,14 +17,14 @@ $faseId = $inputData->faseID;
 $query = "SELECT SUM(points) as position, users.name, SUM(points) as points FROM bet
     INNER JOIN users ON bet.users_Id=users.Id
     INNER JOIN fixture ON bet.fixture_Id=fixture.Id
-    INNER JOIN parte ON fixture.parte_id=parte.Id
-    INNER JOIN fase ON parte.fase_Id=fase.Id
-    WHERE fase.Id=:faseID
+    INNER JOIN part ON fixture.part_id=part.Id
+    INNER JOIN phase ON part.phase_Id=phase.Id
+    WHERE phase.Id=:phaseID
     GROUP BY users.name ORDER BY points DESC, users.name ASC";
 
 $stmt = $db->prepare($query);
 
-$stmt->bindParam(':faseID', $faseId);
+$stmt->bindParam(':phaseID', $faseId);
 
 $stmt->execute();
 $num = $stmt->rowCount();

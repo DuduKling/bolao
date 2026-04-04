@@ -14,21 +14,21 @@ $inputData = json_decode(file_get_contents("php://input"));
 
 $faseId = $inputData->faseID;
 
-$query = "SELECT select2.usernames, GROUP_CONCAT(select2.partes ORDER BY parteId ASC SEPARATOR ',') as partesApostadas
+$query = "SELECT select2.usernames, GROUP_CONCAT(select2.parts ORDER BY partId ASC SEPARATOR ',') as partsApostadas
     FROM (
-        SELECT DISTINCT users.name as usernames, parte.nome as partes, parte.Id as parteId FROM bet
+        SELECT DISTINCT users.name as usernames, part.name as parts, part.Id as partId FROM bet
         LEFT JOIN fixture ON bet.fixture_Id = fixture.Id
-        LEFT JOIN parte ON fixture.parte_id = parte.Id
-        LEFT JOIN fase ON parte.fase_Id = fase.Id
+        LEFT JOIN part ON fixture.part_id = part.Id
+        LEFT JOIN phase ON part.phase_Id = phase.Id
         LEFT JOIN users ON bet.users_Id = users.Id
-        WHERE fase.Id=:faseID
-        ORDER BY partes ASC
+        WHERE phase.Id=:phaseID
+        ORDER BY parts ASC
     ) as select2
     GROUP BY select2.usernames";
 
 $stmt = $db->prepare($query);
 
-$stmt->bindParam(':faseID', $faseId);
+$stmt->bindParam(':phaseID', $faseId);
 
 $stmt->execute();
 
@@ -46,19 +46,19 @@ foreach ($dbList as $row) {
     $partList = new stdClass;
 
     $partList->name = $row['usernames'];
-    $partList->partesApostadas = $row['partesApostadas'];
+    $partList->partesApostadas = $row['partsApostadas'];
 
     array_push($list, $partList);
 }
 
-$query2 = "SELECT GROUP_CONCAT(parte.nome ORDER BY parte.Id ASC SEPARATOR ',') as partes
-    FROM fase 
-    INNER JOIN parte ON fase.Id = parte.fase_Id 
-    WHERE fase.Id=:faseID";
+$query2 = "SELECT GROUP_CONCAT(part.name ORDER BY part.Id ASC SEPARATOR ',') as parts
+    FROM phase 
+    INNER JOIN part ON phase.Id = part.phase_Id 
+    WHERE phase.Id=:phaseID";
 
 $stmt2 = $db->prepare($query2);
 
-$stmt2->bindParam(':faseID', $faseId);
+$stmt2->bindParam(':phaseID', $faseId);
 
 $stmt2->execute();
 
@@ -70,12 +70,12 @@ if ($num2 <= 0) {
 
 $dbParte = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 foreach ($dbParte as $row) {
-    $partes = $row['partes'];
+    $partes = $row['parts'];
 }
 
 http_response_code(200);
 echo json_encode(array(
     "listNames" => $list,
-    "partes" => $partes
+    "parts" => $partes
 ));
 ?>

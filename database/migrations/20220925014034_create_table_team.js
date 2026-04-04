@@ -6,8 +6,8 @@ exports.up = function(knex) {
     const query = knex.schema
         .createTable('team', function (table) {
             table.increments('Id');
-            table.string('nome', 255).notNullable();
-            table.string('image', 255).notNullable();
+            table.string('name', 255).notNullable();
+            table.string('imagePath', 255).notNullable();
         });
 
     if (knex.client.config.onlyLogQuery) {

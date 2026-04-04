@@ -15,12 +15,12 @@ $inputData = json_decode(file_get_contents("php://input"));
 $parteId = $inputData->parteID;
 $newStatus = $inputData->newStatus;
 
-$query = "UPDATE parte SET parte.status=:newStatus WHERE Id=:parteID";
+$query = "UPDATE part SET part.status=:newStatus WHERE Id=:partID";
 
 $stmt = $db->prepare($query);
 
 $stmt->bindParam(':newStatus', $newStatus, PDO::PARAM_STR);
-$stmt->bindParam(':parteID', $parteId, PDO::PARAM_INT);
+$stmt->bindParam(':partID', $parteId, PDO::PARAM_INT);
 
 if ($stmt->execute()) {
     http_response_code(200);

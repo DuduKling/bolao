@@ -2,17 +2,17 @@
 function getFixtures($parteId, $statusAposta) {
     global $db;
 
-    $query2 = "SELECT campeonato.nome as campeonato, fase.nome as fase, parte.nome as parte, f.Id, f.score_homeTeam, b.nome as home_nome, b.image as home_image, f.score_awayTeam, a.nome as away_nome, a.image as away_image, f.dateTime, f.local FROM fixture f
+    $query2 = "SELECT championship.name as championship, phase.name as phase, part.name as part, f.Id, f.score_homeTeam, b.name as home_name, b.imagePath as home_imagePath, f.score_awayTeam, a.name as away_name, a.imagePath as away_imagePath, f.dateTime, f.location FROM fixture f
         INNER JOIN team a ON f.awayTeam_Id=a.Id 
         INNER JOIN team b ON f.homeTeam_Id=b.Id 
-        INNER JOIN parte ON f.parte_id=parte.Id
-        INNER JOIN fase ON parte.fase_Id=fase.Id
-        INNER JOIN campeonato ON fase.campeonato_Id=campeonato.Id
-        WHERE parte.id=:parteID AND parte.status=:statusAposta ORDER BY f.Id ASC, dateTime ASC";
+        INNER JOIN part ON f.part_id=part.Id
+        INNER JOIN phase ON part.phase_Id=phase.Id
+        INNER JOIN championship ON phase.championship_Id=championship.Id
+        WHERE part.id=:partID AND part.status=:statusAposta ORDER BY f.Id ASC, dateTime ASC";
 
     $stmt2 = $db->prepare($query2);
 
-    $stmt2->bindParam(':parteID', $parteId);
+    $stmt2->bindParam(':partID', $parteId);
     $stmt2->bindParam(':statusAposta', $statusAposta);
 
     $stmt2->execute();
@@ -33,29 +33,29 @@ function getFixtures($parteId, $statusAposta) {
 
         $fixture->idfixture = $row['Id'];
         $fixture->datetime = date("d/m/Y H:i", strtotime($row['dateTime']));
-        $fixture->local = $row['local'];
+        $fixture->local = $row['location'];
 
         $fixture->home_score = $row['score_homeTeam'];
-        $fixture->home_team_name = $row['home_nome'];
-        $fixture->home_path = $row['home_image'];
+        $fixture->home_team_name = $row['home_name'];
+        $fixture->home_path = $row['home_imagePath'];
 
         $fixture->away_score = $row['score_awayTeam'];
-        $fixture->away_team_name = $row['away_nome'];
-        $fixture->away_path = $row['away_image'];
+        $fixture->away_team_name = $row['away_name'];
+        $fixture->away_path = $row['away_imagePath'];
 
         array_push($fixtures, $fixture);
 
-        $campeonato = $row['campeonato'];
-        $fase = $row['fase'];
-        $parte = $row['parte'];
+        $campeonato = $row['championship'];
+        $fase = $row['phase'];
+        $parte = $row['part'];
     }
 
     http_response_code(200);
     echo json_encode(array(
         "fixtures" => $fixtures,
-        "campeonato" => $campeonato,
-        "fase" => $fase,
-        "parte" => $parte
+        "championship" => $campeonato,
+        "phase" => $fase,
+        "part" => $parte
     ));
 }
 ?>

@@ -15,20 +15,20 @@ $inputData = json_decode(file_get_contents("php://input"));
 $faseId = $inputData->faseID;
 $userName = $inputData->userName;
 
-$query = "SELECT c.nome as campeonato, fa.nome as fase, u.imagePath as userImage, f.Id, bet.bet_homeTeam, tb.nome as home_nome, tb.image as home_image, bet.bet_awayTeam, ta.nome as away_nome, ta.image as away_image, f.dateTime, f.local, bet.points, f.score_homeTeam as final_scoreHome, f.score_awayTeam as final_scoreAway FROM bet
+$query = "SELECT c.nome as championship, fa.nome as phase, u.imagePath as userImagePath, f.Id, bet.bet_homeTeam, tb.nome as home_nome, tb.imagePath as home_imagePath, bet.bet_awayTeam, ta.nome as away_nome, ta.imagePath as away_imagePath, f.dateTime, f.location, bet.points, f.score_homeTeam as final_scoreHome, f.score_awayTeam as final_scoreAway FROM bet
     INNER JOIN users u ON bet.users_Id=u.Id
     INNER JOIN fixture f ON bet.fixture_Id=f.Id
-    INNER JOIN parte p ON f.parte_id=p.Id
-    INNER JOIN fase fa ON p.fase_Id=fa.Id
-    INNER JOIN campeonato c ON fa.campeonato_Id=c.Id
+    INNER JOIN part p ON f.part_id=p.Id
+    INNER JOIN phase fa ON p.phase_Id=fa.Id
+    INNER JOIN championship c ON fa.championship_Id=c.Id
     INNER JOIN team ta ON f.awayTeam_Id=ta.Id 
     INNER JOIN team tb ON f.homeTeam_Id=tb.Id
-    WHERE fa.Id=:faseID AND u.name=:userName";
+    WHERE fa.Id=:phaseID AND u.name=:userName";
 
 $stmt = $db->prepare($query);
 
 $stmt->bindParam(':userName', $userName);
-$stmt->bindParam(':faseID', $faseId);
+$stmt->bindParam(':phaseID', $faseId);
 
 $stmt->execute();
 $num = $stmt->rowCount();
@@ -49,15 +49,15 @@ foreach($dbFixtures as $row){
 
     $fixture->idfixture = $row['Id'];
     $fixture->datetime = date("d/m/Y H:i", strtotime($row['dateTime']));
-    $fixture->local = $row['local'];
+    $fixture->local = $row['location'];
 
     $fixture->home_score = $row['bet_homeTeam'];
     $fixture->home_team_name = $row['home_nome'];
-    $fixture->home_path = $row['home_image'];
+    $fixture->home_path = $row['home_imagePath'];
 
     $fixture->away_score = $row['bet_awayTeam'];
     $fixture->away_team_name = $row['away_nome'];
-    $fixture->away_path = $row['away_image'];
+    $fixture->away_path = $row['away_imagePath'];
 
     $fixture->final_scoreHome = $row['final_scoreHome'];
     $fixture->final_scoreAway = $row['final_scoreAway'];
@@ -65,16 +65,16 @@ foreach($dbFixtures as $row){
 
     array_push($fixtures, $fixture);
 
-    $campeonato = $row['campeonato'];
-    $fase = $row['fase'];
-    $userImage = $row['userImage'];
+    $campeonato = $row['championship'];
+    $fase = $row['phase'];
+    $userImage = $row['userImagePath'];
 }
 
 http_response_code(200);
 echo json_encode(array(
     "fixtures" => $fixtures,
-    "campeonato" => $campeonato,
-    "fase" => $fase,
-    "userImage" => $userImage
+    "championship" => $campeonato,
+    "phase" => $fase,
+    "userImagePath" => $userImage
 ));
 ?>

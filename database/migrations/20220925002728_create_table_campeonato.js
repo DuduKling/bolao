@@ -4,12 +4,12 @@
  */
 exports.up = function(knex) {
     const query = knex.schema
-        .createTable('campeonato', function (table) {
+        .createTable('championship', function (table) {
             table.increments('Id');
-            table.string('nome', 255).notNullable();
+            table.string('name', 255).notNullable();
             table.string('logo', 255).notNullable();
-            table.date('dataInicio').notNullable();
-            table.date('dataFim').notNullable();
+            table.date('startDate').notNullable();
+            table.date('endDate').notNullable();
         });
 
     if (knex.client.config.onlyLogQuery) {
@@ -26,5 +26,5 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
     return knex.schema
-        .dropTable('campeonato');
+        .dropTable('championship');
 };

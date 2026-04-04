@@ -14,11 +14,11 @@ $inputData = json_decode(file_get_contents("php://input"));
 
 $campeonatoId = $inputData->campeonatoID;
 
-$query = "SELECT * FROM campeonato WHERE Id=:campeonatoID";
+$query = "SELECT * FROM championship WHERE Id=:championshipID";
 
 $stmt = $db->prepare($query);
 
-$stmt->bindParam(':campeonatoID', $campeonatoId);
+$stmt->bindParam(':championshipID', $campeonatoId);
 
 $stmt->execute();
 $num = $stmt->rowCount();
@@ -34,17 +34,17 @@ $campeonato = new stdClass;
 
 foreach ($dbCampeonato as $row) {
     $campeonato->idCampeonato = $row['Id'];
-    $campeonato->nomeCampeonato = $row['nome'];
+    $campeonato->nomeCampeonato = $row['name'];
     $campeonato->logoCampeonato = $row['logo'];
-    $campeonato->dataInicioCampeonato = date_format($date = date_create($row['dataInicio']), 'd/m/Y');
+    $campeonato->dataInicioCampeonato = date_format($date = date_create($row['startDate']), 'd/m/Y');
 
     // Fase
-    $queryFase = "SELECT * FROM fase WHERE 
-        campeonato_Id=:campeonatoID";
+    $queryFase = "SELECT * FROM phase WHERE 
+        championship_Id=:championshipID";
 
     $stmtFase = $db->prepare($queryFase);
 
-    $stmtFase->bindParam(':campeonatoID', $row['Id']);
+    $stmtFase->bindParam(':championshipID', $row['Id']);
 
     $stmtFase->execute();
     $numFase = $stmtFase->rowCount();
@@ -58,15 +58,15 @@ foreach ($dbCampeonato as $row) {
             $fase = new stdClass;
 
             $fase->id = $rowFase['Id'];
-            $fase->nomeFase = $rowFase['nome'];
+            $fase->nomeFase = $rowFase['name'];
 
             // Parte
-            $queryParte = "SELECT * FROM parte WHERE 
-                fase_Id=:faseID";
+            $queryParte = "SELECT * FROM part WHERE 
+                phase_Id=:phaseID";
 
             $stmtParte = $db->prepare($queryParte);
 
-            $stmtParte->bindParam(':faseID', $rowFase['Id']);
+            $stmtParte->bindParam(':phaseID', $rowFase['Id']);
 
             $stmtParte->execute();
             $numParte = $stmtParte->rowCount();
@@ -80,7 +80,7 @@ foreach ($dbCampeonato as $row) {
                     $parte = new stdClass;
 
                     $parte->id = $rowParte['Id'];
-                    $parte->nomeParte = $rowParte['nome'];
+                    $parte->nomeParte = $rowParte['name'];
                     $parte->statusParte = $rowParte['status'];
 
                     array_push($partes, $parte);

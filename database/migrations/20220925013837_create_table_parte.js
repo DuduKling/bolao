@@ -4,13 +4,13 @@
  */
 exports.up = function(knex) {
     const query = knex.schema
-        .createTable('parte', function (table) {
+        .createTable('part', function (table) {
             table.increments('Id');
-            table.string('nome', 255).notNullable();
+            table.string('name', 255).notNullable();
             table.string('status', 255).notNullable();
 
-            table.integer('fase_Id').unsigned();
-            table.foreign('fase_Id').references('Id').inTable('fase');
+            table.integer('phase_Id').unsigned();
+            table.foreign('phase_Id').references('Id').inTable('phase');
         });
 
     if (knex.client.config.onlyLogQuery) {
@@ -27,5 +27,5 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
     return knex.schema
-        .dropTable('parte');
+        .dropTable('part');
 };
