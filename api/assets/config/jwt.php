@@ -8,7 +8,8 @@ class CustomJWT {
         error_reporting(E_ALL);
         date_default_timezone_set($env["JWT_TIMEZONE"]);
 
-        $this->key = $env["JWT_KEY"];
+        $this->pubKey = $env["JWT_PUB_KEY"];
+        $this->privKey = $env["JWT_PRIV_KEY"];
         $this->iss = $env["URL_FRONT"]; //"iss" (Issuer) Claim
         $this->aud = $env["URL_FRONT"]; //"aud" (Audience) Claim
 
@@ -27,14 +28,14 @@ class CustomJWT {
             "data" => $data
         );
 
-        return JWT::encode($values, $this->key, $this->algorithm);
+        return JWT::encode($values, $this->privKey, $this->algorithm);
     }
 
     public function decodeToken($token) {
         $decoded = null;
 
         try {
-            $decoded = JWT::decode($token, new Key($this->key, $this->algorithm));
+            $decoded = JWT::decode($token, new Key($this->pubKey, $this->algorithm));
         } catch (Exception $e) {
             return $decoded;
         }

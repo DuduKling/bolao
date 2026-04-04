@@ -109,13 +109,19 @@ npm run knex seed:run
 
 #### API
 
-Pode ser necessário configurar o php para acessar o banco mariadb/mysql, para isso:
-- Copie o arquivo o `php.ini-development` e cole como `php.ini`.
-- Abra o arquivo e ajuste as seguintes informações:
-    - Remova o símbolo `;` da linha `;extension_dir = "ext"`.
-    - Remova o símbolo `;` da linha `;extension=pdo_mysql`.
+1. Pode ser necessário configurar o php para acessar o banco mariadb/mysql, para isso:
+    - Copie o arquivo o `php.ini-development` e cole como `php.ini`.
+    - Abra o arquivo e ajuste as seguintes informações:
+        - Remova o símbolo `;` da linha `;extension_dir = "ext"`.
+        - Remova o símbolo `;` da linha `;extension=pdo_mysql`.
 
-Crie e configure o arquivo `.env` baseado no arquivo `.env.development`.
+2. Crie e configure o arquivo `.env` baseado no arquivo `.env.development`.
+
+3. Crie um par de chaves para os tokens JWT:
+    - Execute no `Git Bash` os comandos:
+        - Criar chave privada: `openssl genrsa -out private.key 2048`.
+        - Extrair chave pública: `openssl rsa -in private.key -pubout -out public.pem`.
+    - Configure corretamente no arquivo `.env`.
 
 ### Executar
 
