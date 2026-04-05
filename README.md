@@ -117,7 +117,7 @@ npm run knex seed:run
 
 2. Crie e configure o arquivo `.env` baseado no arquivo `.env.development`.
 
-3. Crie um par de chaves para os tokens JWT:
+3. Crie um par de chaves `RSA` para os tokens JWT:
     - Execute no `Git Bash` os comandos:
         - Criar chave privada: `openssl genrsa -out private.key 2048`.
         - Extrair chave pública: `openssl rsa -in private.key -pubout -out public.pem`.

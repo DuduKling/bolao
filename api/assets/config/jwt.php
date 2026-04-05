@@ -13,7 +13,7 @@ class CustomJWT {
         $this->iss = $env["URL_FRONT"]; //"iss" (Issuer) Claim
         $this->aud = $env["URL_FRONT"]; //"aud" (Audience) Claim
 
-        $this->algorithm = 'HS256';
+        $this->algorithm = 'RS256';
     }
 
     public function createToken($data) {
