@@ -38,18 +38,18 @@ function PageContato() {
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/email/enviaEmailContato.php`,
                 data: dataString,
-                thenCallback: (response) => {
+            })
+                .then((response) => {
                     setAjaxSuccessResp(response.message.toString());
 
                     setLoading(false);
-                },
-                catchCallback: ({ message }) => {
+                })
+                .catch(({ message }) => {
                     setAjaxErrorResp(message);
                     setAjaxSuccessResp('0');
 
                     setLoading(false);
-                },
-            });
+                });
         }
     };
 

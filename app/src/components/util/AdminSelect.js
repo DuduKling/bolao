@@ -24,14 +24,14 @@ function AdminSelect(props) {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/changeCampeonatoState.php`,
             data: dataString,
-            thenCallback: () => {
+        })
+            .then(() => {
                 setLoading(false);
                 props.updateCampeonatos();
-            },
-            catchCallback: () => {
+            })
+            .catch(() => {
                 setLoading(false);
-            },
-        });
+            });
     };
 
     const isSelected = (value) => {

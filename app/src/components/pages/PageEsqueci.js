@@ -51,15 +51,15 @@ function PageEsqueci() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/email/enviaEmailRedefinir.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setAjaxSuccessResp(response.message.toString());
                 setLoading(false);
-            },
-            catchCallback: ({ message }) => {
+            })
+            .catch(({ message }) => {
                 setAjaxErrorResp(message);
                 setLoading(false);
-            },
-        });
+            });
     };
 
     const showEmailForm = () => {

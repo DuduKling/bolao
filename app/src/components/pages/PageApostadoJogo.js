@@ -44,16 +44,16 @@ function PageApostadoJogo() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromFixture.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setLoading(false);
                 setFixtures(response.fixtures);
 
                 localStorage.setItem(faseID + fixtureID + 'campeonatoJogo', JSON.stringify(response.fixtures));
-            },
-            catchCallback: () => {
+            })
+            .catch(() => {
                 setLoading(false);
-            },
-        });
+            });
     };
 
     return (

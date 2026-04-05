@@ -34,16 +34,16 @@ function PageAdmin() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatos.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setCampeonatos(response);
                 setLoading(false);
 
                 localStorage.setItem('campeonatos', JSON.stringify(response));
-            },
-            catchCallback: () => {
+            })
+            .catch(() => {
                 setLoading(false);
-            },
-        });
+            });
     };
 
     const showCampeonatos = (campeonato, index) => {

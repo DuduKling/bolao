@@ -51,23 +51,23 @@ function PageApostar() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixtures.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setFixtures(response.fixtures);
                 setCampeonato(response.campeonato);
                 setFase(response.fase);
                 setParte(response.parte);
 
                 setLoading(false);
-            },
-            catchCallback: ({ message }) => {
+            })
+            .catch(({ message }) => {
                 setLoading(false);
                 setError(message);
 
                 if (message.includes('#FGF1')) {
                     setIsBet(true);
                 }
-            },
-        });
+            });
     };
 
     const sendBets = async (event) => {
@@ -93,15 +93,15 @@ function PageApostar() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/makeBets.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setResp(response.message);
                 setLoading2(false);
-            },
-            catchCallback: ({ message }) => {
+            })
+            .catch(({ message }) => {
                 setError(message);
                 setLoading2(false);
-            },
-        });
+            });
     };
 
     const AJAXresp = () => {
@@ -133,7 +133,7 @@ function PageApostar() {
     };
 
     const showButtonToUserBets = () => {
-        const {campeonato, fase } = params;
+        const { campeonato, fase } = params;
 
         const buttonLink = `/campeonato/${campeonato}/${fase}/apostado/${userName}`;
         return (

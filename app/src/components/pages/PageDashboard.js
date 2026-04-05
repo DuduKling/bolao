@@ -58,31 +58,31 @@ function PageDashboard() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setLoading(false);
                 setFixtures(response.fixtures);
 
                 localStorage.setItem(campeonatoID + faseID + 'fixtures', JSON.stringify(response.fixtures));
-            },
-            catchCallback: () => {
+            })
+            .catch(() => {
                 setLoading(false);
-            },
-        });
+            });
 
         // Rank
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getRank.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setLoading(false);
                 setRank(response.rank);
 
                 localStorage.setItem(campeonatoID + faseID + 'rank', JSON.stringify(response.rank));
-            },
-            catchCallback: () => {
+            })
+            .catch(() => {
                 setLoading(false);
-            },
-        });
+            });
 
         dataString = JSON.stringify({
             campeonatoID,
@@ -93,14 +93,14 @@ function PageDashboard() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatoInfo.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setCampeonato(response.campeonato);
 
                 localStorage.setItem(campeonatoID + faseID + 'campeonato', JSON.stringify(response.campeonato));
-            },
-            catchCallback: () => {
-            },
-        });
+            })
+            .catch(() => {
+            });
     };
 
     const checkStatus = () => {

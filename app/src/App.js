@@ -60,7 +60,8 @@ function App() {
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/validateCookie.php`,
                 data: dataString,
-                thenCallback: (response) => {
+            })
+                .then((response) => {
                     dispatch(updateJWT({
                         userName: response.name,
                         userEmail: response.email,
@@ -69,13 +70,12 @@ function App() {
                         userRole: response.userRole,
                         userJWT: response.jwt,
                     }));
-                },
-                catchCallback: ({ message }) => {
+                })
+                .catch(({ message }) => {
                     if (message === 'JWT não decodificado') {
                         cookie.set('userLogin', '', 0);
                     }
-                },
-            });
+                });
         }
 
         setLoading(false);

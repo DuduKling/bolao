@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class http {
 
-    static post({ url, data, thenCallback, catchCallback }) {
+    static post({ url, data }) {
         return new Promise((resolve, reject) => {
             const isDebug = process.env.REACT_APP_DEBUG === 'true';
 
@@ -17,8 +17,7 @@ class http {
                     console.groupEnd();
                 }
 
-                thenCallback(response.data);
-                resolve();
+                resolve(response.data);
             }
 
             function catchThen(error) {
@@ -43,8 +42,7 @@ class http {
                     console.groupEnd();
                 }
 
-                catchCallback(error.response.data);
-                reject();
+                reject(error.response.data);
             }
 
             axios.post(url, data)

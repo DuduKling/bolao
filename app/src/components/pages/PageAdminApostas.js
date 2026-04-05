@@ -32,15 +32,15 @@ function PageAdminApostas() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/getApostasRealizadas.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setPartes(response.partes);
                 setListNames(response.listNames);
                 setLoading(false);
-            },
-            catchCallback: () => {
+            })
+            .catch(() => {
                 setLoading(false);
-            },
-        });
+            });
     };
 
     const showHeader = () => {

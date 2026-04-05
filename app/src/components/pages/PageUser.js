@@ -61,7 +61,8 @@ function PageUser() {
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 data: dataString,
-                thenCallback: (response) => {
+            })
+                .then((response) => {
                     dispatch(updateJWT({
                         userName: response.name,
                         userEmail: response.email,
@@ -73,14 +74,13 @@ function PageUser() {
                     setAjax1SuccessResp(response.message.toString());
 
                     setLoading1(false);
-                },
-                catchCallback: ({ message }) => {
+                })
+                .catch(({ message }) => {
                     setAjax1ErrorResp(message);
                     setAjax1SuccessResp('0');
 
                     setLoading1(false);
-                },
-            });
+                });
         }
     };
 
@@ -109,18 +109,18 @@ function PageUser() {
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 data: dataString,
-                thenCallback: (response) => {
+            })
+                .then((response) => {
                     setAjax2SuccessResp(response.message.toString());
 
                     setLoading2(false);
-                },
-                catchCallback: ({ message }) => {
+                })
+                .catch(({ message }) => {
                     setAjax2ErrorResp(message);
                     setAjax2SuccessResp('0');
 
                     setLoading2(false);
-                },
-            });
+                });
         }
     };
 
@@ -143,20 +143,20 @@ function PageUser() {
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/uploadAvatar.php`,
                 data: formData,
-                thenCallback: (response) => {
+            })
+                .then((response) => {
                     dispatch(updateImage({ userImg: response.userImg }));
 
                     setAjax3SuccessResp(response.message.toString());
 
                     setLoading3(false);
-                },
-                catchCallback: ({ message }) => {
+                })
+                .catch(({ message }) => {
                     setAjax3ErrorResp(message);
                     setAjax3SuccessResp('0');
 
                     setLoading3(false);
-                },
-            });
+                });
         }
     };
 
@@ -235,7 +235,7 @@ function PageUser() {
             return selectedFileURL;
         }
 
-        if(userImg) {
+        if (userImg) {
             return userImg;
         }
 

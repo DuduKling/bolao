@@ -72,17 +72,17 @@ function PageAdminScore() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/postResult.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setResp(response.message);
                 setLoading2(false);
 
                 getFixtures();
-            },
-            catchCallback: ({ message }) => {
+            })
+            .catch(({ message }) => {
                 setError(message);
                 setLoading2(false);
-            },
-        });
+            });
     };
 
     const getFixtures = async () => {
@@ -98,19 +98,19 @@ function PageAdminScore() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixtures.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setFixtures(response.fixtures);
                 setCampeonato(response.campeonato);
                 setFase(response.fase);
                 setParte(response.parte);
 
                 setLoading(false);
-            },
-            catchCallback: ({ message }) => {
+            })
+            .catch(({ message }) => {
                 setError(message);
                 setLoading(false);
-            },
-        });
+            });
     };
 
     const AJAXresp = () => {

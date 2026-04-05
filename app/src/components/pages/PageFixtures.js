@@ -52,14 +52,14 @@ function PageFixtures() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setFixtures(response.fixtures);
                 setLoading(false);
 
                 localStorage.setItem(campeonatoID + faseID + 'fixtures', JSON.stringify(response.fixtures));
-            },
-            catchCallback: () => { },
-        });
+            })
+            .catch(() => { });
 
         dataString = JSON.stringify({
             campeonatoID,
@@ -69,13 +69,13 @@ function PageFixtures() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatoInfo.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setCampeonato(response.campeonato);
 
                 localStorage.setItem(campeonatoID + faseID + 'campeonato', JSON.stringify(response.campeonato));
-            },
-            catchCallback: () => { },
-        });
+            })
+            .catch(() => { });
     };
 
     const checkFaseName = () => {

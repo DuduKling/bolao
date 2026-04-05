@@ -68,17 +68,17 @@ function PageRedefinir() {
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/update.php`,
                 data: dataString,
-                thenCallback: (response) => {
+            })
+                .then((response) => {
                     setAjaxSuccessResp(response.message.toString());
                     setLoading(false);
-                },
-                catchCallback: ({ message }) => {
+                })
+                .catch(({ message }) => {
                     setAjaxErrorResp(message);
                     setAjaxSuccessResp('');
 
                     setLoading(false);
-                },
-            });
+                });
         }
     };
 

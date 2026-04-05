@@ -142,7 +142,8 @@ function PageLogin() {
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/login.php`,
                 data: dataString,
-                thenCallback: (response) => {
+            })
+                .then((response) => {
                     dispatch(updateJWT({
                         userName: response.name,
                         userEmail: response.email,
@@ -159,12 +160,11 @@ function PageLogin() {
                     }
 
                     navigate('/user/campeonatos');
-                },
-                catchCallback: ({ message }) => {
+                })
+                .catch(({ message }) => {
                     setAjaxErrorResp(message);
                     setAjaxSuccessResp('0');
-                },
-            });
+                });
         }
     };
 
@@ -183,16 +183,16 @@ function PageLogin() {
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/create.php`,
                 data: dataString,
-                thenCallback: (response) => {
+            })
+                .then((response) => {
                     setAjaxSuccessResp(response.message);
 
                     navigate('/user/login');
-                },
-                catchCallback: ({ message }) => {
+                })
+                .catch(({ message }) => {
                     setAjaxErrorResp(message);
                     setAjaxSuccessResp('0');
-                },
-            });
+                });
         }
     };
 

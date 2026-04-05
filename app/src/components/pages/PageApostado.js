@@ -51,7 +51,8 @@ function PageApostado() {
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromUser.php`,
             data: dataString,
-            thenCallback: (response) => {
+        })
+            .then((response) => {
                 setLoading(false);
 
                 setFixtures(response.fixtures);
@@ -60,11 +61,10 @@ function PageApostado() {
                 setFase(response.fase);
 
                 localStorage.setItem(userName + faseID + 'fixtures', JSON.stringify(response.fixtures));
-            },
-            catchCallback: () => {
+            })
+            .catch(() => {
                 setLoading(false);
-            },
-        });
+            });
     };
 
     return (
@@ -75,10 +75,9 @@ function PageApostado() {
 
                     <div className="userImage-container">
                         <div className="userImage">
-                            <img src={userImage ?
-                                userImage
-                                : Avatar}
-                            alt="Avatar do usuário" />
+                            <img
+                                src={userImage ? userImage : Avatar}
+                                alt="Avatar do usuário" />
                         </div>
                     </div>
 
