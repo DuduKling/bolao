@@ -7,7 +7,7 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$inputData = json_decode(file_get_contents("php://input"));
+$reqBody = json_decode(file_get_contents("php://input"));
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
 $db = new DatabaseConnection($env);
@@ -15,15 +15,17 @@ $db = new DatabaseConnection($env);
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/user.php';
 $user = new User($db);
 
-$user->email = $inputData->email;
+$user->name = $reqBody->name;
+$user->phoneNumber = $reqBody->phoneNumber;
+$user->fingerprint = $reqBody->fingerprint;
 
-$emailExists = $user->CheckIfEmailExists();
-$passwordMatch = password_verify($inputData->password, $user->password);
+$userExists = $user->checkIfExists();
+$passwordMatch = $user->matchPassword($reqBody->fingerprint);
 
-if (!$emailExists || !$passwordMatch) {
+if (!$userExists || !$passwordMatch) {
     http_response_code(401);
     echo json_encode(array(
-        "message" => "Não foi possível realizar o login. Email ou senha podem estar errados."
+        "message" => "Não foi possível realizar o login. Nome ou telefone podem estar errados. Este é um dispositivo diferente do que foi utilizado para criar o usuário? Tente novamente utilizando o link de \"Perdi o acesso\"."
     ));
     exit();
 }
@@ -32,20 +34,18 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/jwt.php';
 $customJWT = new CustomJWT($env);
 
 $jwt = $customJWT->createToken(array(
-    "id" => $user->id,
-    "completename" => $user->completename,
-    "email" => $user->email
+    "name" => $user->name,
+    "phoneNumber" => $user->phoneNumber,
+    "createdAt" => date(DATE_ATOM)
 ));
 
 echo json_encode(
     array(
         "message" => "Login efetuado com sucesso!",
+        "name" => $user->name,
+        "phoneNumber" => $user->phoneNumber,
+        "role" => $user->role,
         "jwt" => $jwt,
-        "name" => $user->completename,
-        "email" => $user->email,
-        "imagePath" => $user->imagePath,
-        "userRole" => $user->role,
-        "id" => $user->id
     )
 );
 ?>

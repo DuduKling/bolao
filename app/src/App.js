@@ -8,6 +8,7 @@ import { updateJWT } from './redux/slicer/authSlicer';
 
 import http from './util/http';
 import cookie from './util/cookie';
+import Fingerprint from './util/fingerprint';
 
 import PrivateRoute from './components/util/Auth';
 import PrivateRouteAdmin from './components/util/AuthAdmin';
@@ -25,6 +26,7 @@ import PageAdminScore from './components/pages/PageAdminScore';
 import PageApostado from './components/pages/PageApostado';
 import PageApostadoJogo from './components/pages/PageApostadoJogo';
 import PageApostar from './components/pages/PageApostar';
+import PageCadastrar from './components/pages/PageCadastrar';
 import PageCampeonatos from './components/pages/PageCampeonatos';
 import PageContato from './components/pages/PageContato';
 import PageDashboard from './components/pages/PageDashboard';
@@ -50,30 +52,29 @@ function App() {
     }, []);
 
     const didMount = async () => {
-        const userInfo = cookie.get('userLogin');
+        const userInfo = cookie.get('userJWT');
 
         if (userInfo) {
             const dataString = JSON.stringify({
                 jwt: userInfo,
+                fingerprint: await Fingerprint.get(),
             });
 
             await http.post({
-                url: `${process.env.REACT_APP_URL_BACK}/api/v1/validateCookie.php`,
+                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/validateCookie.php`,
                 data: dataString,
             })
                 .then((response) => {
                     dispatch(updateJWT({
                         userName: response.name,
-                        userEmail: response.email,
-                        userId: response.id,
-                        userImg: response.userImg,
-                        userRole: response.userRole,
+                        userPhoneNumber: response.phoneNumber,
+                        userUserRole: response.role,
                         userJWT: response.jwt,
                     }));
                 })
                 .catch(({ message }) => {
                     if (message === 'JWT não decodificado') {
-                        cookie.set('userLogin', '', 0);
+                        cookie.set('userJWT', '', 0);
                     }
                 });
         }
@@ -99,7 +100,8 @@ function App() {
                             <Route element={<PrivateRouteAlready />} >
                                 <Route path='' element={<Page404 />} />
 
-                                <Route path=':typeOfLogin' element={<PageLogin />} />
+                                <Route path='login' element={<PageLogin />} />
+                                <Route path='cadastrar' element={<PageCadastrar />} />
 
                                 <Route path='esqueci' element={<PageEsqueci />} />
 
@@ -127,12 +129,12 @@ function App() {
                             <Route path=':campeonato/:fase/jogos' element={<PageFixtures />} />
                             <Route path=':campeonato/:fase/jogo/:fixture' element={<PageApostadoJogo />} />
                             <Route path=':campeonato/:fase/apostado/:nome' element={<PageApostado />} />
-                            <Route path=':campeonato/:fase/:parte/apostar' element={<PageApostar/>} />
+                            <Route path=':campeonato/:fase/:parte/apostar' element={<PageApostar />} />
 
                             {/* ADMIN - RESTRICTED */}
                             <Route path=':campeonato' element={<PrivateRouteAdmin />} >
-                                <Route path=':fase/admin' element={<PageAdminApostas/>} />
-                                <Route path=':fase/:parte/admin' element={<PageAdminScore/>} />
+                                <Route path=':fase/admin' element={<PageAdminApostas />} />
+                                <Route path=':fase/:parte/admin' element={<PageAdminScore />} />
                             </Route>
                         </Route>
                     </Route>

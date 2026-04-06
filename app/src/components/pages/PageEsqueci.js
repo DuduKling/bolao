@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
-import $ from 'jquery';
+import { useNavigate } from 'react-router-dom';
 
 import '../../css/pages/login.css';
 
 import http from '../../util/http';
+import cookie from '../../util/cookie';
 
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
+import Fingerprint from '../../util/fingerprint';
 
-import Loading from '../util/Loading';
+import { useDispatch } from 'react-redux';
+import { updateJWT } from '../../redux/slicer/authSlicer';
 
 function PageEsqueci() {
     const [ajaxErrorResp, setAjaxErrorResp] = useState('');
     const [ajaxSuccessResp, setAjaxSuccessResp] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [nameValue, setNameValue] = useState('');
+    const [phoneNumberValue, setPhoneNumberValue] = useState('');
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const showFormMessages = () => {
         if (ajaxErrorResp === '' && ajaxSuccessResp === '') {
@@ -35,69 +42,77 @@ function PageEsqueci() {
         }
     };
 
-    const sendEmailForm = async (evento) => {
+    const sendFormAjax = async (evento) => {
         evento.preventDefault();
 
         setAjaxSuccessResp('');
         setAjaxErrorResp('');
-        setLoading(false);
-
-        const emailValue = $('input[name=\'email\']').val();
 
         const dataString = JSON.stringify({
-            email: emailValue,
+            name: nameValue.trim(),
+            phoneNumber: phoneNumberValue,
+            fingerprint: await Fingerprint.get(),
         });
 
         await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/email/enviaEmailRedefinir.php`,
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/redefinirAcesso.php`,
             data: dataString,
         })
             .then((response) => {
-                setAjaxSuccessResp(response.message.toString());
-                setLoading(false);
+                dispatch(updateJWT({
+                    userName: response.name,
+                    userPhoneNumber: response.phoneNumber,
+                    userUserRole: response.role,
+                    userJWT: response.jwt,
+                }));
+
+                cookie.set('userJWT', response.jwt, 7);
+
+                navigate('/user/campeonatos');
             })
             .catch(({ message }) => {
                 setAjaxErrorResp(message);
-                setLoading(false);
+                setAjaxSuccessResp('0');
             });
-    };
-
-    const showEmailForm = () => {
-        if (ajaxSuccessResp === '') {
-            return (
-                <form
-                    className="form"
-                    onSubmit={(event) => sendEmailForm(event)}
-                    method="post"
-                >
-                    <p>Confirme seu e-mail:</p>
-
-                    <MaterialTextInput
-                        labelName="E-mail"
-                        fieldName="email"
-                        fieldType="email"
-                    />
-
-                    <input
-                        type="submit"
-                        className="SendButton"
-                        value="Enviar e-mail"
-                    />
-                </form>
-            );
-        }
     };
 
     return (
         <div className="login-container">
             <div className="form-container">
-                <h2>Esqueci a senha</h2>
+                <h2>Perdi o acesso</h2>
 
-                {showEmailForm()}
+                <form
+                    className="form"
+                    onSubmit={(event) => sendFormAjax(event)}
+                    method="post"
+                >
+                    <p>Confirme seus dados:</p>
 
-                <Loading loading={loading} />
+                    <MaterialTextInput
+                        labelName="Nome"
+                        fieldName="name"
+                        fieldType="text"
+                        fieldController={setNameValue}
+                    />
+
+                    <MaterialTextInput
+                        labelName="Telefone"
+                        fieldName="phoneNumber"
+                        fieldType="tel"
+                        maxLength="11"
+                        fieldController={setPhoneNumberValue}
+                    />
+
+                    <input
+                        type="submit"
+                        className="SendButton"
+                        value="Quero acessar"
+                    />
+                </form>
 
                 {showFormMessages()}
+
+                <p>Na dúvida entre em contato com o Administrador.</p>
             </div>
             <Canvas />
         </div>

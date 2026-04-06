@@ -5,6 +5,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^5.1.0",
     "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.14.0",
     "jquery": "^4.0.0",

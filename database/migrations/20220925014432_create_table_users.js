@@ -6,15 +6,16 @@ exports.up = function(knex) {
     const query = knex.schema
         .createTable('users', function (table) {
             table.increments('Id');
-            table.string('name', 255).notNullable();
-            table.string('email', 255).notNullable();
-            table.string('passwd', 255).notNullable();
 
-            table.string('imagePath', 255);
+            table.string('name', 255).notNullable();
+            table.string('phoneNumber', 255).notNullable();
+            table.string('passwd', 1020).notNullable();
+            table.string('salt', 255).notNullable();
+
             table.string('role', 255);
 
             table.dateTime('createdAt').notNullable().defaultTo(knex.fn.now());
-            table.dateTime('modified').defaultTo(knex.fn.now());
+            table.dateTime('modifiedAt').defaultTo(knex.fn.now());
         });
 
     if (knex.client.config.onlyLogQuery) {

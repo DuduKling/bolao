@@ -3,12 +3,13 @@ class User {
     private $conn;
     private $tableName = "users";
 
-    public $id;
-    public $completename;
-    public $email;
-    public $password;
-    public $imagePath;
+    public $name;
+    public $phoneNumber;
     public $role;
+    public $fingerprint;
+
+    public $id;
+    public $salt;
 
     public function __construct($db) {
         $this->conn = $db;
@@ -17,27 +18,32 @@ class User {
     public function create() {
 
         // insert query
-        $query = "INSERT INTO " . $this->tableName . "
+        $query = "INSERT INTO {$this->tableName}
                 SET
-                    name = :completename,
-                    email = :email,
-                    passwd = :password";
+                    name = :name,
+                    phoneNumber = :phoneNumber,
+                    passwd = :password,
+                    salt = :salt";
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
 
         // sanitize
-        $this->completename = htmlspecialchars(strip_tags($this->completename));
-        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->phoneNumber = htmlspecialchars(strip_tags($this->phoneNumber));
         $this->password = htmlspecialchars(strip_tags($this->password));
 
-        // bind the values
-        $stmt->bindParam(':completename', $this->completename);
-        $stmt->bindParam(':email', $this->email);
+        // create a unique salt for this user
+        $salt = uniqid(mt_rand(), true);
 
-        // hash the password before saving to database
-        $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
+        // join the password and salt together, and hash them
+        $password_hash = password_hash($this->fingerprint . $salt, PASSWORD_BCRYPT);
+
+        // bind the values
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':phoneNumber', $this->phoneNumber);
         $stmt->bindParam(':password', $password_hash);
+        $stmt->bindParam(':salt', $salt);
 
         // execute the query, also check if query was successful
         if ($stmt->execute()) {
@@ -47,18 +53,18 @@ class User {
         return false;
     }
 
-    public function find($id) {
+    public function find() {
         $query = "SELECT *
-            FROM users
-            WHERE Id = ?
+            FROM {$this->tableName}
+            WHERE name = :name
+            AND phoneNumber = :phoneNumber
             LIMIT 0,1
         ";
 
         $stmt = $this->conn->prepare($query);
 
-        $this->id=htmlspecialchars(strip_tags($id));
-
-        $stmt->bindParam(1, $id);
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':phoneNumber', $this->phoneNumber);
 
         $stmt->execute();
 
@@ -67,10 +73,9 @@ class User {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             $this->id = $row['Id'];
-            $this->completename = $row['name'];
-            $this->email = $row['email'];
-            $this->password = $row['passwd'];
-            $this->imagePath = $row['imagePath'];
+            $this->name = $row['name'];
+            $this->phoneNumber = $row['phoneNumber'];
+            $this->salt = $row['salt'];
             $this->role = $row['role'];
 
             return true;
@@ -79,22 +84,25 @@ class User {
         return false;
     }
 
-    public function CheckIfEmailExists() {
+    public function checkIfExists() {
 
-        // query to check if email exists
+        // query to check if user exists
         $query = "SELECT *
-                FROM " . $this->tableName . "
-                WHERE email = ?
+                FROM {$this->tableName}
+                WHERE name = :name
+                AND phoneNumber = :phoneNumber
                 LIMIT 0,1";
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
 
         // sanitize
-        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->phoneNumber = htmlspecialchars(strip_tags($this->phoneNumber));
 
-        // bind given email value
-        $stmt->bindParam(1, $this->email);
+        // bind given name value
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':phoneNumber', $this->phoneNumber);
 
         // execute the query
         $stmt->execute();
@@ -102,93 +110,79 @@ class User {
         // get number of rows
         $num = $stmt->rowCount();
 
-        // if email exists, assign values to object properties for easy access and use for php sessions
+        // if name exists, assign values to object properties for easy access and use for php sessions
         if ($num > 0) {
+            // return true because name exists in the database
+            return true;
+        }
 
-            // get record details / values
+        // return false if name does not exist in the database
+        return false;
+    }
+
+    public function confirmAccess() {
+        if (!$this->find()) {
+            return false;
+        }
+
+        $passwordMatch = $this->matchPassword($this->fingerprint);
+
+        if ($passwordMatch) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function matchPassword($password) {
+        $query = "SELECT salt, passwd
+            FROM {$this->tableName}
+            WHERE name = :name
+            AND phoneNumber = :phoneNumber
+            LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->phoneNumber = htmlspecialchars(strip_tags($this->phoneNumber));
+
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':phoneNumber', $this->phoneNumber);
+
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+        if ($num > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // assign values to object properties
-            $this->id = $row['Id'];
-            $this->completename = $row['name'];
-            $this->email = $row['email'];
-            $this->password = $row['passwd'];
-            $this->imagePath = $row['imagePath'];
-            $this->role = $row['role'];
+            $salt = $row['salt'];
+            $password_hash = $row['passwd'];
 
-            // return true because email exists in the database
-            return true;
+            return password_verify($password . $salt, $password_hash);
         }
 
-        // return false if email does not exist in the database
         return false;
     }
 
-    public function updateInfo($name, $email) {
+    public function updatePassword() {
+        if (!$this->find()) {
+            return false;
+        }
 
-        $query = "UPDATE " . $this->tableName . "
+        $query = "UPDATE {$this->tableName}
             SET
-                name = :completename,
-                email = :email
-            WHERE id = :id";
-
-        // prepare the query
-        $stmt = $this->conn->prepare($query);
-
-        // bind the values from the form
-        $this->completename = htmlspecialchars(strip_tags($name));
-        $this->email = htmlspecialchars(strip_tags($email));
-
-        $stmt->bindParam(':completename', $this->completename);
-        $stmt->bindParam(':email', $this->email);
-
-        // unique ID of record to be edited
-        $stmt->bindParam(':id', $this->id);
-
-        // execute the query
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function updateAvatar($finalFileName) {
-
-        $query = "UPDATE users SET
-            imagePath = :imagePath
-            WHERE id = :id";
-
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':imagePath', $finalFileName);
-        $stmt->bindParam(':id', $this->id);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function updatePassword($password) {
-
-        $query = "UPDATE " . $this->tableName . "
-            SET
-                passwd = :password
-            WHERE id = :id";
+                passwd = :password,
+                modifiedAt = CURRENT_TIMESTAMP
+            WHERE Id = :id";
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
 
         // hash the password before saving to database
-        $this->password = htmlspecialchars(strip_tags($password));
-        $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
+        $password_hash = password_hash($this->fingerprint . $this->salt, PASSWORD_BCRYPT);
 
-        $stmt->bindParam(':password', $password_hash);
-
-        // unique ID of record to be edited
         $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':password', $password_hash);
 
         // execute the query
         if ($stmt->execute()) {
@@ -207,7 +201,7 @@ class User {
         $num = $stmt->rowCount();
         if ($num > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->completename = $row['name'];
+            $this->name = $row['name'];
             $this->email = $row['email'];
             $this->imagePath = $row['imagePath'];
             $this->role = $row['role'];

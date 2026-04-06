@@ -69,7 +69,7 @@ function PageAdmin() {
                     <div>{fase.nomeFase}</div>
                     <div className="links">
                         <Link to={'/campeonato/' + campeonatoId + '/' + fase.id + '/admin'}>
-                        Participantes
+                            Participantes
                         </Link>
                     </div>
                 </div>

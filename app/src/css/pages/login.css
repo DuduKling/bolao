@@ -39,6 +39,10 @@
     position: relative;
 }
 
+.login-container > .form-container > p {
+    text-align: center;
+}
+
 .login-container > .form-container > .form {
     display: flex;
     flex-direction: column;

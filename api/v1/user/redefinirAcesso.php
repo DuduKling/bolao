@@ -21,17 +21,17 @@ $user->fingerprint = $reqBody->fingerprint;
 
 $userExists = $user->checkIfExists();
 
-if ($userExists) {
+if (!$userExists) {
     http_response_code(400);
-    echo json_encode(array("message" => "Este nome de usuário já está sendo utilizado."));
+    echo json_encode(array("message" => "Usuário não encontrado."));
     exit();
 }
 
-$userCreated = $user->create();
+$passwordUpdated = $user->updatePassword();
 
-if (!$userCreated) {
+if (!$passwordUpdated) {
     http_response_code(400);
-    echo json_encode(array("message" => "Não foi possível criar seu usuário. Favor entrar em contato com o Administrador."));
+    echo json_encode(array("message" => "Não foi possível liberar seu acesso. Favor entrar em contato com o Administrador."));
     exit();
 }
 

@@ -7,9 +7,9 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$inputData = json_decode(file_get_contents("php://input"));
+$reqBody = json_decode(file_get_contents("php://input"));
 
-if (!isset($inputData->jwt) || empty($inputData->jwt)) {
+if (!isset($reqBody->jwt) || empty($reqBody->jwt)) {
     http_response_code(401);
     echo json_encode(array("message" => "Acesso Negado. Favor fazer login novamente. (Error: #VC1)"));
     exit();
@@ -18,7 +18,7 @@ if (!isset($inputData->jwt) || empty($inputData->jwt)) {
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/jwt.php';
 $customJWT = new CustomJWT($env);
 
-$jwt = $inputData->jwt;
+$jwt = $reqBody->jwt;
 $decoded = $customJWT->decodeToken($jwt);
 
 if (empty($decoded)) {
@@ -33,12 +33,16 @@ $db = new DatabaseConnection($env);
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/user.php';
 $user = new User($db);
 
-$id = $decoded->data->id;
-$foundUser = $user->find($id);
+$user->name = $decoded->data->name;
+$user->phoneNumber = $decoded->data->phoneNumber;
 
-if (!$foundUser) {
+$user->fingerprint = $reqBody->fingerprint;
+
+$hasAccess = $user->confirmAccess();
+
+if (!$hasAccess) {
     http_response_code(401);
-    echo json_encode(array("message" => "Não foi possível validar as informações, favor entrar em contato com o Administrador. (Error: #VC3)"));
+    echo json_encode(array("message" => "Não foi possível validar seu login, favor entrar em contato com o Administrador. (Error: #VC3)"));
     exit();
 }
 
@@ -46,12 +50,10 @@ http_response_code(200);
 echo json_encode(
     array(
         "message" => "Cookie validado com sucesso!",
+        "name" => $user->name,
+        "phoneNumber" => $user->phoneNumber,
+        "role" => $user->role,
         "jwt" => $jwt,
-        "name" => $user->completename,
-        "email" => $user->email,
-        "userImg" => $user->imagePath,
-        "userRole" => $user->role,
-        "id" => $user->id
     )
 );
 ?>

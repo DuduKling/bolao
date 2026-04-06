@@ -34,7 +34,7 @@ function UserNavBar(props) {
         };
         dispatch(updateJWT(userInfo));
 
-        cookie.set('userLogin', '', 0);
+        cookie.set('userJWT', '', 0);
         navigate('/');
     };
 

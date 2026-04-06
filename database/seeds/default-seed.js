@@ -242,15 +242,16 @@ exports.seed = async function(knex) {
   await knex('users').insert([
     {
       name: 'admin',
-      email: "admin@mail.com",
-      passwd: '$2y$10$y/HcJqaMOSNMYAHDSA/cVem8A2VBU6G8fohb/r3IYa0BOG7WeefZ6', //admin
-      imagePath: '/imagens/users/spawn.jpg',
+      phoneNumber: "99999999999",
+      passwd: '$2y$12$XZt9g1MuX1EMiPqBbVzGsuZUpK65xFaelYnFEyOP7VdLQCJxza9Ym',
+      salt: 'salt_salt',
       role: 'admin',
     },
     {
       name: 'teste',
-      email: "teste@mail.com",
-      passwd: '$2y$10$qbXRUzw5A0jSKtBqhpNp8e//ueDHAOmOCbuSBQvzSQCugJ/7rqJSK', // teste
+      phoneNumber: "99999999999",
+      passwd: '$2y$12$XZt9g1MuX1EMiPqBbVzGsuZUpK65xFaelYnFEyOP7VdLQCJxza9Ym',
+      salt: 'salt_salt',
     },
   ]);
   const [{Id: userAdminId}, {Id: userNormalId}] = await knex('users').select('Id');

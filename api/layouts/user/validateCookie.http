@@ -1,4 +1,4 @@
-POST {{url}}/api/v1/validateCookie.php
+POST {{url}}/api/v1/user/validateCookie.php
 Content-Type: application/json
 
 {

@@ -20,9 +20,10 @@ function MaterialTextInput(props) {
 
         setValue(inputValue);
 
-        if (value !== '') {
+        if (inputValue !== '') {
             setStatus('NotEmpty');
             checkRegex(inputValue, inputName);
+            props.fieldController(inputValue);
         } else {
             setStatus('');
         }
@@ -68,6 +69,17 @@ function MaterialTextInput(props) {
             }
             break;
 
+        case 'phoneNumber':
+            regx = new RegExp('^[0-9]{11}$', 'gi');
+            resultado = regx.test(inputValue);
+
+            if (!resultado) {
+                setError('error');
+            } else {
+                setError('');
+            }
+            break;
+
         default:
             if (inputValue === '') {
                 setError('error');
@@ -86,7 +98,7 @@ function MaterialTextInput(props) {
                 onChange={handleInputChange}
                 className={error}
                 required={props.fieldRequired ? false : true}
-                maxLength="30"
+                maxLength={props.maxLength ? props.maxLength : '30'}
                 value={value}
             />
 
@@ -107,6 +119,8 @@ MaterialTextInput.propTypes = {
     fieldName: PropTypes.string,
     fieldRequired: PropTypes.bool,
     labelName: PropTypes.string,
+    maxLength: PropTypes.string,
+    fieldController: PropTypes.func,
 };
 
 export default MaterialTextInput;
