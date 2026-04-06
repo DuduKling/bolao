@@ -192,20 +192,5 @@ class User {
         return false;
     }
 
-    public function updateInternalInfo() {
-        $query = "SELECT name, email, imagePath, role FROM users WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $this->id);
-        $stmt->execute();
-
-        $num = $stmt->rowCount();
-        if ($num > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->name = $row['name'];
-            $this->email = $row['email'];
-            $this->imagePath = $row['imagePath'];
-            $this->role = $row['role'];
-        }
-    }
 }
 ?>

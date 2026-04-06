@@ -31,9 +31,6 @@ function SiteFooter() {
                     <Link className="menuItem" to="/user/campeonatos">
                         Campeonatos
                     </Link>
-                    <Link className="menuItem" to="/user/config">
-                        Configurações
-                    </Link>
                 </div>
             </div>
 

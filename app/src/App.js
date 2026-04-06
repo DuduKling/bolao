@@ -35,8 +35,6 @@ import PageFixtures from './components/pages/PageFixtures';
 import PageHome from './components/pages/PageHome';
 import PageLogin from './components/pages/PageLogin';
 import PageRegulamento from './components/pages/Regulamento';
-import PageUser from './components/pages/PageUser';
-import PageRedefinir from './components/pages/PageRedefinir';
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -105,16 +103,12 @@ function App() {
 
                                 <Route path='esqueci' element={<PageEsqueci />} />
 
-                                <Route path='redefinir/:id/:jwtCode' element={<PageRedefinir />} />
-                                <Route path='redefinir/*' element={<Page404 />} />
-
                                 <Route path='*' element={<Page404 />} />
                             </Route>
 
                             {/* USER - RESTRICTED */}
                             <Route element={<PrivateRoute />} >
                                 <Route path='campeonatos' element={<PageCampeonatos />} />
-                                <Route path='config' element={<PageUser />} />
                             </Route>
                         </Route>
 

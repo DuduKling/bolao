@@ -24,15 +24,12 @@ function UserNavBar(props) {
     }, []);
 
     const logout = () => {
-        const userInfo = {
+        dispatch(updateJWT({
             userName: '',
-            userEmail: '',
-            userId: '',
-            userImg: '',
+            userPhoneNumber: '',
             userRole: '',
             userJWT: '',
-        };
-        dispatch(updateJWT(userInfo));
+        }));
 
         cookie.set('userJWT', '', 0);
         navigate('/');
@@ -50,9 +47,6 @@ function UserNavBar(props) {
 
     return (
         <div className={props.visible ? 'userNavBar-container -show' : 'userNavBar-container -hide'}>
-            <Link to="/user/config" className="navUser-container">
-                Configurações
-            </Link>
 
             {showAdminLink()}
 
