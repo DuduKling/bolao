@@ -1,6 +1,0 @@
-POST {{url}}/api/v1/email/enviaEmailRedefinir.php
-Content-Type: application/json
-
-{
-    "email": "admin@mail.com"
-}
