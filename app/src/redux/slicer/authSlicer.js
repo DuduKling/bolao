@@ -5,7 +5,7 @@ export const authSlicer = createSlice({
     initialState: {
         userName: '',
         userPhoneNumber: '',
-        userUserRole: '',
+        userRole: '',
         userJWT: '',
         userFingerprint: '',
     },
@@ -17,7 +17,7 @@ export const authSlicer = createSlice({
         updateJWT: (state, action) => {
             state.userName = action.payload.userName;
             state.userPhoneNumber = action.payload.userPhoneNumber;
-            state.userUserRole = action.payload.userUserRole;
+            state.userRole = action.payload.userRole;
             state.userJWT = action.payload.userJWT;
         },
         updateImage: () => {

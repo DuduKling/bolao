@@ -62,7 +62,7 @@ function PageEsqueci() {
                 dispatch(updateJWT({
                     userName: response.name,
                     userPhoneNumber: response.phoneNumber,
-                    userUserRole: response.role,
+                    userRole: response.role,
                     userJWT: response.jwt,
                 }));
 
