@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import '../../css/pages/login.css';
 import '../../css/util/formMessage.css';
@@ -14,7 +14,7 @@ import Fingerprint from '../../util/fingerprint';
 import { useDispatch } from 'react-redux';
 import { updateJWT } from '../../redux/slicer/authSlicer';
 
-function PageLogin() {
+function PageUserLogin() {
     const [ajaxErrorResp, setAjaxErrorResp] = useState('');
     const [ajaxSuccessResp, setAjaxSuccessResp] = useState('');
     const [nameValue, setNameValue] = useState('');
@@ -49,10 +49,10 @@ function PageLogin() {
         setAjaxErrorResp('');
         setAjaxSuccessResp('');
 
-        await cadastrar();
+        await logar();
     };
 
-    const cadastrar = async () => {
+    const logar = async () => {
         if (nameValue === '' || phoneNumberValue === '') {
             setAjaxErrorResp('Favor preencha todos os campos!');
         } else {
@@ -63,7 +63,7 @@ function PageLogin() {
             });
 
             await http.post({
-                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/create.php`,
+                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/login.php`,
                 data: dataString,
             })
                 .then((response) => {
@@ -88,7 +88,7 @@ function PageLogin() {
     return (
         <div className="login-container">
             <div className="form-container">
-                <h2>Cadastrar</h2>
+                <h2>Login</h2>
 
                 <form
                     className="form"
@@ -118,8 +118,12 @@ function PageLogin() {
                         className="SendButton"
                         value="Entrar"
                     />
-                </form>
 
+                    <Link className="menuItem" to="/user/esqueci">
+                        Perdi o acesso
+                    </Link>
+
+                </form>
             </div>
 
             <Canvas />
@@ -128,4 +132,4 @@ function PageLogin() {
     );
 }
 
-export default PageLogin;
+export default PageUserLogin;

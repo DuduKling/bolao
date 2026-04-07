@@ -8,7 +8,7 @@ import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 import RankListItem from '../util/RankListItem';
 
-function PageDashboard() {
+function PageCampeonatoDashboard() {
     const [fixtures, setFixtures] = useState([]);
     const [rank, setRank] = useState([]);
     const [campeonato, setCampeonato] = useState({});
@@ -402,4 +402,4 @@ function PageDashboard() {
     );
 }
 
-export default PageDashboard;
+export default PageCampeonatoDashboard;

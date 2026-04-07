@@ -7,13 +7,9 @@ import http from '../../util/http';
 
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
-import Avatar from '../util/Avatar';
 
-function PageApostado() {
+function PageCampeonatoFixture() {
     const [fixtures, setFixtures] = useState([]);
-    const [campeonato, setCampeonato] = useState('');
-    const [fase, setFase] = useState('');
-
     const [loading, setLoading] = useState(false);
 
     const params = useParams();
@@ -21,10 +17,10 @@ function PageApostado() {
     const dataFetchedRef = useRef(false);
 
     useEffect(() => {
-        const userName = params.nome;
+        const fixtureID = params.fixture;
         const faseID = params.fase;
 
-        const cachedFixtures = localStorage.getItem(userName + faseID + 'fixtures');
+        const cachedFixtures = localStorage.getItem(faseID + fixtureID + 'campeonatoJogo');
         if (cachedFixtures) {
             setFixtures(JSON.parse(cachedFixtures));
         }
@@ -38,26 +34,22 @@ function PageApostado() {
     const getBets = async () => {
         setLoading(true);
 
+        const fixtureID = params.fixture;
         const faseID = params.fase;
-        const userName = params.nome;
 
         const dataString = JSON.stringify({
-            faseID,
-            userName,
+            fixtureID,
         });
 
         await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromUser.php`,
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromFixture.php`,
             data: dataString,
         })
             .then((response) => {
                 setLoading(false);
-
                 setFixtures(response.fixtures);
-                setCampeonato(response.campeonato);
-                setFase(response.fase);
 
-                localStorage.setItem(userName + faseID + 'fixtures', JSON.stringify(response.fixtures));
+                localStorage.setItem(faseID + fixtureID + 'campeonatoJogo', JSON.stringify(response.fixtures));
             })
             .catch(() => {
                 setLoading(false);
@@ -70,23 +62,9 @@ function PageApostado() {
 
                 <div className="main-partidaForm" >
 
-                    <div className="userImage-container">
-                        <div className="userImage">
-                            <Avatar userName={params.nome} />
-                        </div>
-                    </div>
-
-                    <ul className="partidaLista -apostado">
+                    <ul className="partidaLista">
                         <h3 className="pageTitle">
-                            {params.nome}
-
-                            <br />
-                            <span className="subTitle">
-                                {campeonato ? campeonato : ''}
-
-                                {fase ? ' - ' + fase : ''}
-                            </span>
-
+                            Apostas para este jogo
                             <Loading loading={loading} localstorage="-withLocalStorage2" />
                         </h3>
                         {
@@ -97,6 +75,8 @@ function PageApostado() {
                                         key={index}
                                         team={team}
                                         typeAll={'ReadOnly'}
+                                        showUsers={true}
+                                        showPercent={true}
                                         params={params}
                                     />
 
@@ -107,9 +87,10 @@ function PageApostado() {
                     </ul>
 
                 </div>
+
             </div>
         </section>
     );
 }
 
-export default PageApostado;
+export default PageCampeonatoFixture;

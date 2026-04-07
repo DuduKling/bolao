@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../css/pages/page404.css';
 import logoCrownCry from '../../imgs/logo-crown-cry.png';
 
-function Page404() {
+function PageRoot404() {
     const navigate = useNavigate();
 
     return (
@@ -18,4 +18,4 @@ function Page404() {
     );
 }
 
-export default Page404;
+export default PageRoot404;

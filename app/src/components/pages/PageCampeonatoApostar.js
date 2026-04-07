@@ -11,7 +11,7 @@ import http from '../../util/http';
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 
-function PageApostar() {
+function PageCampeonatoApostar() {
     const [fixtures, setFixtures] = useState([]);
     const [error, setError] = useState('');
     const [resp, setResp] = useState('');
@@ -206,4 +206,4 @@ function PageApostar() {
     );
 }
 
-export default PageApostar;
+export default PageCampeonatoApostar;

@@ -19,22 +19,22 @@ import BigLoading from './components/util/BigLoading';
 import SiteHeader from './components/common/SiteHeader';
 import SiteFooter from './components/common/SiteFooter';
 
-import Page404 from './components/pages/Page404';
+import PageRoot404 from './components/pages/PageRoot404';
 import PageAdmin from './components/pages/PageAdmin';
 import PageAdminApostas from './components/pages/PageAdminApostas';
 import PageAdminScore from './components/pages/PageAdminScore';
-import PageApostado from './components/pages/PageApostado';
-import PageApostadoJogo from './components/pages/PageApostadoJogo';
-import PageApostar from './components/pages/PageApostar';
-import PageCadastrar from './components/pages/PageCadastrar';
+import PageCampeonatoApostadoUser from './components/pages/PageCampeonatoApostadoUser';
+import PageCampeonatoFixture from './components/pages/PageCampeonatoFixture';
+import PageCampeonatoApostar from './components/pages/PageCampeonatoApostar';
+import PageUserCadastro from './components/pages/PageUserCadastro';
 import PageCampeonatos from './components/pages/PageCampeonatos';
-import PageContato from './components/pages/PageContato';
-import PageDashboard from './components/pages/PageDashboard';
-import PageEsqueci from './components/pages/PageEsqueci';
-import PageFixtures from './components/pages/PageFixtures';
-import PageHome from './components/pages/PageHome';
-import PageLogin from './components/pages/PageLogin';
-import PageRegulamento from './components/pages/Regulamento';
+import PageRootContato from './components/pages/PageRootContato';
+import PageCampeonatoDashboard from './components/pages/PageCampeonatoDashboard';
+import PageUserEsqueci from './components/pages/PageUserEsqueci';
+import PageCampeonatoFixtures from './components/pages/PageCampeonatoFixtures';
+import PageRootHome from './components/pages/PageRootHome';
+import PageUserLogin from './components/pages/PageUserLogin';
+import PageRootRegulamento from './components/pages/PageRootRegulamento';
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -88,22 +88,22 @@ function App() {
                 <Routes>
                     <Route path='/' element={<Outlet />} >
                         {/* ROOT */}
-                        <Route path='' element={<PageHome />} />
-                        <Route path='faleconosco' element={<PageContato />} />
-                        <Route path='regulamento' element={<PageRegulamento />} />
+                        <Route path='' element={<PageRootHome />} />
+                        <Route path='faleconosco' element={<PageRootContato />} />
+                        <Route path='regulamento' element={<PageRootRegulamento />} />
 
                         {/* USER */}
                         <Route path='user' element={<Outlet />} >
                             {/* USER - NOT RESTRICTED */}
                             <Route element={<PrivateRouteAlready />} >
-                                <Route path='' element={<Page404 />} />
+                                <Route path='' element={<PageRoot404 />} />
 
-                                <Route path='login' element={<PageLogin />} />
-                                <Route path='cadastrar' element={<PageCadastrar />} />
+                                <Route path='login' element={<PageUserLogin />} />
+                                <Route path='cadastrar' element={<PageUserCadastro />} />
 
-                                <Route path='esqueci' element={<PageEsqueci />} />
+                                <Route path='esqueci' element={<PageUserEsqueci />} />
 
-                                <Route path='*' element={<Page404 />} />
+                                <Route path='*' element={<PageRoot404 />} />
                             </Route>
 
                             {/* USER - RESTRICTED */}
@@ -119,11 +119,11 @@ function App() {
 
                         {/* CAMPEONATO - RESTRICTED */}
                         <Route path='campeonato' element={<PrivateRoute />} >
-                            <Route path=':campeonato/:fase' element={<PageDashboard />} />
-                            <Route path=':campeonato/:fase/jogos' element={<PageFixtures />} />
-                            <Route path=':campeonato/:fase/jogo/:fixture' element={<PageApostadoJogo />} />
-                            <Route path=':campeonato/:fase/apostado/:nome' element={<PageApostado />} />
-                            <Route path=':campeonato/:fase/:parte/apostar' element={<PageApostar />} />
+                            <Route path=':campeonato/:fase' element={<PageCampeonatoDashboard />} />
+                            <Route path=':campeonato/:fase/jogos' element={<PageCampeonatoFixtures />} />
+                            <Route path=':campeonato/:fase/jogo/:fixture' element={<PageCampeonatoFixture />} />
+                            <Route path=':campeonato/:fase/apostado/:nome' element={<PageCampeonatoApostadoUser />} />
+                            <Route path=':campeonato/:fase/:parte/apostar' element={<PageCampeonatoApostar />} />
 
                             {/* ADMIN - RESTRICTED */}
                             <Route path=':campeonato' element={<PrivateRouteAdmin />} >
@@ -133,7 +133,7 @@ function App() {
                         </Route>
                     </Route>
 
-                    <Route path='*' element={<Page404 />} />
+                    <Route path='*' element={<PageRoot404 />} />
                 </Routes>
 
                 <SiteFooter />

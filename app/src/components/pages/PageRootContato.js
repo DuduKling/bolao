@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../../css/faleconosco.css';
 
-function PageContato() {
+function PageRootContato() {
     return (
         <div className="MainContent-container">
             <div className="faleconosco">
@@ -16,4 +16,4 @@ function PageContato() {
     );
 }
 
-export default PageContato;
+export default PageRootContato;

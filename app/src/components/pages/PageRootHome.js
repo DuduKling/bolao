@@ -7,7 +7,7 @@ import NextAndTimer from '../home/NextAndTimer';
 import FaqSection from '../home/FaqSection';
 import Canvas from '../home/Canvas';
 
-function PageHome() {
+function PageRootHome() {
     const [dataFinal] = useState('Nov 20, 2022 13:00:00');
 
     return (
@@ -22,4 +22,4 @@ function PageHome() {
     );
 }
 
-export default PageHome;
+export default PageRootHome;

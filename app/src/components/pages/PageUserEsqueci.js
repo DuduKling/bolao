@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import '../../css/pages/login.css';
-import '../../css/util/formMessage.css';
 
 import http from '../../util/http';
 import cookie from '../../util/cookie';
@@ -14,7 +13,7 @@ import Fingerprint from '../../util/fingerprint';
 import { useDispatch } from 'react-redux';
 import { updateJWT } from '../../redux/slicer/authSlicer';
 
-function PageLogin() {
+function PageUserEsqueci() {
     const [ajaxErrorResp, setAjaxErrorResp] = useState('');
     const [ajaxSuccessResp, setAjaxSuccessResp] = useState('');
     const [nameValue, setNameValue] = useState('');
@@ -46,57 +45,48 @@ function PageLogin() {
     const sendFormAjax = async (evento) => {
         evento.preventDefault();
 
-        setAjaxErrorResp('');
         setAjaxSuccessResp('');
+        setAjaxErrorResp('');
 
-        await logar();
-    };
+        const dataString = JSON.stringify({
+            name: nameValue.trim(),
+            phoneNumber: phoneNumberValue,
+            fingerprint: await Fingerprint.get(),
+        });
 
-    const logar = async () => {
-        if (nameValue === '' || phoneNumberValue === '') {
-            setAjaxErrorResp('Favor preencha todos os campos!');
-        } else {
-            const dataString = JSON.stringify({
-                name: nameValue.trim(),
-                phoneNumber: phoneNumberValue,
-                fingerprint: await Fingerprint.get(),
-            });
+        await http.post({
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/redefinirAcesso.php`,
+            data: dataString,
+        })
+            .then((response) => {
+                dispatch(updateJWT({
+                    userName: response.name,
+                    userPhoneNumber: response.phoneNumber,
+                    userRole: response.role,
+                    userJWT: response.jwt,
+                }));
 
-            await http.post({
-                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/login.php`,
-                data: dataString,
+                cookie.set('userJWT', response.jwt, 7);
+
+                navigate('/user/campeonatos');
             })
-                .then((response) => {
-                    dispatch(updateJWT({
-                        userName: response.name,
-                        userPhoneNumber: response.phoneNumber,
-                        userRole: response.role,
-                        userJWT: response.jwt,
-                    }));
-
-                    cookie.set('userJWT', response.jwt, 7);
-
-                    navigate('/user/campeonatos');
-                })
-                .catch(({ message }) => {
-                    setAjaxErrorResp(message);
-                    setAjaxSuccessResp('0');
-                });
-        }
+            .catch(({ message }) => {
+                setAjaxErrorResp(message);
+                setAjaxSuccessResp('0');
+            });
     };
 
     return (
         <div className="login-container">
             <div className="form-container">
-                <h2>Login</h2>
+                <h2>Perdi o acesso</h2>
 
                 <form
                     className="form"
                     onSubmit={(event) => sendFormAjax(event)}
                     method="post"
                 >
-
-                    {showFormMessages()}
+                    <p>Confirme seus dados:</p>
 
                     <MaterialTextInput
                         labelName="Nome"
@@ -116,20 +106,18 @@ function PageLogin() {
                     <input
                         type="submit"
                         className="SendButton"
-                        value="Entrar"
+                        value="Quero acessar"
                     />
-
-                    <Link className="menuItem" to="/user/esqueci">
-                        Perdi o acesso
-                    </Link>
-
                 </form>
+
+                {showFormMessages()}
+
+                <p>Na dúvida entre em contato com o Administrador.</p>
             </div>
-
             <Canvas />
-
         </div>
     );
+
 }
 
-export default PageLogin;
+export default PageUserEsqueci;
