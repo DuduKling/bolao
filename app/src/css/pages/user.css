@@ -1,0 +1,47 @@
+.userPage-container {
+    width: 100%;
+    min-height: 80vh;
+
+    position: relative;
+    margin-top: 50px;
+    padding: 40px 10px 100px 10px;
+
+    background-color: whitesmoke;
+    font-family: "Open Sans", "Helvetica", "Arial", sans-serif;
+    color: #424242;
+
+    display: flex;
+
+    overflow: hidden;
+}
+
+.userPage-container  > div {
+    width: 100%;
+    padding: 0 10px;
+}
+
+.page-title {
+    width: 100%;
+
+    background-color: #4caf50;
+    padding: 10px 15px;
+    margin: 0;
+    
+    
+    font-size: 22px;
+    color: whitesmoke;
+    text-align: center;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-left: 1px solid #c7c7c7;
+    border-right: 1px solid #c7c7c7;
+
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.3), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+@media only screen and (max-width: 770px){
+    .userPage-container > div {
+        padding: 0;
+    }
+}

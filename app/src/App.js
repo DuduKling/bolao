@@ -10,6 +10,8 @@ import http from './util/http';
 import cookie from './util/cookie';
 import Fingerprint from './util/fingerprint';
 
+import './css/pages/user.css';
+
 import PrivateRoute from './components/util/Auth';
 import PrivateRouteAdmin from './components/util/AuthAdmin';
 import PrivateRouteAlready from './components/util/AuthAlready';
