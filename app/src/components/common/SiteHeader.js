@@ -5,15 +5,14 @@ import { useSelector } from 'react-redux';
 import '../../css/common/header.css';
 
 import logo from '../../imgs/logo.png';
-import Avatar from '../../imgs/avatar.png';
 import UserNavBar from './UserNavBar';
+import Avatar from '../util/Avatar';
 
 function SiteHeader() {
     const [UserNavBarVisible, setUserNavBarVisible] = useState(false);
     const [NavBarVisible, setNavbarVisible] = useState(false);
 
     const userName = useSelector((state) => state.auth.userName);
-    const userImg = useSelector((state) => state.auth.userImg);
 
     const toggleUserNavBar = () => {
         setUserNavBarVisible(!UserNavBarVisible);
@@ -36,9 +35,7 @@ function SiteHeader() {
 
                         <div className="navUser-container" onClick={toggleUserNavBar}>
                             <div className="user-avatar">
-                                <img className="avatar" alt="" src={userImg ?
-                                    userImg
-                                    : Avatar} />
+                                <Avatar userName={userName} />
                             </div>
                             <p className="user-name">
                                 {userName}

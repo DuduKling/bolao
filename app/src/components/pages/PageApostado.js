@@ -7,12 +7,10 @@ import http from '../../util/http';
 
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
-
-import Avatar from '../../imgs/avatar.png';
+import Avatar from '../util/Avatar';
 
 function PageApostado() {
     const [fixtures, setFixtures] = useState([]);
-    const [userImage, setUserImage] = useState('');
     const [campeonato, setCampeonato] = useState('');
     const [fase, setFase] = useState('');
 
@@ -56,7 +54,6 @@ function PageApostado() {
                 setLoading(false);
 
                 setFixtures(response.fixtures);
-                setUserImage(response.userImage);
                 setCampeonato(response.campeonato);
                 setFase(response.fase);
 
@@ -75,9 +72,7 @@ function PageApostado() {
 
                     <div className="userImage-container">
                         <div className="userImage">
-                            <img
-                                src={userImage ? userImage : Avatar}
-                                alt="Avatar do usuário" />
+                            <Avatar userName={params.nome} />
                         </div>
                     </div>
 
