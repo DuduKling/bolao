@@ -86,7 +86,7 @@ function PageCampeonatoFixtures() {
 
         const fase = campeonato.fases
             .filter(function (fase) {
-                return fase.id === faseID;
+                return fase.id === Number(faseID);
             });
 
         return fase[0].nomeFase;
