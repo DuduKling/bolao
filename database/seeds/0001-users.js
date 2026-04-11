@@ -1,0 +1,29 @@
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> } 
+ */
+exports.seed = async function(knex) {
+
+  await knex('users').insert([
+    {
+      name: 'admin',
+      phoneNumber: "99999999999",
+      passwd: '$2y$12$XZt9g1MuX1EMiPqBbVzGsuZUpK65xFaelYnFEyOP7VdLQCJxza9Ym',
+      salt: 'salt_salt',
+      role: 'admin',
+    },
+    {
+      name: 'teste',
+      phoneNumber: "99999999999",
+      passwd: '$2y$12$XZt9g1MuX1EMiPqBbVzGsuZUpK65xFaelYnFEyOP7VdLQCJxza9Ym',
+      salt: 'salt_salt',
+    },
+    {
+      name: 'loser',
+      phoneNumber: "99999999999",
+      passwd: '$2y$12$XZt9g1MuX1EMiPqBbVzGsuZUpK65xFaelYnFEyOP7VdLQCJxza9Ym',
+      salt: 'salt_salt',
+    },
+  ]);
+
+};
