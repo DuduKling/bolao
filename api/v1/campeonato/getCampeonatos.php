@@ -29,7 +29,7 @@ $campeonatos = array();
 foreach ($dbCampeonatos as $row) {
     $campeonato = new stdClass;
 
-    $campeonato->idCampeonato = $row['Id'];
+    $campeonato->idCampeonato = $row['id'];
     $campeonato->nomeCampeonato = $row['name'];
     $campeonato->logoCampeonato = $row['logo'];
     $campeonato->dataInicioCampeonato = date_format($date = date_create($row['startDate']), 'd/m/Y');
@@ -41,7 +41,7 @@ foreach ($dbCampeonatos as $row) {
 
     $stmtFase = $db->prepare($queryFase);
 
-    $stmtFase->bindParam(':championshipID', $row['Id']);
+    $stmtFase->bindParam(':championshipID', $row['id']);
 
     $stmtFase->execute();
     $numFase = $stmtFase->rowCount();
@@ -54,7 +54,7 @@ foreach ($dbCampeonatos as $row) {
         foreach ($dbFases as $rowFase) {
             $fase = new stdClass;
 
-            $fase->id = $rowFase['Id'];
+            $fase->id = $rowFase['id'];
             $fase->nomeFase = $rowFase['name'];
 
             // Parte
@@ -63,7 +63,7 @@ foreach ($dbCampeonatos as $row) {
 
             $stmtParte = $db->prepare($queryParte);
 
-            $stmtParte->bindParam(':phaseID', $rowFase['Id']);
+            $stmtParte->bindParam(':phaseID', $rowFase['id']);
 
             $stmtParte->execute();
             $numParte = $stmtParte->rowCount();
@@ -76,7 +76,7 @@ foreach ($dbCampeonatos as $row) {
                 foreach ($dbPartes as $rowParte) {
                     $parte = new stdClass;
 
-                    $parte->id = $rowParte['Id'];
+                    $parte->id = $rowParte['id'];
                     $parte->nomeParte = $rowParte['name'];
                     $parte->statusParte = $rowParte['status'];
 

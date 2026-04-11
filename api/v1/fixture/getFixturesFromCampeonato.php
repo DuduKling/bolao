@@ -14,14 +14,14 @@ $inputData = json_decode(file_get_contents("php://input"));
 
 $faseId = $inputData->faseID;
 
-$query = "SELECT f.Id, f.homeTeamScore, b.name as home_name, b.imagePath as home_imagePath, f.awayTeamScore, a.name as away_name, a.imagePath as away_imagePath, f.dateTime, f.location 
+$query = "SELECT f.id, f.homeTeamScore, b.name as home_name, b.imagePath as home_imagePath, f.awayTeamScore, a.name as away_name, a.imagePath as away_imagePath, f.dateTime, f.location 
     FROM fixture f
-    INNER JOIN team a ON f.fkAwayTeamId=a.Id 
-    INNER JOIN team b ON f.fkHomeTeamId=b.Id 
-    INNER JOIN part ON f.fkPartId=part.Id
-    INNER JOIN phase ON part.fkPhaseId=phase.Id
-    INNER JOIN championship ON phase.fkChampionshipId=championship.Id
-    WHERE phase.Id=:phaseID ORDER BY f.Id ASC, dateTime ASC";
+    INNER JOIN team a ON f.fkAwayTeamId=a.id 
+    INNER JOIN team b ON f.fkHomeTeamId=b.id 
+    INNER JOIN part ON f.fkPartId=part.id
+    INNER JOIN phase ON part.fkPhaseId=phase.id
+    INNER JOIN championship ON phase.fkChampionshipId=championship.id
+    WHERE phase.id=:phaseID ORDER BY f.id ASC, dateTime ASC";
 
 $stmt = $db->prepare($query);
 
@@ -43,7 +43,7 @@ $fixtures = array();
 foreach ($dbFixtures as $row) {
     $fixture = new stdClass;
 
-    $fixture->idfixture = $row['Id'];
+    $fixture->idfixture = $row['id'];
     $fixture->datetime = date("d/m/Y H:i", strtotime($row['dateTime']));
     $fixture->local = $row['location'];
 

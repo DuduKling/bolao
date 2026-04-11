@@ -16,12 +16,12 @@ $faseId = $inputData->faseID;
 
 $query = "SELECT select2.usernames, GROUP_CONCAT(select2.parts ORDER BY partId ASC SEPARATOR ',') as partsApostadas
     FROM (
-        SELECT DISTINCT users.name as usernames, part.name as parts, part.Id as partId FROM bet
-        LEFT JOIN fixture ON bet.fkFixtureId = fixture.Id
-        LEFT JOIN part ON fixture.fkPartId = part.Id
-        LEFT JOIN phase ON part.fkPhaseId = phase.Id
-        LEFT JOIN users ON bet.fkUserId = users.Id
-        WHERE phase.Id=:phaseID
+        SELECT DISTINCT users.name as usernames, part.name as parts, part.id as partId FROM bet
+        LEFT JOIN fixture ON bet.fkFixtureId = fixture.id
+        LEFT JOIN part ON fixture.fkPartId = part.id
+        LEFT JOIN phase ON part.fkPhaseId = phase.id
+        LEFT JOIN users ON bet.fkUserId = users.id
+        WHERE phase.id=:phaseID
         ORDER BY parts ASC
     ) as select2
     GROUP BY select2.usernames";
@@ -51,10 +51,10 @@ foreach ($dbList as $row) {
     array_push($list, $partList);
 }
 
-$query2 = "SELECT GROUP_CONCAT(part.name ORDER BY part.Id ASC SEPARATOR ',') as parts
+$query2 = "SELECT GROUP_CONCAT(part.name ORDER BY part.id ASC SEPARATOR ',') as parts
     FROM phase 
-    INNER JOIN part ON phase.Id = part.fkPhaseId 
-    WHERE phase.Id=:phaseID";
+    INNER JOIN part ON phase.id = part.fkPhaseId 
+    WHERE phase.id=:phaseID";
 
 $stmt2 = $db->prepare($query2);
 

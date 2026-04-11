@@ -5,12 +5,12 @@
 exports.up = function(knex) {
     const query = knex.schema
         .createTable('part', function (table) {
-            table.increments('Id');
+            table.increments('id');
             table.string('name', 255).notNullable();
             table.string('status', 255).notNullable();
 
             table.integer('fkPhaseId').unsigned();
-            table.foreign('fkPhaseId').references('Id').inTable('phase');
+            table.foreign('fkPhaseId').references('id').inTable('phase');
         });
 
     if (knex.client.config.onlyLogQuery) {

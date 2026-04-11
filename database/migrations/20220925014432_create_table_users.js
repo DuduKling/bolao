@@ -5,7 +5,7 @@
 exports.up = function(knex) {
     const query = knex.schema
         .createTable('users', function (table) {
-            table.increments('Id');
+            table.increments('id');
 
             table.string('name', 255).notNullable();
             table.string('phoneNumber', 255).notNullable();
@@ -15,7 +15,7 @@ exports.up = function(knex) {
             table.string('role', 255);
 
             table.dateTime('createdAt').notNullable().defaultTo(knex.fn.now());
-            table.dateTime('modifiedAt').defaultTo(knex.fn.now());
+            table.dateTime('updatedAt').defaultTo(knex.fn.now());
         });
 
     if (knex.client.config.onlyLogQuery) {

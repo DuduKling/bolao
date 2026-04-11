@@ -2,13 +2,13 @@
 function getFixtures($parteId, $statusAposta) {
     global $db;
 
-    $query2 = "SELECT championship.name as championship, phase.name as phase, part.name as part, f.Id, f.homeTeamScore, b.name as home_name, b.imagePath as home_imagePath, f.awayTeamScore, a.name as away_name, a.imagePath as away_imagePath, f.dateTime, f.location FROM fixture f
-        INNER JOIN team a ON f.fkAwayTeamId=a.Id 
-        INNER JOIN team b ON f.fkHomeTeamId=b.Id 
-        INNER JOIN part ON f.fkPartId=part.Id
-        INNER JOIN phase ON part.fkPhaseId=phase.Id
-        INNER JOIN championship ON phase.fkChampionshipId=championship.Id
-        WHERE part.id=:partID AND part.status=:statusAposta ORDER BY f.Id ASC, dateTime ASC";
+    $query2 = "SELECT championship.name as championship, phase.name as phase, part.name as part, f.id, f.homeTeamScore, b.name as home_name, b.imagePath as home_imagePath, f.awayTeamScore, a.name as away_name, a.imagePath as away_imagePath, f.dateTime, f.location FROM fixture f
+        INNER JOIN team a ON f.fkAwayTeamId=a.id 
+        INNER JOIN team b ON f.fkHomeTeamId=b.id 
+        INNER JOIN part ON f.fkPartId=part.id
+        INNER JOIN phase ON part.fkPhaseId=phase.id
+        INNER JOIN championship ON phase.fkChampionshipId=championship.id
+        WHERE part.id=:partID AND part.status=:statusAposta ORDER BY f.id ASC, dateTime ASC";
 
     $stmt2 = $db->prepare($query2);
 
@@ -31,7 +31,7 @@ function getFixtures($parteId, $statusAposta) {
     foreach ($dbFixtures as $row) {
         $fixture = new stdClass;
 
-        $fixture->idfixture = $row['Id'];
+        $fixture->idfixture = $row['id'];
         $fixture->datetime = date("d/m/Y H:i", strtotime($row['dateTime']));
         $fixture->local = $row['location'];
 

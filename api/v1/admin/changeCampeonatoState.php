@@ -15,7 +15,7 @@ $inputData = json_decode(file_get_contents("php://input"));
 $parteId = $inputData->parteID;
 $newStatus = $inputData->newStatus;
 
-$query = "UPDATE part SET part.status=:newStatus WHERE Id=:partID";
+$query = "UPDATE part SET part.status=:newStatus WHERE id=:partID";
 
 $stmt = $db->prepare($query);
 

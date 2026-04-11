@@ -14,7 +14,7 @@ $inputData = json_decode(file_get_contents("php://input"));
 
 $campeonatoId = $inputData->campeonatoID;
 
-$query = "SELECT * FROM championship WHERE Id=:championshipID";
+$query = "SELECT * FROM championship WHERE id=:championshipID";
 
 $stmt = $db->prepare($query);
 
@@ -33,7 +33,7 @@ $dbCampeonato = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $campeonato = new stdClass;
 
 foreach ($dbCampeonato as $row) {
-    $campeonato->idCampeonato = $row['Id'];
+    $campeonato->idCampeonato = $row['id'];
     $campeonato->nomeCampeonato = $row['name'];
     $campeonato->logoCampeonato = $row['logo'];
     $campeonato->dataInicioCampeonato = date_format($date = date_create($row['startDate']), 'd/m/Y');
@@ -44,7 +44,7 @@ foreach ($dbCampeonato as $row) {
 
     $stmtFase = $db->prepare($queryFase);
 
-    $stmtFase->bindParam(':championshipID', $row['Id']);
+    $stmtFase->bindParam(':championshipID', $row['id']);
 
     $stmtFase->execute();
     $numFase = $stmtFase->rowCount();
@@ -57,7 +57,7 @@ foreach ($dbCampeonato as $row) {
         foreach ($dbFases as $rowFase) {
             $fase = new stdClass;
 
-            $fase->id = $rowFase['Id'];
+            $fase->id = $rowFase['id'];
             $fase->nomeFase = $rowFase['name'];
 
             // Parte
@@ -66,7 +66,7 @@ foreach ($dbCampeonato as $row) {
 
             $stmtParte = $db->prepare($queryParte);
 
-            $stmtParte->bindParam(':phaseID', $rowFase['Id']);
+            $stmtParte->bindParam(':phaseID', $rowFase['id']);
 
             $stmtParte->execute();
             $numParte = $stmtParte->rowCount();
@@ -79,7 +79,7 @@ foreach ($dbCampeonato as $row) {
                 foreach ($dbPartes as $rowParte) {
                     $parte = new stdClass;
 
-                    $parte->id = $rowParte['Id'];
+                    $parte->id = $rowParte['id'];
                     $parte->nomeParte = $rowParte['name'];
                     $parte->statusParte = $rowParte['status'];
 

@@ -5,16 +5,16 @@
 exports.up = function(knex) {
     const query = knex.schema
         .createTable('fixture', function (table) {
-            table.increments('Id');
+            table.increments('id');
 
             table.integer('fkAwayTeamId').unsigned();
-            table.foreign('fkAwayTeamId').references('Id').inTable('team');
+            table.foreign('fkAwayTeamId').references('id').inTable('team');
 
             table.integer('fkHomeTeamId').unsigned();
-            table.foreign('fkHomeTeamId').references('Id').inTable('team');
+            table.foreign('fkHomeTeamId').references('id').inTable('team');
 
             table.integer('fkPartId').unsigned();
-            table.foreign('fkPartId').references('Id').inTable('part');
+            table.foreign('fkPartId').references('id').inTable('part');
 
             table.dateTime('dateTime').notNullable();
             table.integer('homeTeamScore');

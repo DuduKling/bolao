@@ -44,7 +44,7 @@ foreach ($inputData as $value) {
         SET
             homeTeamScore = :scoreHome,
             awayTeamScore = :scoreAway
-        WHERE Id = :fixtureID";
+        WHERE id = :fixtureID";
 
     $stmt = $db->prepare($query);
 

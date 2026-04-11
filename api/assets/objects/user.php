@@ -72,7 +72,7 @@ class User {
         if ($num > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $this->id = $row['Id'];
+            $this->id = $row['id'];
             $this->name = $row['name'];
             $this->phoneNumber = $row['phoneNumber'];
             $this->salt = $row['salt'];
@@ -172,8 +172,8 @@ class User {
         $query = "UPDATE {$this->tableName}
             SET
                 passwd = :password,
-                modifiedAt = CURRENT_TIMESTAMP
-            WHERE Id = :id";
+                updatedAt = CURRENT_TIMESTAMP
+            WHERE id = :id";
 
         // prepare the query
         $stmt = $this->conn->prepare($query);

@@ -15,15 +15,15 @@ $inputData = json_decode(file_get_contents("php://input"));
 $faseId = $inputData->faseID;
 $userName = $inputData->userName;
 
-$query = "SELECT c.name as championship, fa.name as phase, u.imagePath as userImagePath, f.Id, bet.homeTeamScoreBet, tb.name as home_name, tb.imagePath as home_imagePath, bet.awayTeamScoreBet, ta.name as away_name, ta.imagePath as away_imagePath, f.dateTime, f.location, bet.points, f.homeTeamScore as final_scoreHome, f.awayTeamScore as final_scoreAway FROM bet
-    INNER JOIN users u ON bet.fkUserId=u.Id
-    INNER JOIN fixture f ON bet.fkFixtureId=f.Id
-    INNER JOIN part p ON f.fkPartId=p.Id
-    INNER JOIN phase fa ON p.fkPhaseId=fa.Id
-    INNER JOIN championship c ON fa.fkChampionshipId=c.Id
-    INNER JOIN team ta ON f.fkAwayTeamId=ta.Id 
-    INNER JOIN team tb ON f.fkHomeTeamId=tb.Id
-    WHERE fa.Id=:phaseID AND u.name=:userName";
+$query = "SELECT c.name as championship, fa.name as phase, u.imagePath as userImagePath, f.id, bet.homeTeamScoreBet, tb.name as home_name, tb.imagePath as home_imagePath, bet.awayTeamScoreBet, ta.name as away_name, ta.imagePath as away_imagePath, f.dateTime, f.location, bet.points, f.homeTeamScore as final_scoreHome, f.awayTeamScore as final_scoreAway FROM bet
+    INNER JOIN users u ON bet.fkUserId=u.id
+    INNER JOIN fixture f ON bet.fkFixtureId=f.id
+    INNER JOIN part p ON f.fkPartId=p.id
+    INNER JOIN phase fa ON p.fkPhaseId=fa.id
+    INNER JOIN championship c ON fa.fkChampionshipId=c.id
+    INNER JOIN team ta ON f.fkAwayTeamId=ta.id 
+    INNER JOIN team tb ON f.fkHomeTeamId=tb.id
+    WHERE fa.id=:phaseID AND u.name=:userName";
 
 $stmt = $db->prepare($query);
 
@@ -47,7 +47,7 @@ $fixtures = array();
 foreach($dbFixtures as $row){
     $fixture = new stdClass;
 
-    $fixture->idfixture = $row['Id'];
+    $fixture->idfixture = $row['id'];
     $fixture->datetime = date("d/m/Y H:i", strtotime($row['dateTime']));
     $fixture->local = $row['location'];
 

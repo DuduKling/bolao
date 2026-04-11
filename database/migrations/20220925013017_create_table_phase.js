@@ -5,11 +5,11 @@
 exports.up = function(knex) {
     const query = knex.schema
         .createTable('phase', function (table) {
-            table.increments('Id');
+            table.increments('id');
             table.string('name', 255).notNullable();
 
             table.integer('fkChampionshipId').unsigned();
-            table.foreign('fkChampionshipId').references('Id').inTable('championship');
+            table.foreign('fkChampionshipId').references('id').inTable('championship');
         });
 
     if (knex.client.config.onlyLogQuery) {

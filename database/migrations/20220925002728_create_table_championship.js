@@ -5,7 +5,7 @@
 exports.up = function(knex) {
     const query = knex.schema
         .createTable('championship', function (table) {
-            table.increments('Id');
+            table.increments('id');
             table.string('name', 255).notNullable();
             table.string('logo', 255).notNullable();
             table.date('startDate').notNullable();
