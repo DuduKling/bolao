@@ -16,11 +16,11 @@ $faseId = $inputData->faseID;
 
 $query = "SELECT select2.usernames, GROUP_CONCAT(select2.parts ORDER BY partId ASC SEPARATOR ',') as partsApostadas
     FROM (
-        SELECT DISTINCT users.name as usernames, part.name as parts, part.id as partId FROM bet
+        SELECT DISTINCT user.name as usernames, part.name as parts, part.id as partId FROM bet
         LEFT JOIN fixture ON bet.fkFixtureId = fixture.id
         LEFT JOIN part ON fixture.fkPartId = part.id
         LEFT JOIN phase ON part.fkPhaseId = phase.id
-        LEFT JOIN users ON bet.fkUserId = users.id
+        LEFT JOIN user ON bet.fkUserId = user.id
         WHERE phase.id=:phaseID
         ORDER BY parts ASC
     ) as select2

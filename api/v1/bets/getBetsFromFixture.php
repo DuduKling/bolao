@@ -14,9 +14,9 @@ $inputData = json_decode(file_get_contents("php://input"));
 
 $fixtureID = $inputData->fixtureID;
 
-$query = "SELECT f.id, f.dateTime, f.location, tb.name as home_name, tb.imagePath as home_imagePath, bet.homeTeamScoreBet, ta.name as away_name, ta.imagePath as away_imagePath, bet.awayTeamScoreBet, round((count(*)/(SELECT count(*) FROM users INNER JOIN bet ON users.id=bet.fkUserId WHERE bet.fkFixtureId=:fixtureID) * 100),2) as porcentagem, GROUP_CONCAT(u.name ORDER BY u.name ASC SEPARATOR ',') as usernames 
+$query = "SELECT f.id, f.dateTime, f.location, tb.name as home_name, tb.imagePath as home_imagePath, bet.homeTeamScoreBet, ta.name as away_name, ta.imagePath as away_imagePath, bet.awayTeamScoreBet, round((count(*)/(SELECT count(*) FROM user INNER JOIN bet ON user.id=bet.fkUserId WHERE bet.fkFixtureId=:fixtureID) * 100),2) as porcentagem, GROUP_CONCAT(u.name ORDER BY u.name ASC SEPARATOR ',') as usernames 
     FROM bet
-    INNER JOIN users u ON bet.fkUserId=u.id
+    INNER JOIN user u ON bet.fkUserId=u.id
     INNER JOIN fixture f ON bet.fkFixtureId=f.id
     INNER JOIN team ta ON f.fkAwayTeamId=ta.id 
     INNER JOIN team tb ON f.fkHomeTeamId=tb.id

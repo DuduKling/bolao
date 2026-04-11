@@ -16,7 +16,7 @@ $faseId = $inputData->faseID;
 $userName = $inputData->userName;
 
 $query = "SELECT c.name as championship, fa.name as phase, u.imagePath as userImagePath, f.id, bet.homeTeamScoreBet, tb.name as home_name, tb.imagePath as home_imagePath, bet.awayTeamScoreBet, ta.name as away_name, ta.imagePath as away_imagePath, f.dateTime, f.location, bet.points, f.homeTeamScore as final_scoreHome, f.awayTeamScore as final_scoreAway FROM bet
-    INNER JOIN users u ON bet.fkUserId=u.id
+    INNER JOIN user u ON bet.fkUserId=u.id
     INNER JOIN fixture f ON bet.fkFixtureId=f.id
     INNER JOIN part p ON f.fkPartId=p.id
     INNER JOIN phase fa ON p.fkPhaseId=fa.id

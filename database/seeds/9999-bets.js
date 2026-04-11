@@ -4,8 +4,8 @@
  */
 exports.seed = async function (knex) {
 
-  const { id: userTesteId } = knex('users').where('name', 'teste').first();
-  const { id: userLoserId } = knex('users').where('name', 'loser').first();
+  const { id: userTesteId } = knex('user').where('name', 'teste').first();
+  const { id: userLoserId } = knex('user').where('name', 'loser').first();
 
   await knex('bet').insert([
     // Russia 2018 - Grupos

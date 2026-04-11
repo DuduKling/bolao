@@ -4,7 +4,7 @@
  */
 exports.seed = async function(knex) {
 
-  await knex('users').insert([
+  await knex('user').insert([
     {
       name: 'admin',
       phoneNumber: "99999999999",

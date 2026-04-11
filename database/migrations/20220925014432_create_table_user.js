@@ -4,7 +4,7 @@
  */
 exports.up = function(knex) {
     const query = knex.schema
-        .createTable('users', function (table) {
+        .createTable('user', function (table) {
             table.increments('id');
 
             table.string('name', 255).notNullable();
@@ -32,5 +32,5 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
     return knex.schema
-        .dropTable('users');
+        .dropTable('user');
 };
