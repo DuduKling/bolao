@@ -1,21 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../css/util/partidaPlacar.css';
 
 import PropTypes from 'prop-types';
 
 function PartidaPlacar(props) {
+    const [awayScoreValue, setAwayScoreValue] = useState('');
+    const [homeScoreValue, setHomeScoreValue] = useState('');
 
     const handleInputChange = (event) => {
-        const inputValue = event.target.value;
+        const { value, name, classList } = event.target;
 
-        let regx = new RegExp('^[0-9]{1,2}$', 'gi');
-        let resultado = regx.test(inputValue);
+        const regex = /^[0-9]{1,2}$/gi;
+        let isValid = value === '' || regex.test(value);
 
-        if (!resultado) {
-            event.target.classList.add('error');
+        if (isValid) {
+            classList.remove('error');
         } else {
-            event.target.classList.remove('error');
+            classList.add('error');
+        }
 
+        if (name.endsWith('_home')) {
+            setHomeScoreValue(value);
+        } else if (name.endsWith('_away')) {
+            setAwayScoreValue(value);
+        }
+    };
+
+    const increment = (home = true) => {
+        if (home) {
+            setHomeScoreValue(String(Number(homeScoreValue) + 1));
+        } else {
+            setAwayScoreValue(String(Number(awayScoreValue) + 1));
+        }
+    };
+
+    const decrement = (home = true) => {
+        if (home) {
+            let newValue = Number(homeScoreValue) - 1;
+            if (newValue < 0) newValue = 0;
+            setHomeScoreValue(String(newValue));
+        } else {
+            let newValue = Number(awayScoreValue) - 1;
+            if (newValue < 0) newValue = 0;
+            setAwayScoreValue(String(newValue));
         }
     };
 
@@ -36,30 +63,44 @@ function PartidaPlacar(props) {
                 if (props.isAdmin === 'admin') {
                     return (
                         <div>
-                            <input
-                                type="text"
-                                placeholder="X"
-                                name={props.team.idfixture + '_home'}
-                                onChange={handleInputChange}
-                                maxLength="2"
-                                pattern="^[0-9]{1,2}$"
-                            />
-                            <label></label>
+                            <div  className="input-container">
+                                <input
+                                    type="number"
+                                    placeholder="X"
+                                    name={props.team.idfixture + '_home'}
+                                    onChange={handleInputChange}
+                                    maxLength="2"
+                                    pattern="^[0-9]{1,2}$"
+                                    value={homeScoreValue}
+                                />
+                                <label></label>
+                            </div>
+                            <div className="button-container">
+                                <button type="button" onClick={() => decrement(true)}>-</button>
+                                <button type="button" onClick={() => increment(true)}>+</button>
+                            </div>
                         </div>
                     );
                 } else {
                     return (
                         <div>
-                            <input
-                                type="text"
-                                placeholder="X"
-                                name={props.team.idfixture + '_home'}
-                                onChange={handleInputChange}
-                                required="required"
-                                maxLength="2"
-                                pattern="^[0-9]{1,2}$"
-                            />
-                            <label></label>
+                            <div  className="input-container">
+                                <input
+                                    type="number"
+                                    placeholder="X"
+                                    name={props.team.idfixture + '_home'}
+                                    onChange={handleInputChange}
+                                    required="required"
+                                    maxLength="2"
+                                    pattern="^[0-9]{1,2}$"
+                                    value={homeScoreValue}
+                                />
+                                <label></label>
+                            </div>
+                            <div className="button-container">
+                                <button type="button" onClick={() => decrement(true)}>-</button>
+                                <button type="button" onClick={() => increment(true)}>+</button>
+                            </div>
                         </div>
                     );
                 }
@@ -85,30 +126,44 @@ function PartidaPlacar(props) {
                 if (props.isAdmin === 'admin') {
                     return (
                         <div>
-                            <input
-                                type="text"
-                                placeholder="X"
-                                name={props.team.idfixture + '_away'}
-                                onChange={handleInputChange}
-                                maxLength="2"
-                                pattern="^[0-9]{1,2}$"
-                            />
-                            <label></label>
+                            <div  className="input-container">
+                                <input
+                                    type="number"
+                                    placeholder="X"
+                                    name={props.team.idfixture + '_away'}
+                                    onChange={handleInputChange}
+                                    maxLength="2"
+                                    pattern="^[0-9]{1,2}$"
+                                    value={awayScoreValue}
+                                />
+                                <label></label>
+                            </div>
+                            <div className="button-container">
+                                <button type="button" onClick={() => decrement(false)}>-</button>
+                                <button type="button" onClick={() => increment(false)}>+</button>
+                            </div>
                         </div>
                     );
                 } else {
                     return (
                         <div>
-                            <input
-                                type="text"
-                                placeholder="X"
-                                name={props.team.idfixture + '_away'}
-                                onChange={handleInputChange}
-                                required="required"
-                                maxLength="2"
-                                pattern="^[0-9]{1,2}$"
-                            />
-                            <label></label>
+                            <div className="input-container">
+                                <input
+                                    type="number"
+                                    placeholder="X"
+                                    name={props.team.idfixture + '_away'}
+                                    onChange={handleInputChange}
+                                    required="required"
+                                    maxLength="2"
+                                    pattern="^[0-9]{1,2}$"
+                                    value={awayScoreValue}
+                                />
+                                <label></label>
+                            </div>
+                            <div className="button-container">
+                                <button type="button" onClick={() => decrement(false)}>-</button>
+                                <button type="button" onClick={() => increment(false)}>+</button>
+                            </div>
                         </div>
                     );
                 }

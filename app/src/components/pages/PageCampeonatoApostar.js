@@ -45,7 +45,7 @@ function PageCampeonatoApostar() {
         const dataString = JSON.stringify({
             parteId,
             userId,
-            status: 'aberto',
+            status: 'aposta',
         });
 
         await http.post({

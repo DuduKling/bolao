@@ -9,7 +9,24 @@
 	font-size: 28px;
 }
 
-.match-container > .placar input {
+.match-container > .placar > div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.match-container > .placar > div > .input-container {
+	position: relative;
+	font-size: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	box-sizing: border-box;
+	margin: 0;
+	width: 40px;
+}
+
+.match-container > .placar > div > .input-container > input {
 	/* 
 	background-color: transparent;
 	border: 1px solid #c7c7c7;
@@ -33,12 +50,31 @@
 	appearance: none;
 }
 
-.match-container > .placar > div {
-	position: relative;
-	font-size: 16px;
-	display: inline-block;
-	box-sizing: border-box;
-	margin: 0;
+.match-container > .placar > div > .button-container {
+	margin-top: 5px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.match-container > .placar > div > .button-container > button {
+	border: none;
+	color: white;
+	border-radius: 2px;
+	cursor: pointer;
+	font-size: 20px;
+	font-weight: 800;
+	width: 40px;
+	margin: 4px 2px;
+	background: #4CAF50;
+	will-change: box-shadow;
+	transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+}
+
+.match-container > .placar > div > .button-container > button:hover {
+	background-color: #388E3C;
 }
 
 .match-container > .placar input:focus {
@@ -48,6 +84,12 @@
 	left: 0;
 	visibility: visible;
 	width: 100%;
+}
+
+.match-container > .placar input::-webkit-inner-spin-button, 
+.match-container > .placar input::-webkit-outer-spin-button { 
+	-webkit-appearance: none; 
+	margin: 0; 
 }
 
 .match-container > .placar label:after {

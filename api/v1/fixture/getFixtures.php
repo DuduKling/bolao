@@ -10,14 +10,14 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
 $db = new DatabaseConnection($env);
 
-$inputData = json_decode(file_get_contents("php://input"));
+$reqBody = json_decode(file_get_contents("php://input"));
 
-$parteId = $inputData->parteId;
-$statusNeeded = $inputData->status;
+$parteId = $reqBody->parteId;
+$statusNeeded = $reqBody->status;
 
 $userId = null;
-if (isset($inputData->userId)) {
-    $userId = $inputData->userId;
+if (isset($reqBody->userId)) {
+    $userId = $reqBody->userId;
 }
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/util/fixtureGetter.php'; 
