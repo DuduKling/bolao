@@ -11,30 +11,11 @@ header("Access-Control-Allow-Credentials: true");
 
 $reqBody = json_decode(file_get_contents("php://input"));
 
-// --- JWT Validation ---
-$jwt = htmlspecialchars($_COOKIE["userJWT"]);
 $fingerprint = htmlspecialchars(strip_tags($reqBody->fingerprint));
-
-if (!isset($jwt) || empty($jwt)) {
-    http_response_code(401);
-    echo json_encode(array(
-        "message" => "Acesso Negado. Favor fazer login novamente. (Error: #AV1)"
-    ));
-    exit();
-}
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/auth.php';
 $auth = new Auth();
-
-$decoded = $auth->validateToken($jwt);
-if (empty($decoded)) {
-    http_response_code(401);
-    echo json_encode(array(
-        "message" => "Acesso Negado. (Error: #AV2)"
-    ));
-    exit();
-}
-// ---  END JWT Validation ---
+$decoded = $auth->authenticate();
 
 $name = $decoded->data->name;
 $phoneNumber = $decoded->data->phoneNumber;
