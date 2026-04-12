@@ -17,10 +17,14 @@ function PagePools() {
 
     const dataFetchedRef = useRef(false);
 
+    const LOCAL_STORAGE_ITEM = 'pools';
+
     useEffect(() => {
-        const cachedPools = localStorage.getItem('pools');
+        const cachedPools = localStorage.getItem(LOCAL_STORAGE_ITEM);
         if (cachedPools) {
-            setPools(JSON.parse(cachedPools));
+            const data = JSON.parse(cachedPools);
+            setPools(data.allPools);
+            setJoinedPools(data.joinedPools);
         }
 
         if (dataFetchedRef.current) return;
@@ -46,7 +50,7 @@ function PagePools() {
                 setJoinedPools(response.joinedPools);
                 setLoading(false);
 
-                localStorage.setItem('campeonatos', JSON.stringify(response));
+                localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
             })
             .catch(() => {
                 setLoading(false);

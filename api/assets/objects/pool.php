@@ -3,16 +3,11 @@
 class Pool
 {
     private $conn;
-    private $env;
-    public $model;
 
     public function __construct()
     {
         include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
         $this->conn = new DatabaseConnection();
-
-        include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
-        $this->env = new Env();
     }
 
     public function getAll()
@@ -54,7 +49,6 @@ class Pool
             $pool->name = $row['name'];
             $pool->description = $row['description'];
             $pool->status = $row['status'];
-            $pool->bets = $row['bets'];
             $pool->startDate = date_format(date_create($row['startDate']), 'd/m/Y');
             $pool->endDate = date_format(date_create($row['endDate']), 'd/m/Y');
 
