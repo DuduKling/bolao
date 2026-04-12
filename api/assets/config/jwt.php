@@ -6,12 +6,12 @@ use Firebase\JWT\Key;
 class CustomJWT {
     public function __construct($env) {
         error_reporting(E_ALL);
-        date_default_timezone_set($env["JWT_TIMEZONE"]);
+        date_default_timezone_set($env->jwtTimezone);
 
-        $this->pubKey = $env["JWT_PUB_KEY"];
-        $this->privKey = $env["JWT_PRIV_KEY"];
-        $this->iss = $env["URL_FRONT"]; //"iss" (Issuer) Claim
-        $this->aud = $env["URL_FRONT"]; //"aud" (Audience) Claim
+        $this->pubKey = $env->jwtPubKey;
+        $this->privKey = $env->jwtPrivKey;
+        $this->iss = $env->urlFront; //"iss" (Issuer) Claim
+        $this->aud = $env->urlFront; //"aud" (Audience) Claim
 
         $this->algorithm = 'RS256';
     }

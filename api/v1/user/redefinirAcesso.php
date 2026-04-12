@@ -1,7 +1,8 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
+$env = new Env();
 
-header("Access-Control-Allow-Origin: {$env["URL_FRONT"]}");
+header("Access-Control-Allow-Origin: {$env->urlFront}");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
@@ -9,49 +10,40 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 $reqBody = json_decode(file_get_contents("php://input"));
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
-$db = new DatabaseConnection($env);
+$name = htmlspecialchars(strip_tags($reqBody->name));
+$phoneNumber = htmlspecialchars(strip_tags($reqBody->phoneNumber));
+$fingerprint = htmlspecialchars(strip_tags($reqBody->fingerprint));
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/user.php';
-$user = new User($db);
+$user = new User();
 
-$user->name = $reqBody->name;
-$user->phoneNumber = $reqBody->phoneNumber;
-$user->fingerprint = $reqBody->fingerprint;
+$user->model($name, $phoneNumber);
 
-$userExists = $user->checkIfExists();
-
-if (!$userExists) {
+$exists = $user->exists();
+if (!$exists) {
     http_response_code(400);
-    echo json_encode(array("message" => "Usuário não encontrado."));
+    echo json_encode(array(
+        "message" => "Usuário não encontrado."
+    ));
     exit();
 }
 
-$passwordUpdated = $user->updatePassword();
-
-if (!$passwordUpdated) {
+$updated = $user->changePassword($fingerprint);
+if (!$updated) {
     http_response_code(400);
-    echo json_encode(array("message" => "Não foi possível liberar seu acesso. Favor entrar em contato com o Administrador."));
+    echo json_encode(array(
+        "message" => "Não foi possível liberar seu acesso. Favor entrar em contato com o Administrador."
+    ));
     exit();
 }
-
-include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/jwt.php';
-$customJWT = new CustomJWT($env);
-
-$jwt = $customJWT->createToken(array(
-    "name" => $user->name,
-    "phoneNumber" => $user->phoneNumber,
-    "createdAt" => date(DATE_ATOM)
-));
 
 http_response_code(200);
 echo json_encode(
     array(
         "message" => "Usuário criado com sucesso!",
-        "name" => $user->name,
-        "phoneNumber" => $user->phoneNumber,
-        "role" => $user->role,
-        "jwt" => $jwt,
+        "name" => $user->model->name,
+        "phoneNumber" => $user->model->phoneNumber,
+        "role" => $user->model->role,
+        "jwt" => $user->generateToken(),
     )
 );
-?>

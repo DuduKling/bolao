@@ -1,6 +1,32 @@
 <?php
 
-// Load environment variables
-$env = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/api/.env');
+class Env
+{
+    public readonly string $urlFront;
+    public readonly string $dbHost;
+    public readonly string $dbName;
+    public readonly string $dbUsername;
+    public readonly string $dbPassword;
+    public readonly string $jwtPubKey;
+    public readonly string $jwtPrivKey;
+    public readonly string $jwtTimezone;
+    public readonly string $appPublicDir;
 
-?>
+    public function __construct()
+    {
+        $envData = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/api/.env');
+
+        $this->urlFront = $envData['URL_FRONT'];
+
+        $this->dbHost = $envData['DB_HOST'];
+        $this->dbName = $envData['DB_NAME'];
+        $this->dbUsername = $envData['DB_USERNAME'];
+        $this->dbPassword = $envData['DB_PASSWORD'];
+
+        $this->jwtPubKey = $envData['JWT_PUB_KEY'];
+        $this->jwtPrivKey = $envData['JWT_PRIV_KEY'];
+        $this->jwtTimezone = $envData['JWT_TIMEZONE'];
+
+        $this->appPublicDir = $envData['APP_PUBLIC_DIR'];
+    }
+}

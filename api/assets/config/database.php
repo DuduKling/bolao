@@ -1,26 +1,30 @@
 <?php
-class DatabaseConnection {
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
+
+class DatabaseConnection
+{
     public $conn = null;
 
-    public function __construct($env) {
-        $host = $env["DB_HOST"];
-        $db_name = $env["DB_NAME"];
-        $username = $env["DB_USERNAME"];
-        $password = $env["DB_PASSWORD"];
+    public function __construct()
+    {
+        $env = new Env();
+
+        $host = $env->dbHost;
+        $db_name = $env->dbName;
+        $username = $env->dbUsername;
+        $password = $env->dbPassword;
 
         $dsn = "mysql:host=" . $host . ";dbname=" . $db_name;
 
         try {
             $this->conn = new PDO($dsn, $username, $password);
-        } catch(PDOException $exception) {
+        } catch (PDOException $exception) {
             echo "Connection error: " . $exception->getMessage();
         }
-
-        return $this->conn;
     }
 
-    public function prepare($query) {
+    public function prepare($query)
+    {
         return $this->conn->prepare($query);
     }
 }
-?>

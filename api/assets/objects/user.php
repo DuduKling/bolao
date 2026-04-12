@@ -1,51 +1,50 @@
 <?php
-class User {
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/models/user.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/jwt.php';
+
+class User
+{
     private $conn;
-    private $tableName = "user";
+    private $env;
+    public $model;
 
-    public $name;
-    public $phoneNumber;
-    public $role;
-    public $fingerprint;
+    public function __construct()
+    {
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
+        $this->conn = new DatabaseConnection();
 
-    public $id;
-    public $salt;
-
-    public function __construct($db) {
-        $this->conn = $db;
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
+        $this->env = new Env();
     }
 
-    public function create() {
+    public function model($name, $phoneNumber)
+    {
+        $this->model = new UserModel();
 
-        // insert query
-        $query = "INSERT INTO {$this->tableName}
-                SET
-                    name = :name,
-                    phoneNumber = :phoneNumber,
-                    passwd = :password,
-                    salt = :salt";
+        $this->model->name = $name;
+        $this->model->phoneNumber = $phoneNumber;
+    }
 
-        // prepare the query
+    public function create($fingerprint)
+    {
+        $query = "INSERT INTO {$this->model->table}
+            SET
+                name = :name,
+                phoneNumber = :phoneNumber,
+                passwd = :password,
+                salt = :salt
+        ";
+
         $stmt = $this->conn->prepare($query);
 
-        // sanitize
-        $this->name = htmlspecialchars(strip_tags($this->name));
-        $this->phoneNumber = htmlspecialchars(strip_tags($this->phoneNumber));
-        $this->password = htmlspecialchars(strip_tags($this->password));
-
-        // create a unique salt for this user
         $salt = uniqid(mt_rand(), true);
+        $password_hash = password_hash($fingerprint . $salt, PASSWORD_BCRYPT);
 
-        // join the password and salt together, and hash them
-        $password_hash = password_hash($this->fingerprint . $salt, PASSWORD_BCRYPT);
-
-        // bind the values
-        $stmt->bindParam(':name', $this->name);
-        $stmt->bindParam(':phoneNumber', $this->phoneNumber);
+        $stmt->bindParam(':name', $this->model->name);
+        $stmt->bindParam(':phoneNumber', $this->model->phoneNumber);
         $stmt->bindParam(':password', $password_hash);
         $stmt->bindParam(':salt', $salt);
 
-        // execute the query, also check if query was successful
         if ($stmt->execute()) {
             return true;
         }
@@ -53,9 +52,28 @@ class User {
         return false;
     }
 
-    public function find() {
+    public function generateToken()
+    {
+        $customJWT = new CustomJWT($this->env);
+
+        return $customJWT->createToken(array(
+            "name" => $this->model->name,
+            "phoneNumber" => $this->model->phoneNumber,
+            "createdAt" => date(DATE_ATOM)
+        ));
+    }
+
+    public function validateToken($jwt)
+    {
+        $customJWT = new CustomJWT($this->env);
+
+        return $customJWT->decodeToken($jwt);
+    }
+
+    public function find()
+    {
         $query = "SELECT *
-            FROM {$this->tableName}
+            FROM {$this->model->table}
             WHERE name = :name
             AND phoneNumber = :phoneNumber
             LIMIT 0,1
@@ -63,8 +81,8 @@ class User {
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(':name', $this->name);
-        $stmt->bindParam(':phoneNumber', $this->phoneNumber);
+        $stmt->bindParam(':name', $this->model->name);
+        $stmt->bindParam(':phoneNumber', $this->model->phoneNumber);
 
         $stmt->execute();
 
@@ -72,11 +90,11 @@ class User {
         if ($num > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $this->id = $row['id'];
-            $this->name = $row['name'];
-            $this->phoneNumber = $row['phoneNumber'];
-            $this->salt = $row['salt'];
-            $this->role = $row['role'];
+            $this->model->id = $row['id'];
+            $this->model->name = $row['name'];
+            $this->model->phoneNumber = $row['phoneNumber'];
+            $this->model->salt = $row['salt'];
+            $this->model->role = $row['role'];
 
             return true;
         }
@@ -84,48 +102,38 @@ class User {
         return false;
     }
 
-    public function checkIfExists() {
-
-        // query to check if user exists
+    public function exists()
+    {
         $query = "SELECT *
-                FROM {$this->tableName}
-                WHERE name = :name
-                AND phoneNumber = :phoneNumber
-                LIMIT 0,1";
+            FROM {$this->model->table}
+            WHERE name = :name
+            AND phoneNumber = :phoneNumber
+            LIMIT 0,1
+        ";
 
-        // prepare the query
         $stmt = $this->conn->prepare($query);
 
-        // sanitize
-        $this->name = htmlspecialchars(strip_tags($this->name));
-        $this->phoneNumber = htmlspecialchars(strip_tags($this->phoneNumber));
+        $stmt->bindParam(':name', $this->model->name);
+        $stmt->bindParam(':phoneNumber', $this->model->phoneNumber);
 
-        // bind given name value
-        $stmt->bindParam(':name', $this->name);
-        $stmt->bindParam(':phoneNumber', $this->phoneNumber);
-
-        // execute the query
         $stmt->execute();
 
-        // get number of rows
         $num = $stmt->rowCount();
 
-        // if name exists, assign values to object properties for easy access and use for php sessions
         if ($num > 0) {
-            // return true because name exists in the database
             return true;
         }
 
-        // return false if name does not exist in the database
         return false;
     }
 
-    public function confirmAccess() {
+    public function confirmAccess($fingerprint)
+    {
         if (!$this->find()) {
             return false;
         }
 
-        $passwordMatch = $this->matchPassword($this->fingerprint);
+        $passwordMatch = $this->matchPassword($fingerprint);
 
         if ($passwordMatch) {
             return true;
@@ -134,20 +142,19 @@ class User {
         return false;
     }
 
-    public function matchPassword($password) {
+    public function matchPassword($fingerprint)
+    {
         $query = "SELECT salt, passwd
-            FROM {$this->tableName}
+            FROM {$this->model->table}
             WHERE name = :name
             AND phoneNumber = :phoneNumber
-            LIMIT 0,1";
+            LIMIT 0,1
+        ";
 
         $stmt = $this->conn->prepare($query);
 
-        $this->name = htmlspecialchars(strip_tags($this->name));
-        $this->phoneNumber = htmlspecialchars(strip_tags($this->phoneNumber));
-
-        $stmt->bindParam(':name', $this->name);
-        $stmt->bindParam(':phoneNumber', $this->phoneNumber);
+        $stmt->bindParam(':name', $this->model->name);
+        $stmt->bindParam(':phoneNumber', $this->model->phoneNumber);
 
         $stmt->execute();
 
@@ -158,33 +165,32 @@ class User {
             $salt = $row['salt'];
             $password_hash = $row['passwd'];
 
-            return password_verify($password . $salt, $password_hash);
+            return password_verify($fingerprint . $salt, $password_hash);
         }
 
         return false;
     }
 
-    public function updatePassword() {
+    public function changePassword($fingerprint)
+    {
         if (!$this->find()) {
             return false;
         }
 
-        $query = "UPDATE {$this->tableName}
+        $query = "UPDATE {$this->model->table}
             SET
                 passwd = :password,
                 updatedAt = CURRENT_TIMESTAMP
-            WHERE id = :id";
+            WHERE id = :id
+        ";
 
-        // prepare the query
         $stmt = $this->conn->prepare($query);
 
-        // hash the password before saving to database
-        $password_hash = password_hash($this->fingerprint . $this->salt, PASSWORD_BCRYPT);
+        $password_hash = password_hash($fingerprint . $this->model->salt, PASSWORD_BCRYPT);
 
-        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':id', $this->model->id);
         $stmt->bindParam(':password', $password_hash);
 
-        // execute the query
         if ($stmt->execute()) {
             return true;
         }
@@ -193,4 +199,3 @@ class User {
     }
 
 }
-?>
