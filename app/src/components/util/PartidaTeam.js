@@ -17,18 +17,18 @@ function PartidaTeam(props) {
         if (props.type === '-Home') {
             return (
                 <div className={'time ' + props.type}>
-                    <p>{props.team.home_team_name}</p>
+                    <p>{props.fixture.homeTeamName}</p>
                     <div>
-                        <img src={setImage(props.team.home_path)} alt={props.team.home_team_name} />
+                        <img src={setImage(props.fixture.homeTeamImagePath)} alt={props.fixture.homeTeamName} />
                     </div>
                 </div>
             );
         } else {
             return (
                 <div className={'time ' + props.type}>
-                    <p>{props.team.away_team_name}</p>
+                    <p>{props.fixture.awayTeamName}</p>
                     <div>
-                        <img src={setImage(props.team.away_path)} alt={props.team.away_team_name} />
+                        <img src={setImage(props.fixture.awayTeamImagePath)} alt={props.fixture.awayTeamName} />
                     </div>
                 </div>
             );
@@ -44,7 +44,7 @@ function PartidaTeam(props) {
 
 PartidaTeam.propTypes = {
     type: PropTypes.string,
-    team: PropTypes.object,
+    fixture: PropTypes.object,
 };
 
 export default PartidaTeam;

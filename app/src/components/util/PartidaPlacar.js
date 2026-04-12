@@ -49,25 +49,25 @@ function PartidaPlacar(props) {
     const checkTypeHomeTeam = () => {
         if (props.typeAll === 'ReadOnly') {
             return (
-                <p className="plac-num1">{props.team.home_score}</p>
+                <p className="plac-num1">{props.fixture.homeTeamScore}</p>
             );
 
         } else {
 
             if (props.typeHome === 'ReadOnly') {
                 return (
-                    <p className="plac-num1">{props.team.home_score}</p>
+                    <p className="plac-num1">{props.fixture.homeTeamScore}</p>
                 );
 
             } else {
                 if (props.isAdmin === 'admin') {
                     return (
                         <div>
-                            <div  className="input-container">
+                            <div className="input-container">
                                 <input
                                     type="number"
                                     placeholder="X"
-                                    name={props.team.idfixture + '_home'}
+                                    name={props.fixture.idfixture + '_home'}
                                     onChange={handleInputChange}
                                     maxLength="2"
                                     pattern="^[0-9]{1,2}$"
@@ -84,11 +84,11 @@ function PartidaPlacar(props) {
                 } else {
                     return (
                         <div>
-                            <div  className="input-container">
+                            <div className="input-container">
                                 <input
                                     type="number"
                                     placeholder="X"
-                                    name={props.team.idfixture + '_home'}
+                                    name={props.fixture.idfixture + '_home'}
                                     onChange={handleInputChange}
                                     required="required"
                                     maxLength="2"
@@ -111,14 +111,14 @@ function PartidaPlacar(props) {
     const checkTypeAwayTeam = () => {
         if (props.typeAll === 'ReadOnly') {
             return (
-                <p className="plac-num2">{props.team.away_score}</p>
+                <p className="plac-num2">{props.fixture.awayTeamScore}</p>
             );
 
         } else {
 
             if (props.typeAway === 'ReadOnly') {
                 return (
-                    <p className="plac-num2">{props.team.away_score}</p>
+                    <p className="plac-num2">{props.fixture.awayTeamScore}</p>
                 );
 
             } else {
@@ -126,11 +126,11 @@ function PartidaPlacar(props) {
                 if (props.isAdmin === 'admin') {
                     return (
                         <div>
-                            <div  className="input-container">
+                            <div className="input-container">
                                 <input
                                     type="number"
                                     placeholder="X"
-                                    name={props.team.idfixture + '_away'}
+                                    name={props.fixture.idfixture + '_away'}
                                     onChange={handleInputChange}
                                     maxLength="2"
                                     pattern="^[0-9]{1,2}$"
@@ -151,7 +151,7 @@ function PartidaPlacar(props) {
                                 <input
                                     type="number"
                                     placeholder="X"
-                                    name={props.team.idfixture + '_away'}
+                                    name={props.fixture.idfixture + '_away'}
                                     onChange={handleInputChange}
                                     required="required"
                                     maxLength="2"
@@ -186,7 +186,7 @@ function PartidaPlacar(props) {
 
 PartidaPlacar.propTypes = {
     typeAll: PropTypes.string,
-    team: PropTypes.object,
+    fixture: PropTypes.object,
     typeHome: PropTypes.string,
     isAdmin: PropTypes.string,
     typeAway: PropTypes.string,

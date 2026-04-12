@@ -88,7 +88,7 @@
 	margin: 0;
 }
 
-.main-partidaForm  > .partidaLista > .pageTitle {
+.main-partidaForm  > .partidaLista > div > .pageTitle {
 	background-color: #4caf50;
 	padding: 10px 15px;
 
@@ -110,7 +110,7 @@
 		0 1px 5px 0 rgba(0,0,0,.12);
 }
 
-.main-partidaForm  > .partidaLista > .allFixturesLink {
+.main-partidaForm  > .partidaLista > div > .allFixturesLink {
 	height: 45px;
 	
 	display: flex;
@@ -132,11 +132,11 @@
 	right: 0;
 }
 
-.main-partidaForm  > .partidaLista > .allFixturesLink:hover {
+.main-partidaForm  > .partidaLista > div > .allFixturesLink:hover {
 	background-color: #388E3C;
 }
 
-.main-partidaForm  > .partidaLista > .errorMessage {
+.main-partidaForm  > .partidaLista > div > .errorMessage {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -404,7 +404,7 @@
 		width: 100%;
 	}
 
-	.main-partidaForm > .partidaLista > .pageTitle {
+	.main-partidaForm > .partidaLista > div > .pageTitle {
 		padding: 10px 50px 10px 15px;
 	}
 
@@ -424,11 +424,11 @@
 		font-size: 18px;
 	}
 
-	.main-partidaForm > .partidaLista > .allFixturesLink {
+	.main-partidaForm > .partidaLista > div > .allFixturesLink {
 		height: 40px;
 	}
 	
-	.main-partidaForm > .partidaLista > .pageTitle {
+	.main-partidaForm > .partidaLista > div > .pageTitle {
 		font-size: 18px;
 	}
 }

@@ -1,4 +1,19 @@
-.partidaLista > li {
+.partidaLista > .phaseContainer {
+	margin-top: 20px;
+}
+
+.partidaLista > .phaseContainer > .partContainer > .partTitle {
+	margin: 0px;
+	padding: 5px;
+
+    border-bottom: 1px solid #c7c7c73d;
+    border-left: 1px solid #c7c7c7;
+    border-right: 1px solid #c7c7c7;
+    background-color: #ececec;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+}
+
+.partidaLista > .phaseContainer > .partContainer > div > li {
 	height: auto;
 	padding: 10px 25px 0px 25px;
 	
@@ -20,24 +35,24 @@
 	transition: all 0.3s ease;
 }
 
-.partidaLista > li:hover {
+.partidaLista > .phaseContainer > .partContainer > div > li:hover {
 	background-color: #e2e2e2;
 }
 
-.partidaLista > li:last-of-type {
+.partidaLista > .phaseContainer > .partContainer:last-of-type > div:last-of-type > li {
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	border-bottom: none;
 	overflow: hidden;
 }
 
-.partidaLista > li p {
+.partidaLista > .phaseContainer > .partContainer > div > li p {
 	margin: 0;
 	/* text-align: right; */
 	word-break: break-all;
 }
 
-.partidaLista > li > a {
+.partidaLista > .phaseContainer > .partContainer > div > li > a {
 	width: 100%;
 	height: 100%;
 
@@ -46,7 +61,7 @@
 	color: #424242;
 }
 
-.partidaLista > li > div {
+.partidaLista > .phaseContainer > .partContainer > div > li > div {
 	width: 100%;
 	height: 100%;
 
@@ -56,7 +71,7 @@
 }
 
 
-.partidaLista > li .info {
+.partidaLista > .phaseContainer > .partContainer > div > li .info {
     color: #878787;
     
 	margin-bottom: 10px;
@@ -64,7 +79,7 @@
 	text-align: center;
 }
 
-.partidaLista > li .match-container {
+.partidaLista > .phaseContainer > .partContainer > div > li .match-container {
 	width: 100%;
 	/* max-width: 620px; */
 	margin-bottom: 10px;
@@ -75,11 +90,11 @@
 	align-items: center;
 }
 
-.partidaLista > li .match-container > div {
+.partidaLista > .phaseContainer > .partContainer > div > li .match-container > div {
     width: 100%;
 }
 
-.partidaLista > li .match-container > .placar {
+.partidaLista > .phaseContainer > .partContainer > div > li .match-container > .placar {
 	/* min-width: 250px; */
 
 	display: flex;
@@ -87,7 +102,7 @@
     justify-content: center;
 }
 
-.partidaLista > li .match-container > .placar > p[class^=plac] {
+.partidaLista > .phaseContainer > .partContainer > div > li .match-container > .placar > p[class^=plac] {
 	min-width: 40px;
 	display: block;
 	text-align: center;
@@ -101,24 +116,24 @@
 	padding: 10px 0 0 0;
 }
 
-.partidaLista > li .users-container {	
+.partidaLista > .phaseContainer > .partContainer > div > li .users-container {	
 	width: 100%;
 	margin-top: 15px;
 }
 
 
 
-.partidaLista > li .users-container > .users-usernamesList {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-container > .users-usernamesList {
 	/* height: auto; */
 	overflow: hidden;
 	transition: all 0.3s ease;
 }
 
-.partidaLista > li .users-container > input[id^=toggleUsernames] {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-container > input[id^=toggleUsernames] {
 	display: none;
 }
 
-.partidaLista > li .users-container > label {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-container > label {
 	width: 100%;
 	text-align: center;
 	display: block;
@@ -129,15 +144,15 @@
 	cursor: pointer;
 }
 
-.partidaLista > li .users-container > input[id^=toggleUsernames]:not(:checked) + .users-usernamesList {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-container > input[id^=toggleUsernames]:not(:checked) + .users-usernamesList {
 	height: 0px !important;
 }
 
-.partidaLista > li .users-container > .users-usernamesList > div {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-container > .users-usernamesList > div {
 	height: 39px;
 }
 
-.partidaLista > li .users-container > .users-usernamesList > div > a {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-container > .users-usernamesList > div > a {
 	width: 100%;
 	display: block;
 
@@ -150,7 +165,7 @@
 	transition: all 0.3s ease;
 }
 
-.partidaLista > li .users-container > div > div > a:hover {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-container > div > div > a:hover {
 	background-color: #c7c7c7;
 }
 
@@ -158,7 +173,7 @@
 
 
 
-.partidaLista > li .users-percent {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-percent {
 	width: 90px;
     height: 30px;
 
@@ -169,12 +184,12 @@
 	overflow: hidden;
 }
 
-.partidaLista > li .users-percent > .percent-triangle {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-percent > .percent-triangle {
 	border-top: 30px solid #4caf50;
 	border-left: 30px solid transparent;
 }
 
-.partidaLista > li .users-percent > p {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-percent > p {
 	position: absolute;
 	top: 5px;
 	right: 5px;
@@ -186,7 +201,7 @@
 
 
 
-.partidaLista > li .users-points {
+.partidaLista > .phaseContainer > .partContainer > div > li .users-points {
 	width: 100%;
     /* height: 30px; */
 	padding: 3px 0;
@@ -208,7 +223,7 @@
         width: 60px;
 	}
 	
-	.partidaLista > li p {
+	.partidaLista > .phaseContainer > .partContainer > div > li p {
 		font-size: 14px;
 	}
 

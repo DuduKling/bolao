@@ -87,6 +87,7 @@ function App() {
                         <Route path='faleconosco' element={<PageRootContato />} />
                         <Route path='regulamento' element={<PageRootRegulamento />} />
                         <Route path='campeonatos' element={<PageCampeonatos />} />
+                        <Route path='campeonato/:championshipId' element={<PageCampeonatoFixtures />} />
 
                         {/* RESTRICTED */}
                         <Route element={<PrivateRoute />} >
@@ -116,7 +117,6 @@ function App() {
                         {/* CAMPEONATO - RESTRICTED */}
                         <Route path='campeonato' element={<PrivateRoute />} >
                             <Route path=':campeonato/:fase' element={<PageCampeonatoDashboard />} />
-                            <Route path=':campeonato/:fase/jogos' element={<PageCampeonatoFixtures />} />
                             <Route path=':campeonato/:fase/jogo/:fixture' element={<PageCampeonatoFixture />} />
                             <Route path=':campeonato/:fase/apostado/:nome' element={<PageCampeonatoApostadoUser />} />
                             <Route path=':campeonato/:fase/:parte/apostar' element={<PageCampeonatoApostar />} />

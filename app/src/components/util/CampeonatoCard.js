@@ -60,7 +60,7 @@ function CampeonatoCard(props) {
     };
 
     return (
-        <Link className="campeonatoCard" to='/pool'>
+        <Link className="campeonatoCard" to={'/campeonato/' + props.campeonato.id}>
 
             {checkStatus()}
 

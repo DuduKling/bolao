@@ -6,7 +6,7 @@ import '../../css/pages/pageInside.css';
 import http from '../../util/http';
 
 import Loading from '../util/Loading';
-import PartidaListItem from '../util/PartidaListItem';
+import ChampionshipPhase from '../util/ChampionshipPhase';
 
 function PageCampeonatoFixtures() {
     const [fixtures, setFixtures] = useState([]);
@@ -18,18 +18,14 @@ function PageCampeonatoFixtures() {
 
     const dataFetchedRef = useRef(false);
 
+    const LOCAL_STORAGE_ITEM = `championship#${params.championshipId}`;
+
     useEffect(() => {
-        const campeonatoID = params.campeonato;
-        const faseID = params.fase;
-
-        const cachedCampeonato = localStorage.getItem(campeonatoID + faseID + 'campeonato');
-        if (cachedCampeonato) {
-            setCampeonato(JSON.parse(cachedCampeonato));
-        }
-
-        const cachedFixtures = localStorage.getItem(campeonatoID + faseID + 'fixtures');
+        const cachedFixtures = localStorage.getItem(LOCAL_STORAGE_ITEM);
         if (cachedFixtures) {
-            setFixtures(JSON.parse(cachedFixtures));
+            const data = JSON.parse(cachedFixtures);
+            setFixtures(data.fixtures);
+            setCampeonato(data.championshipInfo);
         }
 
         if (dataFetchedRef.current) return;
@@ -41,55 +37,32 @@ function PageCampeonatoFixtures() {
     const getFixturesAndCampeonato = async () => {
         setLoading(true);
 
-        const campeonatoID = params.campeonato;
-        const faseID = params.fase;
-
-        let dataString = JSON.stringify({
-            faseID,
+        const dataString = JSON.stringify({
+            championshipId: params.championshipId,
         });
 
-        // Fixtures
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
             data: dataString,
         })
             .then((response) => {
                 setFixtures(response.fixtures);
+                setCampeonato(response.championshipInfo);
                 setLoading(false);
 
-                localStorage.setItem(campeonatoID + faseID + 'fixtures', JSON.stringify(response.fixtures));
-            })
-            .catch(() => { });
-
-        dataString = JSON.stringify({
-            campeonatoID,
-        });
-
-        // Campeonato
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatoInfo.php`,
-            data: dataString,
-        })
-            .then((response) => {
-                setCampeonato(response.campeonato);
-
-                localStorage.setItem(campeonatoID + faseID + 'campeonato', JSON.stringify(response.campeonato));
+                localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
             })
             .catch(() => { });
     };
 
-    const checkFaseName = () => {
-        const faseID = params.fase;
-        if (!campeonato.fases) {
-            return '';
-        }
+    const groupFixtures = (fixtures) => {
+        const fix = fixtures.reduce((acc, fixture) => {
+            if (!acc[fixture.phaseName]) { acc[fixture.phaseName] = []; }
+            acc[fixture.phaseName].push(fixture);
+            return acc;
+        }, {});
 
-        const fase = campeonato.fases
-            .filter(function (fase) {
-                return fase.id === Number(faseID);
-            });
-
-        return fase[0].nomeFase;
+        return Object.entries(fix);
     };
 
     return (
@@ -99,25 +72,17 @@ function PageCampeonatoFixtures() {
                 <div className="main-partidaForm">
 
                     <ul className="partidaLista">
-                        <h3 className="pageTitle">
-                            Jogos de {campeonato ? campeonato.nomeCampeonato : ''} - {campeonato ? checkFaseName() : ''}
-                            <Loading loading={loading} localstorage="-withLocalStorage2" />
-                        </h3>
+                        <div className="dashbord-top">
+                            <h2>{campeonato ? campeonato.name : ''}</h2>
+                            <Loading loading={loading} />
+                        </div>
                         {
-                            fixtures.map(function (team, index) {
+                            groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
                                 return (
-
-                                    <PartidaListItem
-                                        key={index}
-                                        team={team}
-                                        typeAll={'ReadOnly'}
-                                        params={params}
-                                    />
-
+                                    <ChampionshipPhase key={index} phaseName={phaseName} fixtures={fixtures} />
                                 );
-                            }, this)
+                            })
                         }
-
                     </ul>
 
                 </div>
