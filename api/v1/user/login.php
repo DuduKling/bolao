@@ -46,6 +46,7 @@ setcookie('userJWT', $jwt, $cookieOptions);
 http_response_code(200);
 echo json_encode(array(
     "message" => "Login efetuado com sucesso!",
+    "uuid" => $user->model->uuid,
     "name" => $user->model->name,
     "phoneNumber" => $user->model->phoneNumber,
     "role" => $user->model->role,

@@ -68,6 +68,7 @@ function PageUserCadastros() {
             })
                 .then((response) => {
                     dispatch(updateJWT({
+                        userUuid: response.uuid,
                         userName: response.name,
                         userPhoneNumber: response.phoneNumber,
                         userRole: response.role,

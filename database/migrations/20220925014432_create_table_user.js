@@ -6,6 +6,7 @@ exports.up = function(knex) {
     const query = knex.schema
         .createTable('user', function (table) {
             table.increments('id');
+            table.string('uuid', 36).notNullable().unique();
 
             table.string('name', 255).notNullable();
             table.string('phoneNumber', 255).notNullable();

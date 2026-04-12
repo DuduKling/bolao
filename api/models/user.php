@@ -3,7 +3,8 @@ class UserModel
 {
     public $table = 'user';
 
-    public $id;
+    private $id;
+    public $uuid;
     public $name;
     public $phoneNumber;
     private $passwd;

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlicer = createSlice({
     name: 'auth',
     initialState: {
+        userUuid: '',
         userName: '',
         userPhoneNumber: '',
         userRole: '',
@@ -15,6 +16,7 @@ export const authSlicer = createSlice({
         // which detects changes to a "draft state" and produces a brand new
         // immutable state based off those changes
         updateJWT: (state, action) => {
+            state.userUuid = action.payload.userUuid;
             state.userName = action.payload.userName;
             state.userPhoneNumber = action.payload.userPhoneNumber;
             state.userRole = action.payload.userRole;

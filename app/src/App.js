@@ -62,13 +62,14 @@ function App() {
         })
             .then((response) => {
                 dispatch(updateJWT({
+                    userUuid: response.uuid,
                     userName: response.name,
                     userPhoneNumber: response.phoneNumber,
                     userRole: response.role,
                     userJWT: response.jwt,
                 }));
             })
-            .catch(() => {});
+            .catch(() => { });
 
         setLoading(false);
     };

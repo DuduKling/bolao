@@ -25,6 +25,7 @@ function UserNavBar(props) {
 
     const logout = async () => {
         dispatch(updateJWT({
+            userUuid: '',
             userName: '',
             userPhoneNumber: '',
             userRole: '',

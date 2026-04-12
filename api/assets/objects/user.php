@@ -1,6 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/models/user.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/jwt.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/util/uuid.php';
 
 class User
 {
@@ -29,6 +30,7 @@ class User
     {
         $query = "INSERT INTO {$this->model->table}
             SET
+                uuid = :uuid,
                 name = :name,
                 phoneNumber = :phoneNumber,
                 passwd = :password,
@@ -40,6 +42,9 @@ class User
         $salt = uniqid(mt_rand(), true);
         $password_hash = password_hash($fingerprint . $salt, PASSWORD_BCRYPT);
 
+        $this->model->uuid = guidv4();
+
+        $stmt->bindParam(':uuid', $this->model->uuid);
         $stmt->bindParam(':name', $this->model->name);
         $stmt->bindParam(':phoneNumber', $this->model->phoneNumber);
         $stmt->bindParam(':password', $password_hash);
@@ -57,6 +62,7 @@ class User
         $customJWT = new CustomJWT($this->env);
 
         return $customJWT->createToken(array(
+            "uuid" => $this->model->uuid,
             "name" => $this->model->name,
             "phoneNumber" => $this->model->phoneNumber,
             "createdAt" => date(DATE_ATOM)
@@ -83,7 +89,7 @@ class User
         if ($num > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $this->model->id = $row['id'];
+            $this->model->uuid = $row['uuid'];
             $this->model->name = $row['name'];
             $this->model->phoneNumber = $row['phoneNumber'];
             $this->model->salt = $row['salt'];
@@ -174,14 +180,14 @@ class User
             SET
                 passwd = :password,
                 updatedAt = CURRENT_TIMESTAMP
-            WHERE id = :id
+            WHERE uuid = :uuid
         ";
 
         $stmt = $this->conn->prepare($query);
 
         $password_hash = password_hash($fingerprint . $this->model->salt, PASSWORD_BCRYPT);
 
-        $stmt->bindParam(':id', $this->model->id);
+        $stmt->bindParam(':uuid', $this->model->uuid);
         $stmt->bindParam(':password', $password_hash);
 
         if ($stmt->execute()) {
