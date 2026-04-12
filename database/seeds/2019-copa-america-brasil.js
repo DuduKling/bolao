@@ -17,14 +17,14 @@ exports.seed = async function (knex) {
   const fase1 = await h.getPhase('Grupos', champId);
   const fase2 = await h.getPhase('Eliminatórias', champId);
   await knex('part').insert([
-    { name: 'Grupo A', status: 'finalizado', fkPhaseId: fase1, },
-    { name: 'Grupo B', status: 'finalizado', fkPhaseId: fase1, },
-    { name: 'Grupo C', status: 'finalizado', fkPhaseId: fase1, },
-    { name: 'Grupo D', status: 'finalizado', fkPhaseId: fase1, },
-    { name: 'Quartas', status: 'finalizado', fkPhaseId: fase2, },
-    { name: 'Semifinal', status: 'finalizado', fkPhaseId: fase2, },
-    { name: 'Terceiro Lugar', status: 'finalizado', fkPhaseId: fase2, },
-    { name: 'Final', status: 'finalizado', fkPhaseId: fase2, },
+    { name: 'Grupo A', fkPhaseId: fase1, },
+    { name: 'Grupo B', fkPhaseId: fase1, },
+    { name: 'Grupo C', fkPhaseId: fase1, },
+    { name: 'Grupo D', fkPhaseId: fase1, },
+    { name: 'Quartas', fkPhaseId: fase2, },
+    { name: 'Semifinal', fkPhaseId: fase2, },
+    { name: 'Terceiro Lugar', fkPhaseId: fase2, },
+    { name: 'Final', fkPhaseId: fase2, },
   ]);
 
   const teams = await h.getTeams();

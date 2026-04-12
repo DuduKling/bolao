@@ -4,6 +4,9 @@
  */
 exports.seed = async function(knex) {
   await knex('bet').del();
+  await knex('user_pool').del();
+  await knex('pool_part').del();
+  await knex('pool').del();
   await knex('user').del();
   await knex('fixture').del();
   await knex('team').del();
@@ -12,6 +15,9 @@ exports.seed = async function(knex) {
   await knex('championship').del();
 
   await knex.schema.raw('ALTER TABLE bet AUTO_INCREMENT = 1');
+  await knex.schema.raw('ALTER TABLE user_pool AUTO_INCREMENT = 1');
+  await knex.schema.raw('ALTER TABLE pool_part AUTO_INCREMENT = 1');
+  await knex.schema.raw('ALTER TABLE pool AUTO_INCREMENT = 1');
   await knex.schema.raw('ALTER TABLE user AUTO_INCREMENT = 1');
   await knex.schema.raw('ALTER TABLE fixture AUTO_INCREMENT = 1');
   await knex.schema.raw('ALTER TABLE team AUTO_INCREMENT = 1');

@@ -7,7 +7,6 @@ exports.up = function(knex) {
         .createTable('part', function (table) {
             table.increments('id');
             table.string('name', 255).notNullable();
-            table.string('status', 255).notNullable();
 
             table.integer('fkPhaseId').unsigned();
             table.foreign('fkPhaseId').references('id').inTable('phase');

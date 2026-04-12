@@ -6,6 +6,7 @@ exports.up = function(knex) {
     const query = knex.schema
         .createTable('team', function (table) {
             table.increments('id');
+            table.string('code', 10).unique().notNullable();
             table.string('name', 255).notNullable();
             table.string('imagePath', 255).notNullable();
         });

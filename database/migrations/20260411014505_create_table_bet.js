@@ -5,13 +5,13 @@
 exports.up = function(knex) {
     const query = knex.schema
         .createTable('bet', function (table) {
-            table.increments('Id');
+            table.increments('id');
 
-            table.integer('fkUserId').unsigned();
-            table.foreign('fkUserId').references('Id').inTable('users');
+            table.integer('fkUserPoolId').unsigned();
+            table.foreign('fkUserPoolId').references('id').inTable('user_pool');
 
             table.integer('fkFixtureId').unsigned();
-            table.foreign('fkFixtureId').references('Id').inTable('fixture');
+            table.foreign('fkFixtureId').references('id').inTable('fixture');
 
             table.integer('homeTeamScoreBet').notNullable();
             table.integer('awayTeamScoreBet').notNullable();
