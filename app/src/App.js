@@ -29,6 +29,7 @@ import PageCampeonatoFixture from './components/pages/PageCampeonatoFixture';
 import PageCampeonatoApostar from './components/pages/PageCampeonatoApostar';
 import PageUserCadastro from './components/pages/PageUserCadastro';
 import PageCampeonatos from './components/pages/PageCampeonatos';
+import PagePools from './components/pages/PagePools';
 import PageRootContato from './components/pages/PageRootContato';
 import PageCampeonatoDashboard from './components/pages/PageCampeonatoDashboard';
 import PageUserEsqueci from './components/pages/PageUserEsqueci';
@@ -85,6 +86,11 @@ function App() {
                         <Route path='' element={<PageRootHome />} />
                         <Route path='faleconosco' element={<PageRootContato />} />
                         <Route path='regulamento' element={<PageRootRegulamento />} />
+
+                        {/* RESTRICTED */}
+                        <Route element={<PrivateRoute />} >
+                            <Route path='pools' element={<PagePools />} />
+                        </Route>
 
                         {/* USER */}
                         <Route path='user' element={<Outlet />} >

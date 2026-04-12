@@ -30,6 +30,9 @@ function SiteHeader() {
                         <Link className="menuItem" to="/user/campeonatos">
                             Campeonatos
                         </Link>
+                        <Link className="menuItem" to="/pools">
+                            Bolões
+                        </Link>
                     </nav>
                     <div className="navUser-menuContainer">
 
