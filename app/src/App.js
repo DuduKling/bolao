@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { updateJWT } from './redux/slicer/authSlicer';
 
 import http from './util/http';
-import cookie from './util/cookie';
 import Fingerprint from './util/fingerprint';
 
 import './css/pages/user.css';
@@ -52,32 +51,24 @@ function App() {
     }, []);
 
     const didMount = async () => {
-        const userInfo = cookie.get('userJWT');
+        const dataString = JSON.stringify({
+            fingerprint: await Fingerprint.get(),
+        });
 
-        if (userInfo) {
-            const dataString = JSON.stringify({
-                jwt: userInfo,
-                fingerprint: await Fingerprint.get(),
-            });
-
-            await http.post({
-                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/validateCookie.php`,
-                data: dataString,
+        await http.post({
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/authValidation.php`,
+            data: dataString,
+            withCredentials: true,
+        })
+            .then((response) => {
+                dispatch(updateJWT({
+                    userName: response.name,
+                    userPhoneNumber: response.phoneNumber,
+                    userRole: response.role,
+                    userJWT: response.jwt,
+                }));
             })
-                .then((response) => {
-                    dispatch(updateJWT({
-                        userName: response.name,
-                        userPhoneNumber: response.phoneNumber,
-                        userRole: response.role,
-                        userJWT: response.jwt,
-                    }));
-                })
-                .catch(({ message }) => {
-                    if (message === 'JWT não decodificado') {
-                        cookie.set('userJWT', '', 0);
-                    }
-                });
-        }
+            .catch(() => {});
 
         setLoading(false);
     };

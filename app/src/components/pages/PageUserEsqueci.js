@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import '../../css/pages/login.css';
 
 import http from '../../util/http';
-import cookie from '../../util/cookie';
 
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
@@ -65,8 +64,6 @@ function PageUserEsqueci() {
                     userRole: response.role,
                     userJWT: response.jwt,
                 }));
-
-                cookie.set('userJWT', response.jwt, 7);
 
                 navigate('/user/campeonatos');
             })

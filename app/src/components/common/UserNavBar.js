@@ -7,7 +7,7 @@ import { updateJWT } from '../../redux/slicer/authSlicer';
 
 import PropTypes from 'prop-types';
 
-import cookie from '../../util/cookie';
+import http from '../../util/http';
 
 function UserNavBar(props) {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -23,7 +23,7 @@ function UserNavBar(props) {
         }
     }, []);
 
-    const logout = () => {
+    const logout = async () => {
         dispatch(updateJWT({
             userName: '',
             userPhoneNumber: '',
@@ -31,7 +31,12 @@ function UserNavBar(props) {
             userJWT: '',
         }));
 
-        cookie.set('userJWT', '', 0);
+        await http.post({
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/authReset.php`,
+            data: JSON.stringify({}),
+            withCredentials: true,
+        });
+
         navigate('/');
     };
 

@@ -11,50 +11,39 @@ header("Access-Control-Allow-Credentials: true");
 
 $reqBody = json_decode(file_get_contents("php://input"));
 
-$name = htmlspecialchars(strip_tags($reqBody->name));
-$phoneNumber = htmlspecialchars(strip_tags($reqBody->phoneNumber));
+// --- JWT Validation ---
+$jwt = htmlspecialchars($_COOKIE["userJWT"]);
 $fingerprint = htmlspecialchars(strip_tags($reqBody->fingerprint));
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/user.php';
-$user = new User();
-
-$user->model($name, $phoneNumber);
-
-$exists = $user->exists();
-if ($exists) {
-    http_response_code(400);
+if (!isset($jwt) || empty($jwt)) {
+    http_response_code(401);
     echo json_encode(array(
-        "message" => "Este nome de usuário já está sendo utilizado."
+        "message" => "Acesso Negado. Favor fazer login novamente. (Error: #AR1)"
     ));
     exit();
 }
 
-$created = $user->create($fingerprint);
-if (!$created) {
-    http_response_code(400);
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/auth.php';
+$auth = new Auth();
+
+$decoded = $auth->validateToken($jwt);
+if (empty($decoded)) {
+    http_response_code(401);
     echo json_encode(array(
-        "message" => "Não foi possível criar seu usuário. Favor entrar em contato com o Administrador."
+        "message" => "Acesso Negado. (Error: #AR2)"
     ));
     exit();
 }
-
-$jwt = $user->generateToken();
+// ---  END JWT Validation ---
 
 $cookieOptions = array(
-    "expires" => time() + 3600,
+    "expires" => time() - 3600,
     "path" => "/",
     "domain" => 'localhost',
     "secure" => true,     // or false
     "httponly" => true,    // or false
     "samesite" => "Strict" // None || Lax  || Strict
 );
-setcookie('userJWT', $jwt, $cookieOptions);
+setcookie("userJWT", "", $cookieOptions);
 
 http_response_code(200);
-echo json_encode(array(
-    "message" => "Usuário criado com sucesso!",
-    "name" => $user->model->name,
-    "phoneNumber" => $user->model->phoneNumber,
-    "role" => $user->model->role,
-    "jwt" => $jwt,
-));

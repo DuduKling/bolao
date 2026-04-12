@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class http {
 
-    static post({ url, data }) {
+    static post({ url, data, withCredentials = false}) {
         return new Promise((resolve, reject) => {
             const isDebug = process.env.REACT_APP_DEBUG === 'true';
 
@@ -42,10 +42,10 @@ class http {
                     console.groupEnd();
                 }
 
-                reject(error.response.data);
+                reject(error.response ? error.response.data : error.message);
             }
 
-            axios.post(url, data)
+            axios.post(url, data, { withCredentials })
                 .then(requestThen)
                 .catch(catchThen);
         });

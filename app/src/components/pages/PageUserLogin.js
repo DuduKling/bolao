@@ -5,7 +5,6 @@ import '../../css/pages/login.css';
 import '../../css/util/formMessage.css';
 
 import http from '../../util/http';
-import cookie from '../../util/cookie';
 
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
@@ -65,6 +64,7 @@ function PageUserLogin() {
             await http.post({
                 url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/login.php`,
                 data: dataString,
+                withCredentials: true,
             })
                 .then((response) => {
                     dispatch(updateJWT({
@@ -73,8 +73,6 @@ function PageUserLogin() {
                         userRole: response.role,
                         userJWT: response.jwt,
                     }));
-
-                    cookie.set('userJWT', response.jwt, 7);
 
                     navigate('/user/campeonatos');
                 })
