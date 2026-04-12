@@ -6,21 +6,16 @@ import http from '../../util/http';
 import CampeonatoCard from '../util/CampeonatoCard';
 import Loading from '../util/Loading';
 
-/* Status:
-    finalizado - Vai para dashboard (sem aposta lá).
-    aberto - Vai para dashboard (com aposta lá).
-    aposta - Vai para tela de Apostas.
-    tba - Sem link (Mostra data de início).
-*/
-
 function PageCampeonatos() {
     const [campeonatos, setCampeonatos] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const dataFetchedRef = useRef(false);
 
+    const LOCAL_STORAGE_ITEM = 'campeonatos';
+
     useEffect(() => {
-        const cachedCampeonatos = localStorage.getItem('campeonatos');
+        const cachedCampeonatos = localStorage.getItem(LOCAL_STORAGE_ITEM);
         if (cachedCampeonatos) {
             setCampeonatos(JSON.parse(cachedCampeonatos));
         }
@@ -44,14 +39,13 @@ function PageCampeonatos() {
                 setCampeonatos(response);
                 setLoading(false);
 
-                localStorage.setItem('campeonatos', JSON.stringify(response));
+                localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
             })
             .catch(() => {
                 setLoading(false);
             });
     };
 
-    //TODO Fazer uma área "meus campeonatos" para os campeonatos que a pessoa já está participando..
     return (
         <div className="userPage-container">
 
@@ -62,10 +56,10 @@ function PageCampeonatos() {
                 </h3>
                 <div className="userCampeonatos-container">
                     {
-                        campeonatos.map(function (campeonato, index) {
+                        campeonatos.map(function (campeonato) {
                             return (
                                 <CampeonatoCard
-                                    key={index}
+                                    key={campeonato.id}
                                     campeonato={campeonato}
                                 />
                             );

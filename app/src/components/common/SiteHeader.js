@@ -27,7 +27,7 @@ function SiteHeader() {
             return (
                 <div className={NavBarVisible ? 'header-right showMenu' : 'header-right'}>
                     <nav className="menu">
-                        <Link className="menuItem" to="/user/campeonatos">
+                        <Link className="menuItem" to="/campeonatos">
                             Campeonatos
                         </Link>
                         <Link className="menuItem" to="/pools">
@@ -54,6 +54,9 @@ function SiteHeader() {
             return (
                 <div className={NavBarVisible ? 'header-right showMenu' : 'header-right'}>
                     <nav className="menu">
+                        <Link className="menuItem" to="/campeonatos">
+                            Campeonatos
+                        </Link>
                         <Link className="menuItem" to="/regulamento">
                             Regulamento
                         </Link>

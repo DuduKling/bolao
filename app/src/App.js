@@ -86,6 +86,7 @@ function App() {
                         <Route path='' element={<PageRootHome />} />
                         <Route path='faleconosco' element={<PageRootContato />} />
                         <Route path='regulamento' element={<PageRootRegulamento />} />
+                        <Route path='campeonatos' element={<PageCampeonatos />} />
 
                         {/* RESTRICTED */}
                         <Route element={<PrivateRoute />} >
@@ -104,11 +105,6 @@ function App() {
                                 <Route path='esqueci' element={<PageUserEsqueci />} />
 
                                 <Route path='*' element={<PageRoot404 />} />
-                            </Route>
-
-                            {/* USER - RESTRICTED */}
-                            <Route element={<PrivateRoute />} >
-                                <Route path='campeonatos' element={<PageCampeonatos />} />
                             </Route>
                         </Route>
 

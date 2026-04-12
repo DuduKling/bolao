@@ -28,7 +28,7 @@ function SiteFooter() {
                     <Link className="menuItem" to="/user/login">
                         Login
                     </Link>
-                    <Link className="menuItem" to="/user/campeonatos">
+                    <Link className="menuItem" to="/campeonatos">
                         Campeonatos
                     </Link>
                 </div>

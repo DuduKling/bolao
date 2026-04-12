@@ -75,7 +75,7 @@ function PageUserLogin() {
                         userJWT: response.jwt,
                     }));
 
-                    navigate('/user/campeonatos');
+                    navigate('/campeonatos');
                 })
                 .catch(({ message }) => {
                     setAjaxErrorResp(message);
