@@ -54,7 +54,7 @@ function PageUserEsqueci() {
         });
 
         await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/redefinirAcesso.php`,
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/getAccess.php`,
             data: dataString,
         })
             .then((response) => {

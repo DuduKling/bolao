@@ -1,10 +1,18 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'] . '/api/vendor/autoload.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/vendor/autoload.php';
 use \Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-class CustomJWT {
-    public function __construct($env) {
+class CustomJWT
+{
+    private $pubKey;
+    private $privKey;
+    private $iss;
+    private $aud;
+    private $algorithm;
+
+    public function __construct($env)
+    {
         error_reporting(E_ALL);
         date_default_timezone_set($env->jwtTimezone);
 
@@ -16,7 +24,8 @@ class CustomJWT {
         $this->algorithm = 'RS256';
     }
 
-    public function createToken($data) {
+    public function createToken($data)
+    {
         $iat = time();
 
         $values = array(
@@ -31,7 +40,8 @@ class CustomJWT {
         return JWT::encode($values, $this->privKey, $this->algorithm);
     }
 
-    public function decodeToken($token) {
+    public function decodeToken($token)
+    {
         $decoded = null;
 
         try {

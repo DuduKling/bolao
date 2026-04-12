@@ -56,7 +56,7 @@ function App() {
         });
 
         await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/authValidation.php`,
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/authValidate.php`,
             data: dataString,
             withCredentials: true,
         })

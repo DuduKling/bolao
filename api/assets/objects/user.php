@@ -63,13 +63,6 @@ class User
         ));
     }
 
-    public function validateToken($jwt)
-    {
-        $customJWT = new CustomJWT($this->env);
-
-        return $customJWT->decodeToken($jwt);
-    }
-
     public function find()
     {
         $query = "SELECT *
