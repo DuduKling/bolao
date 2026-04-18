@@ -63,18 +63,44 @@ class Pool
         return $pools;
     }
 
-    public function getUserJoinedPools($uuid)
+    public function getPoolChampionshipInfo($poolUuid)
     {
-        $query = "SELECT pool.uuid
+        $query = "SELECT
+                pool.*,
+                GROUP_CONCAT(DISTINCT part.name SEPARATOR ', ') as parts,
+                phase.name as phaseName,
+                championship.name as championshipName,
+                championship.logo as championshipLogo
             FROM pool
-            LEFT JOIN user_pool ON user_pool.fkPoolId = pool.id
-            LEFT JOIN user ON user_pool.fkUserId = user.uuid
-            WHERE user.uuid = :uuid
+            INNER JOIN pool_part ON pool_part.fkPoolId = pool.id
+            INNER JOIN part ON part.id = pool_part.fkPartId
+            INNER JOIN phase ON phase.id = part.fkPhaseId
+            INNER JOIN championship ON championship.id = phase.fkChampionshipId
+            WHERE pool.id = :poolUuid
+            GROUP BY pool.id
         ";
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(':uuid', $uuid);
+        $stmt->bindParam(':poolUuid', $poolUuid);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserJoinedPools($userUuid)
+    {
+        $query = "SELECT pool.uuid
+            FROM pool
+            LEFT JOIN user_pool ON user_pool.fkPoolId = pool.id
+            LEFT JOIN user ON user_pool.fkUserId = user.id
+            WHERE user.uuid = :userUuid
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':userUuid', $userUuid);
 
         $stmt->execute();
 
@@ -86,5 +112,176 @@ class Pool
         }
 
         return $uuidPools;
+    }
+
+    public function getData($uuid)
+    {
+        $query = "SELECT *
+            FROM pool
+            WHERE uuid = :uuid
+            LIMIT 0,1
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':uuid', $uuid);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getPoolFixtures($poolUuid)
+    {
+        $query = "SELECT fixture.id,
+                phase.name as phaseName,
+                part.name as partName,
+                -- fixture.homeTeamScore,
+                b.name as homeTeamName,
+                b.imagePath as homeTeamImagePath,
+                -- fixture.awayTeamScore,
+                a.name as awayTeamName,
+                a.imagePath as awayTeamImagePath,
+                fixture.dateTime,
+                fixture.location
+            FROM pool
+            INNER JOIN pool_part ON pool_part.fkPoolId = pool.id
+            INNER JOIN part ON pool_part.fkPartId = part.id
+            INNER JOIN fixture ON fixture.fkPartId = part.id
+            INNER JOIN team a ON fixture.fkAwayTeamId=a.id
+            INNER JOIN team b ON fixture.fkHomeTeamId=b.id
+            INNER JOIN phase ON part.fkPhaseId=phase.id
+            INNER JOIN championship ON phase.fkChampionshipId=championship.id
+            WHERE pool.uuid = :poolUuid
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':poolUuid', $poolUuid);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserPoolBets($userId, $poolUuid)
+    {
+        $query = "SELECT fixture.id,
+                bet.homeTeamScoreBet,
+                bet.awayTeamScoreBet
+            FROM bet
+            INNER JOIN fixture ON bet.fkFixtureId = fixture.id
+            INNER JOIN user_pool ON bet.fkUserPoolId = user_pool.id
+            INNER JOIN pool ON user_pool.fkPoolId = pool.id
+            WHERE pool.uuid = :poolUuid
+            AND user_pool.fkUserId = :userId
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':poolUuid', $poolUuid);
+        $stmt->bindParam(':userId', $userId);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function userHasJoined($userId, $poolId)
+    {
+        $query = "SELECT *
+            FROM user_pool
+            WHERE fkUserId = :userId
+            AND fkPoolId = :poolId
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':userId', $userId);
+        $stmt->bindParam(':poolId', $poolId);
+
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+        if ($num > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function joinUserInPool($userId, $poolId)
+    {
+        $query = "INSERT INTO user_pool
+            SET
+                fkUserId = :userId,
+                fkPoolId = :poolId
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':userId', $userId);
+        $stmt->bindParam(':poolId', $poolId);
+
+        $stmt->execute();
+
+        return $this->conn->lastInsertId();
+    }
+
+    public function validateBetsData($bets)
+    {
+        $allFieldOk = true;
+        foreach ($bets as $key => $fixture) {
+            foreach ($fixture as $score) {
+                if (!preg_match("/^[0-9]{1,2}$/", $score)) {
+                    $allFieldOk = false;
+                    break;
+                }
+            }
+        }
+
+        if (!$allFieldOk) {
+            http_response_code(400);
+            echo json_encode(array(
+                "message" => "Algum valor de aposta não está correto ou está faltando! Por favor verifique e tente novamente. (Error #BMB1)"
+            ));
+            exit();
+        }
+    }
+
+    public function makeBets($userPoolId, $bets)
+    {
+        $error = false;
+
+        foreach ($bets as $key => $fixture) {
+            $query = "INSERT INTO bet SET
+                fkUserPoolId = :userPoolId,
+                fkFixtureId = :fixtureId,
+                homeTeamScoreBet = :betHome,
+                awayTeamScoreBet = :betAway
+            ";
+
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(':userPoolId', $userPoolId);
+            $stmt->bindParam(':fixtureId', $key);
+            $stmt->bindParam(':betHome', $fixture[0]);
+            $stmt->bindParam(':betAway', $fixture[1]);
+
+            if ($stmt->execute()) {
+                $error = false;
+            } else {
+                $error = true;
+                break;
+            }
+        }
+
+        if ($error) {
+            http_response_code(400);
+            echo json_encode(array(
+                "message" => "Não foi possível realizar sua aposta. Favor entrar em contato com o Administrador. (Error #BMB2)"
+            ));
+            exit();
+        }
     }
 }

@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../css/pages/pools.css';
 
-import { useSelector } from 'react-redux';
-
 import http from '../../util/http';
 
 import Loading from '../util/Loading';
@@ -12,8 +10,6 @@ function PagePools() {
     const [pools, setPools] = useState([]);
     const [joinedPools, setJoinedPools] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    const uuid = useSelector((state) => state.auth.userUuid);
 
     const dataFetchedRef = useRef(false);
 
@@ -36,9 +32,7 @@ function PagePools() {
     const getPools = async () => {
         setLoading(true);
 
-        const dataString = JSON.stringify({
-            uuid,
-        });
+        const dataString = JSON.stringify({});
 
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getPools.php`,

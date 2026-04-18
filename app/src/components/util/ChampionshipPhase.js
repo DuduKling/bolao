@@ -21,7 +21,13 @@ function ChampionshipPhase(props) {
             {
                 groupFixtures(props.fixtures).map(function ([partName, fixtures], index) {
                     return (
-                        <ChampionshipPhasePart key={index} partName={partName} fixtures={fixtures} />
+                        <ChampionshipPhasePart
+                            key={index}
+                            partName={partName}
+                            fixtures={fixtures}
+                            typeAll={props.typeAll}
+                            setBets={props.setBets ? props.setBets : () => {}}
+                        />
                     );
                 })
             }
@@ -32,6 +38,8 @@ function ChampionshipPhase(props) {
 ChampionshipPhase.propTypes = {
     phaseName: PropTypes.string,
     fixtures: PropTypes.object,
+    typeAll: PropTypes.string,
+    setBets: PropTypes.func,
 };
 
 export default ChampionshipPhase;

@@ -1,73 +1,52 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
+$env = new Env();
 
-header("Access-Control-Allow-Origin: {$env["URL_FRONT"]}");
+header("Access-Control-Allow-Origin: {$env->urlFront}");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Credentials: true");
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
-$db = new DatabaseConnection($env);
+$reqBody = json_decode(file_get_contents("php://input"));
 
-$inputData = json_decode(file_get_contents("php://input"));
+$poolUuid = htmlspecialchars(strip_tags($reqBody->poolUuid));
+$userBets = $reqBody->userBets;
 
-$userID = $inputData->userId;
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/auth.php';
+$auth = new Auth();
+$decoded = $auth->authenticate();
 
-$allFieldOk = true;
-foreach ($inputData as $key => $value) {
-    if ($key != "userId" && !preg_match("/^[0-9]{1,2}$/", $value)) {
-        $allFieldOk = false;
-        break;
-    }
-}
+$userUuid = $decoded->data->uuid;
 
-if (!$allFieldOk) {
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/user.php';
+$user = new User();
+
+$userData = $user->getData($userUuid);
+
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/pool.php';
+$pool = new Pool();
+
+$poolData = $pool->getData($poolUuid);
+
+$userHasJoined = $pool->userHasJoined($userData['id'], $poolData['id']);
+
+if ($userHasJoined) {
     http_response_code(400);
-    echo json_encode(array("message" => "Algum valor de aposta não está correto ou está faltando! Por favor verifique e tente novamente. (Error #BMB1)"));
+    echo json_encode(array(
+        "message" => "Usuário já está participando deste bolão. Suas apostas já foram registradas (Error #POO2)"
+    ));
     exit();
 }
 
-$noProblems=true;
-$fixture1 = 0;
-$value1 = 0;
+$userPoolId = $pool->joinUserInPool($userData['id'], $poolData['id']);
 
-foreach ($inputData as $key => $value) {
-    $fixture = str_replace("_", "", substr($key, 0, 2));
-    $type = str_replace("_", "", substr($key, 2, 7));
+$pool->validateBetsData($userBets);
 
-    // considerando que o home sempre vem antes do away:
-    if ($type == "home") {
-        $fixture1 = $fixture;
-        $value1 = $value;
-    } elseif ($type == "away" && $fixture == $fixture1) {
-        $query = "INSERT INTO bet SET
-            fkUserId = :userID,
-            fkFixtureId = :fixtureID,
-            homeTeamScoreBet = :betHome,
-            awayTeamScoreBet = :betAway";
+$pool->makeBets($userPoolId, $userBets);
 
-        $stmt = $db->prepare($query);
-
-        $stmt->bindParam(':userID', $userID);
-        $stmt->bindParam(':fixtureID', $fixture);
-        $stmt->bindParam(':betHome', $value1);
-        $stmt->bindParam(':betAway', $value);
-
-        if ($stmt->execute()) {
-            $noProblems=true;
-        } else {
-            $noProblems=false;
-            break;
-        }
-    }
-}
-
-if ($noProblems) {
-    http_response_code(200);
-    echo json_encode(array("message" => "Aposta realizada com sucesso!"));
-} else {
-    http_response_code(400);
-    echo json_encode(array("message" => "Não foi possível realizar sua aposta. Favor entrar em contato com o Administrador. (Error #BMB2)"));
-}
-?>
+http_response_code(200);
+echo json_encode(array(
+    "message" => "Aposta realizada com sucesso!",
+));

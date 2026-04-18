@@ -17,7 +17,8 @@ function ChampionshipPhasePart(props) {
                             <PartidaListItem
                                 key={fixture.id}
                                 fixture={fixture}
-                                typeAll={'ReadOnly'}
+                                typeAll={props.typeAll}
+                                setBets={props.setBets}
                             />
                         </div>
                     );
@@ -30,6 +31,8 @@ function ChampionshipPhasePart(props) {
 ChampionshipPhasePart.propTypes = {
     partName: PropTypes.string,
     fixtures: PropTypes.object,
+    typeAll: PropTypes.string,
+    setBets: PropTypes.func,
 };
 
 export default ChampionshipPhasePart;

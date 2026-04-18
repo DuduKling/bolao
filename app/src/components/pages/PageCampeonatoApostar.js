@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import $ from 'jquery';
 
 import '../../css/pages/pageInside.css';
 import '../../css/util/formMessage.css';
@@ -9,54 +8,56 @@ import '../../css/util/formMessage.css';
 import http from '../../util/http';
 
 import Loading from '../util/Loading';
-import PartidaListItem from '../util/PartidaListItem';
+import ChampionshipPhase from '../util/ChampionshipPhase';
 
 function PageCampeonatoApostar() {
     const [fixtures, setFixtures] = useState([]);
+    const [campeonato, setCampeonato] = useState('');
+
+    const [userBets, setUserBets] = useState({});
+    const [userHasPlacedBet, setUserHasPlacedBet] = useState(false);
+
     const [error, setError] = useState('');
     const [resp, setResp] = useState('');
-    const [campeonato, setCampeonato] = useState('');
-    const [fase, setFase] = useState('');
-    const [parte, setParte] = useState('');
+
     const [isBet, setIsBet] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
 
-    const userId = useSelector((state) => state.auth.userId);
     const userName = useSelector((state) => state.auth.userName);
 
     const params = useParams();
 
-    const dataFetchedRef = useRef(false);
-
     useEffect(() => {
-        if (dataFetchedRef.current) return;
-        dataFetchedRef.current = true;
-
         getFixtures();
     }, []);
+
+    const registerBet = (b) => {
+        setUserBets({ ...userBets, ...b });
+    };
 
     const getFixtures = async () => {
         setLoading(true);
 
-        const parteId = params.parte;
-
         const dataString = JSON.stringify({
-            parteId,
-            userId,
-            status: 'aposta',
+            poolUuid: params.poolUuid,
         });
 
         await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixtures.php`,
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getPoolFixtures.php`,
             data: dataString,
+            withCredentials: true,
         })
             .then((response) => {
-                setFixtures(response.fixtures);
-                setCampeonato(response.campeonato);
-                setFase(response.fase);
-                setParte(response.parte);
+                setCampeonato(response.championshipInfo);
+
+                let fixtures = response.poolFixtures;
+                if (response.userPlacedBets && response.userPlacedBets.length > 0) {
+                    setUserHasPlacedBet(true);
+                    mergeFixturesAndBets(fixtures, response.userPlacedBets);
+                }
+                setFixtures(fixtures);
 
                 setLoading(false);
             })
@@ -70,6 +71,19 @@ function PageCampeonatoApostar() {
             });
     };
 
+    const mergeFixturesAndBets = (fixtures, userBetsToMerge) => {
+        console.log(userBetsToMerge);
+        const bets = userBetsToMerge.reduce((acc, b) => {
+            acc[b.id] = b;
+            return acc;
+        }, {});
+        console.log(bets);
+        for (const fixture of fixtures) {
+            fixture.awayTeamScore = bets[fixture.id].awayTeamScoreBet;
+            fixture.homeTeamScore = bets[fixture.id].homeTeamScoreBet;
+        }
+    };
+
     const sendBets = async (event) => {
         event.preventDefault();
 
@@ -77,22 +91,15 @@ function PageCampeonatoApostar() {
         setResp('');
         setLoading2(true);
 
-        const data = {
-            userId,
-        };
-
-        $('input[type=\'text\']').each(function (index, item) {
-            const val = $(item).val();
-            const name = $(item).attr('name');
-
-            data[name] = val;
+        const dataString = JSON.stringify({
+            poolUuid: params.poolUuid,
+            userBets,
         });
-
-        const dataString = JSON.stringify(data);
 
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/makeBets.php`,
             data: dataString,
+            withCredentials: true,
         })
             .then((response) => {
                 setResp(response.message);
@@ -107,7 +114,6 @@ function PageCampeonatoApostar() {
     const AJAXresp = () => {
         if (error === '' && resp === '') {
             return '';
-
         } else if (resp !== '') {
             return (
                 <div className="message">
@@ -116,7 +122,6 @@ function PageCampeonatoApostar() {
                     </p>
                 </div>
             );
-
         } else if (error !== '') {
             if (isBet) {
                 return showButtonToUserBets();
@@ -149,7 +154,7 @@ function PageCampeonatoApostar() {
     };
 
     const showButton = () => {
-        if (Object.keys(fixtures).length !== 0 && !resp) {
+        if (!userHasPlacedBet && Object.keys(fixtures).length !== 0) {
             return (
                 <>
                     <p className="sendButtonMessage">Lembre-se que, ao enviar suas apostas não será mais possível modificá-las.</p>
@@ -162,19 +167,36 @@ function PageCampeonatoApostar() {
         }
     };
 
-    const showFixtures = () => {
-        if (!resp) {
-            return fixtures.map(function (team, index) {
-                return (
-
-                    <PartidaListItem
-                        key={index}
-                        team={team}
-                    />
-
-                );
-            }, this);
+    const showWarning = () => {
+        if (userHasPlacedBet) {
+            return (
+                <p className="warningMessage">Você já está participando deste bolão.</p>
+            );
         }
+    };
+
+    const groupFixtures = (fixtures) => {
+        const fix = fixtures.reduce((acc, fixture) => {
+            if (!acc[fixture.phaseName]) { acc[fixture.phaseName] = []; }
+            acc[fixture.phaseName].push(fixture);
+            return acc;
+        }, {});
+
+        return Object.entries(fix);
+    };
+
+    const showFixtures = () => {
+        return groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
+            return (
+                <ChampionshipPhase
+                    key={index}
+                    phaseName={phaseName}
+                    fixtures={fixtures}
+                    typeAll={userHasPlacedBet ? 'ReadOnly' : ''}
+                    setBets={registerBet}
+                />
+            );
+        });
     };
 
     return (
@@ -183,15 +205,21 @@ function PageCampeonatoApostar() {
 
                 <form
                     className="main-partidaForm"
-                    onSubmit={(event) => sendBets(event)}
+                    onSubmit={async (event) => await sendBets(event)}
                     method="post"
                 >
 
                     <ul className="partidaLista">
+                        <div className="dashbord-top">
+                            <h2>{campeonato.championshipName}</h2>
+                            <Loading loading={loading} />
+                        </div>
                         <h3 className="pageTitle">
-                            Aposte: {campeonato ? campeonato : ''}{fase ? ' - ' + fase : ''}{parte ? '/' + parte : ''}
+                            Bolão: {campeonato ? campeonato.name : ''}
                         </h3>
-                        <Loading loading={loading} />
+
+                        {showWarning()}
+
                         {showFixtures()}
 
                     </ul>

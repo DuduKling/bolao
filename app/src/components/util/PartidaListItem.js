@@ -18,6 +18,7 @@ function PartidaListItem(props) {
                     typeAll="ReadOnly"
                     typeHome={checkIfHomeNeedsInput()}
                     typeAway={checkIfAwayNeedsInput()}
+                    setBets={props.setBets}
                 />
             );
         } else if (props.isAdmin === 'admin') {
@@ -35,6 +36,7 @@ function PartidaListItem(props) {
                     fixture={props.fixture}
                     typeHome={checkIfHomeNeedsInput()}
                     typeAway={checkIfAwayNeedsInput()}
+                    setBets={props.setBets}
                 />
             );
         }
@@ -169,6 +171,7 @@ PartidaListItem.propTypes = {
     showPercent: PropTypes.bool,
     params: PropTypes.object,
     index: PropTypes.string,
+    setBets: PropTypes.func,
 };
 
 export default PartidaListItem;

@@ -79,7 +79,12 @@ function PageCampeonatoFixtures() {
                         {
                             groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
                                 return (
-                                    <ChampionshipPhase key={index} phaseName={phaseName} fixtures={fixtures} />
+                                    <ChampionshipPhase
+                                        key={index}
+                                        phaseName={phaseName}
+                                        fixtures={fixtures}
+                                        typeAll={'ReadOnly'}
+                                    />
                                 );
                             })
                         }

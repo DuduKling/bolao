@@ -9,18 +9,16 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Access-Control-Allow-Credentials: true");
 
-$reqBody = json_decode(file_get_contents("php://input"));
-
-$uuid = htmlspecialchars(strip_tags($reqBody->uuid));
-
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/auth.php';
 $auth = new Auth();
 $decoded = $auth->authenticate();
 
+$userUuid = $decoded->data->uuid;
+
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/pool.php';
 $pool = new Pool();
 $allPools = $pool->getAll();
-$joinedPools = $pool->getUserJoinedPools($uuid);
+$joinedPools = $pool->getUserJoinedPools($userUuid);
 
 http_response_code(200);
 echo json_encode(array(

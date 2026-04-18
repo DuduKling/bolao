@@ -4,8 +4,7 @@
 	margin: 0 5px;
 }
 
-.match-container > .placar .plac-num1,
-.match-container > .placar .plac-num2 {
+.match-container > .placar .plac-num {
 	font-size: 28px;
 }
 
