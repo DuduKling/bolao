@@ -45,18 +45,6 @@ if (!$hasAccess) {
     exit();
 }
 
-$jwt = $user->generateToken();
-
-$cookieOptions = array(
-    "expires" => time() + 3600,
-    "path" => "/",
-    "domain" => 'localhost',
-    "secure" => true,     // or false
-    "httponly" => true,    // or false
-    "samesite" => "Strict" // None || Lax  || Strict
-);
-setcookie('userJWT', $jwt, $cookieOptions);
-
 http_response_code(200);
 echo json_encode(array(
     "message" => "Cookie validado com sucesso!",
@@ -64,5 +52,5 @@ echo json_encode(array(
     "name" => $user->model->name,
     "phoneNumber" => $user->model->phoneNumber,
     "role" => $user->model->role,
-    "jwt" => $jwt,
+    "jwt" => $_COOKIE["userJWT"],
 ));

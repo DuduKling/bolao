@@ -40,7 +40,7 @@ function PoolListItem(props) {
             }
             return (
                 <div className="chip green">
-                    <Link to="/">Participar!</Link>
+                    <Link to={'/pools/' + props.pool.uuid}>Participar!</Link>
                 </div>
             );
         }

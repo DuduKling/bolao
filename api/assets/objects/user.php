@@ -16,12 +16,12 @@ class User
 
         include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
         $this->env = new Env();
+
+        $this->model = new UserModel();
     }
 
     public function model($name, $phoneNumber)
     {
-        $this->model = new UserModel();
-
         $this->model->name = $name;
         $this->model->phoneNumber = $phoneNumber;
     }
@@ -101,6 +101,23 @@ class User
         return false;
     }
 
+    public function getData($uuid)
+    {
+        $query = "SELECT *
+            FROM {$this->model->table}
+            WHERE uuid = :uuid
+            LIMIT 0,1
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':uuid', $uuid);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function exists()
     {
         $query = "SELECT *
@@ -120,6 +137,10 @@ class User
         $num = $stmt->rowCount();
 
         if ($num > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $this->model->uuid = $row['uuid'];
+
             return true;
         }
 

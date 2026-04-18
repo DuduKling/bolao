@@ -56,26 +56,26 @@ class Championship
     public function getFixtures($championshipId)
     {
         $query = "SELECT
-                f.id,
+                fixture.id,
                 phase.name as phaseName,
                 part.name as partName,
-                f.homeTeamScore,
+                fixture.homeTeamScore,
                 b.name as homeTeamName,
                 b.imagePath as homeTeamImagePath,
-                f.awayTeamScore,
+                fixture.awayTeamScore,
                 a.name as awayTeamName,
                 a.imagePath as awayTeamImagePath,
-                f.dateTime,
-                f.location
-            FROM fixture f
-            INNER JOIN team a ON f.fkAwayTeamId=a.id
-            INNER JOIN team b ON f.fkHomeTeamId=b.id
-            INNER JOIN part ON f.fkPartId=part.id
+                fixture.dateTime,
+                fixture.location
+            FROM fixture
+            INNER JOIN team a ON fixture.fkAwayTeamId=a.id
+            INNER JOIN team b ON fixture.fkHomeTeamId=b.id
+            INNER JOIN part ON fixture.fkPartId=part.id
             INNER JOIN phase ON part.fkPhaseId=phase.id
             INNER JOIN championship ON phase.fkChampionshipId=championship.id
             WHERE championship.id=:championshipId
             ORDER BY
-                f.id ASC,
+                fixture.id ASC,
                 dateTime ASC
         ";
 

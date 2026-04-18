@@ -75,7 +75,7 @@ function PageUserCadastros() {
                         userJWT: response.jwt,
                     }));
 
-                    navigate('/campeonatos');
+                    navigate('/pools');
                 })
                 .catch(({ message }) => {
                     setAjaxErrorResp(message);
