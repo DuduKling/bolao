@@ -29,12 +29,7 @@ function PageChampionships() {
     const getCampeonatos = async () => {
         setLoading(true);
 
-        const dataString = JSON.stringify({});
-
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatos.php`,
-            data: dataString,
-        })
+        await http.getCampeonatos()
             .then((response) => {
                 setCampeonatos(response);
                 setLoading(false);

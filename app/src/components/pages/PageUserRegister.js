@@ -55,17 +55,13 @@ function PageUserCadastros() {
         if (nameValue === '' || phoneNumberValue === '') {
             setAjaxErrorResp('Favor preencha todos os campos!');
         } else {
-            const dataString = JSON.stringify({
+            const data = {
                 name: nameValue.trim(),
                 phoneNumber: phoneNumberValue,
                 fingerprint: await Fingerprint.get(),
-            });
+            };
 
-            await http.post({
-                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/create.php`,
-                data: dataString,
-                withCredentials: true,
-            })
+            await http.create(data)
                 .then((response) => {
                     dispatch(updateJWT({ userJWT: response.jwt }));
 

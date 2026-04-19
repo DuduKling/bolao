@@ -40,15 +40,11 @@ function PagePoolBet() {
     const getFixtures = async () => {
         setLoading(true);
 
-        const dataString = JSON.stringify({
+        const data = {
             poolUuid,
-        });
+        };
 
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getPoolFixtures.php`,
-            data: dataString,
-            withCredentials: true,
-        })
+        await http.getPoolFixtures(data)
             .then((response) => {
                 setCampeonato(response.poolChampionshipInfo);
 
@@ -85,16 +81,12 @@ function PagePoolBet() {
         setResp('');
         setLoading2(true);
 
-        const dataString = JSON.stringify({
+        const data = {
             poolUuid,
             userBets,
-        });
+        };
 
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/makeBets.php`,
-            data: dataString,
-            withCredentials: true,
-        })
+        await http.makeBets(data)
             .then((response) => {
                 setResp(response.message);
                 setLoading2(false);

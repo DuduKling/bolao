@@ -56,17 +56,13 @@ function PageUserLogin() {
         if (nameValue === '' || phoneNumberValue === '') {
             setAjaxErrorResp('Favor preencha todos os campos!');
         } else {
-            const dataString = JSON.stringify({
+            const data = {
                 name: nameValue.trim(),
                 phoneNumber: phoneNumberValue,
                 fingerprint: await Fingerprint.get(),
-            });
+            };
 
-            await http.post({
-                url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/login.php`,
-                data: dataString,
-                withCredentials: true,
-            })
+            await http.login(data)
                 .then((response) => {
                     dispatch(updateJWT({ userJWT: response.jwt }));
 

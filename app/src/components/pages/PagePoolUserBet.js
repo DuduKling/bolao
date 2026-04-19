@@ -49,16 +49,12 @@ function PagePoolUserBet() {
     const getBets = async () => {
         setLoading(true);
 
-        const dataString = JSON.stringify({
+        const data = {
             poolUuid,
             userUuid,
-        });
+        };
 
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromUser.php`,
-            data: dataString,
-            withCredentials: true,
-        })
+        await http.getBetsFromUser(data)
             .then((response) => {
                 setLoading(false);
 

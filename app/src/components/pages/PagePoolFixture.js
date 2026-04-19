@@ -23,16 +23,12 @@ function PagePoolFixture() {
     const getBets = async () => {
         setLoading(true);
 
-        const dataString = JSON.stringify({
+        const data = {
             poolUuid,
             fixtureId,
-        });
+        };
 
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromFixture.php`,
-            data: dataString,
-            withCredentials: true,
-        })
+        await http.getBetsFromFixture(data)
             .then((response) => {
                 const fixtures = mergeFixturesAndBets(response.fixture, response.fixtureBets);
                 setFixtures(fixtures);

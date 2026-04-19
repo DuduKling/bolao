@@ -32,13 +32,7 @@ function PagePools() {
     const getPools = async () => {
         setLoading(true);
 
-        const dataString = JSON.stringify({});
-
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getPools.php`,
-            data: dataString,
-            withCredentials: true,
-        })
+        await http.getPools()
             .then((response) => {
                 setPools(response.allPools);
                 setJoinedPools(response.joinedPools);

@@ -27,11 +27,7 @@ function UserNavBar(props) {
     const logout = async () => {
         dispatch(updateJWT({ userJWT: '' }));
 
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/authReset.php`,
-            data: JSON.stringify({}),
-            withCredentials: true,
-        });
+        await http.authReset();
 
         navigate('/');
     };

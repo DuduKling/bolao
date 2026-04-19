@@ -37,14 +37,11 @@ function PageChampionshipFixtures() {
     const getFixturesAndCampeonato = async () => {
         setLoading(true);
 
-        const dataString = JSON.stringify({
+        const data = {
             championshipId: params.championshipId,
-        });
+        };
 
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
-            data: dataString,
-        })
+        await http.getFixturesFromCampeonato(data)
             .then((response) => {
                 setFixtures(response.fixtures);
                 setCampeonato(response.poolChampionshipInfo);

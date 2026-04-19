@@ -52,15 +52,11 @@ function App() {
     }, []);
 
     const didMount = async () => {
-        const dataString = JSON.stringify({
+        const data = {
             fingerprint: await Fingerprint.get(),
-        });
+        };
 
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/authValidate.php`,
-            data: dataString,
-            withCredentials: true,
-        })
+        await http.authValidate(data)
             .then((response) => {
                 dispatch(updateJWT({ userJWT: response.jwt }));
             })

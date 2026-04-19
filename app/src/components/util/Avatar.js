@@ -6,7 +6,11 @@ import PropTypes from 'prop-types';
 
 function Avatar(props) {
 
+    const userName = props.userName;
+
     const generateColor = () => {
+        if (!userName) { return; }
+
         const colors = [
             '#000000',
             '#1a1a1a',
@@ -31,15 +35,17 @@ function Avatar(props) {
         ];
 
         let hash = 0;
-        for (let i = 0; i < props.userName.length; i++) {
-            hash += props.userName.codePointAt(i);
+        for (let i = 0; i < userName.length; i++) {
+            hash += userName.codePointAt(i);
         }
 
         return colors[hash % colors.length];
     };
 
     const generateLetters = () => {
-        const words = props.userName.trim().split(/\s+/);
+        if (!userName) { return; }
+
+        const words = userName.trim().split(/\s+/);
 
         let letters = '';
         if (words.length === 1) {

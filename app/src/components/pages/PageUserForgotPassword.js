@@ -47,16 +47,13 @@ function PageUserForgotPassword() {
         setAjaxSuccessResp('');
         setAjaxErrorResp('');
 
-        const dataString = JSON.stringify({
+        const data = {
             name: nameValue.trim(),
             phoneNumber: phoneNumberValue,
             fingerprint: await Fingerprint.get(),
-        });
+        };
 
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/user/getAccess.php`,
-            data: dataString,
-        })
+        await http.getAccess(data)
             .then((response) => {
                 dispatch(updateJWT({ userJWT: response.jwt }));
 

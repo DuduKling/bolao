@@ -29,11 +29,11 @@ export const authSlicer = createSlice({
             if (action.payload.userJWT) {
                 parsedJWT = parseJwt(action.payload.userJWT);
             }
-            state.userUuid = parsedJWT.data.uuid;
-            state.userName = parsedJWT.data.name;
-            state.userPhoneNumber = parsedJWT.data.phoneNumber;
-            state.userRole = parsedJWT.data.role;
-            state.userJWT = action.payload.userJWT;
+            state.userUuid = parsedJWT.data.uuid || '';
+            state.userName = parsedJWT.data.name || '';
+            state.userPhoneNumber = parsedJWT.data.phoneNumber || '';
+            state.userRole = parsedJWT.data.role || '';
+            state.userJWT = action.payload.userJWT || '';
         },
     },
 });

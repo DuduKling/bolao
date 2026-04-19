@@ -1,8 +1,94 @@
 import axios from 'axios';
 
+const url = process.env.REACT_APP_URL_BACK;
+
+const apiRoutes = {
+    create: `${url}/api/v1/user/create.php`,
+    login: `${url}/api/v1/user/login.php`,
+    getAccess: `${url}/api/v1/user/getAccess.php`,
+    authReset: `${url}/api/v1/user/authReset.php`,
+    authValidate: `${url}/api/v1/user/authValidate.php`,
+
+    getPools: `${url}/api/v1/campeonato/getPools.php`,
+    getFixturesFromCampeonato: `${url}/api/v1/fixture/getFixturesFromCampeonato.php`,
+    getCampeonatos: `${url}/api/v1/campeonato/getCampeonatos.php`,
+
+    getBetsFromUser: `${url}/api/v1/bets/getBetsFromUser.php`,
+    getBetsFromFixture: `${url}/api/v1/bets/getBetsFromFixture.php`,
+    makeBets: `${url}/api/v1/bets/makeBets.php`,
+
+    getRank: `${url}/api/v1/fixture/getRank.php`,
+    getPoolFixtures: `${url}/api/v1/fixture/getPoolFixtures.php`,
+};
+
 class http {
 
-    static post({ url, data, withCredentials = false}) {
+    static create(data = {}) {
+        const url = apiRoutes.create;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static login(data = {}) {
+        const url = apiRoutes.login;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static getAccess(data = {}) {
+        const url = apiRoutes.getAccess;
+        return this.post({ url, data });
+    }
+
+    static getBetsFromUser(data = {}) {
+        const url = apiRoutes.getBetsFromUser;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static getPools(data = {}) {
+        const url = apiRoutes.getPools;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static getBetsFromFixture(data = {}) {
+        const url = apiRoutes.getBetsFromFixture;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static getRank(data = {}) {
+        const url = apiRoutes.getRank;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static makeBets(data = {}) {
+        const url = apiRoutes.makeBets;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static getPoolFixtures(data = {}) {
+        const url = apiRoutes.getPoolFixtures;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static getFixturesFromCampeonato(data = {}) {
+        const url = apiRoutes.getFixturesFromCampeonato;
+        return this.post({ url, data });
+    }
+
+    static getCampeonatos(data = {}) {
+        const url = apiRoutes.getCampeonatos;
+        return this.post({ url, data });
+    }
+
+    static authReset(data = {}) {
+        const url = apiRoutes.authReset;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static authValidate(data = {}) {
+        const url = apiRoutes.authValidate;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static post({ url, data, withCredentials = false }) {
         return new Promise((resolve, reject) => {
             const isDebug = process.env.REACT_APP_DEBUG === 'true';
 
@@ -45,7 +131,7 @@ class http {
                 reject(error.response ? error.response.data : error.message);
             }
 
-            axios.post(url, data, { withCredentials })
+            axios.post(url, JSON.stringify(data), { withCredentials })
                 .then(requestThen)
                 .catch(catchThen);
         });

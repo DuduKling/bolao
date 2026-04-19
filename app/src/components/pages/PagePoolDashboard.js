@@ -41,15 +41,11 @@ function PagePoolDashboard() {
     }, []);
 
     const getFixtures = async () => {
-        const dataString = JSON.stringify({
+        const data = {
             poolUuid,
-        });
+        };
 
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getPoolFixtures.php`,
-            data: dataString,
-            withCredentials: true,
-        })
+        await http.getPoolFixtures(data)
             .then((response) => {
                 setCampeonato(response.poolChampionshipInfo);
 
@@ -79,15 +75,11 @@ function PagePoolDashboard() {
     };
 
     const getRank = async () => {
-        const dataString = JSON.stringify({
+        const data = {
             poolUuid,
-        });
+        };
 
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getRank.php`,
-            data: dataString,
-            withCredentials: true,
-        })
+        await http.getRank(data)
             .then((response) => {
                 setLoading(false);
                 setRank(response.rank);
