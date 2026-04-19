@@ -11,9 +11,9 @@ import Fingerprint from './util/fingerprint';
 
 import './css/pages/user.css';
 
-import PrivateRoute from './components/util/Auth';
-import PrivateRouteAdmin from './components/util/AuthAdmin';
-import PrivateRouteAlready from './components/util/AuthAlready';
+import UserMustBeLoggedIn from './components/util/Auth';
+import UserMustBeAdmin from './components/util/AuthAdmin';
+import UserMustBeLoggedOff from './components/util/AuthAlready';
 
 import BigLoading from './components/util/BigLoading';
 
@@ -75,48 +75,38 @@ function App() {
                 <SiteHeader />
 
                 <Routes>
+                    <Route path='/' element={<PageRootHome />} />
+                    <Route path='faleconosco' element={<PageRootContato />} />
+                    <Route path='regulamento' element={<PageRootRegulamento />} />
+                    <Route path='campeonatos' element={<PageCampeonatos />} />
+                    <Route path='campeonato/:championshipId' element={<PageCampeonatoFixtures />} />
+
+                    <Route element={<UserMustBeLoggedIn />} >
+                        <Route path='pools' element={<PagePools />} />
+                        <Route path='pools/:poolUuid' element={<PageCampeonatoApostar />} />
+                        <Route path='pools/:poolUuid/:userUuid' element={<PageCampeonatoApostadoUser />} />
+                    </Route>
+
+                    <Route element={<UserMustBeLoggedOff />} >
+                        <Route path='user/login' element={<PageUserLogin />} />
+                        <Route path='user/cadastrar' element={<PageUserCadastro />} />
+                        <Route path='user/esqueci' element={<PageUserEsqueci />} />
+                    </Route>
+
+                    {/* ----- OLDER ROUTES ---- */}
                     <Route path='/' element={<Outlet />} >
-                        {/* ROOT */}
-                        <Route path='' element={<PageRootHome />} />
-                        <Route path='faleconosco' element={<PageRootContato />} />
-                        <Route path='regulamento' element={<PageRootRegulamento />} />
-                        <Route path='campeonatos' element={<PageCampeonatos />} />
-                        <Route path='campeonato/:championshipId' element={<PageCampeonatoFixtures />} />
-
-                        {/* RESTRICTED */}
-                        <Route element={<PrivateRoute />} >
-                            <Route path='pools' element={<PagePools />} />
-                            <Route path='pools/:poolUuid' element={<PageCampeonatoApostar />} />
-                            <Route path='pools/:poolUuid/:userUuid' element={<PageCampeonatoApostadoUser />} />
-                        </Route>
-
-                        {/* USER */}
-                        <Route path='user' element={<Outlet />} >
-                            {/* USER - NOT RESTRICTED */}
-                            <Route element={<PrivateRouteAlready />} >
-                                <Route path='' element={<PageRoot404 />} />
-
-                                <Route path='login' element={<PageUserLogin />} />
-                                <Route path='cadastrar' element={<PageUserCadastro />} />
-
-                                <Route path='esqueci' element={<PageUserEsqueci />} />
-
-                                <Route path='*' element={<PageRoot404 />} />
-                            </Route>
-                        </Route>
-
                         {/* ADMIN - RESTRICTED */}
-                        <Route path='admin' element={<PrivateRouteAdmin />} >
+                        <Route path='admin' element={<UserMustBeAdmin />} >
                             <Route path='' element={<PageAdmin />} />
                         </Route>
 
                         {/* CAMPEONATO - RESTRICTED */}
-                        <Route path='campeonato' element={<PrivateRoute />} >
+                        <Route path='campeonato' element={<UserMustBeLoggedIn />} >
                             <Route path=':campeonato/:fase' element={<PageCampeonatoDashboard />} />
                             <Route path=':campeonato/:fase/jogo/:fixture' element={<PageCampeonatoFixture />} />
 
                             {/* ADMIN - RESTRICTED */}
-                            <Route path=':campeonato' element={<PrivateRouteAdmin />} >
+                            <Route path=':campeonato' element={<UserMustBeAdmin />} >
                                 <Route path=':fase/admin' element={<PageAdminApostas />} />
                                 <Route path=':fase/:parte/admin' element={<PageAdminScore />} />
                             </Route>

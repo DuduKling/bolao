@@ -8,7 +8,7 @@ function AuthAlready() {
 
     useEffect(() => {
         if (userName) {
-            navigate('/campeonatos');
+            navigate('/pools');
         }
     }, []);
 
