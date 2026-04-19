@@ -134,7 +134,8 @@ class Pool
 
     public function getPoolFixtures($poolUuid)
     {
-        $query = "SELECT fixture.id,
+        $query = "SELECT
+                fixture.id,
                 phase.name as phaseName,
                 part.name as partName,
                 fixture.homeTeamScore,
@@ -315,6 +316,93 @@ class Pool
             echo json_encode(array("message" => "Não foi possível gerar o rank para este campeonato. Favor entrar em contato com o administrador. (Error #FGR1)"));
             exit();
         }
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getFixtureBets($poolId, $fixtureId)
+    {
+        $query = "SELECT
+                    fixture.id,
+                    bet.homeTeamScoreBet,
+                    bet.awayTeamScoreBet,
+                    round(
+                        (
+                            count(*) /
+                            (
+                                SELECT count(*)
+                                FROM user
+                                INNER JOIN user_pool ON user_pool.fkUserId = user.id
+                                INNER JOIN bet ON bet.fkUserPoolId = user_pool.id
+                                WHERE bet.fkFixtureId = :fixtureId
+                                AND user_pool.fkPoolId = :poolId
+                            ) * 100
+                        )
+                    , 2) as porcentagem,
+                    GROUP_CONCAT(CONCAT(user.name, '#', user.uuid) ORDER BY user.name ASC SEPARATOR ',') as users
+            FROM bet
+            INNER JOIN user_pool ON bet.fkUserPoolId = user_pool.id
+            INNER JOIN user ON user_pool.fkUserId = user.id
+            INNER JOIN fixture ON bet.fkFixtureId = fixture.id
+            WHERE fixture.id = :fixtureId
+            AND user_pool.fkPoolId = :poolId
+            GROUP BY
+                bet.homeTeamScoreBet,
+                bet.awayTeamScoreBet
+            ORDER BY porcentagem DESC
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':poolId', $poolId);
+        $stmt->bindParam(':fixtureId', $fixtureId);
+
+        $stmt->execute();
+        $num = $stmt->rowCount();
+
+        if ($num <= 0) {
+            http_response_code(400);
+            echo json_encode(array(
+                "message" => "Não foi possível encontrar as apostas deste jogo. Favor entrar em contato com o Administrador. (Error #BGBFF1)"
+            ));
+            exit();
+        }
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getPoolFixture($poolUuid, $fixtureId)
+    {
+        $query = "SELECT
+                fixture.id,
+                phase.name as phaseName,
+                part.name as partName,
+                fixture.homeTeamScore,
+                b.name as homeTeamName,
+                b.imagePath as homeTeamImagePath,
+                fixture.awayTeamScore,
+                a.name as awayTeamName,
+                a.imagePath as awayTeamImagePath,
+                fixture.dateTime,
+                fixture.location
+            FROM pool
+            INNER JOIN pool_part ON pool_part.fkPoolId = pool.id
+            INNER JOIN part ON pool_part.fkPartId = part.id
+            INNER JOIN fixture ON fixture.fkPartId = part.id
+            INNER JOIN team a ON fixture.fkAwayTeamId=a.id
+            INNER JOIN team b ON fixture.fkHomeTeamId=b.id
+            INNER JOIN phase ON part.fkPhaseId=phase.id
+            INNER JOIN championship ON phase.fkChampionshipId=championship.id
+            WHERE pool.uuid = :poolUuid
+            AND fixture.id = :fixtureId
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':poolUuid', $poolUuid);
+        $stmt->bindParam(':fixtureId', $fixtureId);
+
+        $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

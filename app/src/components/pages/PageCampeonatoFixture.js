@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import '../../css/pages/pageInside.css';
@@ -13,47 +13,50 @@ function PageCampeonatoFixture() {
     const [loading, setLoading] = useState(false);
 
     const params = useParams();
-
-    const dataFetchedRef = useRef(false);
+    const poolUuid = params.poolUuid;
+    const fixtureId = params.fixtureId;
 
     useEffect(() => {
-        const fixtureID = params.fixture;
-        const faseID = params.fase;
-
-        const cachedFixtures = localStorage.getItem(faseID + fixtureID + 'campeonatoJogo');
-        if (cachedFixtures) {
-            setFixtures(JSON.parse(cachedFixtures));
-        }
-
-        if (dataFetchedRef.current) return;
-        dataFetchedRef.current = true;
-
         getBets();
     }, []);
 
     const getBets = async () => {
         setLoading(true);
 
-        const fixtureID = params.fixture;
-        const faseID = params.fase;
-
         const dataString = JSON.stringify({
-            fixtureID,
+            poolUuid,
+            fixtureId,
         });
 
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromFixture.php`,
             data: dataString,
+            withCredentials: true,
         })
             .then((response) => {
-                setLoading(false);
-                setFixtures(response.fixtures);
+                const fixtures = mergeFixturesAndBets(response.fixture, response.fixtureBets);
+                setFixtures(fixtures);
 
-                localStorage.setItem(faseID + fixtureID + 'campeonatoJogo', JSON.stringify(response.fixtures));
+                setLoading(false);
             })
             .catch(() => {
                 setLoading(false);
             });
+    };
+
+    const mergeFixturesAndBets = (fixture, fixtureBets) => {
+        return fixtureBets.map((fixBet, index) => ({
+            ...fixBet,
+            homeTeamScoreBet: undefined,
+            awayTeamScoreBet: undefined,
+            users: fixBet.users.split(','),
+
+            frontId: index,
+
+            ...fixture[0],
+            homeTeamScore: fixBet.homeTeamScoreBet,
+            awayTeamScore: fixBet.awayTeamScoreBet,
+        }));
     };
 
     return (
@@ -63,23 +66,23 @@ function PageCampeonatoFixture() {
                 <div className="main-partidaForm" >
 
                     <ul className="partidaLista">
-                        <h3 className="pageTitle">
-                            Apostas para este jogo
-                            <Loading loading={loading} localstorage="-withLocalStorage2" />
-                        </h3>
+                        <div>
+                            <h3 className="pageTitle">
+                                Apostas para este jogo
+                                <Loading loading={loading} localstorage="-withLocalStorage2" />
+                            </h3>
+                        </div>
                         {
-                            fixtures.map(function (team, index) {
+                            fixtures.map((fixture, index) => {
                                 return (
-
                                     <PartidaListItem
                                         key={index}
-                                        team={team}
+                                        fixture={fixture}
                                         typeAll={'ReadOnly'}
                                         showUsers={true}
                                         showPercent={true}
                                         params={params}
                                     />
-
                                 );
                             }, this)
                         }

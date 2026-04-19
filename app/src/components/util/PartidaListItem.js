@@ -52,19 +52,23 @@ function PartidaListItem(props) {
 
     const checkIfShowUsernames = () => {
         if (props.showUsers) {
+            const { frontId, users } = props.fixture;
+
             return (
                 <div className="users-container">
-                    <label htmlFor={'toggleUsernames' + props.fixture.frontID}>
-                        Mostrar pessoas
+                    <label htmlFor={'toggleUsernames' + frontId}>
+                        Apostadores ({users.length})
                     </label>
-                    <input type="checkbox" id={'toggleUsernames' + props.fixture.frontID} />
+                    <input type="checkbox" id={'toggleUsernames' + frontId} />
                     <div className="users-usernamesList">
                         {
-                            props.fixture.usernames ?
-                                props.fixture.usernames.split(',').map(function (name, index) {
+                            users &&
+                                users.length > 0 ?
+                                users.map((user, index) => {
+                                    const [name, uuid] = user.split('#');
                                     return (
                                         <div key={index}>
-                                            <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/apostado/' + name}>{name}</Link>
+                                            <Link to={`/pools/${params.poolUuid}/user/${uuid}`}>{name}</Link>
                                         </div>
                                     );
                                 })
@@ -118,7 +122,7 @@ function PartidaListItem(props) {
     const checkIfShowAsLink = () => {
         if (params !== undefined) {
             return (<>
-                <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/jogo/' + props.fixture.id}>
+                <Link to={`/pools/${params.poolUuid}/fixture/${props.fixture.id}`}>
                     {insideStuff()}
                 </Link>
                 {checkIfShowUsernames()}
