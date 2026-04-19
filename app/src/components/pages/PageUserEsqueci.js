@@ -58,13 +58,7 @@ function PageUserEsqueci() {
             data: dataString,
         })
             .then((response) => {
-                dispatch(updateJWT({
-                    userUuid: response.uuid,
-                    userName: response.name,
-                    userPhoneNumber: response.phoneNumber,
-                    userRole: response.role,
-                    userJWT: response.jwt,
-                }));
+                dispatch(updateJWT({ userJWT: response.jwt }));
 
                 navigate('/campeonatos');
             })

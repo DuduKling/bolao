@@ -30,7 +30,7 @@ $exists = $user->exists();
 $hasAccess = $user->confirmAccess($fingerprint);
 if (!$hasAccess) {
     $cookieOptions = array(
-        "expires" => time() - 3600,
+        "expires" => time() - 3600, // expired
         "path" => "/",
         "domain" => 'localhost',
         "secure" => true,     // or false
@@ -48,9 +48,5 @@ if (!$hasAccess) {
 http_response_code(200);
 echo json_encode(array(
     "message" => "Cookie validado com sucesso!",
-    "uuid" => $user->model->uuid,
-    "name" => $user->model->name,
-    "phoneNumber" => $user->model->phoneNumber,
-    "role" => $user->model->role,
     "jwt" => $_COOKIE["userJWT"],
 ));

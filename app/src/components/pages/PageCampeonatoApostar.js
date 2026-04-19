@@ -72,12 +72,10 @@ function PageCampeonatoApostar() {
     };
 
     const mergeFixturesAndBets = (fixtures, userBetsToMerge) => {
-        console.log(userBetsToMerge);
         const bets = userBetsToMerge.reduce((acc, b) => {
             acc[b.id] = b;
             return acc;
         }, {});
-        console.log(bets);
         for (const fixture of fixtures) {
             fixture.awayTeamScore = bets[fixture.id].awayTeamScoreBet;
             fixture.homeTeamScore = bets[fixture.id].homeTeamScoreBet;

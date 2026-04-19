@@ -34,7 +34,7 @@ if (!$exists || !$passwordMatch) {
 $jwt = $user->generateToken();
 
 $cookieOptions = array(
-    "expires" => time() + 3600,
+    "expires" => time() + 60 * 60 * 24 * 30, // 30 days
     "path" => "/",
     "domain" => 'localhost',
     "secure" => true,     // or false
@@ -46,9 +46,5 @@ setcookie('userJWT', $jwt, $cookieOptions);
 http_response_code(200);
 echo json_encode(array(
     "message" => "Login efetuado com sucesso!",
-    "uuid" => $user->model->uuid,
-    "name" => $user->model->name,
-    "phoneNumber" => $user->model->phoneNumber,
-    "role" => $user->model->role,
     "jwt" => $jwt,
 ));

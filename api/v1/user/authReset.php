@@ -14,7 +14,7 @@ $auth = new Auth();
 $decoded = $auth->authenticate();
 
 $cookieOptions = array(
-    "expires" => time() - 3600,
+    "expires" => time() - 3600, // expired
     "path" => "/",
     "domain" => 'localhost',
     "secure" => true,     // or false
