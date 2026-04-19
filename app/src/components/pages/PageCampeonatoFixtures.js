@@ -72,7 +72,7 @@ function PageCampeonatoFixtures() {
                 <div className="main-partidaForm">
 
                     <ul className="partidaLista">
-                        <div className="dashbord-top">
+                        <div className="dashboard-top">
                             <h2>{campeonato ? campeonato.name : ''}</h2>
                             <Loading loading={loading} />
                         </div>

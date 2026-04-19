@@ -69,6 +69,7 @@ class Pool
                 pool.*,
                 GROUP_CONCAT(DISTINCT part.name SEPARATOR ', ') as parts,
                 phase.name as phaseName,
+                championship.id as championshipId,
                 championship.name as championshipName,
                 championship.logo as championshipLogo
             FROM pool
@@ -136,10 +137,10 @@ class Pool
         $query = "SELECT fixture.id,
                 phase.name as phaseName,
                 part.name as partName,
-                -- fixture.homeTeamScore,
+                fixture.homeTeamScore,
                 b.name as homeTeamName,
                 b.imagePath as homeTeamImagePath,
-                -- fixture.awayTeamScore,
+                fixture.awayTeamScore,
                 a.name as awayTeamName,
                 a.imagePath as awayTeamImagePath,
                 fixture.dateTime,

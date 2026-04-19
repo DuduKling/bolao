@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import '../../css/pages/campeonato.css';
 
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
 function PoolListItem(props) {
     const [flagDetail, setFlagDetail] = useState('');
-
-    const userUuid = useSelector((state) => state.auth.userUuid);
 
     const toggleDetails = () => {
         setFlagDetail(!flagDetail);
@@ -39,31 +36,37 @@ function PoolListItem(props) {
             if (joined) {
                 return (
                     <div className="chip blue">
-                        <Link to={'/pools/' + props.pool.uuid + '/' + userUuid}>Participando</Link>
+                        <Link to={`/pools/${props.pool.uuid}/dashboard`}>Participando</Link>
                     </div>
                 );
             }
             return (
                 <div className="chip green">
-                    <Link to={'/pools/' + props.pool.uuid}>Participar!</Link>
+                    <Link to={`/pools/${props.pool.uuid}/bet`}>Participar!</Link>
                 </div>
             );
         }
 
         if (status === 'onGoing') {
             return (
-                <div className="chip"><span>botao VER</span></div>
+                <div className="chip green">
+                    <Link to={`/pools/${props.pool.uuid}/dashboard`}>Ver</Link>
+                </div>
             );
         }
 
         if (status === 'finished') {
             if (joined) {
                 return (
-                    <div className="chip"><span>Participou</span></div>
+                    <div className="chip">
+                        <Link to={`/pools/${props.pool.uuid}/dashboard`}>Participou</Link>
+                    </div>
                 );
             }
             return (
-                <div className="chip"><span>Finalizado</span></div>
+                <div className="chip">
+                    <Link to={`/pools/${props.pool.uuid}/dashboard`}>Finalizado</Link>
+                </div>
             );
         }
     };

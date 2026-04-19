@@ -294,14 +294,15 @@
 }
 
 
-.dashbord-top {
+.dashboard-top {
 	width: 100%;
 
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 20px;
 }
 
-.dashbord-top > h2 {
+.dashboard-top > h2 {
 	width: 100%;
 	text-align: center;
 	color: #4caf50;
@@ -309,18 +310,17 @@
 
 	margin-top: 0;
 	margin-bottom: 5px;
-	
 }
 
-.dashbord-top > h4 {
+.dashboard-top > h4 {
 	width: 100%;
 	text-align: center;
 	color: #424242;
 	font-size: 20px;
 
 	margin-top: 0;
-	margin-bottom: 20px;
-	
+	margin-bottom: 5px;
+}
 }
 
 
@@ -418,11 +418,11 @@
 }
 
 @media only screen and (max-width: 400px){
-	.dashbord-top > h2 {
+	.dashboard-top > h2 {
 		font-size: 24px;
 	}
 	
-	.dashbord-top > h4 {
+	.dashboard-top > h4 {
 		font-size: 16px;
 		margin-bottom: 10px;
 	}

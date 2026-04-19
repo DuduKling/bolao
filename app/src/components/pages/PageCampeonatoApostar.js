@@ -208,7 +208,7 @@ function PageCampeonatoApostar() {
                 >
 
                     <ul className="partidaLista">
-                        <div className="dashbord-top">
+                        <div className="dashboard-top">
                             <h2>{campeonato.championshipName}</h2>
                             <Loading loading={loading} />
                         </div>

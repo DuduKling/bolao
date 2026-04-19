@@ -12,7 +12,7 @@ function PageCampeonatos() {
 
     const dataFetchedRef = useRef(false);
 
-    const LOCAL_STORAGE_ITEM = 'campeonatos';
+    const LOCAL_STORAGE_ITEM = 'championships';
 
     useEffect(() => {
         const cachedCampeonatos = localStorage.getItem(LOCAL_STORAGE_ITEM);

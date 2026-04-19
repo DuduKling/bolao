@@ -83,8 +83,8 @@ function App() {
 
                     <Route element={<UserMustBeLoggedIn />} >
                         <Route path='pools' element={<PagePools />} />
-                        <Route path='pools/:poolUuid' element={<PageCampeonatoApostar />} />
-                        <Route path='pools/:poolUuid/:userUuid' element={<PageCampeonatoApostadoUser />} />
+                        <Route path='pools/:poolUuid/bet' element={<PageCampeonatoApostar />} />
+                        <Route path='pools/:poolUuid/user/:userUuid' element={<PageCampeonatoApostadoUser />} />
                     </Route>
 
                     <Route element={<UserMustBeLoggedOff />} >

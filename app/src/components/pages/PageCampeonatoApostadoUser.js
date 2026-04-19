@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import '../../css/pages/pageInside.css';
 
@@ -22,7 +22,7 @@ function PageCampeonatoApostadoUser() {
 
     const dataFetchedRef = useRef(false);
 
-    const LOCAL_STORAGE_ITEM = `${poolUuid}#${userUuid}#bets`;
+    const LOCAL_STORAGE_ITEM = `bets#${poolUuid}#${userUuid}`;
 
     useEffect(() => {
         const cachedFixtures = localStorage.getItem(LOCAL_STORAGE_ITEM);
@@ -134,7 +134,7 @@ function PageCampeonatoApostadoUser() {
                             </span>
                             <br />
                             <span className="subTitle">
-                                Bolão: {campeonato ? campeonato.name : ''}
+                                Bolão: <Link to={`/pools/${campeonato.uuid}/dashboard`}>{campeonato ? campeonato.name : ''}</Link>
                             </span>
 
                             <Loading loading={loading} localstorage="-withLocalStorage2" />
