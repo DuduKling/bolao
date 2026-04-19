@@ -76,10 +76,10 @@ function App() {
 
                 <Routes>
                     <Route path='/' element={<PageRootHome />} />
-                    <Route path='faleconosco' element={<PageRootContactUs />} />
-                    <Route path='regulamento' element={<PageRootRules />} />
-                    <Route path='campeonatos' element={<PageChampionships />} />
-                    <Route path='campeonato/:championshipId' element={<PageChampionshipFixtures />} />
+                    <Route path='contact' element={<PageRootContactUs />} />
+                    <Route path='rules' element={<PageRootRules />} />
+                    <Route path='championships' element={<PageChampionships />} />
+                    <Route path='championship/:championshipId' element={<PageChampionshipFixtures />} />
 
                     <Route element={<UserMustBeLoggedIn />} >
                         <Route path='pools' element={<PagePools />} />

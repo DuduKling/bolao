@@ -1,8 +1,8 @@
 const sendToHome = () => '/';
-const sendToContact = () => '/faleconosco';
-const sendToRules = () => '/regulamento';
-const sendToChampionships = (championshipId) => `/campeonato/${championshipId}`;
-const sendToChampionship = () => '/campeonatos';
+const sendToContact = () => '/contact';
+const sendToRules = () => '/rules';
+const sendToChampionships = () => '/championships';
+const sendToChampionship = (championshipId) => `/championship/${championshipId}`;
 
 const sendToPools = () => '/pools';
 const sendToPoolBet = (poolUuid) => `/pools/${poolUuid}/bet`;
@@ -20,8 +20,8 @@ export default {
     sendToHome,
     sendToContact,
     sendToRules,
-    sendToChampionships,
     sendToChampionship,
+    sendToChampionships,
     sendToPools,
     sendToPoolBet,
     sendToPoolUserBets,
