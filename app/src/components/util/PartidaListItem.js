@@ -2,6 +2,8 @@ import React from 'react';
 import '../../css/util/partidaListItem.css';
 import { Link } from 'react-router-dom';
 
+import routes from '../util/Routes';
+
 import PartidaTeam from './PartidaTeam';
 import PartidaPlacar from './PartidaPlacar';
 
@@ -68,7 +70,7 @@ function PartidaListItem(props) {
                                     const [name, uuid] = user.split('#');
                                     return (
                                         <div key={index}>
-                                            <Link to={`/pools/${params.poolUuid}/user/${uuid}`}>{name}</Link>
+                                            <Link to={routes.sendToPoolUserBets(params.poolUuid, uuid)}>{name}</Link>
                                         </div>
                                     );
                                 })
@@ -122,7 +124,7 @@ function PartidaListItem(props) {
     const checkIfShowAsLink = () => {
         if (params !== undefined) {
             return (<>
-                <Link to={`/pools/${params.poolUuid}/fixture/${props.fixture.id}`}>
+                <Link to={routes.sendToPoolFixture(params.poolUuid, props.fixture.id)}>
                     {insideStuff()}
                 </Link>
                 {checkIfShowUsernames()}

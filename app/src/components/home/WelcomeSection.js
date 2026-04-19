@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../css/home/welcomeSection.css';
+import routes from '../util/Routes';
 
 import { Link } from 'react-router-dom';
 
@@ -13,7 +14,7 @@ function WelcomeSection() {
             <p><span>Participe e vença o maior bolão da região!</span><br />
                 Clique no link abaixo e faça seu cadastro:</p>
 
-            <Link to="/user/cadastrar" className="welcome-button">Quero participar!</Link>
+            <Link to={routes.sendToUserRegister()} className="welcome-button">Quero participar!</Link>
         </div>
     );
 }

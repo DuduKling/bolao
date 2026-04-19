@@ -5,6 +5,7 @@ import '../../css/pages/login.css';
 import '../../css/util/formMessage.css';
 
 import http from '../../util/http';
+import routes from '../util/Routes';
 
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
@@ -112,7 +113,7 @@ function PageUserLogin() {
                         value="Entrar"
                     />
 
-                    <Link className="menuItem" to="/user/esqueci">
+                    <Link className="menuItem" to={routes.sendToUserForgotPassword()}>
                         Perdi o acesso
                     </Link>
 

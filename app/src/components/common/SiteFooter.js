@@ -2,6 +2,8 @@ import React from 'react';
 import '../../css/common/footer.css';
 import { Link } from 'react-router-dom';
 
+import routes from '../util/Routes';
+
 function SiteFooter() {
     return (
         <footer className="footer">
@@ -9,26 +11,26 @@ function SiteFooter() {
                 <div className="links -external">
                     <h4>Links externos</h4>
 
-                    <Link className="menuItem" to="/">
+                    <Link className="menuItem" to={routes.sendToHome()}>
                         Home
                     </Link>
-                    <Link className="menuItem" to="/regulamento">
+                    <Link className="menuItem" to={routes.sendToRules()}>
                         Regulamento
                     </Link>
-                    <Link className="menuItem" to="/faleconosco">
+                    <Link className="menuItem" to={routes.sendToContact()}>
                         Fale Conosco
                     </Link>
                 </div>
                 <div className="links -internal">
                     <h4>Links internos</h4>
 
-                    <Link className="menuItem" to="/user/cadastrar">
+                    <Link className="menuItem" to={routes.sendToUserRegister()}>
                         Cadastrar
                     </Link>
-                    <Link className="menuItem" to="/user/login">
+                    <Link className="menuItem" to={routes.sendToUserLogin()}>
                         Login
                     </Link>
-                    <Link className="menuItem" to="/campeonatos">
+                    <Link className="menuItem" to={routes.sendToChampionships()}>
                         Campeonatos
                     </Link>
                 </div>

@@ -6,6 +6,7 @@ import '../../css/pages/pageInside.css';
 import '../../css/util/formMessage.css';
 
 import http from '../../util/http';
+import routes from '../util/Routes';
 
 import Loading from '../util/Loading';
 import ChampionshipPhase from '../util/ChampionshipPhase';
@@ -20,14 +21,13 @@ function PagePoolBet() {
     const [error, setError] = useState('');
     const [resp, setResp] = useState('');
 
-    const [isBet, setIsBet] = useState(false);
-
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
 
-    const userName = useSelector((state) => state.auth.userName);
+    const userUuid = useSelector((state) => state.auth.userUuid);
 
     const params = useParams();
+    const poolUuid = params.poolUuid;
 
     useEffect(() => {
         getFixtures();
@@ -41,7 +41,7 @@ function PagePoolBet() {
         setLoading(true);
 
         const dataString = JSON.stringify({
-            poolUuid: params.poolUuid,
+            poolUuid,
         });
 
         await http.post({
@@ -64,10 +64,6 @@ function PagePoolBet() {
             .catch(({ message }) => {
                 setLoading(false);
                 setError(message);
-
-                if (message.includes('#FGF1')) {
-                    setIsBet(true);
-                }
             });
     };
 
@@ -90,7 +86,7 @@ function PagePoolBet() {
         setLoading2(true);
 
         const dataString = JSON.stringify({
-            poolUuid: params.poolUuid,
+            poolUuid,
             userBets,
         });
 
@@ -121,10 +117,6 @@ function PagePoolBet() {
                 </div>
             );
         } else if (error !== '') {
-            if (isBet) {
-                return showButtonToUserBets();
-            }
-
             return (
                 <div className="message">
                     <p className="FormMessage -error">
@@ -136,19 +128,18 @@ function PagePoolBet() {
     };
 
     const showButtonToUserBets = () => {
-        const { campeonato, fase } = params;
-
-        const buttonLink = `/campeonato/${campeonato}/${fase}/apostado/${userName}`;
-        return (
-            <div className="multipleMessage">
-                <p className="FormMessage -success">
-                    Você já apostou para esta parte do campeonato!
-                </p>
-                <Link className="SendButton" to={buttonLink}>
-                    Veja sua aposta
-                </Link>
-            </div>
-        );
+        if (userHasPlacedBet) {
+            return (
+                <div className="multipleMessage">
+                    <p className="FormMessage -success">
+                        Você já apostou para esta parte do campeonato!
+                    </p>
+                    <Link className="SendButton" to={routes.sendToUserBets(poolUuid, userUuid)}>
+                        Veja sua aposta
+                    </Link>
+                </div>
+            );
+        }
     };
 
     const showButton = () => {
@@ -165,14 +156,6 @@ function PagePoolBet() {
         }
     };
 
-    const showWarning = () => {
-        if (userHasPlacedBet) {
-            return (
-                <p className="warningMessage">Você já está participando deste bolão.</p>
-            );
-        }
-    };
-
     const groupFixtures = (fixtures) => {
         const fix = fixtures.reduce((acc, fixture) => {
             if (!acc[fixture.phaseName]) { acc[fixture.phaseName] = []; }
@@ -184,6 +167,14 @@ function PagePoolBet() {
     };
 
     const showFixtures = () => {
+        if (userHasPlacedBet) {
+            return (
+                <div className="phaseContainer">
+                    <h3 className="pageTitle">{fixtures[0].phaseName}</h3>
+                </div>
+            );
+        }
+
         return groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
             return (
                 <ChampionshipPhase
@@ -216,8 +207,6 @@ function PagePoolBet() {
                             Bolão: {campeonato ? campeonato.name : ''}
                         </h3>
 
-                        {showWarning()}
-
                         {showFixtures()}
 
                     </ul>
@@ -227,6 +216,8 @@ function PagePoolBet() {
                 </form>
 
                 {AJAXresp()}
+
+                {showButtonToUserBets()}
             </div>
         </section>
     );

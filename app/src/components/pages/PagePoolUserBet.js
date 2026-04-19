@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import '../../css/pages/pageInside.css';
 
 import http from '../../util/http';
+import routes from '../util/Routes';
 
 import Loading from '../util/Loading';
 import ChampionshipPhase from '../util/ChampionshipPhase';
@@ -134,7 +135,7 @@ function PagePoolUserBet() {
                             </span>
                             <br />
                             <span className="subTitle">
-                                Bolão: <Link to={`/pools/${campeonato.uuid}/dashboard`}>{campeonato ? campeonato.name : ''}</Link>
+                                Bolão: <Link to={routes.sendToPoolDashboard(campeonato.uuid)}>{campeonato ? campeonato.name : ''}</Link>
                             </span>
 
                             <Loading loading={loading} localstorage="-withLocalStorage2" />

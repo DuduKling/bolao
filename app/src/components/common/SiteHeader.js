@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import '../../css/common/header.css';
+import routes from '../util/Routes';
 
 import logo from '../../imgs/logo.png';
 import UserNavBar from './UserNavBar';
@@ -27,10 +28,10 @@ function SiteHeader() {
             return (
                 <div className={NavBarVisible ? 'header-right showMenu' : 'header-right'}>
                     <nav className="menu">
-                        <Link className="menuItem" to="/campeonatos">
+                        <Link className="menuItem" to={routes.sendToChampionships()}>
                             Campeonatos
                         </Link>
-                        <Link className="menuItem" to="/pools">
+                        <Link className="menuItem" to={routes.sendToPools()}>
                             Bolões
                         </Link>
                     </nav>
@@ -54,21 +55,21 @@ function SiteHeader() {
             return (
                 <div className={NavBarVisible ? 'header-right showMenu' : 'header-right'}>
                     <nav className="menu">
-                        <Link className="menuItem" to="/campeonatos">
+                        <Link className="menuItem" to={routes.sendToChampionships()}>
                             Campeonatos
                         </Link>
-                        <Link className="menuItem" to="/regulamento">
+                        <Link className="menuItem" to={routes.sendToRules()}>
                             Regulamento
                         </Link>
-                        <Link className="menuItem" to="/faleconosco">
+                        <Link className="menuItem" to={routes.sendToContact()}>
                             Fale Conosco
                         </Link>
                     </nav>
                     <div className="user-login">
-                        <Link className="menuItem" to="/user/cadastrar">
+                        <Link className="menuItem" to={routes.sendToUserRegister()}>
                             Cadastrar
                         </Link>
-                        <Link className="menuItem" to="/user/login">
+                        <Link className="menuItem" to={routes.sendToUserLogin()}>
                             Login
                         </Link>
                     </div>
@@ -79,7 +80,7 @@ function SiteHeader() {
 
     return (
         <header className="header">
-            <Link className="logo-container" to="/">
+            <Link className="logo-container" to={routes.sendToHome()}>
                 <img className="logo" alt="" src={logo} />
                 <h1 className="logoName">Bolão</h1>
             </Link>

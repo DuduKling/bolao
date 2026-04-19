@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../../css/common/userNavBar.css';
+import routes from '../util/Routes';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,7 +39,7 @@ function UserNavBar(props) {
     const showAdminLink = () => {
         if (isAdmin) {
             return (
-                <Link to="/admin" className="navUser-container">
+                <Link to={routes.sendToAdmin()} className="navUser-container">
                     Admin
                 </Link>
             );

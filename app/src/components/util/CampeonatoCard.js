@@ -3,6 +3,8 @@ import '../../css/pages/campeonato.css';
 
 import { Link } from 'react-router-dom';
 
+import routes from '../util/Routes';
+
 import PropTypes from 'prop-types';
 
 function CampeonatoCard(props) {
@@ -60,7 +62,7 @@ function CampeonatoCard(props) {
     };
 
     return (
-        <Link className="campeonatoCard" to={'/campeonato/' + props.campeonato.id}>
+        <Link className="campeonatoCard" to={routes.sendToChampionship(props.campeonato.id)}>
 
             {checkStatus()}
 

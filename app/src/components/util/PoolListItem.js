@@ -3,6 +3,8 @@ import '../../css/pages/campeonato.css';
 
 import { Link } from 'react-router-dom';
 
+import routes from '../util/Routes';
+
 import PropTypes from 'prop-types';
 
 function PoolListItem(props) {
@@ -36,13 +38,13 @@ function PoolListItem(props) {
             if (joined) {
                 return (
                     <div className="chip blue">
-                        <Link to={`/pools/${props.pool.uuid}/dashboard`}>Participando</Link>
+                        <Link to={routes.sendToPoolDashboard(props.pool.uuid)}>Participando</Link>
                     </div>
                 );
             }
             return (
                 <div className="chip green">
-                    <Link to={`/pools/${props.pool.uuid}/bet`}>Participar!</Link>
+                    <Link to={routes.sendToPoolBet(props.pool.uuid)}>Participar!</Link>
                 </div>
             );
         }
@@ -50,7 +52,7 @@ function PoolListItem(props) {
         if (status === 'onGoing') {
             return (
                 <div className="chip green">
-                    <Link to={`/pools/${props.pool.uuid}/dashboard`}>Ver</Link>
+                    <Link to={routes.sendToPoolDashboard(props.pool.uuid)}>Ver</Link>
                 </div>
             );
         }
@@ -59,13 +61,13 @@ function PoolListItem(props) {
             if (joined) {
                 return (
                     <div className="chip">
-                        <Link to={`/pools/${props.pool.uuid}/dashboard`}>Participou</Link>
+                        <Link to={routes.sendToPoolDashboard(props.pool.uuid)}>Participou</Link>
                     </div>
                 );
             }
             return (
                 <div className="chip">
-                    <Link to={`/pools/${props.pool.uuid}/dashboard`}>Finalizado</Link>
+                    <Link to={routes.sendToPoolDashboard(props.pool.uuid)}>Finalizado</Link>
                 </div>
             );
         }

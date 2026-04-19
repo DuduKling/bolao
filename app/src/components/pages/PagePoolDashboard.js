@@ -8,6 +8,7 @@ import http from '../../util/http';
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 import RankListItem from '../util/RankListItem';
+import routes from '../util/Routes';
 
 function PagePoolDashboard() {
     const [fixtures, setFixtures] = useState([]);
@@ -112,7 +113,7 @@ function PagePoolDashboard() {
         if (campeonato.status === 'open' && !userHasPlacedBet) {
             return (
                 <div className="dashboard-statusFase">
-                    <Link to={`/pools/${campeonato.id}`} >
+                    <Link to={routes.sendToPoolBet(campeonato.id)} >
                         Aposte agora!
                     </Link>
                 </div>
@@ -236,7 +237,7 @@ function PagePoolDashboard() {
                     <h2>{campeonato ? campeonato.name : ''}</h2>
                     <h4>{campeonato ? campeonato.championshipName + ' | ' + campeonato.phaseName : ''}</h4>
                     <div className='bets'>
-                        <Link to={`/pools/${poolUuid}/user/${userUuid}`}>
+                        <Link to={routes.sendToPoolUserBets(poolUuid, userUuid)}>
                             Minhas apostas
                         </Link>
                     </div>
@@ -274,7 +275,7 @@ function PagePoolDashboard() {
                             <ul className="partidaLista">
                                 <div>
                                     <h3 className="pageTitle">Próximos Jogos</h3>
-                                    <Link className="allFixturesLink" to={`/campeonato/${campeonato.championshipId}`}>Campeonato &gt;</Link>
+                                    <Link className="allFixturesLink" to={routes.sendToChampionship(campeonato.championshipId)}>Campeonato &gt;</Link>
                                 </div>
 
                                 {showNextFixtures()}
@@ -288,7 +289,7 @@ function PagePoolDashboard() {
                             <ul className="partidaLista">
                                 <div>
                                     <h3 className="pageTitle">Últimos Jogos</h3>
-                                    <Link className="allFixturesLink" to={`/campeonato/${campeonato.championshipId}`}>Campeonato &gt;</Link>
+                                    <Link className="allFixturesLink" to={routes.sendToChampionship(campeonato.championshipId)}>Campeonato &gt;</Link>
                                 </div>
 
                                 {showLastFixtures()}
