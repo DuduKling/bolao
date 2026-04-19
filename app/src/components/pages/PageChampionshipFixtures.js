@@ -10,7 +10,7 @@ import ChampionshipPhase from '../util/ChampionshipPhase';
 
 function PageChampionshipFixtures() {
     const [fixtures, setFixtures] = useState([]);
-    const [campeonato, setCampeonato] = useState({});
+    const [poolChampionshipInfo, setPoolChampionshipInfo] = useState({});
 
     const [loading, setLoading] = useState(false);
 
@@ -25,7 +25,7 @@ function PageChampionshipFixtures() {
         if (cachedFixtures) {
             const data = JSON.parse(cachedFixtures);
             setFixtures(data.fixtures);
-            setCampeonato(data.poolChampionshipInfo);
+            setPoolChampionshipInfo(data.poolChampionshipInfo);
         }
 
         if (dataFetchedRef.current) return;
@@ -44,7 +44,7 @@ function PageChampionshipFixtures() {
         await http.getFixturesFromCampeonato(data)
             .then((response) => {
                 setFixtures(response.fixtures);
-                setCampeonato(response.poolChampionshipInfo);
+                setPoolChampionshipInfo(response.poolChampionshipInfo);
                 setLoading(false);
 
                 localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
@@ -70,7 +70,7 @@ function PageChampionshipFixtures() {
 
                     <ul className="partidaLista">
                         <div className="dashboard-top">
-                            <h2>{campeonato ? campeonato.name : ''}</h2>
+                            <h2>{poolChampionshipInfo ? poolChampionshipInfo.name : ''}</h2>
                             <Loading loading={loading} />
                         </div>
                         {

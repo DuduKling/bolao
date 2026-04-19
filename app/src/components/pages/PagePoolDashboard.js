@@ -13,7 +13,7 @@ import routes from '../util/Routes';
 function PagePoolDashboard() {
     const [fixtures, setFixtures] = useState([]);
     const [rank, setRank] = useState([]);
-    const [campeonato, setCampeonato] = useState({});
+    const [poolChampionshipInfo, setPoolChampionshipInfo] = useState({});
     const [userHasPlacedBet, setUserHasPlacedBet] = useState(false);
 
     const [loading, setLoading] = useState(false);
@@ -47,7 +47,7 @@ function PagePoolDashboard() {
 
         await http.getPoolFixtures(data)
             .then((response) => {
-                setCampeonato(response.poolChampionshipInfo);
+                setPoolChampionshipInfo(response.poolChampionshipInfo);
 
                 let fixtures = response.poolFixtures;
                 if (response.userPlacedBets && response.userPlacedBets.length > 0) {
@@ -92,7 +92,7 @@ function PagePoolDashboard() {
     };
 
     const checkStatus = () => {
-        if (campeonato.status === 'finished') {
+        if (poolChampionshipInfo.status === 'finished') {
             return (
                 <div className="dashboard-statusFase -finalizado">
                     <p>
@@ -102,10 +102,10 @@ function PagePoolDashboard() {
             );
         }
 
-        if (campeonato.status === 'open' && !userHasPlacedBet) {
+        if (poolChampionshipInfo.status === 'open' && !userHasPlacedBet) {
             return (
                 <div className="dashboard-statusFase">
-                    <Link to={routes.sendToPoolBet(campeonato.id)} >
+                    <Link to={routes.sendToPoolBet(poolChampionshipInfo.id)} >
                         Aposte agora!
                     </Link>
                 </div>
@@ -226,8 +226,8 @@ function PagePoolDashboard() {
             <div className="main-dashboard">
 
                 <div className="dashboard-top">
-                    <h2>{campeonato ? campeonato.name : ''}</h2>
-                    <h4>{campeonato ? campeonato.championshipName + ' | ' + campeonato.phaseName : ''}</h4>
+                    <h2>{poolChampionshipInfo ? poolChampionshipInfo.name : ''}</h2>
+                    <h4>{poolChampionshipInfo ? poolChampionshipInfo.championshipName + ' | ' + poolChampionshipInfo.phaseName : ''}</h4>
                     <div className='bets'>
                         <Link to={routes.sendToPoolUserBets(poolUuid, userUuid)}>
                             Minhas apostas
@@ -243,7 +243,7 @@ function PagePoolDashboard() {
                             <table className="rankTable">
                                 <caption>
                                     <h3 className="pageTitle">Rank</h3>
-                                    {campeonato ? checkStatus() : ''}
+                                    {poolChampionshipInfo ? checkStatus() : ''}
                                 </caption>
                                 <thead>
                                     <tr>
@@ -267,7 +267,7 @@ function PagePoolDashboard() {
                             <ul className="partidaLista">
                                 <div>
                                     <h3 className="pageTitle">Próximos Jogos</h3>
-                                    <Link className="allFixturesLink" to={routes.sendToChampionship(campeonato.championshipId)}>Campeonato &gt;</Link>
+                                    <Link className="allFixturesLink" to={routes.sendToChampionship(poolChampionshipInfo.championshipId)}>Campeonato &gt;</Link>
                                 </div>
 
                                 {showNextFixtures()}
@@ -281,7 +281,7 @@ function PagePoolDashboard() {
                             <ul className="partidaLista">
                                 <div>
                                     <h3 className="pageTitle">Últimos Jogos</h3>
-                                    <Link className="allFixturesLink" to={routes.sendToChampionship(campeonato.championshipId)}>Campeonato &gt;</Link>
+                                    <Link className="allFixturesLink" to={routes.sendToChampionship(poolChampionshipInfo.championshipId)}>Campeonato &gt;</Link>
                                 </div>
 
                                 {showLastFixtures()}

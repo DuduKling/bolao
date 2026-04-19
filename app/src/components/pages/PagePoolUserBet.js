@@ -13,7 +13,7 @@ import Avatar from '../util/Avatar';
 function PagePoolUserBet() {
     const [user, setUser] = useState([]);
     const [fixtures, setFixtures] = useState([]);
-    const [campeonato, setCampeonato] = useState('');
+    const [poolChampionshipInfo, setPoolChampionshipInfo] = useState('');
 
     const [loading, setLoading] = useState(false);
 
@@ -36,7 +36,7 @@ function PagePoolUserBet() {
             }
             setFixtures(fixtures);
 
-            setCampeonato(data.poolChampionshipInfo);
+            setPoolChampionshipInfo(data.poolChampionshipInfo);
             setUser(data.userData);
         }
 
@@ -64,7 +64,7 @@ function PagePoolUserBet() {
                 }
                 setFixtures(fixtures);
 
-                setCampeonato(response.poolChampionshipInfo);
+                setPoolChampionshipInfo(response.poolChampionshipInfo);
                 setUser(response.userData);
 
                 localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
@@ -127,11 +127,11 @@ function PagePoolUserBet() {
                             <br />
                             <br />
                             <span className="mainTitle">
-                                {campeonato.championshipName}
+                                {poolChampionshipInfo.championshipName}
                             </span>
                             <br />
                             <span className="subTitle">
-                                Bolão: <Link to={routes.sendToPoolDashboard(campeonato.uuid)}>{campeonato ? campeonato.name : ''}</Link>
+                                Bolão: <Link to={routes.sendToPoolDashboard(poolChampionshipInfo.uuid)}>{poolChampionshipInfo ? poolChampionshipInfo.name : ''}</Link>
                             </span>
 
                             <Loading loading={loading} localstorage="-withLocalStorage2" />

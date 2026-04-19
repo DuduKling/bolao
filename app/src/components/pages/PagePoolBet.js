@@ -13,7 +13,7 @@ import ChampionshipPhase from '../util/ChampionshipPhase';
 
 function PagePoolBet() {
     const [fixtures, setFixtures] = useState([]);
-    const [campeonato, setCampeonato] = useState('');
+    const [poolChampionshipInfo, setPoolChampionshipInfo] = useState('');
 
     const [userBets, setUserBets] = useState({});
     const [userHasPlacedBet, setUserHasPlacedBet] = useState(false);
@@ -46,7 +46,7 @@ function PagePoolBet() {
 
         await http.getPoolFixtures(data)
             .then((response) => {
-                setCampeonato(response.poolChampionshipInfo);
+                setPoolChampionshipInfo(response.poolChampionshipInfo);
 
                 let fixtures = response.poolFixtures;
                 if (response.userPlacedBets && response.userPlacedBets.length > 0) {
@@ -192,11 +192,11 @@ function PagePoolBet() {
 
                     <ul className="partidaLista">
                         <div className="dashboard-top">
-                            <h2>{campeonato.championshipName}</h2>
+                            <h2>{poolChampionshipInfo.championshipName}</h2>
                             <Loading loading={loading} />
                         </div>
                         <h3 className="pageTitle">
-                            Bolão: {campeonato ? campeonato.name : ''}
+                            Bolão: {poolChampionshipInfo ? poolChampionshipInfo.name : ''}
                         </h3>
 
                         {showFixtures()}
