@@ -6,7 +6,7 @@ import http from '../../util/http';
 import CampeonatoCard from '../util/CampeonatoCard';
 import Loading from '../util/Loading';
 
-function PageCampeonatos() {
+function PageChampionships() {
     const [campeonatos, setCampeonatos] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -72,4 +72,4 @@ function PageCampeonatos() {
     );
 }
 
-export default PageCampeonatos;
+export default PageChampionships;

@@ -8,7 +8,7 @@ import http from '../../util/http';
 import Loading from '../util/Loading';
 import ChampionshipPhase from '../util/ChampionshipPhase';
 
-function PageCampeonatoFixtures() {
+function PageChampionshipFixtures() {
     const [fixtures, setFixtures] = useState([]);
     const [campeonato, setCampeonato] = useState({});
 
@@ -97,4 +97,4 @@ function PageCampeonatoFixtures() {
     );
 }
 
-export default PageCampeonatoFixtures;
+export default PageChampionshipFixtures;

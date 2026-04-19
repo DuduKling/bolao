@@ -24,19 +24,19 @@ import PageRoot404 from './components/pages/PageRoot404';
 import PageAdmin from './components/pages/PageAdmin';
 import PageAdminApostas from './components/pages/PageAdminApostas';
 import PageAdminScore from './components/pages/PageAdminScore';
-import PageCampeonatoApostadoUser from './components/pages/PageCampeonatoApostadoUser';
-import PageCampeonatoFixture from './components/pages/PageCampeonatoFixture';
-import PageCampeonatoApostar from './components/pages/PageCampeonatoApostar';
-import PageUserCadastro from './components/pages/PageUserCadastro';
-import PageCampeonatos from './components/pages/PageCampeonatos';
+import PagePoolUserBet from './components/pages/PagePoolUserBet';
+import PagePoolFixture from './components/pages/PagePoolFixture';
+import PagePoolBet from './components/pages/PagePoolBet';
+import PageUserRegister from './components/pages/PageUserRegister';
+import PageChampionships from './components/pages/PageChampionships';
 import PagePools from './components/pages/PagePools';
-import PageRootContato from './components/pages/PageRootContato';
-import PageCampeonatoDashboard from './components/pages/PageCampeonatoDashboard';
-import PageUserEsqueci from './components/pages/PageUserEsqueci';
-import PageCampeonatoFixtures from './components/pages/PageCampeonatoFixtures';
+import PageRootContactUs from './components/pages/PageRootContactUs';
+import PagePoolDashboard from './components/pages/PagePoolDashboard';
+import PageUserForgotPassword from './components/pages/PageUserForgotPassword';
+import PageChampionshipFixtures from './components/pages/PageChampionshipFixtures';
 import PageRootHome from './components/pages/PageRootHome';
 import PageUserLogin from './components/pages/PageUserLogin';
-import PageRootRegulamento from './components/pages/PageRootRegulamento';
+import PageRootRules from './components/pages/PageRootRules';
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -76,23 +76,23 @@ function App() {
 
                 <Routes>
                     <Route path='/' element={<PageRootHome />} />
-                    <Route path='faleconosco' element={<PageRootContato />} />
-                    <Route path='regulamento' element={<PageRootRegulamento />} />
-                    <Route path='campeonatos' element={<PageCampeonatos />} />
-                    <Route path='campeonato/:championshipId' element={<PageCampeonatoFixtures />} />
+                    <Route path='faleconosco' element={<PageRootContactUs />} />
+                    <Route path='regulamento' element={<PageRootRules />} />
+                    <Route path='campeonatos' element={<PageChampionships />} />
+                    <Route path='campeonato/:championshipId' element={<PageChampionshipFixtures />} />
 
                     <Route element={<UserMustBeLoggedIn />} >
                         <Route path='pools' element={<PagePools />} />
-                        <Route path='pools/:poolUuid/bet' element={<PageCampeonatoApostar />} />
-                        <Route path='pools/:poolUuid/user/:userUuid' element={<PageCampeonatoApostadoUser />} />
-                        <Route path='pools/:poolUuid/dashboard' element={<PageCampeonatoDashboard />} />
-                        <Route path='pools/:poolUuid/fixture/:fixtureId' element={<PageCampeonatoFixture />} />
+                        <Route path='pools/:poolUuid/bet' element={<PagePoolBet />} />
+                        <Route path='pools/:poolUuid/user/:userUuid' element={<PagePoolUserBet />} />
+                        <Route path='pools/:poolUuid/dashboard' element={<PagePoolDashboard />} />
+                        <Route path='pools/:poolUuid/fixture/:fixtureId' element={<PagePoolFixture />} />
                     </Route>
 
                     <Route element={<UserMustBeLoggedOff />} >
                         <Route path='user/login' element={<PageUserLogin />} />
-                        <Route path='user/cadastrar' element={<PageUserCadastro />} />
-                        <Route path='user/esqueci' element={<PageUserEsqueci />} />
+                        <Route path='user/cadastrar' element={<PageUserRegister />} />
+                        <Route path='user/esqueci' element={<PageUserForgotPassword />} />
                     </Route>
 
                     {/* ----- OLDER ROUTES ---- */}

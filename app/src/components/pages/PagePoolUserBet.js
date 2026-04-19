@@ -9,7 +9,7 @@ import Loading from '../util/Loading';
 import ChampionshipPhase from '../util/ChampionshipPhase';
 import Avatar from '../util/Avatar';
 
-function PageCampeonatoApostadoUser() {
+function PagePoolUserBet() {
     const [user, setUser] = useState([]);
     const [fixtures, setFixtures] = useState([]);
     const [campeonato, setCampeonato] = useState('');
@@ -150,4 +150,4 @@ function PageCampeonatoApostadoUser() {
     );
 }
 
-export default PageCampeonatoApostadoUser;
+export default PagePoolUserBet;

@@ -9,7 +9,7 @@ import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 import RankListItem from '../util/RankListItem';
 
-function PageCampeonatoDashboard() {
+function PagePoolDashboard() {
     const [fixtures, setFixtures] = useState([]);
     const [rank, setRank] = useState([]);
     const [campeonato, setCampeonato] = useState({});
@@ -302,4 +302,4 @@ function PageCampeonatoDashboard() {
     );
 }
 
-export default PageCampeonatoDashboard;
+export default PagePoolDashboard;

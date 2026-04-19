@@ -8,7 +8,7 @@ import http from '../../util/http';
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 
-function PageCampeonatoFixture() {
+function PagePoolFixture() {
     const [fixtures, setFixtures] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -96,4 +96,4 @@ function PageCampeonatoFixture() {
     );
 }
 
-export default PageCampeonatoFixture;
+export default PagePoolFixture;

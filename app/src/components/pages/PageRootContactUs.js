@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../../css/faleconosco.css';
 
-function PageRootContato() {
+function PageRootContactUs() {
     return (
         <div className="MainContent-container">
             <div className="faleconosco">
@@ -16,4 +16,4 @@ function PageRootContato() {
     );
 }
 
-export default PageRootContato;
+export default PageRootContactUs;

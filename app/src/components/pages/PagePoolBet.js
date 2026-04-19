@@ -10,7 +10,7 @@ import http from '../../util/http';
 import Loading from '../util/Loading';
 import ChampionshipPhase from '../util/ChampionshipPhase';
 
-function PageCampeonatoApostar() {
+function PagePoolBet() {
     const [fixtures, setFixtures] = useState([]);
     const [campeonato, setCampeonato] = useState('');
 
@@ -232,4 +232,4 @@ function PageCampeonatoApostar() {
     );
 }
 
-export default PageCampeonatoApostar;
+export default PagePoolBet;

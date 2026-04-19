@@ -12,7 +12,7 @@ import Fingerprint from '../../util/fingerprint';
 import { useDispatch } from 'react-redux';
 import { updateJWT } from '../../redux/slicer/authSlicer';
 
-function PageUserEsqueci() {
+function PageUserForgotPassword() {
     const [ajaxErrorResp, setAjaxErrorResp] = useState('');
     const [ajaxSuccessResp, setAjaxSuccessResp] = useState('');
     const [nameValue, setNameValue] = useState('');
@@ -112,4 +112,4 @@ function PageUserEsqueci() {
 
 }
 
-export default PageUserEsqueci;
+export default PageUserForgotPassword;
