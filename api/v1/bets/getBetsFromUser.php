@@ -1,80 +1,51 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
+$env = new Env();
 
-header("Access-Control-Allow-Origin: {$env["URL_FRONT"]}");
+header("Access-Control-Allow-Origin: {$env->urlFront}");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Credentials: true");
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
-$db = new DatabaseConnection($env);
+$reqBody = json_decode(file_get_contents("php://input"));
 
-$inputData = json_decode(file_get_contents("php://input"));
+$poolUuid = htmlspecialchars(strip_tags($reqBody->poolUuid));
+$userUuid = htmlspecialchars(strip_tags($reqBody->userUuid));
 
-$faseId = $inputData->faseID;
-$userName = $inputData->userName;
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/auth.php';
+$auth = new Auth();
+$decoded = $auth->authenticate();
 
-$query = "SELECT c.name as championship, fa.name as phase, u.imagePath as userImagePath, f.id, bet.homeTeamScoreBet, tb.name as home_name, tb.imagePath as home_imagePath, bet.awayTeamScoreBet, ta.name as away_name, ta.imagePath as away_imagePath, f.dateTime, f.location, bet.points, f.homeTeamScore as final_scoreHome, f.awayTeamScore as final_scoreAway FROM bet
-    INNER JOIN user u ON bet.fkUserId=u.id
-    INNER JOIN fixture f ON bet.fkFixtureId=f.id
-    INNER JOIN part p ON f.fkPartId=p.id
-    INNER JOIN phase fa ON p.fkPhaseId=fa.id
-    INNER JOIN championship c ON fa.fkChampionshipId=c.id
-    INNER JOIN team ta ON f.fkAwayTeamId=ta.id 
-    INNER JOIN team tb ON f.fkHomeTeamId=tb.id
-    WHERE fa.id=:phaseID AND u.name=:userName";
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/user.php';
+$user = new User();
+$userData = $user->getData($userUuid);
 
-$stmt = $db->prepare($query);
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/pool.php';
+$pool = new Pool();
+$championshipInfo = $pool->getPoolChampionshipInfo($poolUuid);
+$poolFixtures = $pool->getPoolFixtures($poolUuid);
+$poolData = $pool->getData($poolUuid);
 
-$stmt->bindParam(':userName', $userName);
-$stmt->bindParam(':phaseID', $faseId);
+$userHasJoined = $pool->userHasJoined($userData['id'], $poolData['id']);
 
-$stmt->execute();
-$num = $stmt->rowCount();
-
-if ($num <= 0) {
+if (!$userHasJoined) {
     http_response_code(400);
-    echo json_encode(array("message" => "Não foi possível encontrar as apostas deste usuário. Favor entrar em contato com o Administrador. (Error #BGBFU1)"));
+    echo json_encode(array(
+        "message" => "Usuário não está participando deste bolão. (Error #GBFU1)"
+    ));
     exit();
 }
 
-
-$dbFixtures = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$fixtures = array();
-
-foreach($dbFixtures as $row){
-    $fixture = new stdClass;
-
-    $fixture->idfixture = $row['id'];
-    $fixture->datetime = date("d/m/Y H:i", strtotime($row['dateTime']));
-    $fixture->local = $row['location'];
-
-    $fixture->home_score = $row['homeTeamScoreBet'];
-    $fixture->home_team_name = $row['home_name'];
-    $fixture->home_path = $row['home_imagePath'];
-
-    $fixture->away_score = $row['awayTeamScoreBet'];
-    $fixture->away_team_name = $row['away_name'];
-    $fixture->away_path = $row['away_imagePath'];
-
-    $fixture->final_scoreHome = $row['final_scoreHome'];
-    $fixture->final_scoreAway = $row['final_scoreAway'];
-    $fixture->points = $row['points'];
-
-    array_push($fixtures, $fixture);
-
-    $campeonato = $row['championship'];
-    $fase = $row['phase'];
-    $userImage = $row['userImagePath'];
-}
+$userPlacedBets = $pool->getUserPoolBets($userData['id'], $poolUuid);
 
 http_response_code(200);
 echo json_encode(array(
-    "fixtures" => $fixtures,
-    "championship" => $campeonato,
-    "phase" => $fase,
-    "userImagePath" => $userImage
+    "userData" => array(
+        "name"=> $userData["name"],
+    ),
+    "championshipInfo" => $championshipInfo,
+    'poolFixtures' => $poolFixtures,
+    'userPlacedBets' => $userPlacedBets,
 ));
-?>

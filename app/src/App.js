@@ -87,6 +87,7 @@ function App() {
                         <Route element={<PrivateRoute />} >
                             <Route path='pools' element={<PagePools />} />
                             <Route path='pools/:poolUuid' element={<PageCampeonatoApostar />} />
+                            <Route path='pools/:poolUuid/:userUuid' element={<PageCampeonatoApostadoUser />} />
                         </Route>
 
                         {/* USER */}
@@ -113,7 +114,6 @@ function App() {
                         <Route path='campeonato' element={<PrivateRoute />} >
                             <Route path=':campeonato/:fase' element={<PageCampeonatoDashboard />} />
                             <Route path=':campeonato/:fase/jogo/:fixture' element={<PageCampeonatoFixture />} />
-                            <Route path=':campeonato/:fase/apostado/:nome' element={<PageCampeonatoApostadoUser />} />
 
                             {/* ADMIN - RESTRICTED */}
                             <Route path=':campeonato' element={<PrivateRouteAdmin />} >

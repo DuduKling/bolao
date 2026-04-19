@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import '../../css/pages/campeonato.css';
 
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
 function PoolListItem(props) {
     const [flagDetail, setFlagDetail] = useState('');
+
+    const userUuid = useSelector((state) => state.auth.userUuid);
 
     const toggleDetails = () => {
         setFlagDetail(!flagDetail);
@@ -35,7 +38,9 @@ function PoolListItem(props) {
         if (status === 'open') {
             if (joined) {
                 return (
-                    <div className="chip blue"><span>Participando</span></div>
+                    <div className="chip blue">
+                        <Link to={'/pools/' + props.pool.uuid + '/' + userUuid}>Participando</Link>
+                    </div>
                 );
             }
             return (

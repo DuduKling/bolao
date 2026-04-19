@@ -27,12 +27,12 @@ function Avatar(props) {
             '#400080',
             '#804080',
             '#408080',
-            '#808040'
+            '#808040',
         ];
 
         let hash = 0;
         for (let i = 0; i < props.userName.length; i++) {
-            hash += props.userName.charCodeAt(i);
+            hash += props.userName.codePointAt(i);
         }
 
         return colors[hash % colors.length];
@@ -44,7 +44,7 @@ function Avatar(props) {
         let letters = '';
         if (words.length === 1) {
             letters = words[0].substring(0, 2);
-        }else {
+        } else {
             letters = words.slice(0, 2).map(word => word.charAt(0)).join('');
         }
 
@@ -52,7 +52,7 @@ function Avatar(props) {
     };
 
     return (
-        <div className="avatar" style={{ backgroundColor: generateColor(), }}>
+        <div className="avatar" style={{ backgroundColor: generateColor() }}>
             {generateLetters()}
         </div>
     );

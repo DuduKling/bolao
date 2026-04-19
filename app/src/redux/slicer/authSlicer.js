@@ -34,7 +34,7 @@ export const authSlicer = createSlice({
             state.userPhoneNumber = parsedJWT.data.phoneNumber;
             state.userRole = parsedJWT.data.role;
             state.userJWT = action.payload.userJWT;
-        }
+        },
     },
 });
 

@@ -6,27 +6,37 @@ import '../../css/pages/pageInside.css';
 import http from '../../util/http';
 
 import Loading from '../util/Loading';
-import PartidaListItem from '../util/PartidaListItem';
+import ChampionshipPhase from '../util/ChampionshipPhase';
 import Avatar from '../util/Avatar';
 
 function PageCampeonatoApostadoUser() {
+    const [user, setUser] = useState([]);
     const [fixtures, setFixtures] = useState([]);
     const [campeonato, setCampeonato] = useState('');
-    const [fase, setFase] = useState('');
 
     const [loading, setLoading] = useState(false);
 
     const params = useParams();
+    const poolUuid = params.poolUuid;
+    const userUuid = params.userUuid;
 
     const dataFetchedRef = useRef(false);
 
-    useEffect(() => {
-        const userName = params.nome;
-        const faseID = params.fase;
+    const LOCAL_STORAGE_ITEM = `${poolUuid}#${userUuid}#bets`;
 
-        const cachedFixtures = localStorage.getItem(userName + faseID + 'fixtures');
+    useEffect(() => {
+        const cachedFixtures = localStorage.getItem(LOCAL_STORAGE_ITEM);
         if (cachedFixtures) {
-            setFixtures(JSON.parse(cachedFixtures));
+            const data = JSON.parse(cachedFixtures);
+
+            let fixtures = data.poolFixtures;
+            if (data.userPlacedBets && data.userPlacedBets.length > 0) {
+                mergeFixturesAndBets(fixtures, data.userPlacedBets);
+            }
+            setFixtures(fixtures);
+
+            setCampeonato(data.championshipInfo);
+            setUser(data.userData);
         }
 
         if (dataFetchedRef.current) return;
@@ -38,30 +48,67 @@ function PageCampeonatoApostadoUser() {
     const getBets = async () => {
         setLoading(true);
 
-        const faseID = params.fase;
-        const userName = params.nome;
-
         const dataString = JSON.stringify({
-            faseID,
-            userName,
+            poolUuid,
+            userUuid,
         });
 
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/bets/getBetsFromUser.php`,
             data: dataString,
+            withCredentials: true,
         })
             .then((response) => {
                 setLoading(false);
 
-                setFixtures(response.fixtures);
-                setCampeonato(response.campeonato);
-                setFase(response.fase);
+                let fixtures = response.poolFixtures;
+                if (response.userPlacedBets && response.userPlacedBets.length > 0) {
+                    mergeFixturesAndBets(fixtures, response.userPlacedBets);
+                }
+                setFixtures(fixtures);
 
-                localStorage.setItem(userName + faseID + 'fixtures', JSON.stringify(response.fixtures));
+                setCampeonato(response.championshipInfo);
+                setUser(response.userData);
+
+                localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
             })
             .catch(() => {
                 setLoading(false);
             });
+    };
+
+    const mergeFixturesAndBets = (fixtures, userBetsToMerge) => {
+        const bets = userBetsToMerge.reduce((acc, b) => {
+            acc[b.id] = b;
+            return acc;
+        }, {});
+        for (const fixture of fixtures) {
+            fixture.awayTeamScore = bets[fixture.id].awayTeamScoreBet;
+            fixture.homeTeamScore = bets[fixture.id].homeTeamScoreBet;
+        }
+    };
+
+    const groupFixtures = (fixtures) => {
+        const fix = fixtures.reduce((acc, fixture) => {
+            if (!acc[fixture.phaseName]) { acc[fixture.phaseName] = []; }
+            acc[fixture.phaseName].push(fixture);
+            return acc;
+        }, {});
+
+        return Object.entries(fix);
+    };
+
+    const showFixtures = () => {
+        return groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
+            return (
+                <ChampionshipPhase
+                    key={index}
+                    phaseName={phaseName}
+                    fixtures={fixtures}
+                    typeAll={'ReadOnly'}
+                />
+            );
+        });
     };
 
     return (
@@ -72,37 +119,28 @@ function PageCampeonatoApostadoUser() {
 
                     <div className="userImage-container">
                         <div className="userImage">
-                            <Avatar userName={params.nome} />
+                            <Avatar userName={user.name || ''} />
                         </div>
                     </div>
 
                     <ul className="partidaLista -apostado">
                         <h3 className="pageTitle">
-                            {params.nome}
+                            {user.name}
 
                             <br />
+                            <br />
+                            <span className="mainTitle">
+                                {campeonato.championshipName}
+                            </span>
+                            <br />
                             <span className="subTitle">
-                                {campeonato ? campeonato : ''}
-
-                                {fase ? ' - ' + fase : ''}
+                                Bolão: {campeonato ? campeonato.name : ''}
                             </span>
 
                             <Loading loading={loading} localstorage="-withLocalStorage2" />
                         </h3>
-                        {
-                            fixtures.map(function (team, index) {
-                                return (
 
-                                    <PartidaListItem
-                                        key={index}
-                                        team={team}
-                                        typeAll={'ReadOnly'}
-                                        params={params}
-                                    />
-
-                                );
-                            }, this)
-                        }
+                        {showFixtures()}
 
                     </ul>
 
