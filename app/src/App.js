@@ -85,6 +85,7 @@ function App() {
                         <Route path='pools' element={<PagePools />} />
                         <Route path='pools/:poolUuid/bet' element={<PageCampeonatoApostar />} />
                         <Route path='pools/:poolUuid/user/:userUuid' element={<PageCampeonatoApostadoUser />} />
+                        <Route path='pools/:poolUuid/dashboard' element={<PageCampeonatoDashboard />} />
                     </Route>
 
                     <Route element={<UserMustBeLoggedOff />} >
@@ -102,7 +103,6 @@ function App() {
 
                         {/* CAMPEONATO - RESTRICTED */}
                         <Route path='campeonato' element={<UserMustBeLoggedIn />} >
-                            <Route path=':campeonato/:fase' element={<PageCampeonatoDashboard />} />
                             <Route path=':campeonato/:fase/jogo/:fixture' element={<PageCampeonatoFixture />} />
 
                             {/* ADMIN - RESTRICTED */}

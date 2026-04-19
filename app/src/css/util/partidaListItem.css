@@ -13,7 +13,7 @@
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li {
+.partidaListItem {
 	height: auto;
 	padding: 10px 25px 0px 25px;
 	
@@ -35,7 +35,7 @@
 	transition: all 0.3s ease;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li:hover {
+.partidaListItem:hover {
 	background-color: #e2e2e2;
 }
 
@@ -46,13 +46,13 @@
 	overflow: hidden;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li p {
+.partidaListItem p {
 	margin: 0;
 	/* text-align: right; */
 	word-break: break-all;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li > a {
+.partidaListItem > a {
 	width: 100%;
 	height: 100%;
 
@@ -61,7 +61,7 @@
 	color: #424242;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li > div {
+.partidaListItem > div {
 	width: 100%;
 	height: 100%;
 
@@ -71,7 +71,7 @@
 }
 
 
-.partidaLista > .phaseContainer > .partContainer > div > li .info {
+.partidaListItem .info {
     color: #878787;
     
 	margin-bottom: 10px;
@@ -79,7 +79,7 @@
 	text-align: center;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .match-container {
+.partidaListItem .match-container {
 	width: 100%;
 	/* max-width: 620px; */
 	margin-bottom: 10px;
@@ -90,11 +90,11 @@
 	align-items: center;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .match-container > div {
+.partidaListItem .match-container > div {
     width: 100%;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .match-container > .placar {
+.partidaListItem .match-container > .placar {
 	/* min-width: 250px; */
 
 	display: flex;
@@ -102,7 +102,7 @@
     justify-content: center;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .match-container > .placar > p[class^=plac] {
+.partidaListItem .match-container > .placar > p[class^=plac] {
 	min-width: 40px;
 	display: block;
 	text-align: center;
@@ -116,24 +116,29 @@
 	padding: 10px 0 0 0;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-container {	
+.partidaLista > .-apostadoJogo:last-child {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.partidaListItem .users-container {	
 	width: 100%;
 	margin-top: 15px;
 }
 
 
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-container > .users-usernamesList {
+.partidaListItem .users-container > .users-usernamesList {
 	/* height: auto; */
 	overflow: hidden;
 	transition: all 0.3s ease;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-container > input[id^=toggleUsernames] {
+.partidaListItem .users-container > input[id^=toggleUsernames] {
 	display: none;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-container > label {
+.partidaListItem .users-container > label {
 	width: 100%;
 	text-align: center;
 	display: block;
@@ -144,15 +149,15 @@
 	cursor: pointer;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-container > input[id^=toggleUsernames]:not(:checked) + .users-usernamesList {
+.partidaListItem .users-container > input[id^=toggleUsernames]:not(:checked) + .users-usernamesList {
 	height: 0px !important;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-container > .users-usernamesList > div {
+.partidaListItem .users-container > .users-usernamesList > div {
 	height: 39px;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-container > .users-usernamesList > div > a {
+.partidaListItem .users-container > .users-usernamesList > div > a {
 	width: 100%;
 	display: block;
 
@@ -165,7 +170,7 @@
 	transition: all 0.3s ease;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-container > div > div > a:hover {
+.partidaListItem .users-container > div > div > a:hover {
 	background-color: #c7c7c7;
 }
 
@@ -173,7 +178,7 @@
 
 
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-percent {
+.partidaListItem .users-percent {
 	width: 90px;
     height: 30px;
 
@@ -184,12 +189,12 @@
 	overflow: hidden;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-percent > .percent-triangle {
+.partidaListItem .users-percent > .percent-triangle {
 	border-top: 30px solid #4caf50;
 	border-left: 30px solid transparent;
 }
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-percent > p {
+.partidaListItem .users-percent > p {
 	position: absolute;
 	top: 5px;
 	right: 5px;
@@ -201,7 +206,7 @@
 
 
 
-.partidaLista > .phaseContainer > .partContainer > div > li .users-points {
+.partidaListItem .users-points {
 	width: 100%;
     /* height: 30px; */
 	padding: 3px 0;
@@ -223,7 +228,7 @@
         width: 60px;
 	}
 	
-	.partidaLista > .phaseContainer > .partContainer > div > li p {
+	.partidaListItem p {
 		font-size: 14px;
 	}
 

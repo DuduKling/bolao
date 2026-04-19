@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import '../../css/pages/pageInside.css';
 
@@ -12,155 +13,93 @@ function PageCampeonatoDashboard() {
     const [fixtures, setFixtures] = useState([]);
     const [rank, setRank] = useState([]);
     const [campeonato, setCampeonato] = useState({});
+    const [userHasPlacedBet, setUserHasPlacedBet] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
     const params = useParams();
+    const poolUuid = params.poolUuid;
+
+    const userUuid = useSelector((state) => state.auth.userUuid);
 
     const dataFetchedRef = useRef(false);
 
+    const LOCAL_STORAGE_ITEM_RANK = `rank#${poolUuid}`;
+
     useEffect(() => {
-        const campeonatoID = params.campeonato;
-        const faseID = params.fase;
-
-        const cachedCampeonato = localStorage.getItem(campeonatoID + faseID + 'campeonato');
-        if (cachedCampeonato) {
-            setCampeonato(JSON.parse(cachedCampeonato));
-        }
-
-        const cachedRank = localStorage.getItem(campeonatoID + faseID + 'rank');
+        const cachedRank = localStorage.getItem(LOCAL_STORAGE_ITEM_RANK);
         if (cachedRank) {
             setRank(JSON.parse(cachedRank));
         }
-
-        const cachedFixtures = localStorage.getItem(campeonatoID + faseID + 'fixtures');
-        if (cachedFixtures) {
-            setFixtures(JSON.parse(cachedFixtures));
-        }
-
         if (dataFetchedRef.current) return;
         dataFetchedRef.current = true;
 
-        getInfo();
+        setLoading(true);
+        getFixtures();
+        getRank();
     }, []);
 
-    const getInfo = async () => {
-        setLoading(true);
-
-        const campeonatoID = params.campeonato;
-        const faseID = params.fase;
-
-        let dataString = JSON.stringify({
-            faseID,
+    const getFixtures = async () => {
+        const dataString = JSON.stringify({
+            poolUuid,
         });
 
-        // Fixtures
         await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixturesFromCampeonato.php`,
+            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getPoolFixtures.php`,
             data: dataString,
+            withCredentials: true,
         })
             .then((response) => {
-                setLoading(false);
-                setFixtures(response.fixtures);
+                setCampeonato(response.poolChampionshipInfo);
 
-                localStorage.setItem(campeonatoID + faseID + 'fixtures', JSON.stringify(response.fixtures));
+                let fixtures = response.poolFixtures;
+                if (response.userPlacedBets && response.userPlacedBets.length > 0) {
+                    setUserHasPlacedBet(true);
+                    mergeFixturesAndBets(fixtures, response.userPlacedBets);
+                }
+                setFixtures(fixtures);
+
+                setLoading(false);
             })
             .catch(() => {
                 setLoading(false);
             });
+    };
 
-        // Rank
+    const mergeFixturesAndBets = (fixtures, userBetsToMerge) => {
+        const bets = userBetsToMerge.reduce((acc, b) => {
+            acc[b.id] = b;
+            return acc;
+        }, {});
+        for (const fixture of fixtures) {
+            fixture.awayTeamScoreBet = bets[fixture.id].awayTeamScoreBet;
+            fixture.homeTeamScoreBet = bets[fixture.id].homeTeamScoreBet;
+        }
+    };
+
+    const getRank = async () => {
+        const dataString = JSON.stringify({
+            poolUuid,
+        });
+
         await http.post({
             url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getRank.php`,
             data: dataString,
+            withCredentials: true,
         })
             .then((response) => {
                 setLoading(false);
                 setRank(response.rank);
 
-                localStorage.setItem(campeonatoID + faseID + 'rank', JSON.stringify(response.rank));
+                localStorage.setItem(LOCAL_STORAGE_ITEM_RANK, JSON.stringify(response.rank));
             })
             .catch(() => {
                 setLoading(false);
             });
-
-        dataString = JSON.stringify({
-            campeonatoID,
-        });
-
-        //TODO Rever que com o id da fase da pra pegar essas informações do campeonato....
-        // Campeonato
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/campeonato/getCampeonatoInfo.php`,
-            data: dataString,
-        })
-            .then((response) => {
-                setCampeonato(response.campeonato);
-
-                localStorage.setItem(campeonatoID + faseID + 'campeonato', JSON.stringify(response.campeonato));
-            })
-            .catch(() => {
-            });
     };
 
     const checkStatus = () => {
-        const faseID = params.fase;
-
-        if (!campeonato.fases) {
-            return '';
-        }
-
-        const qtdAposta = campeonato.fases
-            .filter(function (fase) {
-                return fase.id === faseID;
-            })
-            .reduce(function (acc, currValue) {
-                return acc.concat(currValue.partes);
-            }, [])
-            .filter(function (parte) {
-                return parte.statusParte === 'aposta';
-            })
-            .length;
-
-        const qtdAberto = campeonato.fases
-            .filter(function (fase) {
-                return fase.id === faseID;
-            })
-            .reduce(function (acc, currValue) {
-                return acc.concat(currValue.partes);
-            }, [])
-            .filter(function (parte) {
-                return parte.statusParte === 'aberto';
-            })
-            .length;
-
-        const qtdFinalizado = campeonato.fases
-            .filter(function (fase) {
-                return fase.id === faseID;
-            })
-            .reduce(function (acc, currValue) {
-                return acc.concat(currValue.partes);
-            }, [])
-            .filter(function (parte) {
-                return parte.statusParte === 'finalizado';
-            })
-            .length;
-
-        const totalPartes = qtdAposta + qtdAberto + qtdFinalizado;
-
-
-        const parteAberta = campeonato.fases
-            .filter(function (fase) {
-                return fase.id === faseID;
-            })
-            .reduce(function (acc, currValue) {
-                return acc.concat(currValue.partes);
-            }, [])
-            .filter(function (parte) {
-                return parte.statusParte === 'aposta';
-            });
-
-        if (qtdFinalizado === totalPartes) {
+        if (campeonato.status === 'finished') {
             return (
                 <div className="dashboard-statusFase -finalizado">
                     <p>
@@ -168,73 +107,45 @@ function PageCampeonatoDashboard() {
                     </p>
                 </div>
             );
+        }
 
-        } else if (qtdAposta > 0) {
+        if (campeonato.status === 'open' && !userHasPlacedBet) {
             return (
                 <div className="dashboard-statusFase">
-                    <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/' + parteAberta[0].id + '/apostar'} >
-                        Aposte: {parteAberta[0].nomeParte}
+                    <Link to={`/pools/${campeonato.id}`} >
+                        Aposte agora!
                     </Link>
                 </div>
             );
-        } else {
-            return (
-                <div className="dashboard-statusFase -aberto">
-                    <p>
-                        Campeonato em andamento
-                    </p>
-                </div>
-            );
-        }
-    };
-
-    const checkFaseName = () => {
-        const faseID = params.fase;
-
-        if (!campeonato.fases) {
-            return '';
         }
 
-        const fase = campeonato.fases
-            .filter((fase) => fase.id === faseID);
-
-        return fase[0] ? fase[0].nomeFase : '';
+        return (
+            <div className="dashboard-statusFase -aberto">
+                <p>
+                    Campeonato em andamento
+                </p>
+            </div>
+        );
     };
 
     const showNextFixtures = () => {
         if (fixtures) {
-            const qtdNextFixtures = fixtures
-                .filter(function (fixture) {
-                    return fixture.home_score === null;
-                })
-                .filter(function (fixture) {
-                    return fixture.away_score === null;
-                })
-                .slice(0, 5)
-                .length;
+            const nextFixtures = fixtures
+                .filter((fixture) => fixture.homeTeamScore === null && fixture.awayTeamScore === null)
+                .slice(0, 5);
 
-            if (qtdNextFixtures > 0) {
+            if (nextFixtures.length > 0) {
                 return (
-                    fixtures
-                        .filter(function (fixture) {
-                            return fixture.home_score === null;
-                        })
-                        .filter(function (fixture) {
-                            return fixture.away_score === null;
-                        })
-                        .slice(0, 5)
-                        .map(function (team, index) {
-                            return (
-
-                                <PartidaListItem
-                                    key={index}
-                                    team={team}
-                                    typeAll={'ReadOnly'}
-                                    params={params}
-                                />
-
-                            );
-                        }, this)
+                    nextFixtures.map((fixture, index) => {
+                        return (
+                            <PartidaListItem
+                                key={index}
+                                fixture={fixture}
+                                typeAll={'ReadOnly'}
+                                params={params}
+                            />
+                        );
+                    }, this)
                 );
             } else {
                 return (
@@ -249,40 +160,23 @@ function PageCampeonatoDashboard() {
 
     const showLastFixtures = () => {
         if (fixtures) {
-            const qtdLastFixtures = fixtures
-                .filter(function (fixture) {
-                    return fixture.home_score !== null;
-                })
-                .filter(function (fixture) {
-                    return fixture.away_score !== null;
-                })
+            const lastFixtures = fixtures
+                .filter((fixture) => fixture.homeTeamScore !== null && fixture.awayTeamScore !== null)
                 .reverse()
-                .slice(0, 5)
-                .length;
+                .slice(0, 5);
 
-            if (qtdLastFixtures > 0) {
+            if (lastFixtures.length > 0) {
                 return (
-                    fixtures
-                        .filter(function (fixture) {
-                            return fixture.home_score !== null;
-                        })
-                        .filter(function (fixture) {
-                            return fixture.away_score !== null;
-                        })
-                        .reverse()
-                        .slice(0, 5)
-                        .map(function (team, index) {
-                            return (
-
-                                <PartidaListItem
-                                    key={index}
-                                    team={team}
-                                    typeAll={'ReadOnly'}
-                                    params={params}
-                                />
-
-                            );
-                        }, this)
+                    lastFixtures.map((fixture, index) => {
+                        return (
+                            <PartidaListItem
+                                key={index}
+                                fixture={fixture}
+                                typeAll={'ReadOnly'}
+                                params={params}
+                            />
+                        );
+                    }, this)
                 );
             } else {
                 return (
@@ -301,34 +195,33 @@ function PageCampeonatoDashboard() {
             let rankPosition = 0;
 
             return (
+                rank.map((rank, index) => {
+                    if (lastPoints !== rank.points) {
+                        rankPosition = rankPosition + 1;
+                        lastPoints = rank.points;
 
-                rank
-                    .map(function (rank, index) {
-                        if (lastPoints !== rank.points) {
-                            rankPosition = rankPosition + 1;
-                            lastPoints = rank.points;
-                            return (
-                                <RankListItem
-                                    key={index}
-                                    rank={rank}
-                                    position={rankPosition}
-                                    params={params}
-                                />
-                            );
-                        } else {
-                            lastPoints = rank.points;
-                            return (
-                                <RankListItem
-                                    key={index}
-                                    rank={rank}
-                                    position={rankPosition}
-                                    positionIgual={true}
-                                    params={params}
-                                />
-                            );
-                        }
+                        return (
+                            <RankListItem
+                                key={index}
+                                rank={rank}
+                                position={rankPosition}
+                                params={params}
+                            />
+                        );
+                    }
 
-                    }, this)
+                    lastPoints = rank.points;
+                    return (
+                        <RankListItem
+                            key={index}
+                            rank={rank}
+                            position={rankPosition}
+                            positionIgual={true}
+                            params={params}
+                        />
+                    );
+
+                }, this)
             );
         } else {
             return <tr></tr>;
@@ -339,10 +232,14 @@ function PageCampeonatoDashboard() {
         <section className="main-container">
             <div className="main-dashboard">
 
-                <div className="dashbord-top">
-                    <h2>{campeonato ? campeonato.nomeCampeonato : ''}</h2>
-                    <h4>{campeonato ? checkFaseName() : ''}</h4>
-
+                <div className="dashboard-top">
+                    <h2>{campeonato ? campeonato.name : ''}</h2>
+                    <h4>{campeonato ? campeonato.championshipName + ' | ' + campeonato.phaseName : ''}</h4>
+                    <div className='bets'>
+                        <Link to={`/pools/${poolUuid}/user/${userUuid}`}>
+                            Minhas apostas
+                        </Link>
+                    </div>
                     <Loading loading={loading} />
                 </div>
 
@@ -375,8 +272,10 @@ function PageCampeonatoDashboard() {
 
                         <div className="main-partidaForm">
                             <ul className="partidaLista">
-                                <h3 className="pageTitle">Próximos Jogos</h3>
-                                <Link className="allFixturesLink" to={'/campeonato/' + params.campeonato + '/' + params.fase + '/jogos'}>Todos &gt;</Link>
+                                <div>
+                                    <h3 className="pageTitle">Próximos Jogos</h3>
+                                    <Link className="allFixturesLink" to={`/campeonato/${campeonato.championshipId}`}>Campeonato &gt;</Link>
+                                </div>
 
                                 {showNextFixtures()}
 
@@ -387,9 +286,10 @@ function PageCampeonatoDashboard() {
                         <div className="main-partidaForm">
 
                             <ul className="partidaLista">
-                                <h3 className="pageTitle">Últimos Jogos</h3>
-                                <Link className="allFixturesLink" to={'/campeonato/' + params.campeonato + '/' + params.fase + '/jogos'}>Todos &gt;</Link>
-
+                                <div>
+                                    <h3 className="pageTitle">Últimos Jogos</h3>
+                                    <Link className="allFixturesLink" to={`/campeonato/${campeonato.championshipId}`}>Campeonato &gt;</Link>
+                                </div>
 
                                 {showLastFixtures()}
 

@@ -1,56 +1,29 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/env.php';
+$env = new Env();
 
-header("Access-Control-Allow-Origin: {$env["URL_FRONT"]}");
+header("Access-Control-Allow-Origin: {$env->urlFront}");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Credentials: true");
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/database.php';
-$db = new DatabaseConnection($env);
+$reqBody = json_decode(file_get_contents("php://input"));
 
-$inputData = json_decode(file_get_contents("php://input"));
+$poolUuid = htmlspecialchars(strip_tags($reqBody->poolUuid));
 
-$faseId = $inputData->faseID;
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/auth.php';
+$auth = new Auth();
+$decoded = $auth->authenticate();
 
-$query = "SELECT SUM(points) as position, user.name, SUM(points) as points FROM bet
-    INNER JOIN user ON bet.fkUserId=user.id
-    INNER JOIN fixture ON bet.fkFixtureId=fixture.id
-    INNER JOIN part ON fixture.fkPartId=part.id
-    INNER JOIN phase ON part.fkPhaseId=phase.id
-    WHERE phase.id=:phaseID
-    GROUP BY user.name ORDER BY points DESC, user.name ASC";
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/pool.php';
+$pool = new Pool();
+$poolData = $pool->getData($poolUuid);
 
-$stmt = $db->prepare($query);
-
-$stmt->bindParam(':phaseID', $faseId);
-
-$stmt->execute();
-$num = $stmt->rowCount();
-
-if ($num <= 0) {
-    http_response_code(400);
-    echo json_encode(array("message" => "Não foi possível gerar o rank para este campeonato. Favor entrar em contato com o administrador. (Error #FGR1)"));
-    exit();
-}
-
-$dbRanks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$rank = array();
-
-foreach ($dbRanks as $row) {
-    $userRank = new stdClass;
-
-    $userRank->position = $row['position'];
-    $userRank->name = $row['name'];
-    $userRank->points = $row['points'];
-
-    array_push($rank, $userRank);
-}
+$rank = $pool->getRank($poolData['id']);
 
 http_response_code(200);
 echo json_encode(array(
     "rank" => $rank
 ));
-?>

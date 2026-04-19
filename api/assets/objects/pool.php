@@ -285,4 +285,37 @@ class Pool
             exit();
         }
     }
+
+    public function getRank($poolId)
+    {
+        $query = "SELECT
+                user.name,
+                user.uuid,
+                SUM(points) as points
+            FROM bet
+            INNER JOIN user_pool ON bet.fkUserPoolId = user_pool.id
+            INNER JOIN user ON user_pool.fkUserId = user.id
+            INNER JOIN pool ON user_pool.fkPoolId = pool.id
+            WHERE pool.id = :poolId
+            GROUP BY user.name
+            ORDER BY
+                points DESC,
+                user.name ASC
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':poolId', $poolId);
+
+        $stmt->execute();
+        $num = $stmt->rowCount();
+
+        if ($num <= 0) {
+            http_response_code(400);
+            echo json_encode(array("message" => "Não foi possível gerar o rank para este campeonato. Favor entrar em contato com o administrador. (Error #FGR1)"));
+            exit();
+        }
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

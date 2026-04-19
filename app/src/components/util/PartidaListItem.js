@@ -18,7 +18,7 @@ function PartidaListItem(props) {
                     typeAll="ReadOnly"
                     typeHome={checkIfHomeNeedsInput()}
                     typeAway={checkIfAwayNeedsInput()}
-                    setBets={props.setBets}
+                    setBets={props.setBets ? props.setBets : () => { }}
                 />
             );
         } else if (props.isAdmin === 'admin') {
@@ -36,7 +36,7 @@ function PartidaListItem(props) {
                     fixture={props.fixture}
                     typeHome={checkIfHomeNeedsInput()}
                     typeAway={checkIfAwayNeedsInput()}
-                    setBets={props.setBets}
+                    setBets={props.setBets ? props.setBets : () => { }}
                 />
             );
         }
@@ -104,10 +104,21 @@ function PartidaListItem(props) {
         }
     };
 
+    const checkIfShowBets = () => {
+        const { homeTeamScoreBet, awayTeamScoreBet } = props.fixture;
+        if (homeTeamScoreBet !== undefined || awayTeamScoreBet !== undefined) {
+            return (
+                <div className="users-points">
+                    {`Minha aposta: ${homeTeamScoreBet} x ${awayTeamScoreBet}`}
+                </div>
+            );
+        }
+    };
+
     const checkIfShowAsLink = () => {
         if (params !== undefined) {
             return (<>
-                <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/jogo/' + props.fixture.idfixture}>
+                <Link to={'/campeonato/' + params.campeonato + '/' + params.fase + '/jogo/' + props.fixture.id}>
                     {insideStuff()}
                 </Link>
                 {checkIfShowUsernames()}
@@ -145,17 +156,18 @@ function PartidaListItem(props) {
 
                 </div>
 
-
                 {checkIfShowPoints()}
 
                 {checkIfShowPercent()}
+
+                {checkIfShowBets()}
 
             </div>
         );
     };
 
     return (
-        <li className="-apostadoJogo" key={props.index}>
+        <li className="partidaListItem -apostadoJogo" key={props.index}>
 
             {checkIfShowAsLink()}
 

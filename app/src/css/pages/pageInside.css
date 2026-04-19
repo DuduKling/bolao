@@ -224,6 +224,10 @@
 	font-size: 12px;
 }
 
+.main-partidaForm  > .partidaLista.-apostado > .pageTitle > .subTitle > a {
+	color: #424242;
+}
+
 .main-partidaForm  > .partidaLista.-apostado > .pageTitle > .mainTitle {
 	color: #424242;
 	font-size: 16px;
@@ -321,6 +325,16 @@
 	margin-top: 0;
 	margin-bottom: 5px;
 }
+
+.dashboard-top > .bets {
+	text-align: center;
+}
+
+.dashboard-top > .bets > a {
+	color: #424242;
+	font-size: 14px;
+
+	padding: 5px;
 }
 
 
