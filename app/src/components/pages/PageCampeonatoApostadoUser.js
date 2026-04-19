@@ -35,7 +35,7 @@ function PageCampeonatoApostadoUser() {
             }
             setFixtures(fixtures);
 
-            setCampeonato(data.championshipInfo);
+            setCampeonato(data.poolChampionshipInfo);
             setUser(data.userData);
         }
 
@@ -67,7 +67,7 @@ function PageCampeonatoApostadoUser() {
                 }
                 setFixtures(fixtures);
 
-                setCampeonato(response.championshipInfo);
+                setCampeonato(response.poolChampionshipInfo);
                 setUser(response.userData);
 
                 localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));

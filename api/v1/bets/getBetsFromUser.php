@@ -24,7 +24,7 @@ $userData = $user->getData($userUuid);
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/pool.php';
 $pool = new Pool();
-$championshipInfo = $pool->getPoolChampionshipInfo($poolUuid);
+$poolChampionshipInfo = $pool->getPoolChampionshipInfo($poolUuid);
 $poolFixtures = $pool->getPoolFixtures($poolUuid);
 $poolData = $pool->getData($poolUuid);
 
@@ -45,7 +45,7 @@ echo json_encode(array(
     "userData" => array(
         "name"=> $userData["name"],
     ),
-    "championshipInfo" => $championshipInfo,
+    "poolChampionshipInfo" => $poolChampionshipInfo,
     'poolFixtures' => $poolFixtures,
     'userPlacedBets' => $userPlacedBets,
 ));

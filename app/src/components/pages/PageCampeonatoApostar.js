@@ -50,7 +50,7 @@ function PageCampeonatoApostar() {
             withCredentials: true,
         })
             .then((response) => {
-                setCampeonato(response.championshipInfo);
+                setCampeonato(response.poolChampionshipInfo);
 
                 let fixtures = response.poolFixtures;
                 if (response.userPlacedBets && response.userPlacedBets.length > 0) {

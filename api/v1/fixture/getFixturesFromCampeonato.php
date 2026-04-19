@@ -16,10 +16,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/championship.php';
 $championship = new Championship();
 
 $fixtures = $championship->getFixtures($championshipId);
-$championshipInfo = $championship->getInfo($championshipId);
+$poolChampionshipInfo = $championship->getInfo($championshipId);
 
 http_response_code(200);
 echo json_encode(array(
-    "championshipInfo" => $championshipInfo[0],
+    "poolChampionshipInfo" => $poolChampionshipInfo[0],
     "fixtures" => $fixtures
 ));

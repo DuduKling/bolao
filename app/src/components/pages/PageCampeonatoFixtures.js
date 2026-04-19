@@ -25,7 +25,7 @@ function PageCampeonatoFixtures() {
         if (cachedFixtures) {
             const data = JSON.parse(cachedFixtures);
             setFixtures(data.fixtures);
-            setCampeonato(data.championshipInfo);
+            setCampeonato(data.poolChampionshipInfo);
         }
 
         if (dataFetchedRef.current) return;
@@ -47,7 +47,7 @@ function PageCampeonatoFixtures() {
         })
             .then((response) => {
                 setFixtures(response.fixtures);
-                setCampeonato(response.championshipInfo);
+                setCampeonato(response.poolChampionshipInfo);
                 setLoading(false);
 
                 localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));

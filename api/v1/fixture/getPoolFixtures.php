@@ -26,7 +26,7 @@ $userData = $user->getData($userUuid);
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/pool.php';
 $pool = new Pool();
-$championshipInfo = $pool->getPoolChampionshipInfo($poolUuid);
+$poolChampionshipInfo = $pool->getPoolChampionshipInfo($poolUuid);
 $poolFixtures = $pool->getPoolFixtures($poolUuid);
 
 $poolData = $pool->getData($poolUuid);
@@ -39,7 +39,7 @@ if ($userHasJoined) {
     http_response_code(200);
     echo json_encode(array(
         "message" => "Usuário já está participando deste bolão. (Error #POO2)",
-        "championshipInfo" => $championshipInfo,
+        "poolChampionshipInfo" => $poolChampionshipInfo,
         'poolFixtures'=> $poolFixtures,
         'userPlacedBets' => $userPlacedBets,
     ));
@@ -48,6 +48,6 @@ if ($userHasJoined) {
 
 http_response_code(200);
 echo json_encode(array(
-    "championshipInfo" => $championshipInfo,
+    "poolChampionshipInfo" => $poolChampionshipInfo,
     'poolFixtures'=> $poolFixtures
 ));
