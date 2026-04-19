@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import routes from '../util/Routes';
+import routes from './Routes';
 
-function AuthAdmin() {
-    const userRole = useSelector((state) => state.auth.userRole);
+function UserMustBeLoggedIn() {
+    const userName = useSelector((state) => state.auth.userName);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (userRole !== 'admin') {
+        if (!userName) {
             navigate(routes.sendToUserLogin());
         }
     }, []);
@@ -16,4 +16,4 @@ function AuthAdmin() {
     return (<Outlet />);
 }
 
-export default AuthAdmin;
+export default UserMustBeLoggedIn;

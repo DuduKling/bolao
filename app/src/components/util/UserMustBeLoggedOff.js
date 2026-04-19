@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import routes from '../util/Routes';
+import routes from './Routes';
 
-function AuthAlready() {
+function UserMustBeLoggedOff() {
     const userName = useSelector((state) => state.auth.userName);
     const navigate = useNavigate();
 
@@ -16,4 +16,4 @@ function AuthAlready() {
     return ( <Outlet />);
 }
 
-export default AuthAlready;
+export default UserMustBeLoggedOff;

@@ -2,6 +2,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/models/user.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/jwt.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/util/uuid.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/auth.php';
 
 class User
 {
@@ -57,11 +58,11 @@ class User
         return false;
     }
 
-    public function generateToken()
+    public function getToken()
     {
-        $customJWT = new CustomJWT($this->env);
+        $auth = new Auth();
 
-        return $customJWT->createToken(array(
+        return $auth->generateToken(array(
             "uuid" => $this->model->uuid,
             "name" => $this->model->name,
             "phoneNumber" => $this->model->phoneNumber,

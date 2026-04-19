@@ -10,23 +10,23 @@ import UserNavBar from './UserNavBar';
 import Avatar from '../util/Avatar';
 
 function SiteHeader() {
-    const [UserNavBarVisible, setUserNavBarVisible] = useState(false);
-    const [NavBarVisible, setNavbarVisible] = useState(false);
+    const [userNavBarVisible, setUserNavBarVisible] = useState(false);
+    const [navBarVisible, setNavBarVisible] = useState(false);
 
     const userName = useSelector((state) => state.auth.userName);
 
     const toggleUserNavBar = () => {
-        setUserNavBarVisible(!UserNavBarVisible);
+        setUserNavBarVisible(!userNavBarVisible);
     };
 
     const toggleNavBar = () => {
-        setNavbarVisible(!NavBarVisible);
+        setNavBarVisible(!navBarVisible);
     };
 
     const checkIfUserIsLoggedIn = () => {
         if (userName !== '') {
             return (
-                <div className={NavBarVisible ? 'header-right showMenu' : 'header-right'}>
+                <div className={navBarVisible ? 'header-right showMenu' : 'header-right'}>
                     <nav className="menu">
                         <Link className="menuItem" to={routes.sendToChampionships()}>
                             Campeonatos
@@ -46,36 +46,36 @@ function SiteHeader() {
                             </p>
                         </div>
 
-                        <UserNavBar visible={UserNavBarVisible} />
+                        <UserNavBar visible={userNavBarVisible} />
 
                     </div>
                 </div>
             );
-        } else {
-            return (
-                <div className={NavBarVisible ? 'header-right showMenu' : 'header-right'}>
-                    <nav className="menu">
-                        <Link className="menuItem" to={routes.sendToChampionships()}>
-                            Campeonatos
-                        </Link>
-                        <Link className="menuItem" to={routes.sendToRules()}>
-                            Regulamento
-                        </Link>
-                        <Link className="menuItem" to={routes.sendToContact()}>
-                            Fale Conosco
-                        </Link>
-                    </nav>
-                    <div className="user-login">
-                        <Link className="menuItem" to={routes.sendToUserRegister()}>
-                            Cadastrar
-                        </Link>
-                        <Link className="menuItem" to={routes.sendToUserLogin()}>
-                            Login
-                        </Link>
-                    </div>
-                </div>
-            );
         }
+
+        return (
+            <div className={navBarVisible ? 'header-right showMenu' : 'header-right'}>
+                <nav className="menu">
+                    <Link className="menuItem" to={routes.sendToChampionships()}>
+                        Campeonatos
+                    </Link>
+                    <Link className="menuItem" to={routes.sendToRules()}>
+                        Regulamento
+                    </Link>
+                    <Link className="menuItem" to={routes.sendToContact()}>
+                        Fale Conosco
+                    </Link>
+                </nav>
+                <div className="user-login">
+                    <Link className="menuItem" to={routes.sendToUserRegister()}>
+                        Cadastrar
+                    </Link>
+                    <Link className="menuItem" to={routes.sendToUserLogin()}>
+                        Login
+                    </Link>
+                </div>
+            </div>
+        );
     };
 
     return (
@@ -85,7 +85,7 @@ function SiteHeader() {
                 <h1 className="logoName">Bolão</h1>
             </Link>
 
-            <div className={NavBarVisible ? 'menuToggle close' : 'menuToggle'} onClick={toggleNavBar}>
+            <div className={navBarVisible ? 'menuToggle close' : 'menuToggle'} onClick={toggleNavBar}>
                 MENU
                 <div className="hamburgerMenu">
                     <div></div>

@@ -11,9 +11,9 @@ import Fingerprint from './util/fingerprint';
 
 import './css/pages/user.css';
 
-import UserMustBeLoggedIn from './components/util/Auth';
-import UserMustBeAdmin from './components/util/AuthAdmin';
-import UserMustBeLoggedOff from './components/util/AuthAlready';
+import UserMustBeLoggedIn from './components/util/UserMustBeLoggedIn';
+import UserMustBeAdmin from './components/util/UserMustBeAdmin';
+import UserMustBeLoggedOff from './components/util/UserMustBeLoggedOff';
 
 import BigLoading from './components/util/BigLoading';
 

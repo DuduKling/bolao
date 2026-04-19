@@ -31,7 +31,7 @@ if (!$exists || !$passwordMatch) {
     exit();
 }
 
-$jwt = $user->generateToken();
+$jwt = $user->getToken();
 
 $cookieOptions = array(
     "expires" => time() + 60 * 60 * 24 * 30, // 30 days
