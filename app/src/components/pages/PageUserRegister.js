@@ -5,6 +5,7 @@ import '../../css/pages/login.css';
 import '../../css/util/formMessage.css';
 
 import http from '../../util/http';
+import routes from '../util/Routes';
 
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
@@ -65,7 +66,7 @@ function PageUserCadastros() {
                 .then((response) => {
                     dispatch(updateJWT({ userJWT: response.jwt }));
 
-                    navigate('/pools');
+                    navigate(routes.sendToPools());
                 })
                 .catch(({ message }) => {
                     setAjaxErrorResp(message);

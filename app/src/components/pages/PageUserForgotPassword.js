@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../css/pages/login.css';
 
 import http from '../../util/http';
+import routes from '../util/Routes';
 
 import MaterialTextInput from '../util/MaterialTextInput';
 import Canvas from '../home/Canvas';
@@ -57,7 +58,7 @@ function PageUserForgotPassword() {
             .then((response) => {
                 dispatch(updateJWT({ userJWT: response.jwt }));
 
-                navigate('/campeonatos');
+                navigate(routes.sendToChampionships());
             })
             .catch(({ message }) => {
                 setAjaxErrorResp(message);

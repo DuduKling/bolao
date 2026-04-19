@@ -66,7 +66,7 @@ function PageUserLogin() {
                 .then((response) => {
                     dispatch(updateJWT({ userJWT: response.jwt }));
 
-                    navigate('/pools');
+                    navigate(routes.sendToPools());
                 })
                 .catch(({ message }) => {
                     setAjaxErrorResp(message);

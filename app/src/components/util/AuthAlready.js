@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import routes from '../util/Routes';
 
 function AuthAlready() {
     const userName = useSelector((state) => state.auth.userName);
@@ -8,7 +9,7 @@ function AuthAlready() {
 
     useEffect(() => {
         if (userName) {
-            navigate('/pools');
+            navigate(routes.sendToPools());
         }
     }, []);
 

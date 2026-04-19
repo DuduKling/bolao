@@ -29,7 +29,7 @@ function UserNavBar(props) {
 
         await http.authReset();
 
-        navigate('/');
+        navigate(routes.sendToHome());
     };
 
     const showAdminLink = () => {

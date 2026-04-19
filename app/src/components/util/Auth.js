@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import routes from '../util/Routes';
 
 function Auth() {
     const userName = useSelector((state) => state.auth.userName);
@@ -8,7 +9,7 @@ function Auth() {
 
     useEffect(() => {
         if (!userName) {
-            navigate('/user/login');
+            navigate(routes.sendToUserLogin());
         }
     }, []);
 
