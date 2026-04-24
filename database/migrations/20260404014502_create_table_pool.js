@@ -18,6 +18,10 @@ exports.up = function (knex) {
                 'finished',
             ]).defaultTo('tba').notNullable();
 
+            table.boolean('canMakeBet').defaultTo(false).notNullable();
+            table.boolean('canEditBet').defaultTo(false).notNullable();
+            table.boolean('canViewOthersBet').defaultTo(false).notNullable();
+
             table.dateTime('startDate').notNullable();
             table.dateTime('endDate').notNullable();
 

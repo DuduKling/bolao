@@ -12,7 +12,10 @@ function MaterialTextInput(props) {
         if (props.fieldPlaceholder !== undefined) {
             setValue(props.fieldPlaceholder);
         }
-    }, []);
+        if (props.fieldValue !== undefined) {
+            setValue(props.fieldValue);
+        }
+    }, [props.fieldValue, props.fieldPlaceholder]);
 
     const handleInputChange = (event) => {
         const inputName = event.target.name;
@@ -20,12 +23,15 @@ function MaterialTextInput(props) {
 
         setValue(inputValue);
 
-        if (inputValue !== '') {
+        if (inputValue === '') {
+            setStatus('');
+        } else {
             setStatus('NotEmpty');
             checkRegex(inputValue, inputName);
-            props.fieldController(inputValue);
-        } else {
-            setStatus('');
+
+            if (props.fieldController) {
+                props.fieldController(inputValue);
+            }
         }
 
     };
@@ -39,10 +45,10 @@ function MaterialTextInput(props) {
             regx = new RegExp('^[A-Za-zÀ-ú ]+([^\\t\\r\\n])$', 'gi');
             resultado = regx.test(inputValue);
 
-            if (!resultado) {
-                setError('error');
-            } else {
+            if (resultado) {
                 setError('');
+            } else {
+                setError('error');
             }
             break;
 
@@ -50,10 +56,10 @@ function MaterialTextInput(props) {
             regx = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$', 'gi');
             resultado = regx.test(inputValue);
 
-            if (!resultado) {
-                setError('error');
-            } else {
+            if (resultado) {
                 setError('');
+            } else {
+                setError('error');
             }
             break;
 
@@ -62,10 +68,10 @@ function MaterialTextInput(props) {
             regx = new RegExp('^[\\w]{8,}$', 'gi');
             resultado = regx.test(inputValue);
 
-            if (!resultado) {
-                setError('error');
-            } else {
+            if (resultado) {
                 setError('');
+            } else {
+                setError('error');
             }
             break;
 
@@ -73,9 +79,12 @@ function MaterialTextInput(props) {
             regx = new RegExp('^[0-9]{11}$', 'gi');
             resultado = regx.test(inputValue);
 
-            if (!resultado) {
-                setError('error');
+            if (resultado) {
+                setError('');
             } else {
+                setError('error');
+            }
+            break;
                 setError('');
             }
             break;
@@ -86,6 +95,7 @@ function MaterialTextInput(props) {
             } else {
                 setError('');
             }
+            break;
         }
     };
 
@@ -95,9 +105,10 @@ function MaterialTextInput(props) {
             <input
                 type={props.fieldType}
                 name={props.fieldName}
+                id={props.fieldName}
                 onChange={handleInputChange}
                 className={error}
-                required={props.fieldRequired ? false : true}
+                required={!props.fieldRequired}
                 maxLength={props.maxLength ? props.maxLength : '30'}
                 value={value}
             />

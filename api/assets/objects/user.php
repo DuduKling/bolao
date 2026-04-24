@@ -66,6 +66,7 @@ class User
             "uuid" => $this->model->uuid,
             "name" => $this->model->name,
             "phoneNumber" => $this->model->phoneNumber,
+            "role" => $this->model->role,
             "createdAt" => date(DATE_ATOM)
         ));
     }

@@ -7,6 +7,9 @@ exports.seed = async function (knex) {
   await knex('pool').insert([
     { uuid: '1', name: 'Campeonato da Família Addams', description: 'Fase de Grupos', status: 'finished', startDate: '2022-11-20 00:00:00', endDate: '2022-12-18 00:00:00' },
     { uuid: '2', name: 'Mestres do Palpite', description: 'Fase de Eliminatórias', status: 'open', startDate: '2022-11-20 00:00:00', endDate: '2022-12-18 00:00:00' },
+    { uuid: '3', name: 'Bolão 1', description: 'Bolão numero 1', status: 'onGoing', startDate: '2022-11-20 00:00:00', endDate: '2022-12-18 00:00:00' },
+    { uuid: '4', name: 'Bolão 2', description: 'Bolão numero 2', status: 'tba', startDate: '2022-11-20 00:00:00', endDate: '2022-12-18 00:00:00' },
+    { uuid: '5', name: 'Bolão 3', description: 'Bolão numero 3', status: 'open', startDate: '2022-11-20 00:00:00', endDate: '2022-12-18 00:00:00' },
   ]);
 
   await knex('pool_part').insert([
@@ -23,6 +26,21 @@ exports.seed = async function (knex) {
     { fkPoolId: 2, fkPartId: 19 },
     { fkPoolId: 2, fkPartId: 20 },
     { fkPoolId: 2, fkPartId: 21 },
+
+    { fkPoolId: 3, fkPartId: 18 },
+    { fkPoolId: 3, fkPartId: 19 },
+    { fkPoolId: 3, fkPartId: 20 },
+    { fkPoolId: 3, fkPartId: 21 },
+
+    { fkPoolId: 4, fkPartId: 18 },
+    { fkPoolId: 4, fkPartId: 19 },
+    { fkPoolId: 4, fkPartId: 20 },
+    { fkPoolId: 4, fkPartId: 21 },
+
+    { fkPoolId: 5, fkPartId: 18 },
+    { fkPoolId: 5, fkPartId: 19 },
+    { fkPoolId: 5, fkPartId: 20 },
+    { fkPoolId: 5, fkPartId: 21 },
   ]);
 
   const { id: userTesteId } = await knex('user').where('name', 'teste').first();

@@ -77,22 +77,22 @@ function PoolListItem(props) {
         <li onClick={toggleDetails}>
             <div className="list-content">
                 <div className="list-main">
+                    <div className="list-reference-logo">
+                        <img
+                            src={setImage()}
+                            alt={'Logo do campeonato ' + props.pool.championshipName}
+                        />
+                    </div>
                     <div className="list-title">
                         <h2>{props.pool.name}</h2>
                         <h4>{props.pool.description}</h4>
                     </div>
-                    <div className="list-action">
-                        {setAction()}
-                    </div>
+                </div>
+                <div className="list-action">
+                    {setAction()}
                 </div>
                 <div className={flagDetail ? 'list-detail showDetail' : 'list-detail'}>
                     <div className="list-reference">
-                        <div className="list-reference-logo">
-                            <img
-                                src={setImage()}
-                                alt={'Logo do campeonato ' + props.pool.championshipName}
-                            />
-                        </div>
                         <div className="list-reference-data">
                             <h4>{props.pool.championshipName}</h4>
                             <p>{props.pool.phaseName}</p>

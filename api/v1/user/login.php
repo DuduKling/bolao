@@ -31,6 +31,8 @@ if (!$exists || !$passwordMatch) {
     exit();
 }
 
+$user->find();
+
 $jwt = $user->getToken();
 
 $cookieOptions = array(
