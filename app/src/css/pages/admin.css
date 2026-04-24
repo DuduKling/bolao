@@ -2,8 +2,12 @@
     background-color: #f44336;
 }
 
-.adminCampeonatos-container {
-    padding: 0 0 10px 0;
+.page-title.-admin + .a {
+    background-color: #f44336;
+}
+
+.adminPools-container {
+    padding: 0;
     margin: 0;
     list-style-type: none;
 
@@ -14,99 +18,85 @@
     flex-wrap: wrap;
 
     background-color: #f5f5f5;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
-    
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
 
     overflow: hidden;
 }
 
-.adminCampeonatos-container > li {
+.adminPools-container>.inputForm {
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.adminPools {
     width: 100%;
 
-    padding: 10px;
-    /* overflow: scroll; */
+    padding: 20px;
 
     display: flex;
     justify-content: flex-start;
+
+    transition: all 0.5s ease-in-out;
 }
 
-.adminCampeonatos-container > li:not(:last-child){
-    margin-bottom: 10px;
-    
+.adminPools:hover {
+    background-color: #c7c7c73d;
+}
+
+.adminPools:not(:last-child) {
     border-bottom: 1px solid #c7c7c73d;
 }
 
 
-.adminCampeonatos-campeonato {
+.adminPools-title {
     width: 25%;
     padding-right: 10px;
     min-width: 200px;
+    font-size: 22px;
 }
 
 
 
-.adminCampeonatos-fase {
+.adminPools-details {
     width: 75%;
-}
-
-.adminCampeonatos-fase > div {
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
 }
 
-.adminCampeonatos-fase > div:not(:last-child) {
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-
-    border-bottom: 1px solid #c7c7c73d;
+.adminPools-details>div {
+    margin: 2px 0;
+    font-size: 14px;
 }
 
-.adminCampeonatos-fase > div > div:nth-child(1) {
-    width: 33.33%;
+.adminPools-details .green {
+    color: #4CAF50;
+}
+
+.adminPools-details>.phase {
+    font-size: 18px;
+}
+
+
+.adminPools-actions {
     padding-right: 10px;
-    min-width: 150px;
-}
 
-
-.adminCampeonatos-parte {
-    /* width: 66.66%; */
-    width: 100%;
-}
-
-.adminCampeonatos-parte > div {
-    display: flex;
-    justify-content: space-between;
-}
-
-.adminCampeonatos-parte > div > div:first-child {
-    min-width: 100px;
-}
-
-.adminCampeonatos-parte > div:not(:last-child) {
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    
-    border-bottom: 1px solid #c7c7c73d;
-}
-
-
-
-.adminCampeonatos-actions {
-    padding-right: 10px;
-    
     display: flex;
     align-items: center;
 }
 
-.adminCampeonatos-actions > .links {
+.adminPools .adminPools-actions {
     display: flex;
     align-items: center;
 
 }
 
-.adminCampeonatos-actions > .links > a {
+.adminPools .adminPools-actions>a {
     padding: 5px 10px;
     margin-right: 10px;
 
@@ -122,50 +112,29 @@
     transition: all 0.3s ease;
 }
 
-.adminCampeonatos-actions > .links > a:hover {
-    color: #388e3c;
-}
-
-.adminFase-actions > .links {
-    display: flex;
-    align-items: center;
-
-}
-
-.adminFase-actions > .links > a {
-    padding: 5px 10px;
-    margin-right: 10px;
-
-    display: flex;
-    align-items: center;
-
-    color: #4CAF50;
-    border-radius: 10px;
-
-    text-decoration: none;
-    letter-spacing: 0.5px;
-
-    transition: all 0.3s ease;
-}
-
-.adminFase-actions > .links > a:hover {
+.adminPools .adminPools-actions>a:hover {
     color: #388e3c;
 }
 
 
-.adminCampeonatos-actions > .statusMark {
+
+
+.adminPools-actions>.statusMark {
     width: 20px;
     height: 20px;
     border-radius: 50%;
     margin-left: 10px;
 }
-.adminCampeonatos-actions > .statusMark.-finalizado {
+
+.adminPools-actions>.statusMark.-finalizado {
     background-color: #d8d8d8;
 }
-.adminCampeonatos-actions > .statusMark.-aberto {
+
+.adminPools-actions>.statusMark.-aberto {
     background-color: #bcffbf;
 }
-.adminCampeonatos-actions > .statusMark.-aposta {
+
+.adminPools-actions>.statusMark.-aposta {
     background-color: #ffbeba;
 }
 
@@ -184,31 +153,31 @@
     overflow: hidden;
     /* display: block; */
     /* overflow: scroll; */
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.3), 0 3px 1px -2px rgba(0,0,0,.2);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .3), 0 3px 1px -2px rgba(0, 0, 0, .2);
 }
 
-.adminTable > caption > h3 {
+.adminTable>caption>h3 {
     box-shadow: none;
     border: none;
 }
 
-.adminTable > thead > tr > td {
+.adminTable>thead>tr>td {
     padding: 5px;
     border-bottom: 1px solid #c7c7c7;
 }
 
-.adminTable > thead > tr > .nameColumn {
+.adminTable>thead>tr>.nameColumn {
     width: 50%;
     padding-left: 20px;
     min-width: 200px;
 }
 
-.adminTable > thead > tr > .markColumn {
+.adminTable>thead>tr>.markColumn {
     text-align: center;
     min-width: 70px;
 }
 
-.adminTable > tbody > tr {
+.adminTable>tbody>tr {
     height: auto;
     background-color: #fff;
     border-bottom: 1px solid #c7c7c73d;
@@ -216,18 +185,18 @@
     transition: all .3s ease;
 }
 
-.adminTable > tbody > tr:hover {
+.adminTable>tbody>tr:hover {
     background-color: #e2e2e2;
 }
 
-.adminTable > tbody > tr > .nameColumn {
+.adminTable>tbody>tr>.nameColumn {
     height: 100%;
     padding: 10px 0 10px 20px;
     text-decoration: none;
     color: #000;
 }
 
-.adminTable > tbody > tr > .markColumn > .statusMark {
+.adminTable>tbody>tr>.markColumn>.statusMark {
     width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -236,8 +205,8 @@
 }
 
 
-@media only screen and (max-width: 800px){
-    .adminCampeonatos-container {
+@media only screen and (max-width: 800px) {
+    .adminPools-container {
         overflow: scroll;
     }
 }

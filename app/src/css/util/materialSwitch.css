@@ -1,0 +1,110 @@
+.material-switch {
+    position: relative;
+    font-size: 16px;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 300px;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px 0;
+
+    cursor: pointer;
+}
+
+.material-switch>.label {
+    margin: 0;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+}
+
+.material-switch>.switchContainer {
+    display: inline-flex;
+    width: 58px;
+    height: 38px;
+    overflow: hidden;
+    padding: 12px;
+    box-sizing: border-box;
+    position: relative;
+    flex-shrink: 0;
+    z-index: 0;
+    vertical-align: middle;
+}
+
+.material-switch>.switchContainer>.track {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: -1;
+    background-color: #cacaca;
+    opacity: 0.38;
+    border-radius: 7px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    border-image: initial;
+    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1), background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.material-switch>.input:checked + .switchContainer>.track {
+    opacity: 0.5;
+    background-color: #4CAF50;
+}
+
+.material-switch>.switchContainer>.base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+    color: #cacaca;
+    outline: 0px;
+    border-width: 0px;
+    border-style: none;
+    border-color: currentcolor;
+    border-image: initial;
+    margin: 0px;
+    text-decoration: none;
+    padding: 9px;
+    border-radius: 50%;
+    transition: left 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.material-switch>.switchContainer>.base:hover {
+    background-color: #d9d9d978;
+}
+
+.material-switch>.input:checked + .switchContainer>.base:hover {
+    background-color: #57ae5228;
+}
+
+.material-switch>.input:checked + .switchContainer>.base {
+    transform: translateX(20px);
+    color: #4CAF50;
+}
+
+.material-switch>.input {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+}
+
+.material-switch>.switchContainer>.base>.thumb {
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    background-color: currentcolor;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}

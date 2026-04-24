@@ -11,10 +11,13 @@ exports.up = function (knex) {
             table.string('name', 50).notNullable();
             table.string('description', 255);
 
+            // TODO: melhorar esse status geral
+                // precisa ter um status também no pool_part
+                // flag para ligar visualização das apostas dos outros (pool_part)
             table.enum('status', [
-                'tba',
-                'open',
-                'onGoing',
+                'tba', // cant view dashboard
+                'open', // can view dashboard and can make bets
+                'onGoing', // can view dashboard 
                 'finished',
             ]).defaultTo('tba').notNullable();
 

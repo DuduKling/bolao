@@ -85,7 +85,16 @@ function MaterialTextInput(props) {
                 setError('error');
             }
             break;
+
+        case 'startDate':
+        case 'endDate':
+            regx = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/gi;
+            resultado = regx.test(inputValue);
+
+            if (resultado) {
                 setError('');
+            } else {
+                setError('error');
             }
             break;
 
@@ -132,6 +141,7 @@ MaterialTextInput.propTypes = {
     labelName: PropTypes.string,
     maxLength: PropTypes.string,
     fieldController: PropTypes.func,
+    fieldValue: PropTypes.string,
 };
 
 export default MaterialTextInput;

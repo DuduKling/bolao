@@ -1,4 +1,5 @@
 <?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/util/uuid.php';
 
 class Pool
 {
@@ -63,6 +64,147 @@ class Pool
         return $pools;
     }
 
+    public function get($poolUuid)
+    {
+        $query = "SELECT
+                pool.*
+            FROM pool
+            INNER JOIN pool_part ON pool_part.fkPoolId = pool.id
+            INNER JOIN part ON part.id = pool_part.fkPartId
+            INNER JOIN phase ON phase.id = part.fkPhaseId
+            INNER JOIN championship ON championship.id = phase.fkChampionshipId
+            WHERE pool.uuid = :poolUuid
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':poolUuid', $poolUuid);
+
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+        if ($num <= 0) {
+            http_response_code(400);
+            echo json_encode(array(
+                "message" => "Não foi possível encontrar o bolão. (Error #POO3)"
+            ));
+            exit();
+        }
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function update($poolUuid, $poolInfo)
+    {
+        $query = "UPDATE pool
+            SET
+                name = :name,
+                description = :description,
+                status = :status,
+                canMakeBet = :canMakeBet,
+                canEditBet = :canEditBet,
+                canViewOthersBet = :canViewOthersBet,
+                startDate = :startDate,
+                endDate = :endDate
+            WHERE pool.uuid = :poolUuid
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':poolUuid', $poolUuid);
+        $stmt->bindParam(':name', $poolInfo->name);
+        $stmt->bindParam(':description', $poolInfo->description);
+        $stmt->bindParam(':status', $poolInfo->status);
+        $stmt->bindParam(':canMakeBet', $poolInfo->canMakeBet);
+        $stmt->bindParam(':canEditBet', $poolInfo->canEditBet);
+        $stmt->bindParam(':canViewOthersBet', $poolInfo->canViewOthersBet);
+        $stmt->bindParam(':startDate', $poolInfo->startDate);
+        $stmt->bindParam(':endDate', $poolInfo->endDate);
+
+        if (!$stmt->execute()) {
+            http_response_code(400);
+            echo json_encode(array(
+                "message" => "Não foi possível atualizar o bolão. (Error #POO4)"
+            ));
+            exit();
+        }
+    }
+
+    public function create($poolInfo)
+    {
+        $query = "INSERT INTO pool
+            SET
+                uuid = :uuid,
+                name = :name,
+                description = :description,
+                startDate = :startDate,
+                endDate = :endDate
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $uuid = guidv4();
+        $stmt->bindParam(':uuid', $uuid);
+        $stmt->bindParam(':name', $poolInfo->name);
+        $stmt->bindParam(':description', $poolInfo->description);
+        $stmt->bindParam(':startDate', $poolInfo->startDate);
+        $stmt->bindParam(':endDate', $poolInfo->endDate);
+
+        if (!$stmt->execute()) {
+            http_response_code(400);
+            echo json_encode(array(
+                "message" => "Não foi possível criar o bolão. (Error #POO5)"
+            ));
+            exit();
+        }
+
+        return array(
+            'id' => $this->conn->lastInsertId(),
+            'uuid' => $uuid
+        );
+    }
+
+    public function joinParts($poolId, $partsSelected)
+    {
+        $query = "SELECT pool_part.fkPartId
+            FROM pool
+            INNER JOIN pool_part ON pool_part.fkPoolId = pool.id
+            WHERE pool.id = :poolId
+        ";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':poolId', $poolId);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $partsJoined = array();
+        foreach ($rows as $row) {
+            array_push($partsJoined, $row['fkPartId']);
+        }
+
+        foreach ($partsSelected as $partId => $partSelected) {
+            if ($partSelected && !in_array($partId, $partsJoined)) {
+                $query = "INSERT INTO pool_part
+                    SET
+                        fkPoolId = :poolId,
+                        fkPartId = :partId
+                ";
+
+                $stmt = $this->conn->prepare($query);
+
+                $stmt->bindParam(':poolId', $poolId);
+                $stmt->bindParam(':partId', $partId);
+
+                if (!$stmt->execute()) {
+                    http_response_code(400);
+                    echo json_encode(array(
+                        "message" => "Não foi possível atualizar o bolão. (Error #POO5)"
+                    ));
+                    exit();
+                }
+            }
+        }
+    }
+
     public function getPoolChampionshipInfo($poolUuid)
     {
         $query = "SELECT
@@ -88,6 +230,146 @@ class Pool
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getPoolChampionshipInfoBetter($poolId)
+    {
+        $query = "SELECT
+                championship.*
+            FROM pool
+            INNER JOIN pool_part ON pool_part.fkPoolId = pool.id
+            INNER JOIN part ON part.id = pool_part.fkPartId
+            INNER JOIN phase ON phase.id = part.fkPhaseId
+            INNER JOIN championship ON championship.id = phase.fkChampionshipId
+            WHERE pool.id = :poolId
+            LIMIT 1
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':poolId', $poolId);
+        $stmt->execute();
+        $championshipRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$championshipRow) {
+            return null;
+        }
+
+        $championshipId = $championshipRow['id'];
+
+        $query = "SELECT
+                phase.id as phaseId,
+                phase.name as phaseName,
+                part.id as partId,
+                part.name as partName,
+                pool_part.fkPoolId IS NOT NULL as isJoined
+            FROM championship
+            INNER JOIN phase ON phase.fkChampionshipId = championship.id
+            INNER JOIN part ON part.fkPhaseId = phase.id
+            LEFT JOIN pool_part ON pool_part.fkPartId = part.id AND pool_part.fkPoolId = :poolId
+            WHERE championship.id = :championshipId
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':poolId', $poolId);
+        $stmt->bindParam(':championshipId', $championshipId);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $championship = [
+            'id' => $championshipRow['id'],
+            'name' => $championshipRow['name'],
+            'logo' => $championshipRow['logo'],
+            'phases' => []
+        ];
+
+        $phases = [];
+        foreach ($rows as $row) {
+            $phaseId = $row['phaseId'];
+            if (!isset($phases[$phaseId])) {
+                $phases[$phaseId] = [
+                    'id' => $phaseId,
+                    'name' => $row['phaseName'],
+                    'parts' => []
+                ];
+            }
+            $phases[$phaseId]['parts'][] = [
+                'id' => $row['partId'],
+                'name' => $row['partName'],
+                'isJoined' => (bool) $row['isJoined']
+            ];
+        }
+
+        $championship['phases'] = array_values($phases);
+
+        return $championship;
+    }
+
+    public function getChampionshipsInfo()
+    {
+        $query = "SELECT *
+            FROM championship
+            -- WHERE championship.endDate > NOW()
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $championshipRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$championshipRows) {
+            return null;
+        }
+
+        $championships = array();
+
+        foreach ($championshipRows as $row) {
+
+            $championshipId = $row['id'];
+
+            $query = "SELECT
+                phase.id as phaseId,
+                phase.name as phaseName,
+                part.id as partId,
+                part.name as partName
+            FROM championship
+            INNER JOIN phase ON phase.fkChampionshipId = championship.id
+            INNER JOIN part ON part.fkPhaseId = phase.id
+            WHERE championship.id = :championshipId
+        ";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':championshipId', $championshipId);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $championship = [
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'logo' => $row['logo'],
+                'phases' => []
+            ];
+
+            $phases = [];
+            foreach ($rows as $row) {
+                $phaseId = $row['phaseId'];
+                if (!isset($phases[$phaseId])) {
+                    $phases[$phaseId] = [
+                        'id' => $phaseId,
+                        'name' => $row['phaseName'],
+                        'parts' => []
+                    ];
+                }
+                $phases[$phaseId]['parts'][] = [
+                    'id' => $row['partId'],
+                    'name' => $row['partName']
+                ];
+            }
+
+            $championship['phases'] = array_values($phases);
+
+            array_push($championships, $championship);
+        }
+
+        return $championships;
     }
 
     public function getUserJoinedPools($userUuid)
@@ -313,7 +595,9 @@ class Pool
 
         if ($num <= 0) {
             http_response_code(400);
-            echo json_encode(array("message" => "Não foi possível gerar o rank para este campeonato. Favor entrar em contato com o administrador. (Error #FGR1)"));
+            echo json_encode(array(
+                "message" => "Não foi possível gerar o rank para este campeonato. Favor entrar em contato com o administrador. (Error #FGR1)"
+            ));
             exit();
         }
 

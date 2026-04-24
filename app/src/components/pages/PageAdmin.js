@@ -1,123 +1,85 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '../../css/pages/admin.css';
-
 import { Link } from 'react-router-dom';
 
+import '../../css/pages/admin.css';
+
 import http from '../../util/http';
+import routes from '../util/Routes';
 
 import Loading from '../util/Loading';
-import AdminSelect from '../util/AdminSelect';
 
 function PageAdmin() {
-    const [campeonatos, setCampeonatos] = useState([]);
+    const [pools, setPools] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const dataFetchedRef = useRef(false);
 
+    const LOCAL_STORAGE_ITEM = 'pools';
+
     useEffect(() => {
-        const cachedCampeonatos = localStorage.getItem('campeonatos');
-        if (cachedCampeonatos) {
-            setCampeonatos(JSON.parse(cachedCampeonatos));
+        const cachedPools = localStorage.getItem(LOCAL_STORAGE_ITEM);
+        if (cachedPools) {
+            const data = JSON.parse(cachedPools);
+            setPools(data.allPools);
         }
 
         if (dataFetchedRef.current) return;
         dataFetchedRef.current = true;
 
-        getCampeonatos();
+        getPools();
     }, []);
 
-    const getCampeonatos = async () => {
+    const getPools = async () => {
         setLoading(true);
 
-        await http.getCampeonatos()
+        await http.getPools()
             .then((response) => {
-                setCampeonatos(response);
-                setLoading(false);
+                setPools(response.allPools);
 
-                localStorage.setItem('campeonatos', JSON.stringify(response));
+                setLoading(false);
+                localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
             })
             .catch(() => {
                 setLoading(false);
             });
     };
 
-    const showCampeonatos = (campeonato, index) => {
+    const showCampeonatos = (pool, index) => {
         return (
-            <li key={index}>
-                <div className="adminCampeonatos-campeonato">{campeonato.nomeCampeonato}</div>
-                <div className="adminCampeonatos-fase">
-                    {
-                        campeonato.fases.map(function (fase, index) {
-                            const campeonatoId = campeonato.idCampeonato;
-                            return showFases(fase, index, campeonatoId);
-                        }, this)
-                    }
+            <li key={index} className="adminPools">
+                <div className="adminPools-title">{pool.name}</div>
+                <div className="adminPools-details">
+                    <div className="phase">{pool.phaseName}</div>
+                    <div>{pool.parts}</div>
+                    <div><b>Início: </b>{pool.startDate}</div>
+                    <div><b>Fim: </b>{pool.endDate}</div>
+                    <div><b className="green">Status: </b>{pool.status}</div>
+                </div>
+                <div className="adminPools-actions">
+                    <Link to={routes.sendToAdminPool(pool.uuid)}>
+                        Gerenciar
+                    </Link>
                 </div>
             </li>
         );
     };
 
-    const showFases = (fase, index, campeonatoId) => {
-        return (
-            <div key={index}>
-                <div className="adminFase-actions">
-                    <div>{fase.nomeFase}</div>
-                    <div className="links">
-                        <Link to={'/campeonato/' + campeonatoId + '/' + fase.id + '/admin'}>
-                            Participantes
-                        </Link>
-                    </div>
-                </div>
-
-                <div className="adminCampeonatos-parte">
-                    {
-                        fase.partes.map(function (parte, index) {
-                            return showPartes(parte, index, campeonatoId, fase.id);
-                        }, this)
-                    }
-                </div>
-            </div>
-        );
-    };
-
-    const showPartes = (parte, index, campeonatoId, faseId) => {
-        return (
-            <div key={index}>
-                <div>{parte.nomeParte}</div>
-
-                <div className="adminCampeonatos-actions">
-                    {checkIfShowLinks(parte, campeonatoId, faseId)}
-                    <AdminSelect parteID={parte.id} selected={parte.statusParte} updateCampeonatos={getCampeonatos} />
-                    <div className={'statusMark -' + parte.statusParte}></div>
-                </div>
-            </div>
-        );
-    };
-
-    const checkIfShowLinks = (parte, campeonatoId, faseId) => {
-        if (parte.statusParte === 'aberto') {
-            return (
-                <div className="links">
-                    <Link to={'/campeonato/' + campeonatoId + '/' + faseId + '/' + parte.id + '/admin'}>
-                        Resultados
-                    </Link>
-                </div>
-            );
-        }
-    };
-
     return (
         <div className="userPage-container">
             <div className="userPage-userCampeonatos">
+                <div>
+                    <Link className="SendButton" to={routes.sendToAdminPoolCreate()}>
+                        Criar
+                    </Link>
+                </div>
+                <br />
                 <h3 className="page-title -admin">
-                    Admin
+                    Admin: Bolões
                     <Loading loading={loading} localstorage="-withLocalStorage" />
                 </h3>
-                <ul className="adminCampeonatos-container">
+                <ul className="adminPools-container">
                     {
-                        campeonatos.map(function (campeonato, index) {
-                            return showCampeonatos(campeonato, index);
-                        }, this)
+                        pools.map((pool, index) => showCampeonatos(pool, index))
                     }
                 </ul>
             </div>

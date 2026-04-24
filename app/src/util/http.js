@@ -10,6 +10,10 @@ const apiRoutes = {
     authValidate: `${url}/api/v1/user/authValidate.php`,
 
     getPools: `${url}/api/v1/campeonato/getPools.php`,
+    getPool: `${url}/api/v1/campeonato/getPool.php`,
+    getChampionshipsInfo: `${url}/api/v1/campeonato/getChampionshipsInfo.php`,
+    updatePoolInfo: `${url}/api/v1/campeonato/updatePoolInfo.php`,
+    createPool: `${url}/api/v1/campeonato/createPool.php`,
     getFixturesFromCampeonato: `${url}/api/v1/fixture/getFixturesFromCampeonato.php`,
     getCampeonatos: `${url}/api/v1/campeonato/getCampeonatos.php`,
 
@@ -45,6 +49,26 @@ class http {
 
     static getPools(data = {}) {
         const url = apiRoutes.getPools;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static getPool(data = {}) {
+        const url = apiRoutes.getPool;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static getChampionshipsInfo(data = {}) {
+        const url = apiRoutes.getChampionshipsInfo;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static updatePoolInfo(data = {}) {
+        const url = apiRoutes.updatePoolInfo;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static createPool(data = {}) {
+        const url = apiRoutes.createPool;
         return this.post({ url, data, withCredentials: true });
     }
 

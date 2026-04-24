@@ -22,6 +22,8 @@ import SiteFooter from './components/common/SiteFooter';
 
 import PageRoot404 from './components/pages/PageRoot404';
 import PageAdmin from './components/pages/PageAdmin';
+import PageAdminPool from './components/pages/PageAdminPool';
+import PageAdminCreatePool from './components/pages/PageAdminCreatePool';
 import PageAdminApostas from './components/pages/PageAdminApostas';
 import PageAdminScore from './components/pages/PageAdminScore';
 import PagePoolUserBet from './components/pages/PagePoolUserBet';
@@ -91,13 +93,14 @@ function App() {
                         <Route path='user/esqueci' element={<PageUserForgotPassword />} />
                     </Route>
 
+                    <Route element={<UserMustBeAdmin />} >
+                        <Route path='admin' element={<PageAdmin />} />
+                        <Route path='admin/pool' element={<PageAdminCreatePool />} />
+                        <Route path='admin/pool/:poolUuid' element={<PageAdminPool />} />
+                    </Route>
+
                     {/* ----- OLDER ROUTES ---- */}
                     <Route path='/' element={<Outlet />} >
-                        {/* ADMIN - RESTRICTED */}
-                        <Route path='admin' element={<UserMustBeAdmin />} >
-                            <Route path='' element={<PageAdmin />} />
-                        </Route>
-
                         {/* CAMPEONATO - RESTRICTED */}
                         <Route path='campeonato' element={<UserMustBeLoggedIn />} >
                             {/* ADMIN - RESTRICTED */}

@@ -1,0 +1,100 @@
+.material-select {
+    display: inline-flex;
+    flex-direction: column;
+    position: relative;
+    min-width: 0px;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    vertical-align: top;
+    width: 200px;
+}
+
+.material-select>.label {
+    color: green;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+    display: block;
+    text-overflow: ellipsis;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    transform: translate(0px, -1.5px) scale(0.75);
+    transform-origin: left top;
+    max-width: 133%;
+    padding: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: color 200ms cubic-bezier(0, 0, 0.2, 1), transform 200ms cubic-bezier(0, 0, 0.2, 1), max-width 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.material-select>.body {
+    margin-top: 16px;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+    color: var(--mui-palette-text-primary, rgba(0, 0, 0, 0.87));
+    box-sizing: border-box;
+    cursor: text;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+.material-select>.body::before {
+    left: 0px;
+    bottom: 0px;
+    content: "";
+    position: absolute;
+    right: 0px;
+    pointer-events: none;
+    border-bottom: 1px solid green;
+    transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.material-select>.body:hover::before {
+    border-bottom: 3px solid green;
+}
+
+.material-select>.body>.select {
+    appearance: none;
+    user-select: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font: inherit;
+    letter-spacing: inherit;
+    color: currentcolor;
+    padding: 4px 0px 5px;
+    border: 0px;
+    outline: 0;
+    box-sizing: content-box;
+    background: none;
+    height: 1.4375em;
+    margin: 0px;
+    display: block;
+    min-width: 0px;
+    width: 100%;
+
+    padding-right: 32px;
+}
+
+.material-select>.body>.icon {
+    user-select: none;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    flex-shrink: 0;
+    fill: currentcolor;
+    font-size: 1.5rem;
+    position: absolute;
+    top: calc(50% - 0.5em);
+    pointer-events: none;
+    color: #4e4e4e;
+    right: 7px;
+    transition: fill 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}

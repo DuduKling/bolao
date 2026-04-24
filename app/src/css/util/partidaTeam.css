@@ -24,7 +24,8 @@
 	justify-content: center;
 	flex-shrink: 0;
 
-    border-radius: 50%;
+    border-radius: 25%;
+	border: 2px solid #57ae52;
     overflow: hidden;
 }
 

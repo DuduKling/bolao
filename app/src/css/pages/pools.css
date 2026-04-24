@@ -79,34 +79,15 @@
 }
 
 .page-block>.pools-container>.pools-list>li>.list-content {
-    background-color: transparent;
     cursor: pointer;
-    user-select: none;
-    vertical-align: middle;
-    appearance: none;
-    color: inherit;
-
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: start;
-
+    align-items: center;
     position: relative;
-
     width: 100%;
     box-sizing: border-box;
-    text-align: left;
+    border-radius: 10px;
     padding: 8px 16px 8px 16px;
-
-    outline: 0px;
-    border-width: 0px;
-    border-style: initial;
-    border-color: initial;
-    border-image: initial;
-    margin: 0px;
-
-    border-radius: 0px;
-    text-decoration: none;
     transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -118,7 +99,23 @@
 .list-content>.list-main {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+}
+
+.list-content>.list-main>.list-reference-logo>img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+
+    border: 1px solid #4caf50;
+    border-radius: 25%;
+
+    margin-right: 10px;
+}
+
+.list-content>.list-main>.list-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .list-content>.list-main>.list-title>h2 {
@@ -130,14 +127,17 @@
     font-weight: 100;
 }
 
-.list-content>.list-main>.list-action {
+.list-content>.list-action {
+    position: absolute;
+    right: 0;
+    top: 30%;
     padding: 0 10px;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
-.list-content>.list-main>.list-action>.chip {
+.list-content>.list-action>.chip {
     max-width: 100%;
     font-family: Roboto, Helvetica, Arial, sans-serif;
     font-size: 0.8125rem;
@@ -154,20 +154,20 @@
     margin: 0 5px;
 }
 
-.list-content>.list-main>.list-action>.chip.warning {
+.list-content>.list-action>.chip.warning {
     background-color: #ecbc2d;
 }
 
-.list-content>.list-main>.list-action>.chip.blue {
+.list-content>.list-action>.chip.blue {
     background-color: #3e9dec;
 }
 
-.list-content>.list-main>.list-action>.chip.green {
+.list-content>.list-action>.chip.green {
     background-color: #66cc7d;
 }
 
-.list-content>.list-main>.list-action>.chip>span,
-.list-content>.list-main>.list-action>.chip>a {
+.list-content>.list-action>.chip>span,
+.list-content>.list-action>.chip>a {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -212,14 +212,6 @@
 .list-detail>.list-reference {
     display: flex;
     align-items: center;
-}
-
-.list-detail>.list-reference>.list-reference-logo>img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-
-    margin-right: 10px;
 }
 
 .list-detail>.list-reference>.list-reference-data>h4 {
