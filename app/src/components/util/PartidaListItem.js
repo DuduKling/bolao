@@ -13,43 +13,16 @@ function PartidaListItem(props) {
     const params = props.params;
 
     const checkTypeOfPlacar = () => {
-        if (props.typeAll === 'ReadOnly') {
-            return (
-                <PartidaPlacar
-                    fixture={props.fixture}
-                    typeAll="ReadOnly"
-                    typeHome={checkIfHomeNeedsInput()}
-                    typeAway={checkIfAwayNeedsInput()}
-                    setBets={props.setBets ? props.setBets : () => { }}
-                />
-            );
-        } else if (props.isAdmin === 'admin') {
-            return (
-                <PartidaPlacar
-                    fixture={props.fixture}
-                    typeHome={checkIfHomeNeedsInput()}
-                    typeAway={checkIfAwayNeedsInput()}
-                    isAdmin={'admin'}
-                />
-            );
-        } else {
-            return (
-                <PartidaPlacar
-                    fixture={props.fixture}
-                    typeHome={checkIfHomeNeedsInput()}
-                    typeAway={checkIfAwayNeedsInput()}
-                    setBets={props.setBets ? props.setBets : () => { }}
-                />
-            );
-        }
-    };
-
-    const checkIfHomeNeedsInput = () => {
-        return props.fixture.homeTeamScore ? 'ReadOnly' : '';
-    };
-
-    const checkIfAwayNeedsInput = () => {
-        return props.fixture.awayTeamScore ? 'ReadOnly' : '';
+        return (
+            <PartidaPlacar
+                fixture={props.fixture}
+                readOnly={props.readOnly}
+                readOnlyHomeScore={typeof props.fixture.homeTeamScore === 'number'}
+                readOnlyAwayScore={typeof props.fixture.awayTeamScore === 'number'}
+                setBets={props.setBets ? props.setBets : () => { }}
+                isAdmin={props.isAdmin}
+            />
+        );
     };
 
     const checkIfShowUsernames = () => {
@@ -130,13 +103,13 @@ function PartidaListItem(props) {
                 {checkIfShowUsernames()}
             </>
             );
-        } else {
-            return (
-                <div>
-                    {insideStuff()}
-                </div>
-            );
         }
+
+        return (
+            <div>
+                {insideStuff()}
+            </div>
+        );
     };
 
     const insideStuff = () => {
@@ -149,15 +122,17 @@ function PartidaListItem(props) {
                 <div className="match-container">
 
                     <PartidaTeam
-                        type="-Home"
-                        fixture={props.fixture}
+                        extraClass="-Home"
+                        teamName={props.fixture.homeTeamName}
+                        imagePath={props.fixture.homeTeamImagePath}
                     />
 
                     {checkTypeOfPlacar()}
 
                     <PartidaTeam
-                        type="-Away"
-                        fixture={props.fixture}
+                        extraClass="-Away"
+                        teamName={props.fixture.awayTeamName}
+                        imagePath={props.fixture.awayTeamImagePath}
                     />
 
                 </div>
@@ -182,14 +157,14 @@ function PartidaListItem(props) {
 }
 
 PartidaListItem.propTypes = {
-    typeAll: PropTypes.string,
+    readOnly: PropTypes.bool,
     fixture: PropTypes.object,
-    isAdmin: PropTypes.string,
     showUsers: PropTypes.bool,
     showPercent: PropTypes.bool,
     params: PropTypes.object,
     index: PropTypes.string,
     setBets: PropTypes.func,
+    isAdmin: PropTypes.bool,
 };
 
 export default PartidaListItem;

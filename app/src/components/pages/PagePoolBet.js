@@ -51,7 +51,8 @@ function PagePoolBet() {
                 let fixtures = response.poolFixtures;
                 if (response.userPlacedBets && response.userPlacedBets.length > 0) {
                     setUserHasPlacedBet(true);
-                    mergeFixturesAndBets(fixtures, response.userPlacedBets);
+                } else {
+                    removeFixturesScores(fixtures);
                 }
                 setFixtures(fixtures);
 
@@ -63,14 +64,10 @@ function PagePoolBet() {
             });
     };
 
-    const mergeFixturesAndBets = (fixtures, userBetsToMerge) => {
-        const bets = userBetsToMerge.reduce((acc, b) => {
-            acc[b.id] = b;
-            return acc;
-        }, {});
+    const removeFixturesScores = (fixtures) => {
         for (const fixture of fixtures) {
-            fixture.awayTeamScore = bets[fixture.id].awayTeamScoreBet;
-            fixture.homeTeamScore = bets[fixture.id].homeTeamScoreBet;
+            fixture.awayTeamScore = null;
+            fixture.homeTeamScore = null;
         }
     };
 
@@ -126,7 +123,7 @@ function PagePoolBet() {
                     <p className="FormMessage -success">
                         Você já apostou para esta parte do campeonato!
                     </p>
-                    <Link className="SendButton" to={routes.sendToUserBets(poolUuid, userUuid)}>
+                    <Link className="SendButton" to={routes.sendToPoolUserBets(poolUuid, userUuid)}>
                         Veja sua aposta
                     </Link>
                 </div>
@@ -173,42 +170,46 @@ function PagePoolBet() {
                     key={index}
                     phaseName={phaseName}
                     fixtures={fixtures}
-                    typeAll={userHasPlacedBet ? 'ReadOnly' : ''}
+                    readOnly={userHasPlacedBet}
                     setBets={registerBet}
                 />
             );
         });
     };
 
+    const showFixturesToBet = () => {
+        return (<>
+            <form
+                className="main-partidaForm"
+                onSubmit={async (event) => await sendBets(event)}
+                method="post"
+            >
+
+                <ul className="partidaLista">
+                    <div className="dashboard-top">
+                        <h2>{poolChampionshipInfo.championshipName}</h2>
+                        <Loading loading={loading} />
+                    </div>
+                    <h3 className="pageTitle">
+                        Bolão: {poolChampionshipInfo ? poolChampionshipInfo.name : ''}
+                    </h3>
+
+                    {showFixtures()}
+
+                </ul>
+
+                {showButton()}
+
+            </form>
+
+            {AJAXresp()}
+        </>);
+    };
+
     return (
         <section className="main-container">
             <div className="main-content">
-
-                <form
-                    className="main-partidaForm"
-                    onSubmit={async (event) => await sendBets(event)}
-                    method="post"
-                >
-
-                    <ul className="partidaLista">
-                        <div className="dashboard-top">
-                            <h2>{poolChampionshipInfo.championshipName}</h2>
-                            <Loading loading={loading} />
-                        </div>
-                        <h3 className="pageTitle">
-                            Bolão: {poolChampionshipInfo ? poolChampionshipInfo.name : ''}
-                        </h3>
-
-                        {showFixtures()}
-
-                    </ul>
-
-                    {showButton()}
-
-                </form>
-
-                {AJAXresp()}
-
+                {showFixturesToBet()}
                 {showButtonToUserBets()}
             </div>
         </section>

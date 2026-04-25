@@ -17,7 +17,9 @@ function ChampionshipPhase(props) {
 
     return (
         <div className="phaseContainer">
-            <h3 className="pageTitle">{props.phaseName}</h3>
+            <h3 className={`pageTitle ${props.isAdmin ? '-admin' : ''}`}>
+                {props.isAdmin ? 'Admin: ' : ''}{props.phaseName}
+            </h3>
             {
                 groupFixtures(props.fixtures).map(function ([partName, fixtures], index) {
                     return (
@@ -25,8 +27,9 @@ function ChampionshipPhase(props) {
                             key={index}
                             partName={partName}
                             fixtures={fixtures}
-                            typeAll={props.typeAll}
+                            readOnly={props.readOnly}
                             setBets={props.setBets ? props.setBets : () => {}}
+                            isAdmin={props.isAdmin}
                         />
                     );
                 })
@@ -38,8 +41,9 @@ function ChampionshipPhase(props) {
 ChampionshipPhase.propTypes = {
     phaseName: PropTypes.string,
     fixtures: PropTypes.object,
-    typeAll: PropTypes.string,
+    readOnly: PropTypes.bool,
     setBets: PropTypes.func,
+    isAdmin: PropTypes.bool,
 };
 
 export default ChampionshipPhase;

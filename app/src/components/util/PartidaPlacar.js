@@ -20,7 +20,7 @@ function PartidaPlacar(props) {
             <PartidaPlacarInput
                 fixture={props.fixture}
                 score={props.fixture.homeTeamScore}
-                type={props.typeHome || props.typeAll}
+                readOnly={props.readOnlyHomeScore || props.readOnly}
                 isAdmin={props.isAdmin}
                 setBetScore={setBetHome}
             />
@@ -30,7 +30,7 @@ function PartidaPlacar(props) {
             <PartidaPlacarInput
                 fixture={props.fixture}
                 score={props.fixture.awayTeamScore}
-                type={props.typeAway || props.typeAll}
+                readOnly={props.readOnlyAwayScore || props.readOnly}
                 isAdmin={props.isAdmin}
                 setBetScore={setBetAway}
             />
@@ -40,11 +40,11 @@ function PartidaPlacar(props) {
 }
 
 PartidaPlacar.propTypes = {
-    typeAll: PropTypes.string,
+    readOnly: PropTypes.bool,
     fixture: PropTypes.object,
-    typeHome: PropTypes.string,
-    isAdmin: PropTypes.string,
-    typeAway: PropTypes.string,
+    readOnlyHomeScore: PropTypes.bool,
+    isAdmin: PropTypes.bool,
+    readOnlyAwayScore: PropTypes.bool,
     setBets: PropTypes.func,
 };
 

@@ -80,7 +80,7 @@ function PageChampionshipFixtures() {
                                         key={index}
                                         phaseName={phaseName}
                                         fixtures={fixtures}
-                                        typeAll={'ReadOnly'}
+                                        readOnly={true}
                                     />
                                 );
                             })

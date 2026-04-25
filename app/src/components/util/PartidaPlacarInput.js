@@ -39,54 +39,33 @@ function PartidaPlacarInput(props) {
     };
 
     const checkType = () => {
-        if (props.type === 'ReadOnly') {
+        if (props.readOnly) {
             return (
                 <p className="plac-num">{props.score}</p>
             );
-        } else if (props.isAdmin === 'admin') {
-            return (
-                <div>
-                    <div className="input-container">
-                        <input
-                            type="number"
-                            placeholder="X"
-                            name={props.fixture.idfixture + '_away'}
-                            onInput={handleInputChange}
-                            maxLength="2"
-                            pattern="^[0-9]{1,2}$"
-                            value={scoreValue}
-                        />
-                        <label></label>
-                    </div>
-                    <div className="button-container">
-                        <button type="button" tabIndex="-1" onClick={() => decrement()}>-</button>
-                        <button type="button" tabIndex="-1" onClick={() => increment()}>+</button>
-                    </div>
-                </div>
-            );
-        } else {
-            return (
-                <div>
-                    <div className="input-container">
-                        <input
-                            type="number"
-                            placeholder="X"
-                            name={props.fixture.idfixture + '_away'}
-                            onInput={handleInputChange}
-                            required="required"
-                            maxLength="2"
-                            pattern="^[0-9]{1,2}$"
-                            value={scoreValue}
-                        />
-                        <label></label>
-                    </div>
-                    <div className="button-container">
-                        <button type="button" tabIndex="-1" onClick={() => decrement()}>-</button>
-                        <button type="button" tabIndex="-1" onClick={() => increment()}>+</button>
-                    </div>
-                </div>
-            );
         }
+
+        return (
+            <div>
+                <div className="input-container">
+                    <input
+                        type="number"
+                        placeholder="X"
+                        name={props.fixture.idfixture}
+                        onInput={handleInputChange}
+                        required={props.isAdmin ? '' : 'required'}
+                        maxLength="2"
+                        pattern="^[0-9]{1,2}$"
+                        value={scoreValue}
+                    />
+                    <label></label>
+                </div>
+                <div className="button-container">
+                    <button type="button" tabIndex="-1" onClick={() => decrement()}>-</button>
+                    <button type="button" tabIndex="-1" onClick={() => increment()}>+</button>
+                </div>
+            </div>
+        );
     };
 
     return (
@@ -97,7 +76,7 @@ function PartidaPlacarInput(props) {
 }
 
 PartidaPlacarInput.propTypes = {
-    type: PropTypes.string,
+    readOnly: PropTypes.bool,
     fixture: PropTypes.object,
     score: PropTypes.string,
     isAdmin: PropTypes.string,
