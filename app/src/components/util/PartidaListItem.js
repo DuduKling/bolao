@@ -19,7 +19,7 @@ function PartidaListItem(props) {
                 readOnly={props.readOnly}
                 readOnlyHomeScore={typeof props.fixture.homeTeamScore === 'number'}
                 readOnlyAwayScore={typeof props.fixture.awayTeamScore === 'number'}
-                setBets={props.setBets ? props.setBets : () => { }}
+                setScoreController={props.setScoreController ? props.setScoreController : () => { }}
                 isAdmin={props.isAdmin}
             />
         );
@@ -163,7 +163,7 @@ PartidaListItem.propTypes = {
     showPercent: PropTypes.bool,
     params: PropTypes.object,
     index: PropTypes.string,
-    setBets: PropTypes.func,
+    setScoreController: PropTypes.func,
     isAdmin: PropTypes.bool,
 };
 

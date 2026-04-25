@@ -171,7 +171,7 @@ function PagePoolBet() {
                     phaseName={phaseName}
                     fixtures={fixtures}
                     readOnly={userHasPlacedBet}
-                    setBets={registerBet}
+                    setScoreController={registerBet}
                 />
             );
         });

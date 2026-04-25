@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 import PartidaPlacarInput from './PartidaPlacarInput';
 
 function PartidaPlacar(props) {
-    const [betHome, setBetHome] = useState('');
-    const [betAway, setBetAway] = useState('');
+    const [scoreHome, setScoreHome] = useState('');
+    const [scoreAway, setScoreAway] = useState('');
 
     useEffect(() => {
-        props.setBets({
-            [props.fixture.id]: [betHome, betAway],
+        props.setScoreController({
+            [props.fixture.id]: [scoreHome, scoreAway],
         });
-    }, [betHome, betAway]);
+    }, [scoreHome, scoreAway]);
 
     return (
         <span className="placar">
@@ -22,7 +22,7 @@ function PartidaPlacar(props) {
                 score={props.fixture.homeTeamScore}
                 readOnly={props.readOnlyHomeScore || props.readOnly}
                 isAdmin={props.isAdmin}
-                setBetScore={setBetHome}
+                setScoreStateHandler={setScoreHome}
             />
 
             <p className="x">X</p>
@@ -32,7 +32,7 @@ function PartidaPlacar(props) {
                 score={props.fixture.awayTeamScore}
                 readOnly={props.readOnlyAwayScore || props.readOnly}
                 isAdmin={props.isAdmin}
-                setBetScore={setBetAway}
+                setScoreStateHandler={setScoreAway}
             />
 
         </span>
@@ -45,7 +45,7 @@ PartidaPlacar.propTypes = {
     readOnlyHomeScore: PropTypes.bool,
     isAdmin: PropTypes.bool,
     readOnlyAwayScore: PropTypes.bool,
-    setBets: PropTypes.func,
+    setScoreController: PropTypes.func,
 };
 
 export default PartidaPlacar;

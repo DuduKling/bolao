@@ -7,7 +7,7 @@ function PartidaPlacarInput(props) {
     const [scoreValue, setScoreValue] = useState('');
 
     useEffect(() => {
-        props.setBetScore(scoreValue);
+        props.setScoreStateHandler(scoreValue);
     }, [scoreValue]);
 
     const handleInputChange = (event) => {
@@ -23,7 +23,7 @@ function PartidaPlacarInput(props) {
         }
 
         setScoreValue(value);
-        props.setBetScore(value);
+        props.setScoreStateHandler(value);
     };
 
     const increment = () => {
@@ -80,7 +80,7 @@ PartidaPlacarInput.propTypes = {
     fixture: PropTypes.object,
     score: PropTypes.string,
     isAdmin: PropTypes.string,
-    setBetScore: PropTypes.func,
+    setScoreStateHandler: PropTypes.func,
 };
 
 export default PartidaPlacarInput;

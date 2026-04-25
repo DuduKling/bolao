@@ -28,7 +28,7 @@ function ChampionshipPhase(props) {
                             partName={partName}
                             fixtures={fixtures}
                             readOnly={props.readOnly}
-                            setBets={props.setBets ? props.setBets : () => {}}
+                            setScoreController={props.setScoreController ? props.setScoreController : () => {}}
                             isAdmin={props.isAdmin}
                         />
                     );
@@ -42,7 +42,7 @@ ChampionshipPhase.propTypes = {
     phaseName: PropTypes.string,
     fixtures: PropTypes.object,
     readOnly: PropTypes.bool,
-    setBets: PropTypes.func,
+    setScoreController: PropTypes.func,
     isAdmin: PropTypes.bool,
 };
 
