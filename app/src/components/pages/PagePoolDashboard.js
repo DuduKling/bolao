@@ -69,8 +69,14 @@ function PagePoolDashboard() {
             return acc;
         }, {});
         for (const fixture of fixtures) {
-            fixture.awayTeamScoreBet = bets[fixture.id].awayTeamScoreBet;
-            fixture.homeTeamScoreBet = bets[fixture.id].homeTeamScoreBet;
+            const { homeTeamScoreBet, awayTeamScoreBet, points } = bets[fixture.id];
+
+            fixture.awayTeamScoreBet = awayTeamScoreBet;
+            fixture.homeTeamScoreBet = homeTeamScoreBet;
+
+            fixture.points = points;
+            fixture.homeTeamScoreBet = homeTeamScoreBet;
+            fixture.awayTeamScoreBet = awayTeamScoreBet;
         }
     };
 
@@ -134,7 +140,8 @@ function PagePoolDashboard() {
                             <PartidaListItem
                                 key={index}
                                 fixture={fixture}
-                                params={params}
+                                shows={['showAsLink', 'showBetAndPoints']}
+                                poolUuid={poolUuid}
                             />
                         );
                     }, this)
@@ -164,7 +171,8 @@ function PagePoolDashboard() {
                             <PartidaListItem
                                 key={index}
                                 fixture={fixture}
-                                params={params}
+                                shows={['showAsLink', 'showBetAndPoints']}
+                                poolUuid={poolUuid}
                             />
                         );
                     }, this)
@@ -196,7 +204,7 @@ function PagePoolDashboard() {
                                 key={index}
                                 rank={rank}
                                 position={rankPosition}
-                                params={params}
+                                poolUuid={poolUuid}
                             />
                         );
                     }
@@ -208,7 +216,7 @@ function PagePoolDashboard() {
                             rank={rank}
                             position={rankPosition}
                             positionIgual={true}
-                            params={params}
+                            poolUuid={poolUuid}
                         />
                     );
 

@@ -80,8 +80,14 @@ function PagePoolUserBet() {
             return acc;
         }, {});
         for (const fixture of fixtures) {
-            fixture.awayTeamScore = bets[fixture.id].awayTeamScoreBet;
-            fixture.homeTeamScore = bets[fixture.id].homeTeamScoreBet;
+            const { homeTeamScoreBet, awayTeamScoreBet, points } = bets[fixture.id];
+
+            fixture.homeTeamScore = homeTeamScoreBet;
+            fixture.awayTeamScore = awayTeamScoreBet;
+
+            fixture.points = points;
+            fixture.homeTeamScoreBet = homeTeamScoreBet;
+            fixture.awayTeamScoreBet = awayTeamScoreBet;
         }
     };
 
@@ -102,6 +108,7 @@ function PagePoolUserBet() {
                     key={index}
                     phaseName={phaseName}
                     fixtures={fixtures}
+                    shows={['showResultAndPoints']}
                 />
             );
         });

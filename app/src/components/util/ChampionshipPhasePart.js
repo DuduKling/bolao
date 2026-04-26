@@ -16,10 +16,11 @@ function ChampionshipPhasePart(props) {
                         <div key={fixture.id}>
                             <PartidaListItem
                                 key={fixture.id}
-                                fixture={fixture}
                                 viewType={props.viewType}
+                                fixture={fixture}
                                 setScoreController={props.setScoreController}
                                 isAdmin={props.isAdmin}
+                                shows={props.shows}
                             />
                         </div>
                     );
@@ -30,11 +31,13 @@ function ChampionshipPhasePart(props) {
 }
 
 ChampionshipPhasePart.propTypes = {
-    partName: PropTypes.string,
-    fixtures: PropTypes.object,
     viewType: PropTypes.string,
+    fixtures: PropTypes.object,
     setScoreController: PropTypes.func,
     isAdmin: PropTypes.bool,
+
+    shows: PropTypes.array,
+    partName: PropTypes.string,
 };
 
 export default ChampionshipPhasePart;

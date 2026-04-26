@@ -8,30 +8,31 @@ import routes from '../util/Routes';
 import PropTypes from 'prop-types';
 
 function RankListItem(props) {
-    const params = props.params;
-
     const podiumMap = {
         1: '-gold',
         // 2: '-silver',
         // 3: '-bronze',
     };
 
+    const showPodiumColors = () => {
+        if (!props.rank.points) { return ''; }
+        return podiumMap[props.position] || '';
+    };
+
+    const send = () => {
+        return routes.sendToPoolUserBets(props.poolUuid, props.rank.uuid);
+    };
+
     return (
-        <tr className={podiumMap[props.position] || ''} key={props.index}>
+        <tr className={showPodiumColors()} key={props.index}>
             <td className="positionColumn">
-                <Link to={routes.sendToPoolUserBets(params.poolUuid, props.rank.uuid)}>
-                    {props.positionIgual ? '' : props.position}
-                </Link>
+                <Link to={send()}>{props.positionIgual ? '' : props.position}</Link>
             </td>
             <td className="nameColumn">
-                <Link to={routes.sendToPoolUserBets(params.poolUuid, props.rank.uuid)}>
-                    {props.rank.name}
-                </Link>
+                <Link to={send()}>{props.rank.name}</Link>
             </td>
             <td className="pointsColumn">
-                <Link to={routes.sendToPoolUserBets(params.poolUuid, props.rank.uuid)}>
-                    {props.rank.points}
-                </Link>
+                <Link to={send()}>{props.rank.points}</Link>
             </td>
         </tr>
     );
@@ -39,7 +40,7 @@ function RankListItem(props) {
 
 RankListItem.propTypes = {
     position: PropTypes.number,
-    params: PropTypes.object,
+    poolUuid: PropTypes.string,
     index: PropTypes.string,
     rank: PropTypes.object,
     positionIgual: PropTypes.string,

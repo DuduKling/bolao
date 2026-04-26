@@ -10,27 +10,24 @@ import PartidaPlacar from './PartidaPlacar';
 import PropTypes from 'prop-types';
 
 function PartidaListItem(props) {
-    const params = props.params;
+    const shows = props.shows || [];
 
-    const checkTypeOfPlacar = () => {
-        return (
-            <PartidaPlacar
-                fixture={props.fixture}
-                viewType={props.viewType}
-                setScoreController={props.setScoreController ? props.setScoreController : () => { }}
-                isAdmin={props.isAdmin}
-            />
-        );
+    const show = {
+        asLink: 'showAsLink',
+        percent: 'showPercent',
+        resultAndPoints: 'showResultAndPoints',
+        betAndPoints: 'showBetAndPoints',
+        users: 'showUsers',
     };
 
-    const checkIfShowUsernames = () => {
-        if (props.showUsers) {
+    const checkIfShowUsers = () => {
+        if (shows.includes(show.users)) {
             const { frontId, users } = props.fixture;
 
             return (
                 <div className="users-container">
                     <label htmlFor={'toggleUsernames' + frontId}>
-                        Apostadores ({users.length})
+                        {`${users.length} apostador${users.length > 1 ? 'es' : ''}`}
                     </label>
                     <input type="checkbox" id={'toggleUsernames' + frontId} />
                     <div className="users-usernamesList">
@@ -41,7 +38,7 @@ function PartidaListItem(props) {
                                     const [name, uuid] = user.split('#');
                                     return (
                                         <div key={index}>
-                                            <Link to={routes.sendToPoolUserBets(params.poolUuid, uuid)}>{name}</Link>
+                                            <Link to={routes.sendToPoolUserBets(props.poolUuid, uuid)}>{name}</Link>
                                         </div>
                                     );
                                 })
@@ -54,7 +51,7 @@ function PartidaListItem(props) {
     };
 
     const checkIfShowPercent = () => {
-        if (props.showPercent) {
+        if (shows.includes(show.percent)) {
             return (
                 <div className="users-percent">
                     <div className="percent-triangle"></div>
@@ -64,42 +61,40 @@ function PartidaListItem(props) {
         }
     };
 
-    const checkIfShowPoints = () => {
-        if (props.fixture.points !== undefined) {
-            if (props.fixture.points !== null) {
-                return (
-                    <div className="users-points">
-                        Final:
-                        {' ' + props.fixture.final_scoreHome}
-                        x
-                        {props.fixture.final_scoreAway + ' '}
-                        | Pontos:
-                        {' ' + props.fixture.points}
-                    </div>
-                );
-            }
+    const checkIfShowResultAndPoints = () => {
+        if (shows.includes(show.resultAndPoints)) {
+            const { homeTeamScoreBet, awayTeamScoreBet, points } = props.fixture;
+
+            const pointsText = (points !== undefined && points !== null) ? `| Pontos: ${points}` : '';
+
+            return (
+                <div className="users-points">
+                    {`Resultado: ${homeTeamScoreBet}x${awayTeamScoreBet} ${pointsText}`}
+                </div>
+            );
         }
     };
 
-    const checkIfShowBets = () => {
-        const { homeTeamScoreBet, awayTeamScoreBet } = props.fixture;
-        if (homeTeamScoreBet !== undefined || awayTeamScoreBet !== undefined) {
+    const checkIfShowBetAndPoints = () => {
+        if (shows.includes(show.betAndPoints)) {
+            const { homeTeamScoreBet, awayTeamScoreBet, points } = props.fixture;
+
+            const pointsText = (points !== undefined && points !== null) ? `| Pontos: ${points}` : '';
+
             return (
                 <div className="users-points">
-                    {`Minha aposta: ${homeTeamScoreBet} x ${awayTeamScoreBet}`}
+                    {`Minha aposta: ${homeTeamScoreBet}x${awayTeamScoreBet} ${pointsText}`}
                 </div>
             );
         }
     };
 
     const checkIfShowAsLink = () => {
-        if (params !== undefined) {
-            return (<>
-                <Link to={routes.sendToPoolFixture(params.poolUuid, props.fixture.id)}>
+        if (shows.includes(show.asLink)) {
+            return (
+                <Link to={routes.sendToPoolFixture(props.poolUuid, props.fixture.id)}>
                     {insideStuff()}
                 </Link>
-                {checkIfShowUsernames()}
-            </>
             );
         }
 
@@ -125,7 +120,12 @@ function PartidaListItem(props) {
                         imagePath={props.fixture.homeTeamImagePath}
                     />
 
-                    {checkTypeOfPlacar()}
+                    <PartidaPlacar
+                        fixture={props.fixture}
+                        viewType={props.viewType}
+                        setScoreController={props.setScoreController ? props.setScoreController : () => { }}
+                        isAdmin={props.isAdmin}
+                    />
 
                     <PartidaTeam
                         extraClass="-Away"
@@ -135,11 +135,9 @@ function PartidaListItem(props) {
 
                 </div>
 
-                {checkIfShowPoints()}
-
+                {checkIfShowResultAndPoints()}
                 {checkIfShowPercent()}
-
-                {checkIfShowBets()}
+                {checkIfShowBetAndPoints()}
 
             </div>
         );
@@ -149,6 +147,7 @@ function PartidaListItem(props) {
         <li className="partidaListItem -apostadoJogo" key={props.index}>
 
             {checkIfShowAsLink()}
+            {checkIfShowUsers()}
 
         </li>
     );
@@ -157,12 +156,12 @@ function PartidaListItem(props) {
 PartidaListItem.propTypes = {
     viewType: PropTypes.string,
     fixture: PropTypes.object,
-    showUsers: PropTypes.bool,
-    showPercent: PropTypes.bool,
-    params: PropTypes.object,
-    index: PropTypes.string,
     setScoreController: PropTypes.func,
     isAdmin: PropTypes.bool,
+
+    shows: PropTypes.array,
+    poolUuid: PropTypes.string,
+    index: PropTypes.string,
 };
 
 export default PartidaListItem;

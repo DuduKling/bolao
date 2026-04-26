@@ -6,16 +6,19 @@ import PartidaPlacarInput from './PartidaPlacarInput';
 
 function PartidaPlacar(props) {
     const { homeTeamScore, awayTeamScore, id } = props.fixture;
+    const homeTeamScoreString = typeof homeTeamScore === 'number' ? String(homeTeamScore) : '';
+    const awayTeamScoreString = typeof awayTeamScore === 'number' ? String(awayTeamScore) : '';
 
-    const [scoreHome, setScoreHome] = useState(homeTeamScore ? String(homeTeamScore) : '');
-    const [scoreAway, setScoreAway] = useState(awayTeamScore ? String(awayTeamScore) : '');
+    const [scoreHome, setScoreHome] = useState(homeTeamScoreString);
+    const [scoreAway, setScoreAway] = useState(awayTeamScoreString);
 
     useEffect(() => {
         const scoresAreEmpty = scoreHome === '' && scoreAway === '';
+        const scoresAreTheSame = scoreHome === homeTeamScoreString && scoreAway === awayTeamScoreString;
 
         props.setScoreController({
             fixture: id,
-            score: scoresAreEmpty ? 'empty' : [scoreHome, scoreAway],
+            score: (scoresAreEmpty || scoresAreTheSame) ? 'empty' : [scoreHome, scoreAway],
         });
     }, [scoreHome, scoreAway]);
 
@@ -47,8 +50,8 @@ function PartidaPlacar(props) {
 PartidaPlacar.propTypes = {
     viewType: PropTypes.string,
     fixture: PropTypes.object,
-    isAdmin: PropTypes.bool,
     setScoreController: PropTypes.func,
+    isAdmin: PropTypes.bool,
 };
 
 export default PartidaPlacar;

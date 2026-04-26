@@ -4,7 +4,9 @@ import '../../css/util/partidaPlacar.css';
 import PropTypes from 'prop-types';
 
 function PartidaPlacarInput(props) {
-    const [scoreValue, setScoreValue] = useState(String(props.score) || '');
+    const scoreString = typeof props.score === 'number' ? String(props.score) : '';
+
+    const [scoreValue, setScoreValue] = useState(scoreString);
 
     const handleInputChange = (event) => {
         const { value, classList } = event.target;
@@ -18,26 +20,26 @@ function PartidaPlacarInput(props) {
             classList.add('error');
         }
 
-        setScoreValue(value);
-        props.setScoreStateHandler(value);
+        updateScore(value);
     };
 
     const increment = () => {
         let newValue = Number(scoreValue) + 1;
         if (scoreValue === '') newValue = 0;
 
-        const scoreValueString = String(newValue);
-        setScoreValue(scoreValueString);
-        props.setScoreStateHandler(scoreValueString);
+        updateScore(String(newValue));
     };
 
     const decrement = () => {
         let newValue = Number(scoreValue) - 1;
         if (newValue < 0) newValue = 0;
 
-        const scoreValueString = String(newValue);
-        setScoreValue(scoreValueString);
-        props.setScoreStateHandler(scoreValueString);
+        updateScore(String(newValue));
+    };
+
+    const updateScore = (newValue) => {
+        setScoreValue(newValue);
+        props.setScoreStateHandler(newValue);
     };
 
     const checkType = () => {
@@ -80,9 +82,10 @@ function PartidaPlacarInput(props) {
 PartidaPlacarInput.propTypes = {
     viewType: PropTypes.string,
     fixture: PropTypes.object,
-    score: PropTypes.string,
-    isAdmin: PropTypes.string,
     setScoreStateHandler: PropTypes.func,
+    isAdmin: PropTypes.string,
+
+    score: PropTypes.string,
 };
 
 export default PartidaPlacarInput;

@@ -25,11 +25,12 @@ function ChampionshipPhase(props) {
                     return (
                         <ChampionshipPhasePart
                             key={index}
-                            partName={partName}
-                            fixtures={fixtures}
                             viewType={props.viewType}
+                            fixtures={fixtures}
                             setScoreController={props.setScoreController ? props.setScoreController : () => { }}
                             isAdmin={props.isAdmin}
+                            shows={props.shows}
+                            partName={partName}
                         />
                     );
                 })
@@ -39,11 +40,13 @@ function ChampionshipPhase(props) {
 }
 
 ChampionshipPhase.propTypes = {
-    phaseName: PropTypes.string,
-    fixtures: PropTypes.object,
     viewType: PropTypes.string,
+    fixtures: PropTypes.object,
     setScoreController: PropTypes.func,
     isAdmin: PropTypes.bool,
+
+    shows: PropTypes.array,
+    phaseName: PropTypes.string,
 };
 
 export default ChampionshipPhase;

@@ -29,10 +29,7 @@ class Pool
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->execute();
-
-        $num = $stmt->rowCount();
-        if ($num <= 0) {
+        if (!$stmt->execute()) {
             http_response_code(400);
             echo json_encode(array(
                 "message" => "Não foi possível encontrar os bolões. (Error #POO1)"
@@ -219,7 +216,7 @@ class Pool
             INNER JOIN part ON part.id = pool_part.fkPartId
             INNER JOIN phase ON phase.id = part.fkPhaseId
             INNER JOIN championship ON championship.id = phase.fkChampionshipId
-            WHERE pool.id = :poolUuid
+            WHERE pool.uuid = :poolUuid
             GROUP BY pool.id
         ";
 
@@ -452,7 +449,8 @@ class Pool
     {
         $query = "SELECT fixture.id,
                 bet.homeTeamScoreBet,
-                bet.awayTeamScoreBet
+                bet.awayTeamScoreBet,
+                points
             FROM bet
             INNER JOIN fixture ON bet.fkFixtureId = fixture.id
             INNER JOIN user_pool ON bet.fkUserPoolId = user_pool.id
@@ -515,8 +513,8 @@ class Pool
     public function validateBetsData($bets)
     {
         $allFieldOk = true;
-        foreach ($bets as $key => $fixture) {
-            foreach ($fixture as $score) {
+        foreach ($bets as $fixtureId => $fixtureScore) {
+            foreach ($fixtureScore as $score) {
                 if (!preg_match("/^[0-9]{1,2}$/", $score)) {
                     $allFieldOk = false;
                     break;
@@ -537,7 +535,7 @@ class Pool
     {
         $error = false;
 
-        foreach ($bets as $key => $fixture) {
+        foreach ($bets as $fixtureId => $fixtureScore) {
             $query = "INSERT INTO bet SET
                 fkUserPoolId = :userPoolId,
                 fkFixtureId = :fixtureId,
@@ -548,9 +546,9 @@ class Pool
             $stmt = $this->conn->prepare($query);
 
             $stmt->bindParam(':userPoolId', $userPoolId);
-            $stmt->bindParam(':fixtureId', $key);
-            $stmt->bindParam(':betHome', $fixture[0]);
-            $stmt->bindParam(':betAway', $fixture[1]);
+            $stmt->bindParam(':fixtureId', $fixtureId);
+            $stmt->bindParam(':betHome', $fixtureScore[0]);
+            $stmt->bindParam(':betAway', $fixtureScore[1]);
 
             if ($stmt->execute()) {
                 $error = false;
