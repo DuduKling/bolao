@@ -2,7 +2,7 @@
     background-color: #f44336;
 }
 
-.page-title.-admin + .a {
+.page-title.-admin+.a {
     background-color: #f44336;
 }
 
@@ -197,11 +197,21 @@
 }
 
 .adminTable>tbody>tr>.markColumn>.statusMark {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: auto;
+}
+
+.adminTable>tbody>tr>.markColumn>.statusMark.-complete {
     background-color: #bcffbf;
+}
+
+.adminTable>tbody>tr>.markColumn>.statusMark.-incomplete {
+    background-color: #ffbcbc;
 }
 
 

@@ -91,6 +91,37 @@ class Pool
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getPoolParts($poolUuid)
+    {
+        $query = "SELECT
+                pool_part.*,
+                part.*
+            FROM pool
+            INNER JOIN pool_part ON pool_part.fkPoolId = pool.id
+            INNER JOIN part ON part.id = pool_part.fkPartId
+            INNER JOIN phase ON phase.id = part.fkPhaseId
+            INNER JOIN championship ON championship.id = phase.fkChampionshipId
+            WHERE pool.uuid = :poolUuid
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':poolUuid', $poolUuid);
+
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+        if ($num <= 0) {
+            http_response_code(400);
+            echo json_encode(array(
+                "message" => "Não foi possível encontrar o bolão. (Error #POO6)"
+            ));
+            exit();
+        }
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function update($poolUuid, $poolInfo)
     {
         $query = "UPDATE pool
@@ -683,6 +714,34 @@ class Pool
 
         $stmt->bindParam(':poolUuid', $poolUuid);
         $stmt->bindParam(':fixtureId', $fixtureId);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getUsersPoolParticipation($poolUuid)
+    {
+        $query = "SELECT
+                user.name as name,
+                part.name as part,
+                count(bet.id) as countBets,
+                count(fixture.id) as countFixtures
+            FROM user
+            INNER JOIN user_pool ON user.id = user_pool.fkUserId
+            INNER JOIN pool ON user_pool.fkPoolId = pool.id
+            INNER JOIN pool_part ON pool_part.fkPoolId = pool.id
+            INNER JOIN part ON part.id = pool_part.fkPartId
+            INNER JOIN fixture ON fixture.fkPartId = part.id
+            LEFT JOIN bet ON bet.fkFixtureId = fixture.id AND bet.fkUserPoolId = user_pool.id
+            WHERE pool.uuid = :poolUuid
+            GROUP BY user_pool.id, part.name
+            ORDER BY part.id
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':poolUuid', $poolUuid);
 
         $stmt->execute();
 

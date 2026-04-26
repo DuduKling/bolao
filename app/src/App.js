@@ -1,7 +1,7 @@
 import './css/App.css';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { updateJWT } from './redux/slicer/authSlicer';
@@ -97,18 +97,8 @@ function App() {
                         <Route path='admin' element={<PageAdmin />} />
                         <Route path='admin/pool' element={<PageAdminCreatePool />} />
                         <Route path='admin/pool/:poolUuid' element={<PageAdminPool />} />
+                        <Route path='admin/pool/:poolUuid/participation' element={<PageAdminApostas />} />
                         <Route path='admin/championship/:championshipId' element={<PageAdminScore />} />
-                    </Route>
-
-                    {/* ----- OLDER ROUTES ---- */}
-                    <Route path='/' element={<Outlet />} >
-                        {/* CAMPEONATO - RESTRICTED */}
-                        <Route path='campeonato' element={<UserMustBeLoggedIn />} >
-                            {/* ADMIN - RESTRICTED */}
-                            <Route path=':campeonato' element={<UserMustBeAdmin />} >
-                                <Route path=':fase/admin' element={<PageAdminApostas />} />
-                            </Route>
-                        </Route>
                     </Route>
 
                     <Route path='*' element={<PageRoot404 />} />

@@ -1,41 +1,36 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Loading from '../util/Loading';
 import http from '../../util/http';
 
 function PageAdminApostas() {
-    const [partes, setPartes] = useState('');
-    const [listNames, setListNames] = useState('');
+    const [pool, setPool] = useState({});
+    const [parts, setParts] = useState('');
+    const [participation, setParticipation] = useState('');
+
     const [loading, setLoading] = useState(false);
 
     const params = useParams();
-
-    const dataFetchedRef = useRef(false);
+    const poolUuid = params.poolUuid;
 
     useEffect(() => {
-        if (dataFetchedRef.current) return;
-        dataFetchedRef.current = true;
-
         getApostas();
     }, []);
 
     const getApostas = async () => {
         setLoading(true);
 
-        const faseID = params.fase;
+        const data = {
+            poolUuid,
+        };
 
-        const dataString = JSON.stringify({
-            faseID,
-        });
-
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/getApostasRealizadas.php`,
-            data: dataString,
-        })
+        await http.getApostasRealizadas(data)
             .then((response) => {
-                setPartes(response.partes);
-                setListNames(response.listNames);
+                setPool(response.poolInfo);
+                setParts(response.poolParts);
+                setParticipation(response.usersPoolParticipation);
+
                 setLoading(false);
             })
             .catch(() => {
@@ -44,35 +39,40 @@ function PageAdminApostas() {
     };
 
     const showHeader = () => {
-        if (partes) {
-            return partes.split(',').map(function (parte, index) {
-                return <td key={index} className="markColumn">{parte}</td>;
+        if (parts) {
+            return parts.map((parte, index) => {
+                return <td key={index} className="markColumn">{parte.name}</td>;
             });
         }
     };
 
     const showList = () => {
-        if (listNames) {
-            return listNames.map(function (user, index) {
+        if (participation) {
+            const participationByUser = participation.reduce((acc, p) => {
+                if (!acc[p.name]) { acc[p.name] = []; }
+                acc[p.name].push(p);
+                return acc;
+            }, {});
+
+            console.log(participationByUser);
+
+            return Object.entries(participationByUser).map(([user, p], index) => {
                 return (
                     <tr key={index}>
-                        <td className="nameColumn">{user.name}</td>
-
+                        <td className="nameColumn">{user}</td>
                         {
-                            partes.split(',').map(function (parte, index) {
-                                if (user.partesApostadas.includes(parte)) {
-                                    return <td key={index} className="markColumn">
-                                        <div className="statusMark"></div>
-                                    </td>;
-                                } else {
-                                    return <td key={index} className="markColumn"></td>;
-                                }
-                            }, this)
+                            p.map((parte, index) => {
+                                const complete = parte.countBets === parte.countFixtures;
+                                return <td key={index} className="markColumn">
+                                    <div className={`statusMark ${complete ? '-complete' : '-incomplete'}`}>
+                                        {`${parte.countBets} / ${parte.countFixtures}`}
+                                    </div>
+                                </td>;
+                            })
                         }
-
                     </tr>
                 );
-            }, this);
+            });
         }
     };
 
@@ -84,7 +84,7 @@ function PageAdminApostas() {
                     <table className="adminTable">
                         <caption>
                             <h3 className="page-title -admin">
-                                Apostas realizadas
+                                Admin: Participação {pool.name}
                                 <Loading loading={loading} localstorage="-withLocalStorage3" />
                             </h3>
                         </caption>

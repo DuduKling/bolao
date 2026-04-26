@@ -60,6 +60,9 @@ function PageAdmin() {
                     <div><b className="green">Status: </b>{pool.status}</div>
                 </div>
                 <div className="adminPools-actions">
+                    <Link to={routes.sendToAdminPoolParticipation(pool.uuid)}>
+                        Participação
+                    </Link>
                     <Link to={routes.sendToAdminPool(pool.uuid)}>
                         Gerenciar
                     </Link>
