@@ -22,10 +22,10 @@ import SiteFooter from './components/common/SiteFooter';
 
 import PageRoot404 from './components/pages/PageRoot404';
 import PageAdmin from './components/pages/PageAdmin';
-import PageAdminPool from './components/pages/PageAdminPool';
+import PageAdminEditPool from './components/pages/PageAdminEditPool';
 import PageAdminCreatePool from './components/pages/PageAdminCreatePool';
-import PageAdminApostas from './components/pages/PageAdminApostas';
-import PageAdminScore from './components/pages/PageAdminScore';
+import PageAdminPoolUserParticipation from './components/pages/PageAdminPoolUserParticipation';
+import PageAdminChampionshipScore from './components/pages/PageAdminChampionshipScore';
 import PagePoolUserBet from './components/pages/PagePoolUserBet';
 import PagePoolFixture from './components/pages/PagePoolFixture';
 import PagePoolBet from './components/pages/PagePoolBet';
@@ -96,9 +96,9 @@ function App() {
                     <Route element={<UserMustBeAdmin />} >
                         <Route path='admin' element={<PageAdmin />} />
                         <Route path='admin/pool' element={<PageAdminCreatePool />} />
-                        <Route path='admin/pool/:poolUuid' element={<PageAdminPool />} />
-                        <Route path='admin/pool/:poolUuid/participation' element={<PageAdminApostas />} />
-                        <Route path='admin/championship/:championshipId' element={<PageAdminScore />} />
+                        <Route path='admin/pool/:poolUuid' element={<PageAdminEditPool />} />
+                        <Route path='admin/pool/:poolUuid/participation' element={<PageAdminPoolUserParticipation />} />
+                        <Route path='admin/championship/:championshipId' element={<PageAdminChampionshipScore />} />
                     </Route>
 
                     <Route path='*' element={<PageRoot404 />} />

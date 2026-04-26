@@ -9,7 +9,7 @@ import http from '../../util/http';
 import Loading from '../util/Loading';
 import ChampionshipPhase from '../util/ChampionshipPhase';
 
-function PageAdminScore() {
+function PageAdminChampionshipScore() {
     const [fixtures, setFixtures] = useState([]);
     const [poolChampionshipInfo, setPoolChampionshipInfo] = useState({});
 
@@ -165,4 +165,4 @@ function PageAdminScore() {
     );
 }
 
-export default PageAdminScore;
+export default PageAdminChampionshipScore;

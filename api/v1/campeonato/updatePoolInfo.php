@@ -28,11 +28,12 @@ if ($userRole != 'admin') {
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/pool.php';
 $pool = new Pool();
-$pool->update($poolUuid, $reqBody->poolInfo);
-$pool->joinParts($poolUuid, $reqBody->partsSelected);
-
 $poolInfo = $pool->get($poolUuid);
-$poolChampionshipInfo = $pool->getPoolChampionshipInfoBetter($poolUuid);
+
+$pool->update($poolUuid, $reqBody->poolInfo);
+$pool->joinParts($poolInfo['id'], $reqBody->partsSelected);
+
+$poolChampionshipInfo = $pool->getPoolChampionshipInfoBetter($poolInfo['id']);
 
 http_response_code(200);
 echo json_encode(array(

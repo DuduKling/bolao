@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Loading from '../util/Loading';
 import http from '../../util/http';
 
-function PageAdminApostas() {
+function PageAdminPoolUserParticipation() {
     const [pool, setPool] = useState({});
     const [parts, setParts] = useState('');
     const [participation, setParticipation] = useState('');
@@ -107,4 +107,4 @@ function PageAdminApostas() {
     );
 }
 
-export default PageAdminApostas;
+export default PageAdminPoolUserParticipation;

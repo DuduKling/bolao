@@ -11,7 +11,7 @@ import MaterialSelect from '../util/MaterialSelect';
 import MaterialCheckbox from '../util/MaterialCheckbox';
 import Loading from '../util/Loading';
 
-function PageAdminPool() {
+function PageAdminEditPool() {
     const [pool, setPool] = useState([]);
     const [championshipInfo, setChampionshipInfo] = useState({});
     const [partsSelected, setPartsSelected] = useState({});
@@ -183,4 +183,4 @@ function PageAdminPool() {
     );
 }
 
-export default PageAdminPool;
+export default PageAdminEditPool;
