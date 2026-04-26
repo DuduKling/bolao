@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import $ from 'jquery';
 
 import '../../css/pages/pageInside.css';
 import '../../css/util/formMessage.css';
@@ -8,115 +7,79 @@ import '../../css/util/formMessage.css';
 import http from '../../util/http';
 
 import Loading from '../util/Loading';
-import PartidaListItem from '../util/PartidaListItem';
+import ChampionshipPhase from '../util/ChampionshipPhase';
 
 function PageAdminScore() {
     const [fixtures, setFixtures] = useState([]);
+    const [poolChampionshipInfo, setPoolChampionshipInfo] = useState({});
+
+    const [scores, setScores] = useState({});
+
     const [error, setError] = useState('');
     const [resp, setResp] = useState('');
-    const [campeonato, setCampeonato] = useState('');
-    const [fase, setFase] = useState('');
-    const [parte, setParte] = useState('');
 
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
 
     const params = useParams();
-    const dataFetchedRef = useRef(false);
+    const championshipId = params.championshipId;
 
     useEffect(() => {
-        if (dataFetchedRef.current) return;
-        dataFetchedRef.current = true;
-
-        getFixtures();
+        getFixturesAndCampeonato();
     }, []);
 
-    const enviaResultado = async (evento) => {
-        evento.preventDefault();
+    const registerScore = (b) => {
+        const newValue = {
+            [b.fixture]: b.score === 'empty' ? undefined : b.score
+        };
+        setScores({ ...scores, ...newValue });
+    };
+
+    const getFixturesAndCampeonato = async () => {
+        setLoading(true);
+
+        const data = {
+            championshipId: params.championshipId,
+        };
+
+        await http.getFixturesFromCampeonato(data)
+            .then((response) => {
+                setFixtures(response.fixtures);
+                setPoolChampionshipInfo(response.poolChampionshipInfo);
+                setLoading(false);
+            })
+            .catch(() => { });
+    };
+
+    const sendScores = async (event) => {
+        event.preventDefault();
 
         setError('');
         setResp('');
         setLoading2(true);
 
-        const data = [];
-        $('input[type=\'text\']').each(function (index, item) {
-            const val = $(item).val();
-            const name = $(item).attr('name');
+        const data = {
+            championshipId,
+            scores,
+        };
 
-            const [fixture, type] = name.split('_');
-
-            const resultIndex = data.findIndex((el) => el && el.fixture === fixture);
-
-            if (resultIndex === -1) {
-                data.push({
-                    fixture,
-                    [type]: val,
-                });
-            } else {
-                data[resultIndex] = {
-                    ...data[resultIndex],
-                    [type]: val,
-                };
-            }
-        });
-
-        const dataFilter = data.filter((el) => el.home && el.away);
-        if (dataFilter.length === 0) {
-            setError('Preencha ao menos um jogo completo.');
-            setLoading2(false);
-            return;
-        }
-
-        const dataString = JSON.stringify(dataFilter);
-
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/admin/postResult.php`,
-            data: dataString,
-        })
-            .then((response) => {
-                setResp(response.message);
-                setLoading2(false);
-
-                getFixtures();
-            })
-            .catch(({ message }) => {
-                setError(message);
-                setLoading2(false);
-            });
-    };
-
-    const getFixtures = async () => {
-        setLoading(true);
-
-        const parteId = params.parte;
-
-        const dataString = JSON.stringify({
-            parteId: parteId,
-            status: 'aberto',
-        });
-
-        await http.post({
-            url: `${process.env.REACT_APP_URL_BACK}/api/v1/fixture/getFixtures.php`,
-            data: dataString,
-        })
+        await http.postResult(data)
             .then((response) => {
                 setFixtures(response.fixtures);
-                setCampeonato(response.campeonato);
-                setFase(response.fase);
-                setParte(response.parte);
+                setPoolChampionshipInfo(response.poolChampionshipInfo);
 
-                setLoading(false);
+                setResp(response.message);
+                setLoading2(false);
             })
             .catch(({ message }) => {
-                setError(message);
-                setLoading(false);
+                setError(message || 'Ocorreu um erro, contate o Administrador');
+                setLoading2(false);
             });
     };
 
     const AJAXresp = () => {
         if (error === '' && resp === '') {
             return '';
-
         } else if (resp !== '') {
             return (
                 <div className="message">
@@ -125,7 +88,6 @@ function PageAdminScore() {
                     </p>
                 </div>
             );
-
         } else if (error !== '') {
             return (
                 <div className="message">
@@ -141,11 +103,36 @@ function PageAdminScore() {
         if (Object.keys(fixtures).length !== 0) {
             return (
                 <div className="EnviarAposta">
-                    <input type="submit" className="SendButton" value="Enviar" />
+                    <input type="submit" className="SendButton" value="Salvar" />
                     <Loading loading={loading2} />
                 </div>
             );
         }
+    };
+
+    const groupFixtures = (fixtures) => {
+        const fix = fixtures.reduce((acc, fixture) => {
+            if (!acc[fixture.phaseName]) { acc[fixture.phaseName] = []; }
+            acc[fixture.phaseName].push(fixture);
+            return acc;
+        }, {});
+
+        return Object.entries(fix);
+    };
+
+    const showFixtures = () => {
+        return groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
+            return (
+                <ChampionshipPhase
+                    key={index}
+                    phaseName={phaseName}
+                    fixtures={fixtures}
+                    viewType={'edit'}
+                    setScoreController={registerScore}
+                    isAdmin={true}
+                />
+            );
+        });
     };
 
     return (
@@ -154,35 +141,17 @@ function PageAdminScore() {
 
                 <form
                     className="main-partidaForm"
-                    onSubmit={(event) => enviaResultado(event)}
+                    onSubmit={async (event) => await sendScores(event)}
                     method="post"
                 >
 
-                    <ul className="partidaLista -admin">
-                        <h3 className="pageTitle">
-                            administrador
-                            <br />
-                            <span className="subTitle">
-                                {campeonato ? campeonato + ' - ' : ''}
-                                {fase}
-                                {parte ? ' / ' + parte : ''}
-                            </span>
-                        </h3>
-                        <Loading loading={loading} />
-                        {
-                            fixtures.map(function (team, index) {
-                                return (
+                    <ul className="partidaLista">
+                        <div className="dashboard-top">
+                            <h2>{poolChampionshipInfo ? poolChampionshipInfo.name : ''}</h2>
+                            <Loading loading={loading} />
+                        </div>
 
-                                    <PartidaListItem
-                                        key={index}
-                                        team={team}
-                                        typeAll={''}
-                                        isAdmin={'admin'}
-                                    />
-
-                                );
-                            }, this)
-                        }
+                        {showFixtures()}
 
                     </ul>
 
@@ -192,7 +161,7 @@ function PageAdminScore() {
 
                 {AJAXresp()}
             </div>
-        </section>
+        </section >
     );
 }
 

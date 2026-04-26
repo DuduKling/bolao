@@ -1,4 +1,6 @@
 <?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/pointsStrategy.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/pointsCalculatorDefault.php';
 
 class Championship
 {
@@ -95,5 +97,58 @@ class Championship
         }
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function validateScoresData($scores)
+    {
+        $allFieldOk = true;
+        foreach ($scores as $fixtureId => $fixtureScore) {
+            foreach ($fixtureScore as $score) {
+                if (!preg_match("/^[0-9]{1,2}$/", $score)) {
+                    $allFieldOk = false;
+                    break;
+                }
+            }
+        }
+
+        if (!$allFieldOk) {
+            http_response_code(400);
+            echo json_encode(array(
+                "message" => "Algum valor de resultado não está correto ou está faltando! Por favor verifique e tente novamente. (Error #APR1)"
+            ));
+            exit();
+        }
+    }
+
+    public function setFixtureScoreAndUpdateBetPoints($scores)
+    {
+        foreach ($scores as $fixtureId => $fixtureScore) {
+            $this->setFixtureScore($fixtureId, $fixtureScore);
+            $this->updateBetPoints($fixtureId, $fixtureScore);
+        }
+    }
+
+    public function setFixtureScore($fixtureId, $fixtureScore)
+    {
+        $query = "UPDATE fixture
+            SET
+                homeTeamScore = :homeTeamScore,
+                awayTeamScore = :awayTeamScore
+            WHERE id = :fixtureId
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':fixtureId', $fixtureId);
+        $stmt->bindParam(':homeTeamScore', $fixtureScore[0]);
+        $stmt->bindParam(':awayTeamScore', $fixtureScore[1]);
+
+        $stmt->execute();
+    }
+
+    public function updateBetPoints($fixtureId, $fixtureScore)
+    {
+        $context = new PointsStrategy(new PointsCalculatorDefault($this->conn));
+        $context->updatePoints($fixtureId, $fixtureScore);
     }
 }

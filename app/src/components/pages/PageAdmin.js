@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../../css/pages/admin.css';
@@ -10,23 +10,14 @@ import Loading from '../util/Loading';
 
 function PageAdmin() {
     const [pools, setPools] = useState([]);
+    const [campeonatos, setCampeonatos] = useState([]);
+
     const [loading, setLoading] = useState(false);
-
-    const dataFetchedRef = useRef(false);
-
-    const LOCAL_STORAGE_ITEM = 'pools';
+    const [loading2, setLoading2] = useState(false);
 
     useEffect(() => {
-        const cachedPools = localStorage.getItem(LOCAL_STORAGE_ITEM);
-        if (cachedPools) {
-            const data = JSON.parse(cachedPools);
-            setPools(data.allPools);
-        }
-
-        if (dataFetchedRef.current) return;
-        dataFetchedRef.current = true;
-
         getPools();
+        getCampeonatos();
     }, []);
 
     const getPools = async () => {
@@ -37,14 +28,27 @@ function PageAdmin() {
                 setPools(response.allPools);
 
                 setLoading(false);
-                localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
             })
             .catch(() => {
                 setLoading(false);
             });
     };
 
-    const showCampeonatos = (pool, index) => {
+    const getCampeonatos = async () => {
+        setLoading2(true);
+
+        await http.getCampeonatos()
+            .then((response) => {
+                setCampeonatos(response);
+
+                setLoading2(false);
+            })
+            .catch(() => {
+                setLoading2(false);
+            });
+    };
+
+    const showPools = (pool, index) => {
         return (
             <li key={index} className="adminPools">
                 <div className="adminPools-title">{pool.name}</div>
@@ -58,6 +62,20 @@ function PageAdmin() {
                 <div className="adminPools-actions">
                     <Link to={routes.sendToAdminPool(pool.uuid)}>
                         Gerenciar
+                    </Link>
+                </div>
+            </li>
+        );
+    };
+
+    const showChampionships = (champ, index) => {
+        return (
+            <li key={index} className="adminPools">
+                <div className="adminPools-title">{champ.name}</div>
+                <div className="adminPools-details"></div>
+                <div className="adminPools-actions">
+                    <Link to={routes.sendToAdminChampionship(champ.id)}>
+                        Resultados
                     </Link>
                 </div>
             </li>
@@ -79,12 +97,21 @@ function PageAdmin() {
                 </h3>
                 <ul className="adminPools-container">
                     {
-                        pools.map((pool, index) => showCampeonatos(pool, index))
+                        pools.map((pool, index) => showPools(pool, index))
+                    }
+                </ul>
+                <br />
+                <h3 className="page-title -admin">
+                    Admin: Campeonatos
+                    <Loading loading={loading2} localstorage="-withLocalStorage" />
+                </h3>
+                <ul className="adminPools-container">
+                    {
+                        campeonatos.map((champ, index) => showChampionships(champ, index))
                     }
                 </ul>
             </div>
         </div>
-
     );
 }
 

@@ -97,6 +97,7 @@ function App() {
                         <Route path='admin' element={<PageAdmin />} />
                         <Route path='admin/pool' element={<PageAdminCreatePool />} />
                         <Route path='admin/pool/:poolUuid' element={<PageAdminPool />} />
+                        <Route path='admin/championship/:championshipId' element={<PageAdminScore />} />
                     </Route>
 
                     {/* ----- OLDER ROUTES ---- */}
@@ -106,7 +107,6 @@ function App() {
                             {/* ADMIN - RESTRICTED */}
                             <Route path=':campeonato' element={<UserMustBeAdmin />} >
                                 <Route path=':fase/admin' element={<PageAdminApostas />} />
-                                <Route path=':fase/:parte/admin' element={<PageAdminScore />} />
                             </Route>
                         </Route>
                     </Route>

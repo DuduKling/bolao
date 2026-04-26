@@ -21,6 +21,8 @@ const apiRoutes = {
     getBetsFromFixture: `${url}/api/v1/bets/getBetsFromFixture.php`,
     makeBets: `${url}/api/v1/bets/makeBets.php`,
 
+    postResult: `${url}/api/v1/admin/postResult.php`,
+
     getRank: `${url}/api/v1/fixture/getRank.php`,
     getPoolFixtures: `${url}/api/v1/fixture/getPoolFixtures.php`,
 };
@@ -84,6 +86,11 @@ class http {
 
     static makeBets(data = {}) {
         const url = apiRoutes.makeBets;
+        return this.post({ url, data, withCredentials: true });
+    }
+
+    static postResult(data = {}) {
+        const url = apiRoutes.postResult;
         return this.post({ url, data, withCredentials: true });
     }
 

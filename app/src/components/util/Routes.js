@@ -17,6 +17,7 @@ const sendToUserForgotPassword = () => '/user/esqueci';
 const sendToAdmin = () => '/admin';
 const sendToAdminPoolCreate = () => '/admin/pool';
 const sendToAdminPool = (poolUuid) => `/admin/pool/${poolUuid}`;
+const sendToAdminChampionship = (championshipId) => `/admin/championship/${championshipId}`;
 
 export default {
     sendToHome,
@@ -35,4 +36,5 @@ export default {
     sendToAdmin,
     sendToAdminPoolCreate,
     sendToAdminPool,
+    sendToAdminChampionship,
 };
