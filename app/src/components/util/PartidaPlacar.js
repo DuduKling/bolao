@@ -5,12 +5,17 @@ import PropTypes from 'prop-types';
 import PartidaPlacarInput from './PartidaPlacarInput';
 
 function PartidaPlacar(props) {
-    const [scoreHome, setScoreHome] = useState('');
-    const [scoreAway, setScoreAway] = useState('');
+    const { homeTeamScore, awayTeamScore, id } = props.fixture;
+
+    const [scoreHome, setScoreHome] = useState(homeTeamScore ? String(homeTeamScore) : '');
+    const [scoreAway, setScoreAway] = useState(awayTeamScore ? String(awayTeamScore) : '');
 
     useEffect(() => {
+        const scoresAreEmpty = scoreHome === '' && scoreAway === '';
+
         props.setScoreController({
-            [props.fixture.id]: [scoreHome, scoreAway],
+            fixture: id,
+            score: scoresAreEmpty ? 'empty' : [scoreHome, scoreAway],
         });
     }, [scoreHome, scoreAway]);
 
@@ -19,8 +24,8 @@ function PartidaPlacar(props) {
 
             <PartidaPlacarInput
                 fixture={props.fixture}
-                score={props.fixture.homeTeamScore}
-                readOnly={props.readOnlyHomeScore || props.readOnly}
+                score={homeTeamScore}
+                viewType={props.viewType}
                 isAdmin={props.isAdmin}
                 setScoreStateHandler={setScoreHome}
             />
@@ -29,8 +34,8 @@ function PartidaPlacar(props) {
 
             <PartidaPlacarInput
                 fixture={props.fixture}
-                score={props.fixture.awayTeamScore}
-                readOnly={props.readOnlyAwayScore || props.readOnly}
+                score={awayTeamScore}
+                viewType={props.viewType}
                 isAdmin={props.isAdmin}
                 setScoreStateHandler={setScoreAway}
             />
@@ -40,11 +45,9 @@ function PartidaPlacar(props) {
 }
 
 PartidaPlacar.propTypes = {
-    readOnly: PropTypes.bool,
+    viewType: PropTypes.string,
     fixture: PropTypes.object,
-    readOnlyHomeScore: PropTypes.bool,
     isAdmin: PropTypes.bool,
-    readOnlyAwayScore: PropTypes.bool,
     setScoreController: PropTypes.func,
 };
 

@@ -102,7 +102,6 @@ function PagePoolUserBet() {
                     key={index}
                     phaseName={phaseName}
                     fixtures={fixtures}
-                    readOnly={true}
                 />
             );
         });

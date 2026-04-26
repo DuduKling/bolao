@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../../css/util/partidaPlacar.css';
 
 import PropTypes from 'prop-types';
 
 function PartidaPlacarInput(props) {
-    const [scoreValue, setScoreValue] = useState('');
-
-    useEffect(() => {
-        props.setScoreStateHandler(scoreValue);
-    }, [scoreValue]);
+    const [scoreValue, setScoreValue] = useState(String(props.score) || '');
 
     const handleInputChange = (event) => {
         const { value, classList } = event.target;
@@ -29,42 +25,48 @@ function PartidaPlacarInput(props) {
     const increment = () => {
         let newValue = Number(scoreValue) + 1;
         if (scoreValue === '') newValue = 0;
-        setScoreValue(String(newValue));
+
+        const scoreValueString = String(newValue);
+        setScoreValue(scoreValueString);
+        props.setScoreStateHandler(scoreValueString);
     };
 
     const decrement = () => {
         let newValue = Number(scoreValue) - 1;
         if (newValue < 0) newValue = 0;
-        setScoreValue(String(newValue));
+
+        const scoreValueString = String(newValue);
+        setScoreValue(scoreValueString);
+        props.setScoreStateHandler(scoreValueString);
     };
 
     const checkType = () => {
-        if (props.readOnly) {
+        if (props.viewType === 'edit') {
             return (
-                <p className="plac-num">{props.score}</p>
+                <div>
+                    <div className="input-container">
+                        <input
+                            type="number"
+                            placeholder="X"
+                            name={props.fixture.idfixture}
+                            onInput={handleInputChange}
+                            required={props.isAdmin ? '' : 'required'}
+                            maxLength="2"
+                            pattern="^[0-9]{1,2}$"
+                            value={scoreValue}
+                        />
+                        <label></label>
+                    </div>
+                    <div className="button-container">
+                        <button type="button" tabIndex="-1" onClick={() => decrement()}>-</button>
+                        <button type="button" tabIndex="-1" onClick={() => increment()}>+</button>
+                    </div>
+                </div>
             );
         }
 
         return (
-            <div>
-                <div className="input-container">
-                    <input
-                        type="number"
-                        placeholder="X"
-                        name={props.fixture.idfixture}
-                        onInput={handleInputChange}
-                        required={props.isAdmin ? '' : 'required'}
-                        maxLength="2"
-                        pattern="^[0-9]{1,2}$"
-                        value={scoreValue}
-                    />
-                    <label></label>
-                </div>
-                <div className="button-container">
-                    <button type="button" tabIndex="-1" onClick={() => decrement()}>-</button>
-                    <button type="button" tabIndex="-1" onClick={() => increment()}>+</button>
-                </div>
-            </div>
+            <p className="plac-num">{props.score}</p>
         );
     };
 
@@ -76,7 +78,7 @@ function PartidaPlacarInput(props) {
 }
 
 PartidaPlacarInput.propTypes = {
-    readOnly: PropTypes.bool,
+    viewType: PropTypes.string,
     fixture: PropTypes.object,
     score: PropTypes.string,
     isAdmin: PropTypes.string,

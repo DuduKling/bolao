@@ -17,7 +17,7 @@ function ChampionshipPhasePart(props) {
                             <PartidaListItem
                                 key={fixture.id}
                                 fixture={fixture}
-                                readOnly={props.readOnly}
+                                viewType={props.viewType}
                                 setScoreController={props.setScoreController}
                                 isAdmin={props.isAdmin}
                             />
@@ -32,7 +32,7 @@ function ChampionshipPhasePart(props) {
 ChampionshipPhasePart.propTypes = {
     partName: PropTypes.string,
     fixtures: PropTypes.object,
-    readOnly: PropTypes.bool,
+    viewType: PropTypes.string,
     setScoreController: PropTypes.func,
     isAdmin: PropTypes.bool,
 };

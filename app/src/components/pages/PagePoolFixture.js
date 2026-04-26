@@ -74,7 +74,6 @@ function PagePoolFixture() {
                                     <PartidaListItem
                                         key={index}
                                         fixture={fixture}
-                                        readOnly={true}
                                         showUsers={true}
                                         showPercent={true}
                                         params={params}

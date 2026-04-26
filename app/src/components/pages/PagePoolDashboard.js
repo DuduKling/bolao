@@ -134,7 +134,6 @@ function PagePoolDashboard() {
                             <PartidaListItem
                                 key={index}
                                 fixture={fixture}
-                                readOnly={true}
                                 params={params}
                             />
                         );
@@ -165,7 +164,6 @@ function PagePoolDashboard() {
                             <PartidaListItem
                                 key={index}
                                 fixture={fixture}
-                                readOnly={true}
                                 params={params}
                             />
                         );

@@ -50,7 +50,7 @@ class Championship
             exit();
         }
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getFixtures($championshipId)

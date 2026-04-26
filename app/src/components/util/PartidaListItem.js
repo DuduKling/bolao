@@ -16,9 +16,7 @@ function PartidaListItem(props) {
         return (
             <PartidaPlacar
                 fixture={props.fixture}
-                readOnly={props.readOnly}
-                readOnlyHomeScore={typeof props.fixture.homeTeamScore === 'number'}
-                readOnlyAwayScore={typeof props.fixture.awayTeamScore === 'number'}
+                viewType={props.viewType}
                 setScoreController={props.setScoreController ? props.setScoreController : () => { }}
                 isAdmin={props.isAdmin}
             />
@@ -157,7 +155,7 @@ function PartidaListItem(props) {
 }
 
 PartidaListItem.propTypes = {
-    readOnly: PropTypes.bool,
+    viewType: PropTypes.string,
     fixture: PropTypes.object,
     showUsers: PropTypes.bool,
     showPercent: PropTypes.bool,

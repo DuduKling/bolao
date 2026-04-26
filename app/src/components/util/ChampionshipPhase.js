@@ -27,8 +27,8 @@ function ChampionshipPhase(props) {
                             key={index}
                             partName={partName}
                             fixtures={fixtures}
-                            readOnly={props.readOnly}
-                            setScoreController={props.setScoreController ? props.setScoreController : () => {}}
+                            viewType={props.viewType}
+                            setScoreController={props.setScoreController ? props.setScoreController : () => { }}
                             isAdmin={props.isAdmin}
                         />
                     );
@@ -41,7 +41,7 @@ function ChampionshipPhase(props) {
 ChampionshipPhase.propTypes = {
     phaseName: PropTypes.string,
     fixtures: PropTypes.object,
-    readOnly: PropTypes.bool,
+    viewType: PropTypes.string,
     setScoreController: PropTypes.func,
     isAdmin: PropTypes.bool,
 };

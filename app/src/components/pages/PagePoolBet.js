@@ -34,7 +34,10 @@ function PagePoolBet() {
     }, []);
 
     const registerBet = (b) => {
-        setUserBets({ ...userBets, ...b });
+        const newValue = {
+            [b.fixture]: b.score === 'empty' ? undefined : b.score
+        };
+        setUserBets({ ...userBets, ...newValue });
     };
 
     const getFixtures = async () => {
@@ -170,7 +173,7 @@ function PagePoolBet() {
                     key={index}
                     phaseName={phaseName}
                     fixtures={fixtures}
-                    readOnly={userHasPlacedBet}
+                    viewType={userHasPlacedBet ? '' : 'edit'}
                     setScoreController={registerBet}
                 />
             );
