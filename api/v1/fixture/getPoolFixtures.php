@@ -31,10 +31,11 @@ $poolFixtures = $pool->getPoolFixtures($poolUuid);
 
 $poolData = $pool->getData($poolUuid);
 
-$userHasJoined = $pool->userHasJoined($userData['id'], $poolData['id']);
+$userJoin = $pool->userHasJoined($userData['id'], $poolData['id']);
 
-if ($userHasJoined) {
+if ($userJoin['joined']) {
     $userPlacedBets = $pool->getUserPoolBets($userData['id'], $poolUuid);
+    $userBetParticipation = $pool->getUserBetParticipation($userData['id'], $poolUuid);
 
     http_response_code(200);
     echo json_encode(array(
@@ -42,6 +43,7 @@ if ($userHasJoined) {
         "poolChampionshipInfo" => $poolChampionshipInfo,
         'poolFixtures'=> $poolFixtures,
         'userPlacedBets' => $userPlacedBets,
+        'userBetParticipation' => $userBetParticipation,
     ));
     exit();
 }

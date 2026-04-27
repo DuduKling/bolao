@@ -30,23 +30,25 @@ $pool = new Pool();
 
 $poolData = $pool->getData($poolUuid);
 
-$userHasJoined = $pool->userHasJoined($userData['id'], $poolData['id']);
+$userJoin = $pool->userHasJoined($userData['id'], $poolData['id']);
 
-if ($userHasJoined) {
-    http_response_code(400);
-    echo json_encode(array(
-        "message" => "Usuário já está participando deste bolão. Suas apostas já foram registradas (Error #POO2)"
-    ));
-    exit();
+$userPoolId = $userJoin['userPoolId'];
+if (!$userJoin['joined']) {
+    $userPoolId = $pool->joinUserInPool($userData['id'], $poolData['id']);
 }
-
-$userPoolId = $pool->joinUserInPool($userData['id'], $poolData['id']);
 
 $pool->validateBetsData($userBets);
 
 $pool->makeBets($userPoolId, $userBets);
 
+$poolFixtures = $pool->getPoolFixtures($poolUuid);
+$userPlacedBets = $pool->getUserPoolBets($userData['id'], $poolUuid);
+$userBetParticipation = $pool->getUserBetParticipation($userData['id'], $poolUuid);
+
 http_response_code(200);
 echo json_encode(array(
     "message" => "Aposta realizada com sucesso!",
+    'poolFixtures' => $poolFixtures,
+    'userPlacedBets' => $userPlacedBets,
+    'userBetParticipation' => $userBetParticipation,
 ));

@@ -22,10 +22,15 @@ function ChampionshipPhase(props) {
             </h3>
             {
                 groupFixtures(props.fixtures).map(function ([partName, fixtures], index) {
+                    let viewType = props.viewType;
+                    if (props.partViewTypeEditList?.includes(partName)) {
+                        viewType = 'edit';
+                    }
+
                     return (
                         <ChampionshipPhasePart
                             key={index}
-                            viewType={props.viewType}
+                            viewType={viewType}
                             fixtures={fixtures}
                             setScoreController={props.setScoreController ? props.setScoreController : () => { }}
                             isAdmin={props.isAdmin}
@@ -47,6 +52,7 @@ ChampionshipPhase.propTypes = {
 
     shows: PropTypes.array,
     phaseName: PropTypes.string,
+    partViewTypeEditList: PropTypes.array,
 };
 
 export default ChampionshipPhase;

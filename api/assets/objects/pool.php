@@ -517,10 +517,17 @@ class Pool
 
         $num = $stmt->rowCount();
         if ($num > 0) {
-            return true;
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return array(
+                'joined' => true,
+                'userPoolId' => $row['id']
+            );
         }
 
-        return false;
+        return array(
+            'joined' => false
+        );
     }
 
     public function joinUserInPool($userId, $poolId)
@@ -741,6 +748,33 @@ class Pool
 
         $stmt = $this->conn->prepare($query);
 
+        $stmt->bindParam(':poolUuid', $poolUuid);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserBetParticipation($userId, $poolUuid)
+    {
+        $query = "SELECT
+                part.name as part,
+                count(bet.id) as countBets
+            FROM user
+            INNER JOIN user_pool ON user.id = user_pool.fkUserId
+            INNER JOIN pool ON user_pool.fkPoolId = pool.id
+            INNER JOIN pool_part ON pool_part.fkPoolId = pool.id
+            INNER JOIN part ON part.id = pool_part.fkPartId
+            INNER JOIN fixture ON fixture.fkPartId = part.id
+            LEFT JOIN bet ON bet.fkFixtureId = fixture.id AND bet.fkUserPoolId = user_pool.id
+            WHERE pool.uuid = :poolUuid
+            AND user.id = :userId
+            GROUP BY user_pool.id, part.name
+        ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':userId', $userId);
         $stmt->bindParam(':poolUuid', $poolUuid);
 
         $stmt->execute();

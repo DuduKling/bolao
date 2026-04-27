@@ -28,9 +28,9 @@ $poolChampionshipInfo = $pool->getPoolChampionshipInfo($poolUuid);
 $poolFixtures = $pool->getPoolFixtures($poolUuid);
 $poolData = $pool->getData($poolUuid);
 
-$userHasJoined = $pool->userHasJoined($userData['id'], $poolData['id']);
+$userJoin = $pool->userHasJoined($userData['id'], $poolData['id']);
 
-if (!$userHasJoined) {
+if (!$userJoin['joined']) {
     http_response_code(400);
     echo json_encode(array(
         "message" => "Usuário não está participando deste bolão. (Error #GBFU1)"

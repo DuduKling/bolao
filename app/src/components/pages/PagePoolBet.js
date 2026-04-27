@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import '../../css/pages/pageInside.css';
 import '../../css/util/formMessage.css';
 
 import http from '../../util/http';
-import routes from '../util/Routes';
 
 import Loading from '../util/Loading';
 import ChampionshipPhase from '../util/ChampionshipPhase';
@@ -17,14 +15,13 @@ function PagePoolBet() {
 
     const [userBets, setUserBets] = useState({});
     const [userHasPlacedBet, setUserHasPlacedBet] = useState(false);
+    const [userBetParticipation, setUserBetParticipation] = useState([]);
 
     const [error, setError] = useState('');
     const [resp, setResp] = useState('');
 
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
-
-    const userUuid = useSelector((state) => state.auth.userUuid);
 
     const params = useParams();
     const poolUuid = params.poolUuid;
@@ -50,14 +47,15 @@ function PagePoolBet() {
         await http.getPoolFixtures(data)
             .then((response) => {
                 setPoolChampionshipInfo(response.poolChampionshipInfo);
+                setUserBetParticipation(response.userBetParticipation);
 
-                let fixtures = response.poolFixtures;
                 if (response.userPlacedBets && response.userPlacedBets.length > 0) {
                     setUserHasPlacedBet(true);
-                } else {
-                    removeFixturesScores(fixtures);
                 }
-                setFixtures(fixtures);
+
+                const fix = response.poolFixtures;
+                mergeFixturesAndBets(fix, response.userPlacedBets);
+                setFixtures(fix);
 
                 setLoading(false);
             })
@@ -67,10 +65,21 @@ function PagePoolBet() {
             });
     };
 
-    const removeFixturesScores = (fixtures) => {
+    const mergeFixturesAndBets = (fixtures, userBetsToMerge) => {
+        const bets = userBetsToMerge.reduce((acc, b) => {
+            acc[b.id] = b;
+            return acc;
+        }, {});
         for (const fixture of fixtures) {
             fixture.awayTeamScore = null;
             fixture.homeTeamScore = null;
+
+            if (bets[fixture.id]) {
+                const { homeTeamScoreBet, awayTeamScoreBet } = bets[fixture.id];
+
+                fixture.homeTeamScore = homeTeamScoreBet;
+                fixture.awayTeamScore = awayTeamScoreBet;
+            }
         }
     };
 
@@ -89,6 +98,12 @@ function PagePoolBet() {
         await http.makeBets(data)
             .then((response) => {
                 setResp(response.message);
+                setUserBetParticipation(response.userBetParticipation);
+
+                const fix = response.poolFixtures;
+                mergeFixturesAndBets(fix, response.userPlacedBets);
+                setFixtures(fix);
+
                 setLoading2(false);
             })
             .catch(({ message }) => {
@@ -119,26 +134,44 @@ function PagePoolBet() {
         }
     };
 
-    const showButtonToUserBets = () => {
+    const showUserMessages = () => {
+        const messages = [];
+
         if (userHasPlacedBet) {
-            return (
-                <div className="multipleMessage">
-                    <p className="FormMessage -success">
-                        Você já apostou para esta parte do campeonato!
-                    </p>
-                    <Link className="SendButton" to={routes.sendToPoolUserBets(poolUuid, userUuid)}>
-                        Veja sua aposta
-                    </Link>
-                </div>
-            );
+            messages.push({
+                color: '-success',
+                text: 'Você já está participando deste campeonato!',
+            });
         }
+
+        const userHasMissingPartsToBet = userBetParticipation.filter((b) => b.countBets === 0).length;
+        if (userHasMissingPartsToBet > 0) {
+            const text = userHasMissingPartsToBet === 1 ?
+                `Existe ${userHasMissingPartsToBet} parte pendente para apostar` :
+                `Existem ${userHasMissingPartsToBet} partes pendentes para apostar`;
+
+            messages.push({
+                color: '-warning',
+                text,
+            });
+        }
+
+        return (<>
+            {
+                messages.map((m, i) => (
+                    <p key={i} className={`FormMessage ${m.color}`}>{m.text}</p>
+                ))
+            }
+        </>);
     };
 
     const showButton = () => {
-        if (!userHasPlacedBet && Object.keys(fixtures).length !== 0) {
+        const hasFixtures = Object.keys(fixtures).length !== 0;
+        const userHasMissingPartsToBet = userBetParticipation.filter((b) => b.countBets === 0).length;
+        if (hasFixtures && userHasMissingPartsToBet > 0) {
             return (
                 <>
-                    <p className="sendButtonMessage">Lembre-se que, ao enviar suas apostas não será mais possível modificá-las.</p>
+                    {/* <p className="sendButtonMessage">Lembre-se que, ao enviar suas apostas não será mais possível modificá-las.</p> */}
                     <div className="EnviarAposta">
                         <input type="submit" className="SendButton" value="Enviar" />
                         <Loading loading={loading2} />
@@ -159,14 +192,6 @@ function PagePoolBet() {
     };
 
     const showFixtures = () => {
-        if (userHasPlacedBet) {
-            return (
-                <div className="phaseContainer">
-                    <h3 className="pageTitle">{fixtures[0].phaseName}</h3>
-                </div>
-            );
-        }
-
         return groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
             return (
                 <ChampionshipPhase
@@ -175,6 +200,7 @@ function PagePoolBet() {
                     fixtures={fixtures}
                     viewType={userHasPlacedBet ? '' : 'edit'}
                     setScoreController={registerBet}
+                    partViewTypeEditList={userBetParticipation.map((b) => b.countBets === 0 ? b.part : '')}
                 />
             );
         });
@@ -190,12 +216,16 @@ function PagePoolBet() {
 
                 <ul className="partidaLista">
                     <div className="dashboard-top">
-                        <h2>{poolChampionshipInfo.championshipName}</h2>
+                        <h2>Aposte agora!</h2>
                         <Loading loading={loading} />
                     </div>
-                    <h3 className="pageTitle">
-                        Bolão: {poolChampionshipInfo ? poolChampionshipInfo.name : ''}
-                    </h3>
+                    <p className="metadata">
+                        {poolChampionshipInfo ? poolChampionshipInfo.name : ''}
+                        <br />
+                        {poolChampionshipInfo.championshipName}
+                    </p>
+
+                    {showUserMessages()}
 
                     {showFixtures()}
 
@@ -213,7 +243,6 @@ function PagePoolBet() {
         <section className="main-container">
             <div className="main-content">
                 {showFixturesToBet()}
-                {showButtonToUserBets()}
             </div>
         </section>
     );
