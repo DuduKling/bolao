@@ -1,6 +1,0 @@
-POST {{url}}/api/v1/campeonato/getCampeonatoInfo.php
-Content-Type: application/json
-
-{
-    "campeonatoID": "1"
-}

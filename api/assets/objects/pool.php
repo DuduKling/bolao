@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/util/uuid.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/uuid.php';
 
 class Pool
 {

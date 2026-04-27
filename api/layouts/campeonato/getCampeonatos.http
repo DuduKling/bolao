@@ -1,6 +1,0 @@
-POST {{url}}/api/v1/campeonato/getCampeonatos.php
-Content-Type: application/json
-
-{
-    
-}

@@ -1,6 +1,0 @@
-POST {{url}}/api/v1/user/authValidate.php
-Content-Type: application/json
-
-{
-    "jwt": "{{token}}"
-}

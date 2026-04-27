@@ -1,7 +1,7 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/api/models/user.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/userModel.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/config/jwt.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/util/uuid.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/uuid.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/api/assets/objects/auth.php';
 
 class User

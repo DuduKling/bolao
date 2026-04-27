@@ -1,8 +1,0 @@
-POST {{url}}/api/v1/user/create.php
-Content-Type: application/json
-
-{
-    "completename": "teste",
-    "email": "teste@mail.com",
-    "password": "teste"
-}
