@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import '../../css/pages/pageInside.css';
 import '../../css/util/formMessage.css';
 
 import http from '../../util/http';
+import routes from '../util/Routes';
 
 import Loading from '../util/Loading';
 import ChampionshipPhase from '../util/ChampionshipPhase';
@@ -22,6 +24,8 @@ function PagePoolBet() {
 
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
+
+    const userUuid = useSelector((state) => state.auth.userUuid);
 
     const params = useParams();
     const poolUuid = params.poolUuid;
@@ -53,8 +57,9 @@ function PagePoolBet() {
                     setUserHasPlacedBet(true);
                 }
 
-                const fix = response.poolFixtures;
+                let fix = response.poolFixtures;
                 mergeFixturesAndBets(fix, response.userPlacedBets);
+                fix = filterFixturesWithoutBets(fix, response.userBetParticipation);
                 setFixtures(fix);
 
                 setLoading(false);
@@ -71,8 +76,8 @@ function PagePoolBet() {
             return acc;
         }, {});
         for (const fixture of fixtures) {
-            fixture.awayTeamScore = null;
             fixture.homeTeamScore = null;
+            fixture.awayTeamScore = null;
 
             if (bets[fixture.id]) {
                 const { homeTeamScoreBet, awayTeamScoreBet } = bets[fixture.id];
@@ -81,6 +86,11 @@ function PagePoolBet() {
                 fixture.awayTeamScore = awayTeamScoreBet;
             }
         }
+    };
+
+    const filterFixturesWithoutBets = (fixtures, participation) => {
+        const missingPartsToBet = new Set(participation.map((b) => b.countBets === 0 ? b.part : ''));
+        return fixtures.filter((f) => missingPartsToBet.has(f.partName));
     };
 
     const sendBets = async (event) => {
@@ -98,12 +108,8 @@ function PagePoolBet() {
         await http.makeBets(data)
             .then((response) => {
                 setResp(response.message);
-                setUserBetParticipation(response.userBetParticipation);
-
-                const fix = response.poolFixtures;
-                mergeFixturesAndBets(fix, response.userPlacedBets);
-                setFixtures(fix);
-
+                setFixtures([]);
+                setUserBetParticipation([]);
                 setLoading2(false);
             })
             .catch(({ message }) => {
@@ -192,18 +198,28 @@ function PagePoolBet() {
     };
 
     const showFixtures = () => {
-        return groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
-            return (
-                <ChampionshipPhase
-                    key={index}
-                    phaseName={phaseName}
-                    fixtures={fixtures}
-                    viewType={userHasPlacedBet ? '' : 'edit'}
-                    setScoreController={registerBet}
-                    partViewTypeEditList={userBetParticipation.map((b) => b.countBets === 0 ? b.part : '')}
-                />
-            );
-        });
+        if (fixtures.length > 0) {
+            return groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
+                return (
+                    <ChampionshipPhase
+                        key={index}
+                        phaseName={phaseName}
+                        fixtures={fixtures}
+                        viewType={userHasPlacedBet ? '' : 'edit'}
+                        setScoreController={registerBet}
+                        partViewTypeEditList={userBetParticipation.map((b) => b.countBets === 0 ? b.part : '')}
+                    />
+                );
+            });
+        }
+
+        return (
+            <div className="buttonContainer">
+                <Link className="SendButton" to={routes.sendToPoolUserBets(poolUuid, userUuid)}>
+                    Veja suas apostas
+                </Link>
+            </div>
+        );
     };
 
     const showFixturesToBet = () => {

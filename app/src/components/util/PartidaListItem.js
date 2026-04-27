@@ -65,12 +65,16 @@ function PartidaListItem(props) {
         if (shows.includes(show.resultAndPoints)) {
             const { homeTeamScoreBet, awayTeamScoreBet, points } = props.fixture;
 
-            const pointsText = (points !== undefined && points !== null) ? `| Pontos: ${points}` : '';
+            const texts = [];
+            if (homeTeamScoreBet !== undefined && homeTeamScoreBet !== null) {
+                texts.push(`Resultado: ${homeTeamScoreBet}x${awayTeamScoreBet}`);
+            }
+            if (points !== undefined && points !== null) {
+                texts.push(`Pontos: ${points}`);
+            }
 
             return (
-                <div className="users-points">
-                    {`Resultado: ${homeTeamScoreBet}x${awayTeamScoreBet} ${pointsText}`}
-                </div>
+                <div className="users-points">{texts.join(' | ')}</div>
             );
         }
     };
@@ -79,13 +83,16 @@ function PartidaListItem(props) {
         if (shows.includes(show.betAndPoints)) {
             const { homeTeamScoreBet, awayTeamScoreBet, points } = props.fixture;
 
-            const pointsText = (points !== undefined && points !== null) ? `| Pontos: ${points}` : '';
-            const betText = (homeTeamScoreBet === undefined) ? '' : `Minha aposta: ${homeTeamScoreBet}x${awayTeamScoreBet}`;
+            const texts = [];
+            if (homeTeamScoreBet !== undefined && homeTeamScoreBet !== null) {
+                texts.push(`Minha aposta: ${homeTeamScoreBet}x${awayTeamScoreBet}`);
+            }
+            if (points !== undefined && points !== null) {
+                texts.push(`Pontos: ${points}`);
+            }
 
             return (
-                <div className="users-points">
-                    {`${betText}${pointsText}`}
-                </div>
+                <div className="users-points">{texts.join(' | ')}</div>
             );
         }
     };

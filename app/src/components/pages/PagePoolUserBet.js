@@ -58,11 +58,11 @@ function PagePoolUserBet() {
             .then((response) => {
                 setLoading(false);
 
-                let fixtures = response.poolFixtures;
+                let fix = response.poolFixtures;
                 if (response.userPlacedBets && response.userPlacedBets.length > 0) {
-                    mergeFixturesAndBets(fixtures, response.userPlacedBets);
+                    mergeFixturesAndBets(fix, response.userPlacedBets);
                 }
-                setFixtures(fixtures);
+                setFixtures(fix);
 
                 setPoolChampionshipInfo(response.poolChampionshipInfo);
                 setUser(response.userData);
@@ -80,14 +80,17 @@ function PagePoolUserBet() {
             return acc;
         }, {});
         for (const fixture of fixtures) {
-            const { homeTeamScoreBet, awayTeamScoreBet, points } = bets[fixture.id];
+            if (bets[fixture.id]) {
+                const { homeTeamScoreBet, awayTeamScoreBet, points } = bets[fixture.id];
 
-            fixture.homeTeamScore = homeTeamScoreBet;
-            fixture.awayTeamScore = awayTeamScoreBet;
+                fixture.homeTeamScoreBet = fixture.homeTeamScore;
+                fixture.awayTeamScoreBet = fixture.awayTeamScore;
 
-            fixture.points = points;
-            fixture.homeTeamScoreBet = homeTeamScoreBet;
-            fixture.awayTeamScoreBet = awayTeamScoreBet;
+                fixture.points = points;
+
+                fixture.homeTeamScore = homeTeamScoreBet;
+                fixture.awayTeamScore = awayTeamScoreBet;
+            }
         }
     };
 
@@ -102,6 +105,7 @@ function PagePoolUserBet() {
     };
 
     const showFixtures = () => {
+        console.log(fixtures);
         return groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
             return (
                 <ChampionshipPhase

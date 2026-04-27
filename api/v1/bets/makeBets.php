@@ -41,14 +41,7 @@ $pool->validateBetsData($userBets);
 
 $pool->makeBets($userPoolId, $userBets);
 
-$poolFixtures = $pool->getPoolFixtures($poolUuid);
-$userPlacedBets = $pool->getUserPoolBets($userData['id'], $poolUuid);
-$userBetParticipation = $pool->getUserBetParticipation($userData['id'], $poolUuid);
-
 http_response_code(200);
 echo json_encode(array(
     "message" => "Aposta realizada com sucesso!",
-    'poolFixtures' => $poolFixtures,
-    'userPlacedBets' => $userPlacedBets,
-    'userBetParticipation' => $userBetParticipation,
 ));
