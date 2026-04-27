@@ -27,19 +27,24 @@ function NextAndTimer(props) {
                         <img className="nextBolao-logo" alt="" src={'/imagens/campeonatos/russia_2018.png'} />
                     </div>
                 </div> */}
-                <div className="nextBolao-logosEqual nextBolao-old">
+                {/* <div className="nextBolao-logosEqual nextBolao-old">
                     <div className="nextBolao-logoContainer">
                         <img className="nextBolao-logo" alt="" src={'/imagens/campeonatos/copa_america_2019.png'} />
                     </div>
-                </div>
-                <div className="nextBolao-logosEqual nextBolao-current-next">
+                </div> */}
+                <div className="nextBolao-logosEqual nextBolao-old">
                     <div className="nextBolao-logoContainer">
                         <img className="nextBolao-logo" alt="" src={'/imagens/campeonatos/qatar_2022.png'} />
                     </div>
                 </div>
+                <div className="nextBolao-logosEqual nextBolao-current-next">
+                    <div className="nextBolao-logoContainer">
+                        <img className="nextBolao-logo" alt="" src={'/imagens/campeonatos/can_mex_usa_2026.png'} />
+                    </div>
+                </div>
                 <div className="nextBolao-logosEqual nextBolao-next">
                     <div className="nextBolao-logoContainer">
-                        <img className="nextBolao-logo" alt="" src={'/imagens/campeonatos/united_2026.png'} />
+                        <img className="nextBolao-logo" alt="" src={'/imagens/campeonatos/world_cup_2030.png'} />
                     </div>
                 </div>
             </div>
