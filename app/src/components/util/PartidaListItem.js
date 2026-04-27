@@ -80,10 +80,11 @@ function PartidaListItem(props) {
             const { homeTeamScoreBet, awayTeamScoreBet, points } = props.fixture;
 
             const pointsText = (points !== undefined && points !== null) ? `| Pontos: ${points}` : '';
+            const betText = (homeTeamScoreBet === undefined) ? '' : `Minha aposta: ${homeTeamScoreBet}x${awayTeamScoreBet}`;
 
             return (
                 <div className="users-points">
-                    {`Minha aposta: ${homeTeamScoreBet}x${awayTeamScoreBet} ${pointsText}`}
+                    {`${betText}${pointsText}`}
                 </div>
             );
         }

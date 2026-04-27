@@ -49,12 +49,13 @@ function PagePoolDashboard() {
             .then((response) => {
                 setPoolChampionshipInfo(response.poolChampionshipInfo);
 
-                let fixtures = response.poolFixtures;
                 if (response.userPlacedBets && response.userPlacedBets.length > 0) {
                     setUserHasPlacedBet(true);
-                    mergeFixturesAndBets(fixtures, response.userPlacedBets);
                 }
-                setFixtures(fixtures);
+
+                const fix = response.poolFixtures;
+                mergeFixturesAndBets(fix, response.userPlacedBets);
+                setFixtures(fix);
 
                 setLoading(false);
             })
@@ -69,14 +70,13 @@ function PagePoolDashboard() {
             return acc;
         }, {});
         for (const fixture of fixtures) {
-            const { homeTeamScoreBet, awayTeamScoreBet, points } = bets[fixture.id];
+            if (bets[fixture.id]) {
+                const { homeTeamScoreBet, awayTeamScoreBet, points } = bets[fixture.id];
 
-            fixture.awayTeamScoreBet = awayTeamScoreBet;
-            fixture.homeTeamScoreBet = homeTeamScoreBet;
-
-            fixture.points = points;
-            fixture.homeTeamScoreBet = homeTeamScoreBet;
-            fixture.awayTeamScoreBet = awayTeamScoreBet;
+                fixture.points = points;
+                fixture.homeTeamScoreBet = homeTeamScoreBet;
+                fixture.awayTeamScoreBet = awayTeamScoreBet;
+            }
         }
     };
 
@@ -128,64 +128,58 @@ function PagePoolDashboard() {
     };
 
     const showNextFixtures = () => {
-        if (fixtures) {
-            const nextFixtures = fixtures
-                .filter((fixture) => fixture.homeTeamScore === null && fixture.awayTeamScore === null)
-                .slice(0, 5);
+        const nextFixtures = fixtures
+            .filter((fixture) => fixture.homeTeamScore === null && fixture.awayTeamScore === null)
+            .slice(0, 5);
 
-            if (nextFixtures.length > 0) {
-                return (
-                    nextFixtures.map((fixture, index) => {
-                        return (
-                            <PartidaListItem
-                                key={index}
-                                fixture={fixture}
-                                shows={['showAsLink', 'showBetAndPoints']}
-                                poolUuid={poolUuid}
-                            />
-                        );
-                    }, this)
-                );
-            } else {
-                return (
-                    <div className="errorMessage">
-                        <p>Não há próximos jogos</p>
-                    </div>
-                );
-            }
-
+        if (nextFixtures.length > 0) {
+            return (
+                nextFixtures.map((fixture, index) => {
+                    return (
+                        <PartidaListItem
+                            key={index}
+                            fixture={fixture}
+                            shows={['showAsLink', 'showBetAndPoints']}
+                            poolUuid={poolUuid}
+                        />
+                    );
+                }, this)
+            );
         }
+
+        return (
+            <div className="errorMessage">
+                <p>Não há próximos jogos</p>
+            </div>
+        );
     };
 
     const showLastFixtures = () => {
-        if (fixtures) {
-            const lastFixtures = fixtures
-                .filter((fixture) => fixture.homeTeamScore !== null && fixture.awayTeamScore !== null)
-                .reverse()
-                .slice(0, 5);
+        const lastFixtures = fixtures
+            .filter((fixture) => fixture.homeTeamScore !== null && fixture.awayTeamScore !== null)
+            .reverse()
+            .slice(0, 5);
 
-            if (lastFixtures.length > 0) {
-                return (
-                    lastFixtures.map((fixture, index) => {
-                        return (
-                            <PartidaListItem
-                                key={index}
-                                fixture={fixture}
-                                shows={['showAsLink', 'showBetAndPoints']}
-                                poolUuid={poolUuid}
-                            />
-                        );
-                    }, this)
-                );
-            } else {
-                return (
-                    <div className="errorMessage">
-                        <p>Ainda não há jogos finalizados</p>
-                    </div>
-                );
-            }
-
+        if (lastFixtures.length > 0) {
+            return (
+                lastFixtures.map((fixture, index) => {
+                    return (
+                        <PartidaListItem
+                            key={index}
+                            fixture={fixture}
+                            shows={['showAsLink', 'showBetAndPoints']}
+                            poolUuid={poolUuid}
+                        />
+                    );
+                }, this)
+            );
         }
+
+        return (
+            <div className="errorMessage">
+                <p>Ainda não há jogos finalizados</p>
+            </div>
+        );
     };
 
     const showRank = () => {
