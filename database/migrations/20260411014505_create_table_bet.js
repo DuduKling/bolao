@@ -17,6 +17,8 @@ exports.up = function(knex) {
             table.integer('awayTeamScoreBet').notNullable();
             table.integer('points');
             table.dateTime('createdAt').notNullable().defaultTo(knex.fn.now());
+
+            table.unique(['fkUserPoolId', 'fkFixtureId']);
         });
 
     if (knex.client.config.onlyLogQuery) {

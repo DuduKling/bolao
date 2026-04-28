@@ -59,7 +59,9 @@ function PagePoolBet() {
 
                 let fix = response.poolFixtures;
                 mergeFixturesAndBets(fix, response.userPlacedBets);
-                fix = filterFixturesWithoutBets(fix, response.userBetParticipation);
+                if (response.userPlacedBets && response.userPlacedBets.length > 0) {
+                    fix = filterFixturesWithoutBets(fix, response.userBetParticipation);
+                }
                 setFixtures(fix);
 
                 setLoading(false);
@@ -173,11 +175,12 @@ function PagePoolBet() {
 
     const showButton = () => {
         const hasFixtures = Object.keys(fixtures).length !== 0;
+        const newParticipant = userBetParticipation.length === 0;
         const userHasMissingPartsToBet = userBetParticipation.filter((b) => b.countBets === 0).length;
-        if (hasFixtures && userHasMissingPartsToBet > 0) {
+        if (hasFixtures && (newParticipant || userHasMissingPartsToBet > 0)) {
             return (
                 <>
-                    {/* <p className="sendButtonMessage">Lembre-se que, ao enviar suas apostas não será mais possível modificá-las.</p> */}
+                    <p className="sendButtonMessage">Lembre-se que, ao enviar suas apostas não será mais possível modificá-las.</p>
                     <div className="EnviarAposta">
                         <input type="submit" className="SendButton" value="Enviar" />
                         <Loading loading={loading2} />

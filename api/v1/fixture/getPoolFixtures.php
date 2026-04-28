@@ -41,7 +41,7 @@ if ($userJoin['joined']) {
     echo json_encode(array(
         "message" => "Usuário já está participando deste bolão. (Error #POO2)",
         "poolChampionshipInfo" => $poolChampionshipInfo,
-        'poolFixtures'=> $poolFixtures,
+        'poolFixtures' => $poolFixtures,
         'userPlacedBets' => $userPlacedBets,
         'userBetParticipation' => $userBetParticipation,
     ));
@@ -51,5 +51,7 @@ if ($userJoin['joined']) {
 http_response_code(200);
 echo json_encode(array(
     "poolChampionshipInfo" => $poolChampionshipInfo,
-    'poolFixtures'=> $poolFixtures
+    'poolFixtures' => $poolFixtures,
+    'userPlacedBets' => array(),
+    'userBetParticipation' => array(),
 ));

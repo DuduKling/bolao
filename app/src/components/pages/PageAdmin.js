@@ -85,6 +85,20 @@ function PageAdmin() {
         );
     };
 
+    const showPoolsList = () => {
+        if (pools.length === 0) {
+            return (
+                <p className="empty-list">Não existem bolões cadastrados.</p>
+            );
+        }
+
+        return (<>
+            {
+                pools.map((pool, index) => showPools(pool, index))
+            }
+        </>);
+    };
+
     return (
         <div className="userPage-container">
             <div className="userPage-userCampeonatos">
@@ -99,9 +113,7 @@ function PageAdmin() {
                     <Loading loading={loading} localstorage="-withLocalStorage" />
                 </h3>
                 <ul className="adminPools-container">
-                    {
-                        pools.map((pool, index) => showPools(pool, index))
-                    }
+                    {showPoolsList()}
                 </ul>
                 <br />
                 <h3 className="page-title -admin">
