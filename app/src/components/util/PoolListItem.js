@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../../css/pages/campeonato.css';
 
 import { Link } from 'react-router-dom';
@@ -8,12 +8,6 @@ import routes from '../util/Routes';
 import PropTypes from 'prop-types';
 
 function PoolListItem(props) {
-    const [flagDetail, setFlagDetail] = useState('');
-
-    const toggleDetails = () => {
-        setFlagDetail(!flagDetail);
-    };
-
     const setImage = () => {
         const logo = props.pool.championshipLogo;
 
@@ -24,58 +18,22 @@ function PoolListItem(props) {
         return '/imagens/campeonatos/' + logo;
     };
 
-    const setAction = () => {
+    const setChip = () => {
         const status = props.pool.status;
-        const joined = props.joinedPools.includes(props.pool.uuid);
+        const joined = props.groupType === 'joined';
+
+        if (joined && status === 'finished') {
+            return (<div className="chip">Finalizado</div>);
+        }
 
         if (status === 'tba') {
-            return (
-                <div className="chip warning"><span>{props.pool.startDate}</span></div>
-            );
-        }
-
-        if (status === 'open') {
-            if (joined) {
-                return (
-                    <div className="chip blue">
-                        <Link to={routes.sendToPoolDashboard(props.pool.uuid)}>Participando</Link>
-                    </div>
-                );
-            }
-            return (
-                <div className="chip green">
-                    <Link to={routes.sendToPoolBet(props.pool.uuid)}>Participar!</Link>
-                </div>
-            );
-        }
-
-        if (status === 'onGoing') {
-            return (
-                <div className="chip green">
-                    <Link to={routes.sendToPoolDashboard(props.pool.uuid)}>Ver</Link>
-                </div>
-            );
-        }
-
-        if (status === 'finished') {
-            if (joined) {
-                return (
-                    <div className="chip">
-                        <Link to={routes.sendToPoolDashboard(props.pool.uuid)}>Participou</Link>
-                    </div>
-                );
-            }
-            return (
-                <div className="chip">
-                    <Link to={routes.sendToPoolDashboard(props.pool.uuid)}>Finalizado</Link>
-                </div>
-            );
+            return (<div className="chip warning">Inicia em {props.pool.startDate}</div>);
         }
     };
 
-    return (
-        <li onClick={toggleDetails}>
-            <div className="list-content">
+    const showItem = () => {
+        return (
+            <div className="pool-item-list">
                 <div className="list-main">
                     <div className="list-reference-logo">
                         <img
@@ -89,21 +47,46 @@ function PoolListItem(props) {
                     </div>
                 </div>
                 <div className="list-action">
-                    {setAction()}
+                    {setChip()}
                 </div>
-                <div className={flagDetail ? 'list-detail showDetail' : 'list-detail'}>
-                    <div className="list-reference">
-                        <div className="list-reference-data">
-                            <h4>{props.pool.championshipName}</h4>
-                            <p>{props.pool.phaseName}</p>
-                            <p>{props.pool.parts}</p>
-                        </div>
-                    </div>
-                    <div className="list-dates">
-                        <p><b>Início: </b>{props.pool.startDate}</p>
-                        <p><b>Fim: </b>{props.pool.endDate}</p>
-                    </div>
-                </div>
+            </div>
+        );
+    };
+
+    const showAsLink = () => {
+        const status = props.pool.status;
+        const joined = props.groupType === 'joined';
+
+        const toDash = routes.sendToPoolDashboard(props.pool.uuid);
+        const toPoolBet = routes.sendToPoolBet(props.pool.uuid);
+
+        if (joined) {
+            if (status === 'finished') {
+                return (<Link to={toDash}>{showItem()}</Link>);
+            }
+
+            return (<Link to={toDash}>{showItem()}</Link>);
+        }
+
+        if (status === 'open') {
+            return (<Link to={toPoolBet}>{showItem()}</Link>);
+        }
+
+        if (status === 'onGoing') {
+            return (<Link to={toDash}>{showItem()}</Link>);
+        }
+
+        if (status === 'finished') {
+            return (<Link to={toDash}>{showItem()}</Link>);
+        }
+
+        return (<>{showItem()}</>);
+    };
+
+    return (
+        <li>
+            <div className="list-content">
+                {showAsLink()}
             </div>
         </li>
     );
@@ -111,7 +94,7 @@ function PoolListItem(props) {
 
 PoolListItem.propTypes = {
     pool: PropTypes.object,
-    joinedPools: PropTypes.array,
+    groupType: PropTypes.string,
 };
 
 export default PoolListItem;

@@ -7,8 +7,8 @@ import Loading from '../util/Loading';
 import PoolListItem from '../util/PoolListItem';
 
 function PagePools() {
-    const [pools, setPools] = useState([]);
-    const [joinedPools, setJoinedPools] = useState([]);
+    const [groupedPools, setGroupedPools] = useState({});
+
     const [loading, setLoading] = useState(false);
 
     const dataFetchedRef = useRef(false);
@@ -19,8 +19,8 @@ function PagePools() {
         const cachedPools = localStorage.getItem(LOCAL_STORAGE_ITEM);
         if (cachedPools) {
             const data = JSON.parse(cachedPools);
-            setPools(data.allPools);
-            setJoinedPools(data.joinedPools);
+            const grPools = groupPools(data.allPools, data.joinedPools);
+            setGroupedPools(grPools);
         }
 
         if (dataFetchedRef.current) return;
@@ -34,10 +34,10 @@ function PagePools() {
 
         await http.getPools()
             .then((response) => {
-                setPools(response.allPools);
-                setJoinedPools(response.joinedPools);
-                setLoading(false);
+                const grPools = groupPools(response.allPools, response.joinedPools);
+                setGroupedPools(grPools);
 
+                setLoading(false);
                 localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
             })
             .catch(() => {
@@ -45,28 +45,59 @@ function PagePools() {
             });
     };
 
+    const groupPools = (allPools, joinedPools) => {
+        const groups = {
+            joined: { name: 'Participando', pools: [] },
+            tba: { name: 'Fechado', pools: [] },
+            open: { name: 'Aberto', pools: [] },
+            onGoing: { name: 'Em andamento', pools: [] },
+            finished: { name: 'Finalizado', pools: [] },
+        };
+        for (const pool of allPools) {
+            if (joinedPools.includes(pool.uuid)) {
+                groups.joined.pools.push(pool);
+                continue;
+            }
+            groups[pool.status].pools.push(pool);
+        }
+        return groups;
+    };
+
+    const showPoolGroups = (groupType, name, pools) => {
+        if (pools.length === 0) { return ''; }
+
+        return (<>
+            <h3 className="page-block-title">
+                {name}
+                <Loading loading={loading} localstorage="-withLocalStorage" />
+            </h3>
+            <div className="pools-container">
+                <ul className="pools-list">
+                    {
+                        pools.map(function (pool) {
+                            return (
+                                <PoolListItem
+                                    key={pool.uuid}
+                                    pool={pool}
+                                    groupType={groupType}
+                                />
+                            );
+                        })
+                    }
+                </ul>
+            </div>
+            <br />
+        </>);
+    };
+
     return (
         <div className="page-container">
-
             <div className="page-block">
-                <h3 className="page-block-title">
-                    Bolões
-                    <Loading loading={loading} localstorage="-withLocalStorage" />
-                </h3>
-
-                <div className="pools-container">
-                    <ul className="pools-list">
-                        {
-                            pools.map(function (pool) {
-                                return (
-                                    <PoolListItem key={pool.uuid} pool={pool} joinedPools={joinedPools} />
-                                );
-                            }, this)
-                        }
-                    </ul>
-                </div>
+                <h2 className="title">Bolões</h2>
+                {
+                    groupedPools ? Object.entries(groupedPools).map(([groupType, { name, pools }]) => showPoolGroups(groupType, name, pools)) : console.log(groupedPools)
+                }
             </div>
-
         </div>
     );
 }
