@@ -6,7 +6,7 @@ import '../../css/pages/admin.css';
 import http from '../../util/http';
 
 import MaterialTextInput from '../util/MaterialTextInput';
-import MaterialSwitch from '../util/MaterialSwitch';
+// import MaterialSwitch from '../util/MaterialSwitch';
 import MaterialSelect from '../util/MaterialSelect';
 import MaterialCheckbox from '../util/MaterialCheckbox';
 import Loading from '../util/Loading';
@@ -89,7 +89,6 @@ function PageAdminEditPool() {
     const showChampionshipPhases = (phase) => {
         return (
             <>
-                <div>{championshipInfo.name}</div>
                 <div>Fase: {phase.name}</div>
                 <div>{phase.parts.map((part) => showParts(part))}</div>
             </>
@@ -101,6 +100,7 @@ function PageAdminEditPool() {
             <MaterialCheckbox
                 labelName={part.name}
                 fieldValue={partsSelected[part.id]}
+                fieldDisabled={!!partsSelected[part.id]}
                 fieldController={(value) => setPartsSelected({ ...partsSelected, [part.id]: value })}
             />
         );
@@ -137,7 +137,7 @@ function PageAdminEditPool() {
                             fieldOptions={statusOptions}
                             fieldController={(value) => setPool({ ...pool, status: value })}
                         />
-                        <MaterialSwitch
+                        {/* <MaterialSwitch
                             labelName="Fazer apostas"
                             fieldValue={pool.canMakeBet}
                             fieldController={(value) => setPool({ ...pool, canMakeBet: value })}
@@ -151,7 +151,7 @@ function PageAdminEditPool() {
                             labelName="Ver apostas dos outros"
                             fieldValue={pool.canViewOthersBet}
                             fieldController={(value) => setPool({ ...pool, canViewOthersBet: value })}
-                        />
+                        /> */}
                         <MaterialTextInput
                             labelName="Data de início"
                             fieldName="startDate"
@@ -166,6 +166,7 @@ function PageAdminEditPool() {
                             fieldValue={pool.endDate}
                             fieldController={(value) => setPool({ ...pool, endDate: value })}
                         />
+                        <h4>{championshipInfo.name}</h4>
                         {
                             Object.keys(championshipInfo).length > 0 ?
                                 championshipInfo.phases.map((phase) => showChampionshipPhases(phase)) :

@@ -51,12 +51,16 @@
     color: #4CAF50;
 }
 
-.material-checkbox>.input:checked:hover+.checkbox {
+.material-checkbox>.input:checked:hover:not(:disabled)+.checkbox {
     background-color: #57ae5228;
 }
 
-.material-checkbox>.input:hover+.checkbox {
+.material-checkbox>.input:hover:not(:disabled)+.checkbox {
     background-color: #d9d9d978;
+}
+
+.material-checkbox>.input:disabled+.checkbox {
+    color: gray;
 }
 
 .material-checkbox>.checkbox>.icon {
