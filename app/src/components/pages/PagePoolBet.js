@@ -36,7 +36,7 @@ function PagePoolBet() {
 
     const registerBet = (b) => {
         const newValue = {
-            [b.fixture]: b.score === 'empty' ? undefined : b.score
+            [b.fixture]: b.score === 'empty' ? undefined : b.score,
         };
         setUserBets({ ...userBets, ...newValue });
     };

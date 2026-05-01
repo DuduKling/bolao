@@ -93,7 +93,7 @@ function PageAdminCreatePool() {
         if (Object.keys(championshipsInfo).length > 0) {
             return [
                 { value: 0, label: 'Selecione' },
-                ...championshipsInfo.map((champ) => ({ value: champ.id, label: champ.name }))
+                ...championshipsInfo.map((champ) => ({ value: champ.id, label: champ.name })),
             ];
         }
         return [{}];

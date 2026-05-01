@@ -30,7 +30,7 @@ function PageAdminChampionshipScore() {
 
     const registerScore = (b) => {
         const newValue = {
-            [b.fixture]: b.score === 'empty' ? undefined : b.score
+            [b.fixture]: b.score === 'empty' ? undefined : b.score,
         };
         setScores({ ...scores, ...newValue });
     };

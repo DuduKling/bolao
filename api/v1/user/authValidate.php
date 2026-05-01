@@ -32,7 +32,7 @@ if (!$hasAccess) {
     $cookieOptions = array(
         "expires" => time() - 3600, // expired
         "path" => "/",
-        "domain" => 'localhost',
+        "domain" => $env->urlFrontHostOnly,
         "secure" => true,     // or false
         "httponly" => true,    // or false
         "samesite" => "Strict" // None || Lax  || Strict
