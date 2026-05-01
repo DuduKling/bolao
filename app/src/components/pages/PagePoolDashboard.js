@@ -15,6 +15,7 @@ function PagePoolDashboard() {
     const [rank, setRank] = useState([]);
     const [poolChampionshipInfo, setPoolChampionshipInfo] = useState({});
     const [userHasPlacedBet, setUserHasPlacedBet] = useState(false);
+    const [userBetParticipation, setUserBetParticipation] = useState([]);
 
     const [loading, setLoading] = useState(false);
 
@@ -48,6 +49,7 @@ function PagePoolDashboard() {
         await http.getPoolFixtures(data)
             .then((response) => {
                 setPoolChampionshipInfo(response.poolChampionshipInfo);
+                setUserBetParticipation(response.userBetParticipation);
 
                 if (response.userPlacedBets && response.userPlacedBets.length > 0) {
                     setUserHasPlacedBet(true);
@@ -98,31 +100,48 @@ function PagePoolDashboard() {
     };
 
     const checkStatus = () => {
-        if (poolChampionshipInfo.status === 'finished') {
+        const status = poolChampionshipInfo.status;
+
+        if (status === 'finished') {
             return (
                 <div className="dashboard-statusFase -finalizado">
-                    <p>
-                        Campeonato finalizado
-                    </p>
+                    <p>Campeonato finalizado</p>
                 </div>
             );
         }
 
-        if (poolChampionshipInfo.status === 'open' && !userHasPlacedBet) {
+        const userHasMissingPartsToBet = userBetParticipation.filter((b) => b.countBets === 0).length;
+        if (userHasMissingPartsToBet > 0) {
             return (
                 <div className="dashboard-statusFase">
-                    <Link to={routes.sendToPoolBet(poolChampionshipInfo.id)} >
+                    <Link to={routes.sendToPoolBet(poolChampionshipInfo.uuid)} >
+                        Novas apostas disponíveis!
+                    </Link>
+                </div>
+            );
+        }
+
+        if (status === 'open' && !userHasPlacedBet) {
+            return (
+                <div className="dashboard-statusFase">
+                    <Link to={routes.sendToPoolBet(poolChampionshipInfo.uuid)} >
                         Aposte agora!
                     </Link>
                 </div>
             );
         }
 
+        if (userHasPlacedBet) {
+            return (
+                <div className="dashboard-statusFase -aberto">
+                    <p>Veja o seu rank abaixo</p>
+                </div>
+            );
+        }
+
         return (
             <div className="dashboard-statusFase -aberto">
-                <p>
-                    Campeonato em andamento
-                </p>
+                <p>Campeonato em andamento</p>
             </div>
         );
     };
