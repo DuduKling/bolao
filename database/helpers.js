@@ -35,6 +35,13 @@ class Helper {
         }, {});
     }
 
+    async runOrLog(query) {
+        if (this.knex.client.config.logQuery) {
+            console.log(`${query.toString()};`);
+        }
+        return query;
+    }
+
 }
 
 module.exports = Helper;

@@ -6,17 +6,17 @@ const helper = require('../helpers');
 exports.seed = async function (knex) {
   const h = new helper(knex);
 
-  const [champId] = await knex('championship')
-    .insert({ name: 'Copa do Mundo Qtar 2022', logo: 'qatar_2022.png', startDate: '2022-11-20', endDate: '2022-12-18' });
+  const [champId] = await h.runOrLog(knex('championship')
+    .insert({ name: 'Copa do Mundo Qtar 2022', logo: 'qatar_2022.png', startDate: '2022-11-20', endDate: '2022-12-18' }));
 
-  await knex('phase').insert([
+  await h.runOrLog(knex('phase').insert([
     { name: 'Grupos', fkChampionshipId: champId, },
     { name: 'Eliminatórias', fkChampionshipId: champId, },
-  ]);
+  ]));
 
   const fase1 = await h.getPhase('Grupos', champId);
   const fase2 = await h.getPhase('Eliminatórias', champId);
-  await knex('part').insert([
+  await h.runOrLog(knex('part').insert([
     { name: 'Grupo A', fkPhaseId: fase1, },
     { name: 'Grupo B', fkPhaseId: fase1, },
     { name: 'Grupo C', fkPhaseId: fase1, },
@@ -30,7 +30,7 @@ exports.seed = async function (knex) {
     { name: 'Semifinal', fkPhaseId: fase2, },
     { name: 'Terceiro Lugar', fkPhaseId: fase2, },
     { name: 'Final', fkPhaseId: fase2, },
-  ]);
+  ]));
 
   const teams = await h.getTeams();
 
@@ -48,7 +48,7 @@ exports.seed = async function (knex) {
   const terceiro = await h.getPart('Terceiro Lugar', fase2);
   const final = await h.getPart('Final', fase2);
 
-  await knex('fixture').insert([
+  await h.runOrLog(knex('fixture').insert([
     { fkPartId: grupoA, fkHomeTeamId: teams.QAT, fkAwayTeamId: teams.ECU, dateTime: '2022-11-20 13:00', location: 'Al Bayt', homeTeamScore: 0, awayTeamScore: 2 },
     { fkPartId: grupoA, fkHomeTeamId: teams.SEN, fkAwayTeamId: teams.NED, dateTime: '2022-11-21 13:00', location: 'Al Thumama', homeTeamScore: 0, awayTeamScore: 2 },
     { fkPartId: grupoB, fkHomeTeamId: teams.ENG, fkAwayTeamId: teams.IRN, dateTime: '2022-11-21 10:00', location: 'Internacional Khalifa', homeTeamScore: 6, awayTeamScore: 2 },
@@ -120,6 +120,6 @@ exports.seed = async function (knex) {
     { fkPartId: terceiro, fkHomeTeamId: teams.CRO, fkAwayTeamId: teams.MAR, dateTime: '2022-12-17 12:00', location: 'Internacional Khalifa', homeTeamScore: 2, awayTeamScore: 1 },
 
     { fkPartId: final, fkHomeTeamId: teams.ARG, fkAwayTeamId: teams.FRA, dateTime: '2022-12-18 12:00', location: 'Lusail', homeTeamScore: 3, awayTeamScore: 3 },
-  ]);
+  ]));
 
 };

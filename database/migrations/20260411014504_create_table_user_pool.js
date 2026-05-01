@@ -1,9 +1,11 @@
+const helper = require('../helpers');
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
-    const query = knex.schema
+exports.up = async function (knex) {
+    const h = new helper(knex);
+    await h.runOrLog(knex.schema
         .createTable('user_pool', function (table) {
             table.increments('id');
 
@@ -14,14 +16,7 @@ exports.up = function (knex) {
             table.foreign('fkPoolId').references('id').inTable('pool');
 
             table.dateTime('createdAt').notNullable().defaultTo(knex.fn.now());
-        });
-
-    if (knex.client.config.onlyLogQuery) {
-        console.log(query.toString());
-        return new Promise((resolve) => resolve());
-    }
-
-    return query;
+        }));
 };
 
 /**

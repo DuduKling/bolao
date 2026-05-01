@@ -6,17 +6,17 @@ const helper = require('../helpers');
 exports.seed = async function (knex) {
   const h = new helper(knex);
 
-  const [champId] = await knex('championship')
-    .insert({ name: 'Copa do Mundo Russia 2018', logo: 'russia_2018.png', startDate: '2018-06-14', endDate: '2018-07-15' });
+  const [champId] = await h.runOrLog(knex('championship')
+    .insert({ name: 'Copa do Mundo Russia 2018', logo: 'russia_2018.png', startDate: '2018-06-14', endDate: '2018-07-15' }));
 
-  await knex('phase').insert([
+  await h.runOrLog(knex('phase').insert([
     { name: 'Grupos', fkChampionshipId: champId, },
     { name: 'Eliminatórias', fkChampionshipId: champId, },
-  ]);
+  ]));
 
   const fase1 = await h.getPhase('Grupos', champId);
   const fase2 = await h.getPhase('Eliminatórias', champId);
-  await knex('part').insert([
+  await h.runOrLog(knex('part').insert([
     { name: 'Grupo A', fkPhaseId: fase1, },
     { name: 'Grupo B', fkPhaseId: fase1, },
     { name: 'Grupo C', fkPhaseId: fase1, },
@@ -30,7 +30,7 @@ exports.seed = async function (knex) {
     { name: 'Semifinal', fkPhaseId: fase2, },
     { name: 'Terceiro Lugar', fkPhaseId: fase2, },
     { name: 'Final', fkPhaseId: fase2, },
-  ]);
+  ]));
 
   const teams = await h.getTeams();
 
@@ -48,7 +48,7 @@ exports.seed = async function (knex) {
   const terceiro = await h.getPart('Terceiro Lugar', fase2);
   const final = await h.getPart('Final', fase2);
 
-  await knex('fixture').insert([
+  await h.runOrLog(knex('fixture').insert([
     { fkPartId: grupoA, fkHomeTeamId: teams.RUS, fkAwayTeamId: teams.KSA, dateTime: '2018-06-14 12:00', location: 'Moscou - Lujniki', homeTeamScore: 5, awayTeamScore: 0 },
     { fkPartId: grupoA, fkHomeTeamId: teams.EGY, fkAwayTeamId: teams.URU, dateTime: '2018-06-15 09:00', location: 'Ecaterimburgo', homeTeamScore: 0, awayTeamScore: 1 },
     { fkPartId: grupoB, fkHomeTeamId: teams.MAR, fkAwayTeamId: teams.IRN, dateTime: '2018-06-15 12:00', location: 'São Petersburgo', homeTeamScore: 0, awayTeamScore: 1 },
@@ -120,6 +120,6 @@ exports.seed = async function (knex) {
     { fkPartId: terceiro, fkHomeTeamId: teams.BEL, fkAwayTeamId: teams.ENG, dateTime: '2018-07-14 11:00', location: 'São Petersburgo', homeTeamScore: 2, awayTeamScore: 0 },
 
     { fkPartId: final, fkHomeTeamId: teams.FRA, fkAwayTeamId: teams.CRO, dateTime: '2018-07-15 12:00', location: 'Moscou - Lujniki', homeTeamScore: 4, awayTeamScore: 2 },
-  ]);
+  ]));
 
 };

@@ -6,17 +6,17 @@ const helper = require('../helpers');
 exports.seed = async function (knex) {
   const h = new helper(knex);
 
-  const [champId] = await knex('championship')
-    .insert({ name: 'Copa América Brasil 2019', logo: 'copa_america_2019.png', startDate: '2019-06-14', endDate: '2019-07-07' });
+  const [champId] = await h.runOrLog(knex('championship')
+    .insert({ name: 'Copa América Brasil 2019', logo: 'copa_america_2019.png', startDate: '2019-06-14', endDate: '2019-07-07' }));
 
-  await knex('phase').insert([
+  await h.runOrLog(knex('phase').insert([
     { name: 'Grupos', fkChampionshipId: champId, },
     { name: 'Eliminatórias', fkChampionshipId: champId, },
-  ]);
+  ]));
 
   const fase1 = await h.getPhase('Grupos', champId);
   const fase2 = await h.getPhase('Eliminatórias', champId);
-  await knex('part').insert([
+  await h.runOrLog(knex('part').insert([
     { name: 'Grupo A', fkPhaseId: fase1, },
     { name: 'Grupo B', fkPhaseId: fase1, },
     { name: 'Grupo C', fkPhaseId: fase1, },
@@ -25,7 +25,7 @@ exports.seed = async function (knex) {
     { name: 'Semifinal', fkPhaseId: fase2, },
     { name: 'Terceiro Lugar', fkPhaseId: fase2, },
     { name: 'Final', fkPhaseId: fase2, },
-  ]);
+  ]));
 
   const teams = await h.getTeams();
 
@@ -38,7 +38,7 @@ exports.seed = async function (knex) {
   const terceiro = await h.getPart('Terceiro Lugar', fase2);
   const final = await h.getPart('Final', fase2);
 
-  await knex('fixture').insert([
+  await h.runOrLog(knex('fixture').insert([
     { fkPartId: grupoA, fkHomeTeamId: teams.ARG, fkAwayTeamId: teams.CAN, dateTime: '2024-06-20 21:00', location: 'Atlanta', homeTeamScore: 2, awayTeamScore: 0 },
     { fkPartId: grupoA, fkHomeTeamId: teams.PER, fkAwayTeamId: teams.CHI, dateTime: '2024-06-21 21:00', location: 'Dallas', homeTeamScore: 0, awayTeamScore: 0 },
     { fkPartId: grupoB, fkHomeTeamId: teams.ECU, fkAwayTeamId: teams.VEN, dateTime: '2024-06-22 19:00', location: 'Santa Clara', homeTeamScore: 1, awayTeamScore: 2 },
@@ -77,6 +77,6 @@ exports.seed = async function (knex) {
     { fkPartId: terceiro, fkHomeTeamId: teams.CAN, fkAwayTeamId: teams.URU, dateTime: '2024-07-13 21:00', location: 'Charlotte', homeTeamScore: 2, awayTeamScore: 2 },
 
     { fkPartId: final, fkHomeTeamId: teams.ARG, fkAwayTeamId: teams.COL, dateTime: '2024-07-14 21:45', location: 'Miami', homeTeamScore: 1, awayTeamScore: 0 },
-  ]);
+  ]));
 
 };

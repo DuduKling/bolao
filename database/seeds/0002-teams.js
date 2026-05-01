@@ -1,10 +1,12 @@
+const helper = require('../helpers');
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> } 
  */
 exports.seed = async function (knex) {
+  const h = new helper(knex);
 
-  await knex('team').insert([
+  await h.runOrLog(knex('team').insert([
     { code: 'UNDEF', name: 'Indefinido', imagePath: 'default_flag.png', },
 
     { code: 'BRA', name: 'Brasil', imagePath: 'Flag_of_Brazil.svg', },
@@ -70,6 +72,5 @@ exports.seed = async function (knex) {
     { code: 'AUT', name: 'Áustria', imagePath: 'Flag_of_Austria.svg', },
     { code: 'COD', name: 'RD Congo', imagePath: 'Flag_of_the_Republic_of_the_Congo.svg', },
     { code: 'UZB', name: 'Uzbequistão', imagePath: 'Flag_of_Uzbekistan.svg', },
-  ]);
-
+  ]));
 };

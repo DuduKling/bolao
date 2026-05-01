@@ -1,9 +1,11 @@
+const helper = require('../helpers');
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
-    const query = knex.schema
+exports.up = async function (knex) {
+    const h = new helper(knex);
+    await h.runOrLog(knex.schema
         .createTable('pool', function (table) {
             table.increments('id');
             table.string('uuid', 36).notNullable().unique();
@@ -12,8 +14,8 @@ exports.up = function (knex) {
             table.string('description', 255);
 
             // TODO: melhorar esse status geral
-                // precisa ter um status também no pool_part
-                // flag para ligar visualização das apostas dos outros (pool_part)
+            // precisa ter um status também no pool_part
+            // flag para ligar visualização das apostas dos outros (pool_part)
             table.enum('status', [
                 'tba', // cant view dashboard
                 'open', // can view dashboard and can make bets
@@ -29,14 +31,7 @@ exports.up = function (knex) {
             table.dateTime('endDate').notNullable();
 
             table.dateTime('createdAt').notNullable().defaultTo(knex.fn.now());
-        });
-
-    if (knex.client.config.onlyLogQuery) {
-        console.log(query.toString());
-        return new Promise((resolve) => resolve());
-    }
-
-    return query;
+        }));
 };
 
 /**

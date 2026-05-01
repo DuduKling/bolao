@@ -153,9 +153,13 @@ npm run mariadb
 
 Crie e configure o arquivo `.env.production` baseado no arquivo `.env.development`.
 
+Este arquivo será consumido pelo processo de deploy explicado abaixo.
+
 #### APP
 
 Crie e configure o arquivo `.env.production` baseado no arquivo `.env.development`.
+
+Este arquivo será consumido pelo processo de deploy explicado abaixo.
 
 ### Front & Back-End
 
@@ -165,9 +169,25 @@ Para gerar o diretório `deploy` com tudo que é necessário para o ambiente pro
 npm run deploy
 ```
 
+Será gerado um diretório com o seguinte formato:
+
+```
+📦deploy
+ ┣ 📂api
+ ┃ ┗ 📜.env
+ ┣ 📂imagens
+ ┣ 📂imgs
+ ┣ 📂static
+ ┣ 📜 ...
+ ┗ 📜index.html
+```
+
+O conteúdo deste diretório pode ser copiado diretamente para o servidor, não há necessidade de modificá-lo.
+
 ### Database
 
 Para somente gerar os SQLs para executar no banco de dados:
-1. Crie um schema "vazio" ou utilize um em que as migrations não tenham sido executadas nele ainda.
-2. Modifique, no arquivo `knexfile.js`, o parâmetro `onlyLogQuery` para `true`.
+1. Crie um schema "vazio" ou rode um rollback.
+2. Modifique o parâmetro `logQuery` para `true`, no arquivo `database/knexfile.js`.
 3. Rode o comando de migration: `npm run knex migrate:latest`.
+4. Rode o comando de seed: `npm run knex seed:run`.

@@ -1,9 +1,11 @@
+const helper = require('../helpers');
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
-    const query = knex.schema
+exports.up = async function (knex) {
+    const h = new helper(knex);
+    await h.runOrLog(knex.schema
         .createTable('fixture', function (table) {
             table.increments('id');
 
@@ -20,21 +22,14 @@ exports.up = function(knex) {
             table.integer('homeTeamScore');
             table.integer('awayTeamScore');
             table.string('location');
-        });
-
-    if (knex.client.config.onlyLogQuery) {
-        console.log(query.toString());
-        return new Promise((resolve) => resolve());
-    }
-
-    return query;
+        }));
 };
 
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function(knex) {
+exports.down = function (knex) {
     return knex.schema
         .dropTable('fixture');
 };
