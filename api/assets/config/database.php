@@ -14,7 +14,7 @@ class DatabaseConnection
         $username = $env->dbUsername;
         $password = $env->dbPassword;
 
-        $dsn = "mysql:host=" . $host . ";dbname=" . $db_name;
+        $dsn = "mysql:host=$host;dbname=$db_name;charset=UTF8";
 
         try {
             $this->conn = new PDO($dsn, $username, $password);
