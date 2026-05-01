@@ -184,6 +184,15 @@ Será gerado um diretório com o seguinte formato:
 
 O conteúdo deste diretório pode ser copiado diretamente para o servidor, não há necessidade de modificá-lo.
 
+Dependendo do servidor pode ser necessário criar o arquivo `.htaccess` com a seguinte configuração:
+
+```
+Options -MultiViews
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]
+```
+
 ### Database
 
 Para somente gerar os SQLs para executar no banco de dados:
