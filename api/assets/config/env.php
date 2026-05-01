@@ -11,7 +11,6 @@ class Env
     public readonly string $jwtPubKey;
     public readonly string $jwtPrivKey;
     public readonly string $jwtTimezone;
-    public readonly string $appPublicDir;
 
     public function __construct()
     {
@@ -38,7 +37,5 @@ class Env
         $this->jwtPubKey = $envData['JWT_PUB_KEY'];
         $this->jwtPrivKey = $envData['JWT_PRIV_KEY'];
         $this->jwtTimezone = $envData['JWT_TIMEZONE'];
-
-        $this->appPublicDir = $envData['APP_PUBLIC_DIR'];
     }
 }
