@@ -83,6 +83,7 @@
 	width: 100%;
 	/* max-width: 620px; */
 	margin-bottom: 10px;
+	padding: 0px 10px;
 
 	display: flex;
 	flex-direction: row;

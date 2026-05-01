@@ -1,3 +1,7 @@
+.userPage-userCampeonatos {
+    overflow: auto;
+}
+
 .userPage-userCampeonatos>.userCampeonatos-container {
     padding: 0;
     margin: 0;

@@ -63,7 +63,7 @@ function PagePools() {
         return groups;
     };
 
-    const showPoolGroups = (groupType, name, pools) => {
+    const showPoolGroups = ([groupType, { name, pools }]) => {
         if (pools.length === 0) { return ''; }
 
         return (<>
@@ -95,7 +95,7 @@ function PagePools() {
             <div className="page-block">
                 <h2 className="title">Bolões</h2>
                 {
-                    groupedPools ? Object.entries(groupedPools).map(([groupType, { name, pools }]) => showPoolGroups(groupType, name, pools)) : console.log(groupedPools)
+                    groupedPools ? Object.entries(groupedPools).map((gPool) => showPoolGroups(gPool)) : ''
                 }
             </div>
         </div>

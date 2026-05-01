@@ -112,3 +112,10 @@
 .match-container > .placar .error + label:after  {
 	background-color: red;
 }
+
+@media only screen and (max-width: 500px) {
+	.match-container>.placar>div>.button-container>button {
+		font-size: 15px;
+		width: 20px;
+	}
+}
