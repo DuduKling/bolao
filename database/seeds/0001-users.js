@@ -7,7 +7,7 @@ exports.seed = async function(knex) {
   await knex('user').insert([
     {
       uuid: '1',
-      name: 'admin',
+      name: 'ADMIN',
       phoneNumber: "99999999999",
       passwd: '$2y$12$XZt9g1MuX1EMiPqBbVzGsuZUpK65xFaelYnFEyOP7VdLQCJxza9Ym',
       salt: 'salt_salt',
@@ -15,14 +15,14 @@ exports.seed = async function(knex) {
     },
     {
       uuid: '2',
-      name: 'teste',
+      name: 'TESTE',
       phoneNumber: "99999999999",
       passwd: '$2y$12$XZt9g1MuX1EMiPqBbVzGsuZUpK65xFaelYnFEyOP7VdLQCJxza9Ym',
       salt: 'salt_salt',
     },
     {
       uuid: '3',
-      name: 'loser',
+      name: 'LOSER',
       phoneNumber: "99999999999",
       passwd: '$2y$12$XZt9g1MuX1EMiPqBbVzGsuZUpK65xFaelYnFEyOP7VdLQCJxza9Ym',
       salt: 'salt_salt',

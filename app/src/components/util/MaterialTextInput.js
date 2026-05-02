@@ -116,7 +116,7 @@ function MaterialTextInput(props) {
                 name={props.fieldName}
                 id={props.fieldName}
                 onChange={handleInputChange}
-                className={error}
+                className={`${error} ${props.fieldStyles ? props.fieldStyles.join(' ') : ''}`}
                 required={!props.fieldRequired}
                 maxLength={props.maxLength ? props.maxLength : '30'}
                 value={value}
@@ -142,6 +142,7 @@ MaterialTextInput.propTypes = {
     maxLength: PropTypes.string,
     fieldController: PropTypes.func,
     fieldValue: PropTypes.string,
+    fieldStyles: PropTypes.array,
 };
 
 export default MaterialTextInput;

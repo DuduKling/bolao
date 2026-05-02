@@ -19,7 +19,7 @@ function Regulamento() {
 
                             <li>O pagamento poderá ser realizado em dinheiro, ou via Pix, devendo, para tanto, ser comprovado o depósito mediante contato com um dos responsáveis.</li>
 
-                            <li>O pagamento em pix deve ser efetuado para a chave: <span>guibotelho64@hotmail.com</span>. Todo o montante arrecadado no bolão será depositado nesta conta e posteriormente será entregue ao vencedor do bolão.</li>
+                            <li>O pagamento em pix deve ser efetuado para a chave: <span>24988382230</span>. Todo o montante arrecadado no bolão será depositado nesta conta e posteriormente será entregue ao vencedor do bolão.</li>
 
                         </ol>
                     </li>

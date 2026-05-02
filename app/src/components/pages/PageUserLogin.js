@@ -92,7 +92,8 @@ function PageUserLogin() {
                         labelName="Nome"
                         fieldName="name"
                         fieldType="text"
-                        fieldController={setNameValue}
+                        fieldController={(val)=> setNameValue(val.toUpperCase())}
+                        fieldStyles={['-uppercase']}
                     />
 
                     <MaterialTextInput
