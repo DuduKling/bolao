@@ -41,7 +41,7 @@ if (!$created) {
 $jwt = $user->getToken();
 
 $cookieOptions = array(
-    "expires" => time() + 60 * 60 * 24 * 30, // 30 days
+    "expires" => time() + 60 * 60 * 24 * 60, // 60 days
     "path" => "/",
     "domain" => $env->urlFrontHostOnly,
     "secure" => true,     // or false

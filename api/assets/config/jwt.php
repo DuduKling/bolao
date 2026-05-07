@@ -33,7 +33,7 @@ class CustomJWT
             "aud" => $this->aud,
             "iat" => $iat, //"iat" (Issued At) Claim
             "nbf" => $iat + 1, //"nbf" (Not Before) Claim
-            "exp" => $iat + 604800, // Expire (7 dias dps)
+            "exp" => $iat + 60 * 60 * 24 * 60, // 60 days
             "data" => $data
         );
 
