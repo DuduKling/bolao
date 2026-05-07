@@ -105,7 +105,6 @@ function PagePoolUserBet() {
     };
 
     const showFixtures = () => {
-        console.log(fixtures);
         return groupFixtures(fixtures).map(function ([phaseName, fixtures], index) {
             return (
                 <ChampionshipPhase

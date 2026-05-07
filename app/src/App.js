@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { updateJWT } from './redux/slicer/authSlicer';
 
 import http from './util/http';
-import Fingerprint from './util/fingerprint';
 
 import './css/pages/user.css';
 

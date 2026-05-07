@@ -54,8 +54,6 @@ function PageAdminPoolUserParticipation() {
                 return acc;
             }, {});
 
-            console.log(participationByUser);
-
             return Object.entries(participationByUser).map(([user, p], index) => {
                 return (
                     <tr key={index}>
