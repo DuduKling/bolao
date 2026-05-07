@@ -54,10 +54,7 @@ function App() {
     }, []);
 
     const didMount = async () => {
-        const data = {
-            fingerprint: await Fingerprint.get(),
-        };
-
+        const data = {};
         await http.authValidate(data)
             .then((response) => {
                 dispatch(updateJWT({ userJWT: response.jwt }));
