@@ -36,28 +36,23 @@
 }
 
 
-@media only screen and (max-width: 500px){
+@media only screen and (max-width: 600px){
+	.match-container .-Home,
 	.match-container .-Away {
 		padding-right: 5px;
-		
+		flex-direction: column-reverse;
 	}
 
 	.match-container .-Away > p {
 		text-align: right;
+		margin-top: 5px;
 	}
 
-	.match-container .-Home {
-		padding-left: 5px;
-		
-	}
-
-	.match-container .-Away > p {
+	.match-container .-Home > p {
 		text-align: left;
+		margin-top: 5px;
 	}
-}
 
-
-@media only screen and (max-width: 400px){
 	.match-container .time > div {
 		width: 20px;
 		height: 20px;
