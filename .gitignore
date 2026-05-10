@@ -29,3 +29,4 @@ database/knexfile.js
 .env
 .env.production
 
+test-results/
