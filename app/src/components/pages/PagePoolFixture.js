@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import '../../css/pages/pageInside.css';
 
@@ -7,9 +7,12 @@ import http from '../../util/http';
 
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
+import routes from '../util/Routes';
 
 function PagePoolFixture() {
     const [fixtures, setFixtures] = useState([]);
+    const [winPercentages, setWinPercentages] = useState({});
+
     const [loading, setLoading] = useState(false);
 
     const params = useParams();
@@ -30,8 +33,11 @@ function PagePoolFixture() {
 
         await http.getBetsFromFixture(data)
             .then((response) => {
-                const fixtures = mergeFixturesAndBets(response.fixture, response.fixtureBets);
+                let fixtures = mergeFixturesAndBets(response.fixture, response.fixtureBets);
+                fixtures = calculateBetsPercentages(fixtures);
                 setFixtures(fixtures);
+
+                setWinPercentages(calculateWinPercentages(fixtures));
 
                 setLoading(false);
             })
@@ -55,11 +61,105 @@ function PagePoolFixture() {
         }));
     };
 
+    const calculateBetsPercentages = (fixtures) => {
+        const totalBets = fixtures.reduce((acc, fix) => acc + fix.users.length, 0);
+
+        return fixtures.map((fixture) => ({
+            ...fixture,
+            porcentagem: totalBets > 0 ? Math.round((fixture.users.length / totalBets) * 100) : 0,
+        })).sort((a, b) => b.porcentagem - a.porcentagem);
+    };
+
+    const calculateWinPercentages = (fixtures) => {
+        const totalBets = fixtures.reduce((acc, fix) => acc + fix.users.length, 0);
+
+        const result = {
+            homeTeamWinPercentage: 0,
+            drawPercentage: 0,
+            awayTeamWinPercentage: 0,
+        };
+
+        fixtures.forEach((fixture) => {
+            const isHomeTeamWin = fixture.homeTeamScoreBet > fixture.awayTeamScoreBet;
+            const isDraw = fixture.homeTeamScoreBet === fixture.awayTeamScoreBet;
+            const isAwayTeamWin = fixture.homeTeamScoreBet < fixture.awayTeamScoreBet;
+
+            if (isHomeTeamWin) {
+                result.homeTeamWinPercentage += fixture.users.length;
+            } else if (isDraw) {
+                result.drawPercentage += fixture.users.length;
+            } else if (isAwayTeamWin) {
+                result.awayTeamWinPercentage += fixture.users.length;
+            }
+        });
+
+        if (totalBets > 0) {
+            result.homeTeamWinPercentage = Math.round((result.homeTeamWinPercentage / totalBets) * 100);
+            result.drawPercentage = Math.round((result.drawPercentage / totalBets) * 100);
+            result.awayTeamWinPercentage = Math.round((result.awayTeamWinPercentage / totalBets) * 100);
+        }
+
+        return result;
+    };
+
+    const showFixtures = () => {
+        if (fixtures.length > 0) {
+            return (
+                fixtures.map((fixture, index) => {
+                    return (
+                        <PartidaListItem
+                            key={index}
+                            fixture={fixture}
+                            shows={['showUsers', 'showPercent']}
+                        />
+                    );
+                }, this)
+            );
+        }
+
+        return (
+            <div className="errorMessage">
+                <p>Ainda não há apostas para este jogo</p>
+            </div>
+        );
+    };
+
+    const showWinPercentages = () => {
+        if (fixtures.length > 0) {
+            return (
+                <div className="winPercentages">
+                    <div className="card">
+                        {fixtures[0].homeTeamName}
+                        <p className="percentage">
+                            <span>{winPercentages.homeTeamWinPercentage}</span> %
+                        </p>
+                    </div>
+                    <div className="card -empate">
+                        Empate
+                        <p className="percentage">
+                            <span>{winPercentages.drawPercentage}</span> %
+                        </p>
+                    </div>
+                    <div className="card">
+                        {fixtures[0].awayTeamName}
+                        <p className="percentage">
+                            <span>{winPercentages.awayTeamWinPercentage}</span> %
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+        return (<></>);
+    };
+
     return (
         <section className="main-container">
             <div className="main-content">
 
                 <div className="main-partidaForm" >
+
+                    {showWinPercentages()}
 
                     <ul className="partidaLista">
                         <div>
@@ -67,19 +167,9 @@ function PagePoolFixture() {
                                 Apostas para este jogo
                                 <Loading loading={loading} localstorage="-withLocalStorage2" />
                             </h3>
+                            <Link className="allFixturesLink" to={routes.sendToPoolDashboard(poolUuid)}>Dashboard &gt;</Link>
                         </div>
-                        {
-                            fixtures.map((fixture, index) => {
-                                return (
-                                    <PartidaListItem
-                                        key={index}
-                                        fixture={fixture}
-                                        shows={['showUsers', 'showPercent']}
-                                    />
-                                );
-                            }, this)
-                        }
-
+                        {showFixtures()}
                     </ul>
 
                 </div>

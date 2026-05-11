@@ -82,6 +82,10 @@
 	text-align: center;
 }
 
+.main-partidaForm  > .partidaLista > div {
+	position: relative;
+}
+
 .main-partidaForm  > .partidaLista > div > .pageTitle {
 	background-color: #4caf50;
 	padding: 10px 15px;

@@ -646,19 +646,6 @@ class Pool
                     fixture.id,
                     bet.homeTeamScoreBet,
                     bet.awayTeamScoreBet,
-                    round(
-                        (
-                            count(*) /
-                            (
-                                SELECT count(*)
-                                FROM user
-                                INNER JOIN user_pool ON user_pool.fkUserId = user.id
-                                INNER JOIN bet ON bet.fkUserPoolId = user_pool.id
-                                WHERE bet.fkFixtureId = :fixtureId
-                                AND user_pool.fkPoolId = :poolId
-                            ) * 100
-                        )
-                    , 2) as porcentagem,
                     GROUP_CONCAT(CONCAT(user.name, '#', user.uuid) ORDER BY user.name ASC SEPARATOR ',') as users
             FROM bet
             INNER JOIN user_pool ON bet.fkUserPoolId = user_pool.id
@@ -669,7 +656,6 @@ class Pool
             GROUP BY
                 bet.homeTeamScoreBet,
                 bet.awayTeamScoreBet
-            ORDER BY porcentagem DESC
         ";
 
         $stmt = $this->conn->prepare($query);

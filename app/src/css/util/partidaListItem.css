@@ -175,12 +175,47 @@
 	background-color: #c7c7c7;
 }
 
+.winPercentages {
+	width: 100%;
+	margin-bottom: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
 
+.winPercentages>.card {
+	min-width: 200px;
+	border-radius: 15px;
+	margin: 10px;
+	padding: 10px;
+	color: #f5f2e6;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+	background-color: #57ae52;
+}
 
+.winPercentages>.card.-empate {
+	background-color: #388E3C;
+}
+
+.winPercentages>.card>.percentage {
+	width: 100%;
+	height: 100%;
+	margin: 5px;
+	text-align: center;
+}
+
+.winPercentages>.card>.percentage>span {
+	font-size: 30px;
+}
 
 
 .partidaListItem .users-percent {
-	width: 90px;
+	width: 75px;
     height: 30px;
 
 	position: absolute;
@@ -233,4 +268,11 @@
 		font-size: 14px;
 	}
 
+	.winPercentages>.card {
+		font-size: 14px;
+	}
+
+	.winPercentages>.card>.percentage>span {
+		font-size: 22px;
+	}
 }
