@@ -21,6 +21,7 @@ function ChampionshipPhasePart(props) {
                                 setScoreController={props.setScoreController}
                                 isAdmin={props.isAdmin}
                                 shows={props.shows}
+                                poolUuid={props.poolUuid}
                             />
                         </div>
                     );
@@ -38,6 +39,7 @@ ChampionshipPhasePart.propTypes = {
 
     shows: PropTypes.array,
     partName: PropTypes.string,
+    poolUuid: PropTypes.string,
 };
 
 export default ChampionshipPhasePart;

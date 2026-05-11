@@ -148,6 +148,7 @@ function PagePoolDashboard() {
 
     const showNextFixtures = () => {
         const nextFixtures = fixtures
+            .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
             .filter((fixture) => fixture.homeTeamScore === null && fixture.awayTeamScore === null)
             .slice(0, 5);
 
@@ -175,6 +176,7 @@ function PagePoolDashboard() {
 
     const showLastFixtures = () => {
         const lastFixtures = fixtures
+            .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
             .filter((fixture) => fixture.homeTeamScore !== null && fixture.awayTeamScore !== null)
             .reverse()
             .slice(0, 5);
@@ -247,10 +249,17 @@ function PagePoolDashboard() {
                 <div className="dashboard-top">
                     <h2>{poolChampionshipInfo ? poolChampionshipInfo.name : ''}</h2>
                     <h4>{poolChampionshipInfo ? poolChampionshipInfo.championshipName + ' | ' + poolChampionshipInfo.phaseName : ''}</h4>
+                    <div className="dashboard-statusFase -aberto">
+                        <p>Veja o rank abaixo</p>
+                    </div>
                     <div className='bets'>
-                        <Link to={routes.sendToPoolUserBets(poolUuid, userUuid)}>
-                            Minhas apostas
-                        </Link>
+                        {
+                            userHasPlacedBet ? (
+                                <Link to={routes.sendToPoolUserBets(poolUuid, userUuid)}>
+                                    Minhas apostas
+                                </Link>
+                            ) : 'Você não está participando deste bolão'
+                        }
                     </div>
                     <Loading loading={loading} />
                 </div>

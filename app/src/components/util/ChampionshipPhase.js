@@ -36,6 +36,7 @@ function ChampionshipPhase(props) {
                             isAdmin={props.isAdmin}
                             shows={props.shows}
                             partName={partName}
+                            poolUuid={props.poolUuid}
                         />
                     );
                 })
@@ -52,6 +53,7 @@ ChampionshipPhase.propTypes = {
 
     shows: PropTypes.array,
     phaseName: PropTypes.string,
+    poolUuid: PropTypes.string,
     partViewTypeEditList: PropTypes.array,
 };
 

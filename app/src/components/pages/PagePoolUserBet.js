@@ -111,7 +111,8 @@ function PagePoolUserBet() {
                     key={index}
                     phaseName={phaseName}
                     fixtures={fixtures}
-                    shows={['showResultAndPoints']}
+                    shows={['showAsLink', 'showResultAndPoints']}
+                    poolUuid={poolUuid}
                 />
             );
         });
