@@ -33,11 +33,11 @@ function PagePoolFixture() {
 
         await http.getBetsFromFixture(data)
             .then((response) => {
-                let fixtures = mergeFixturesAndBets(response.fixture, response.fixtureBets);
-                fixtures = calculateBetsPercentages(fixtures);
-                setFixtures(fixtures);
+                let fixtureBets = mergeFixturesAndBets(response.fixture, response.fixtureBets);
+                fixtureBets = calculateBetsPercentages(fixtureBets);
+                setFixtures(fixtureBets);
 
-                setWinPercentages(calculateWinPercentages(fixtures));
+                setWinPercentages(calculateWinPercentages(fixtureBets));
 
                 setLoading(false);
             })
@@ -61,45 +61,39 @@ function PagePoolFixture() {
         }));
     };
 
-    const calculateBetsPercentages = (fixtures) => {
-        const totalBets = fixtures.reduce((acc, fix) => acc + fix.users.length, 0);
+    const calculateBetsPercentages = (fixtureBets) => {
+        const totalBets = fixtureBets.reduce((acc, fix) => acc + fix.users.length, 0);
 
-        return fixtures.map((fixture) => ({
+        return fixtureBets.map((fixture) => ({
             ...fixture,
             porcentagem: totalBets > 0 ? Math.round((fixture.users.length / totalBets) * 100) : 0,
         })).sort((a, b) => b.porcentagem - a.porcentagem);
     };
 
-    const calculateWinPercentages = (fixtures) => {
-        const totalBets = fixtures.reduce((acc, fix) => acc + fix.users.length, 0);
+    const calculateWinPercentages = (fixtureBets) => {
+        const totalBets = fixtureBets.reduce((acc, fix) => acc + fix.users.length, 0);
 
-        const result = {
-            homeTeamWinPercentage: 0,
-            drawPercentage: 0,
-            awayTeamWinPercentage: 0,
-        };
+        let qtdHomeBets = 0;
+        let qtdDrawBets = 0;
+        let qtdAwayBets = 0;
 
-        fixtures.forEach((fixture) => {
-            const isHomeTeamWin = fixture.homeTeamScoreBet > fixture.awayTeamScoreBet;
-            const isDraw = fixture.homeTeamScoreBet === fixture.awayTeamScoreBet;
-            const isAwayTeamWin = fixture.homeTeamScoreBet < fixture.awayTeamScoreBet;
+        fixtureBets.forEach((fixture) => {
+            const { homeTeamScore, awayTeamScore, users } = fixture;
 
-            if (isHomeTeamWin) {
-                result.homeTeamWinPercentage += fixture.users.length;
-            } else if (isDraw) {
-                result.drawPercentage += fixture.users.length;
-            } else if (isAwayTeamWin) {
-                result.awayTeamWinPercentage += fixture.users.length;
+            if (homeTeamScore > awayTeamScore) {
+                qtdHomeBets += users.length;
+            } else if (homeTeamScore === awayTeamScore) {
+                qtdDrawBets += users.length;
+            } else if (homeTeamScore < awayTeamScore) {
+                qtdAwayBets += users.length;
             }
         });
 
-        if (totalBets > 0) {
-            result.homeTeamWinPercentage = Math.round((result.homeTeamWinPercentage / totalBets) * 100);
-            result.drawPercentage = Math.round((result.drawPercentage / totalBets) * 100);
-            result.awayTeamWinPercentage = Math.round((result.awayTeamWinPercentage / totalBets) * 100);
-        }
-
-        return result;
+        return {
+            homeTeam: qtdHomeBets ? Math.round((qtdHomeBets / totalBets) * 100) : 0,
+            draw: qtdDrawBets ? Math.round((qtdDrawBets / totalBets) * 100) : 0,
+            awayTeam: qtdAwayBets ? Math.round((qtdAwayBets / totalBets) * 100) : 0,
+        };
     };
 
     const showFixtures = () => {
@@ -131,19 +125,19 @@ function PagePoolFixture() {
                     <div className="card">
                         {fixtures[0].homeTeamName}
                         <p className="percentage">
-                            <span>{winPercentages.homeTeamWinPercentage}</span> %
+                            <span>{winPercentages.homeTeam}</span> %
                         </p>
                     </div>
                     <div className="card -empate">
                         Empate
                         <p className="percentage">
-                            <span>{winPercentages.drawPercentage}</span> %
+                            <span>{winPercentages.draw}</span> %
                         </p>
                     </div>
                     <div className="card">
                         {fixtures[0].awayTeamName}
                         <p className="percentage">
-                            <span>{winPercentages.awayTeamWinPercentage}</span> %
+                            <span>{winPercentages.awayTeam}</span> %
                         </p>
                     </div>
                 </div>
