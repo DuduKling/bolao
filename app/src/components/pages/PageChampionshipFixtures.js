@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import '../../css/pages/pageInside.css';
 
 import http from '../../util/http';
+import parser from '../util/Parser';
 
 import Loading from '../util/Loading';
 import ChampionshipPhase from '../util/ChampionshipPhase';
@@ -23,9 +24,11 @@ function PageChampionshipFixtures() {
     useEffect(() => {
         const cachedFixtures = localStorage.getItem(LOCAL_STORAGE_ITEM);
         if (cachedFixtures) {
-            const data = JSON.parse(cachedFixtures);
-            setFixtures(data.fixtures);
-            setChampionshipInfo(data.championshipInfo);
+            const data = parser.json(cachedFixtures);
+            if (data) {
+                setFixtures(data.fixtures);
+                setChampionshipInfo(data.championshipInfo);
+            }
         }
 
         if (dataFetchedRef.current) return;
@@ -47,7 +50,9 @@ function PageChampionshipFixtures() {
                 setChampionshipInfo(response.championshipInfo);
                 setLoading(false);
 
-                localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
+                if (response) {
+                    localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
+                }
             })
             .catch(() => { });
     };

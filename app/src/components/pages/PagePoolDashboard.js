@@ -5,10 +5,12 @@ import { useSelector } from 'react-redux';
 import '../../css/pages/pageInside.css';
 
 import http from '../../util/http';
+import routes from '../util/Routes';
+import parser from '../util/Parser';
+
 import Loading from '../util/Loading';
 import PartidaListItem from '../util/PartidaListItem';
 import RankListItem from '../util/RankListItem';
-import routes from '../util/Routes';
 
 function PagePoolDashboard() {
     const [fixtures, setFixtures] = useState([]);
@@ -31,7 +33,10 @@ function PagePoolDashboard() {
     useEffect(() => {
         const cachedRank = localStorage.getItem(LOCAL_STORAGE_ITEM_RANK);
         if (cachedRank) {
-            setRank(JSON.parse(cachedRank));
+            const data = parser.json(cachedRank);
+            if (data) {
+                setRank(data);
+            }
         }
         if (dataFetchedRef.current) return;
         dataFetchedRef.current = true;
@@ -92,7 +97,9 @@ function PagePoolDashboard() {
                 setLoading(false);
                 setRank(response.rank);
 
-                localStorage.setItem(LOCAL_STORAGE_ITEM_RANK, JSON.stringify(response.rank));
+                if (response.rank) {
+                    localStorage.setItem(LOCAL_STORAGE_ITEM_RANK, JSON.stringify(response.rank));
+                }
             })
             .catch(() => {
                 setLoading(false);

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../../css/pages/pools.css';
 
 import http from '../../util/http';
+import parser from '../util/Parser';
 
 import Loading from '../util/Loading';
 import PoolListItem from '../util/PoolListItem';
@@ -18,9 +19,11 @@ function PagePools() {
     useEffect(() => {
         const cachedPools = localStorage.getItem(LOCAL_STORAGE_ITEM);
         if (cachedPools) {
-            const data = JSON.parse(cachedPools);
-            const grPools = groupPools(data.allPools, data.joinedPools);
-            setGroupedPools(grPools);
+            const data = parser.json(cachedPools);
+            if (data) {
+                const grPools = groupPools(data.allPools, data.joinedPools);
+                setGroupedPools(grPools);
+            }
         }
 
         if (dataFetchedRef.current) return;
@@ -38,7 +41,10 @@ function PagePools() {
                 setGroupedPools(grPools);
 
                 setLoading(false);
-                localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
+
+                if (response) {
+                    localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
+                }
             })
             .catch(() => {
                 setLoading(false);

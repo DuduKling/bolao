@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../../css/pages/campeonato.css';
 
 import http from '../../util/http';
+import parser from '../util/Parser';
 
 import CampeonatoCard from '../util/CampeonatoCard';
 import Loading from '../util/Loading';
@@ -17,7 +18,10 @@ function PageChampionships() {
     useEffect(() => {
         const cachedCampeonatos = localStorage.getItem(LOCAL_STORAGE_ITEM);
         if (cachedCampeonatos) {
-            setCampeonatos(JSON.parse(cachedCampeonatos));
+            const data = parser.json(cachedCampeonatos);
+            if (data) {
+                setCampeonatos(data);
+            }
         }
 
         if (dataFetchedRef.current) return;
@@ -34,7 +38,9 @@ function PageChampionships() {
                 setCampeonatos(response);
                 setLoading(false);
 
-                localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
+                if (response) {
+                    localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
+                }
             })
             .catch(() => {
                 setLoading(false);

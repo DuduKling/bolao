@@ -5,6 +5,7 @@ import '../../css/pages/pageInside.css';
 
 import http from '../../util/http';
 import routes from '../util/Routes';
+import parser from '../util/Parser';
 
 import Loading from '../util/Loading';
 import ChampionshipPhase from '../util/ChampionshipPhase';
@@ -28,16 +29,17 @@ function PagePoolUserBet() {
     useEffect(() => {
         const cachedFixtures = localStorage.getItem(LOCAL_STORAGE_ITEM);
         if (cachedFixtures) {
-            const data = JSON.parse(cachedFixtures);
+            const data = parser.json(cachedFixtures);
+            if (data) {
+                let fixtures = data.poolFixtures;
+                if (data.userPlacedBets && data.userPlacedBets.length > 0) {
+                    mergeFixturesAndBets(fixtures, data.userPlacedBets);
+                }
+                setFixtures(fixtures);
 
-            let fixtures = data.poolFixtures;
-            if (data.userPlacedBets && data.userPlacedBets.length > 0) {
-                mergeFixturesAndBets(fixtures, data.userPlacedBets);
+                setPoolChampionshipInfo(data.poolChampionshipInfo);
+                setUser(data.userData);
             }
-            setFixtures(fixtures);
-
-            setPoolChampionshipInfo(data.poolChampionshipInfo);
-            setUser(data.userData);
         }
 
         if (dataFetchedRef.current) return;
@@ -67,7 +69,9 @@ function PagePoolUserBet() {
                 setPoolChampionshipInfo(response.poolChampionshipInfo);
                 setUser(response.userData);
 
-                localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
+                if (response) {
+                    localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(response));
+                }
             })
             .catch(() => {
                 setLoading(false);
