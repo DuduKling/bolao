@@ -58,7 +58,7 @@ function PageUserForgotPassword() {
             .then((response) => {
                 dispatch(updateJWT({ userJWT: response.jwt }));
 
-                navigate(routes.sendToChampionships());
+                navigate(routes.sendToPools());
             })
             .catch(({ message }) => {
                 setAjaxErrorResp(message);
