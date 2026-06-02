@@ -45,7 +45,7 @@ $cookieOptions = array(
     "domain" => $env->urlFrontHostOnly,
     "secure" => true,     // or false
     "httponly" => true,    // or false
-    "samesite" => "Lax" // None || Lax  || Strict
+    "samesite" => "Strict" // None || Lax  || Strict
 );
 setcookie('userJWT', $jwt, $cookieOptions);
 
