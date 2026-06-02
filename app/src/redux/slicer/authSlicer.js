@@ -34,6 +34,20 @@ export const authSlicer = createSlice({
             state.userPhoneNumber = parsedJWT.data.phoneNumber || '';
             state.userRole = parsedJWT.data.role || '';
             state.userJWT = action.payload.userJWT || '';
+
+            if (action.payload.userJWT) {
+                try {
+                    localStorage.setItem('userJWT', action.payload.userJWT);
+                } catch (e) {
+                    console.warn('Failed to persist JWT to localStorage:', e);
+                }
+            } else {
+                try {
+                    localStorage.removeItem('userJWT');
+                } catch (e) {
+                    console.warn('Failed to remove JWT from localStorage:', e);
+                }
+            }
         },
     },
 });

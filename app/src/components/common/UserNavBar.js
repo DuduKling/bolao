@@ -27,6 +27,12 @@ function UserNavBar(props) {
     const logout = async () => {
         dispatch(updateJWT({ userJWT: '' }));
 
+        try {
+            localStorage.removeItem('userJWT');
+        } catch (e) {
+            console.warn('Failed to clear localStorage on logout:', e);
+        }
+
         await http.authReset();
 
         navigate(routes.sendToHome());

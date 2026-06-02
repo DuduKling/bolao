@@ -58,7 +58,16 @@ function App() {
             .then((response) => {
                 dispatch(updateJWT({ userJWT: response.jwt }));
             })
-            .catch(() => { });
+            .catch(() => {
+                try {
+                    const storedJWT = localStorage.getItem('userJWT');
+                    if (storedJWT) {
+                        dispatch(updateJWT({ userJWT: storedJWT }));
+                    }
+                } catch (e) {
+                    console.warn('Failed to check localStorage fallback:', e);
+                }
+            });
 
         setLoading(false);
     };
